@@ -10,7 +10,7 @@ import { App } from "deco/mod.ts";
 import { rgb24 } from "std/fmt/colors.ts";
 import manifest, { Manifest } from "../manifest.gen.ts";
 
-export type Props = {
+export type DefaultProps = {
   /**
    * @title Active Commerce Platform
    * @description Choose the active ecommerce platform
@@ -19,6 +19,24 @@ export type Props = {
   platform: Platform;
   theme?: Section;
 } & CommerceProps;
+
+export type Props = {
+  /**
+  @title Ammo Device Id
+  */
+  ammoDeviceId: string;
+
+  /**
+  @title Ammo Token
+  */
+  ammoToken: string;
+
+  /**
+  @title Ammo Store Public URL
+  @default https://mmartan.com.br/api/
+  */
+  publicUrl: string;
+} & DefaultProps;
 
 export type Platform =
   | "vtex"
@@ -54,18 +72,20 @@ const color = (platform: string) => {
 
 let firstRun = true;
 
-export default function Site(
-  { theme, ...state }: Props,
-): App<Manifest, Props, [ReturnType<typeof commerce>]> {
+export default function Site({
+  theme,
+  ...state
+}: Props): App<Manifest, Props, [ReturnType<typeof commerce>]> {
   _platform = state.platform || state.commerce?.platform || "custom";
 
   // Prevent console.logging twice
   if (firstRun) {
     firstRun = false;
     console.info(
-      ` 🐁 ${rgb24("Storefront", color("deco"))} | ${
-        rgb24(_platform, color(_platform))
-      } \n`,
+      ` 🐁 ${rgb24("Storefront", color("deco"))} | ${rgb24(
+        _platform,
+        color(_platform)
+      )} \n`
     );
   }
 
