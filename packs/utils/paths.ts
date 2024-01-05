@@ -1,5 +1,28 @@
-const paths = (_baseURL: string) => {
-    //TODO: START API PATHS
+interface ResolveRouteProps {
+  path: string;
+  page: number;
 }
 
-export default paths
+const paths = (publicUrl: string) => {
+  const href = (path: string, extraUrlParams?: object) => {
+    const extraParams = extraUrlParams
+      ? "?" +
+        new URLSearchParams({
+          ...Object.fromEntries(
+            Object.entries(extraUrlParams).filter(([_, value]) => !!value)
+          ),
+        })
+      : null;
+
+    return new URL(path + extraParams, publicUrl).href;
+  };
+
+  return {
+    productCatalog: {
+      resolveRoute: (props: ResolveRouteProps) =>
+        href(`product-catalog/resolve-route`, { ...props }),
+    },
+  };
+};
+
+export default paths;

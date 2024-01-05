@@ -24,12 +24,12 @@ export type Props = {
   /**
   @title Ammo Device Id
   */
-  ammoDeviceId: string;
+  ammoDeviceId?: string;
 
   /**
   @title Ammo Token
   */
-  ammoToken: string;
+  ammoToken?: string;
 
   /**
   @title Ammo Store Public URL
