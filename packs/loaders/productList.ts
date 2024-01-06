@@ -19,6 +19,7 @@ export interface Props {
 
 interface Category {
   path: string;
+  //TODO: How the category filter works?
 }
 
 /**
