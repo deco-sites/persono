@@ -128,4 +128,56 @@ export interface PriceList {
   type: number;
 }
 
+export interface VMDetails {
+  //RETURN OF AN ENDPOINT
 
+  filtersOrdered: string[];
+  basePath: string;
+  meta: Meta;
+  appliedFilters: string[]; //unknown
+  headerColors: HeaderColors;
+  productCards: AmmoProduct[];
+  skusTotal: number;
+  sidebar: Sidebar[];
+  breadcrumbs: Breadcrumb[];
+  miniVms: string[]; //unknown
+}
+
+export interface Meta {
+  index: boolean;
+  title: string;
+  description: string;
+  shareImageUrl?: string;
+  header: string;
+  sidebarText?: string;
+  footerText?: string;
+}
+
+export interface HeaderColors {
+  foregroundColor?: string;
+  backgroundColorFrom?: string;
+  backgroundColorTo?: string;
+}
+
+export interface Sidebar {
+  filterType: string;
+  filterLabel: string;
+  valuePrefix?: string;
+  values: Value[];
+}
+
+export interface Value {
+  type: string;
+  slug: string;
+  value: string;
+}
+
+export interface Recommendations {
+  //RETURN OF AN ENDPOINT
+  data: Data;
+  meta: Meta;
+}
+
+export interface Data {
+  products: AmmoProduct[];
+}
