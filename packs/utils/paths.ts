@@ -12,7 +12,7 @@ const paths = (publicUrl: string) => {
             Object.entries(extraUrlParams).filter(([_, value]) => !!value)
           ),
         })
-      : null;
+      : "";
 
     return new URL(path + extraParams, publicUrl).href;
   };
@@ -21,6 +21,9 @@ const paths = (publicUrl: string) => {
     productCatalog: {
       resolveRoute: (props: ResolveRouteProps) =>
         href(`product-catalog/resolve-route`, { ...props }),
+    },
+    recommendation: {
+      sku: () => href("recommendation"),
     },
   };
 };
