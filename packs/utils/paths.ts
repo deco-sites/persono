@@ -1,5 +1,5 @@
 const paths = (_baseURL: string) => {
-    //TODO: START API PATHS
-}
+  //TODO: START API PATHS
+};
 
-export default paths
+export default paths;

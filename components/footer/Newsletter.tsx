@@ -51,7 +51,9 @@ function Newsletter(
           </h3>
         )}
         {content?.description && (
-          <div class="md:max-w-[400px] w-full text-sm">{content?.description}</div>
+          <div class="md:max-w-[400px] w-full text-sm">
+            {content?.description}
+          </div>
         )}
       </div>
       <div class="flex flex-col gap-4 max-md:w-full">

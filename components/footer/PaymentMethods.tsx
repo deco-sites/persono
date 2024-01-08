@@ -35,7 +35,9 @@ export default function PaymentMethods(
             <div class="collapse collapse-arrow text-sm">
               <input type="checkbox" class="min-h-[0]" />
               <div class="collapse-title font-bold min-h-[0] !p-0 flex gap-2">
-                {content.title && <h3 class="md:text-lg text-sm">{content.title}</h3>}
+                {content.title && (
+                  <h3 class="md:text-lg text-sm">{content.title}</h3>
+                )}
               </div>
               <div class="collapse-content">
                 <ul class="flex items-center gap-4 flex-wrap pt-2 pl-0">

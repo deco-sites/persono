@@ -150,9 +150,7 @@ function Footer({
 
   return (
     <footer
-      class={`w-full flex flex-col md:pt-12 pt-6 ${
-        ColorClasses(layout)
-      }`}
+      class={`w-full flex flex-col md:pt-12 pt-6 ${ColorClasses(layout)}`}
     >
       <div class="lg:container mx-6 lg:mx-auto">
         <div class="flex flex-col md:gap-12 gap-6">
