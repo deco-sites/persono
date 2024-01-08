@@ -12,6 +12,7 @@ export type AvailableIcons =
   | "Deco"
   | "Diners"
   | "Discord"
+  | "YouTube"
   | "Discount"
   | "Elo"
   | "Facebook"
