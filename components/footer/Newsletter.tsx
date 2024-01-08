@@ -43,40 +43,36 @@ function Newsletter(
   };
 
   return (
-    <div
-      class={`flex ${
-        tiled
-          ? "flex-col gap-4 lg:flex-row lg:w-full lg:justify-between"
-          : "flex-col gap-4"
-      }`}
-    >
-      <div class="flex flex-col gap-4">
+    <div class="flex lg:flex-nowrap flex-wrap md:gap-20 gap-6 max-md:justify-stretch max-md:items-stretch">
+      <div class="flex flex-col md:gap-4 gap-3">
         {content?.title && (
-          <h3 class={tiled ? "text-2xl lg:text-3xl" : "text-lg"}>
+          <h3 class="text-2xl font-medium">
             {content?.title}
           </h3>
         )}
-        {content?.description && <div>{content?.description}</div>}
+        {content?.description && (
+          <div class="md:max-w-[400px] w-full text-sm">{content?.description}</div>
+        )}
       </div>
-      <div class="flex flex-col gap-4">
+      <div class="flex flex-col gap-4 max-md:w-full">
         <form
-          class="form-control"
+          class="form-control flex flex-row max-md:w-full flex-nowrap gap-2"
           onSubmit={handleSubmit}
         >
-          <div class="flex flex-wrap gap-3">
-            <input
-              name="email"
-              class="flex-auto md:flex-none input input-bordered md:w-80 text-base-content"
-              placeholder={content?.form?.placeholder || "Digite seu email"}
-            />
-            <button
-              type="submit"
-              class="btn disabled:loading"
-              disabled={loading}
-            >
+          <input
+            name="email"
+            class="flex-auto md:flex-none md:max-w-xs w-full input-bordered input-accent input min-h-[36px] h-[36px] text-secondary-content bg-secondary placeholder:text-secondary-content"
+            placeholder={content?.form?.placeholder || "Digite seu email"}
+          />
+          <button
+            type="submit"
+            class="btn btn-accent md: min-h-[36px] h-[36px] group disabled:bg-white text-base"
+            disabled={loading}
+          >
+            <span class="group-disabled:loading group-disabled:text-black">
               {content?.form?.buttonText || "Inscrever"}
-            </button>
-          </div>
+            </span>
+          </button>
         </form>
         {content?.form?.helpText && (
           <div
