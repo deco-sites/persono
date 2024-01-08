@@ -9,8 +9,8 @@ const loader = async (
   _req: Request,
   _ctx: AppContext,
 ): Promise<Product[] | null> => {
-  await 0
-  return null
+  await 0;
+  return null;
 };
 
 export default loader;
