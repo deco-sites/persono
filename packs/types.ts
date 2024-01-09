@@ -181,3 +181,15 @@ export interface Recommendations {
 export interface Data {
   products: AmmoProduct[];
 }
+
+export interface VMExtraDetails {
+  //RETURN OF AN ENDPOINT
+  metadata: Metadata
+  header: string
+  breadcrumbs: Breadcrumb
+}
+
+export interface Metadata {
+  sidebarText?: string
+  footerText?: string
+}

@@ -1,3 +1,5 @@
+//LOADER DEPRECATED - CLIENT WILL USE LINX TO LIST PRODUCTS IN linx
+
 import type { Props as AppContext } from "deco-sites/persono/apps/site.ts";
 import type { Product } from "apps/commerce/types.ts";
 import paths from "$store/packs/utils/paths.ts";
