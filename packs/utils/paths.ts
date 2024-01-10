@@ -3,10 +3,6 @@ interface ResolveRouteProps {
   page: number;
 }
 
-interface GetPageProps {
-  basePath: string;
-}
-
 const paths = (publicUrl: string) => {
   const href = (path: string, extraUrlParams?: object) => {
     const extraParams = extraUrlParams
@@ -25,8 +21,6 @@ const paths = (publicUrl: string) => {
     productCatalog: {
       resolveRoute: (props: ResolveRouteProps) =>
         href(`product-catalog/resolve-route`, { ...props }),
-      getPage: (props: GetPageProps) =>
-        href(`product-catalog/get-page-info`, { ...props }),
     },
     recommendation: {
       sku: () => href("recommendation"),

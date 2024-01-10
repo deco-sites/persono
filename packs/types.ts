@@ -9,7 +9,7 @@ export interface AmmoProduct {
   cashback?: string;
 
   //Only from PDP props
-  breadcrumbs?: Breadcrumb[];
+  breadcrumbs?: Breadcrumb[] | [Breadcrumb[]];
   bundle?: Bundle;
   active?: boolean;
   description?: string;
@@ -38,6 +38,7 @@ export interface Breadcrumb {
   name: string;
   path?: string;
   position: number;
+  hasSibling?: boolean;
 }
 
 export interface Bundle {
@@ -139,7 +140,7 @@ export interface VMDetails {
   productCards: AmmoProduct[];
   skusTotal: number;
   sidebar: Sidebar[];
-  breadcrumbs: Breadcrumb[];
+  breadcrumbs: Breadcrumb[] | [Breadcrumb[]];
   miniVms: string[]; //unknown
 }
 
@@ -180,16 +181,4 @@ export interface Recommendations {
 
 export interface Data {
   products: AmmoProduct[];
-}
-
-export interface VMExtraDetails {
-  //RETURN OF AN ENDPOINT
-  metadata: Metadata
-  header: string
-  breadcrumbs: Breadcrumb
-}
-
-export interface Metadata {
-  sidebarText?: string
-  footerText?: string
 }

@@ -3,9 +3,9 @@ import type { ProductListingPage } from "apps/commerce/types.ts";
 import paths from "$store/packs/utils/paths.ts";
 import { fetchAPI } from "apps/utils/fetch.ts";
 /* import { DECO_CACHE_OPTION } from "$store/packs/constants.ts"; */
-import { VMDetails, VMExtraDetails } from "$store/packs/types.ts";
+import { VMDetails } from "$store/packs/types.ts";
 import { returnApiHeader } from "$store/packs/utils/utils.ts";
-/* import { toProduct } from "$store/packs/utils/transform.ts"; */
+import { toProductListingPage } from "$store/packs/utils/transform.ts";
 
 export interface Props {
   /**
@@ -29,36 +29,28 @@ const loader = async (
   props: Props,
   req: Request,
   ctx: AppContext,
-): Promise<ProductListingPage[] | null> => {
+): Promise<ProductListingPage> => {
   const { publicUrl, ammoDeviceId, ammoToken } = ctx;
   const { vm } = props;
   const url = new URL(req.url);
   const path = paths(publicUrl);
-
-  const headers = returnApiHeader({
-    ammoDeviceIdValue: ammoDeviceId!,
-    ammoTokenValue: ammoToken!,
-  });
+  const filters = url.searchParams.get("f");
 
   const vmDetails = await fetchAPI<VMDetails>(
     path.productCatalog.resolveRoute({
-      path: vm?.path ?? url.pathname!,
+      path: vm?.path ?? filters ? `${url.pathname}?f=${filters}` : url.pathname,
       page: vm?.page ?? Number(url.searchParams.get("page")) ?? 1,
     }),
-    { method: "GET", headers },
+    {
+      method: "GET",
+      headers: returnApiHeader({
+        ammoDeviceIdValue: ammoDeviceId!,
+        ammoTokenValue: ammoToken!,
+      }),
+    },
   );
 
-  const vmExtraDetails = await fetchAPI<VMExtraDetails>(
-    path.productCatalog.resolveRoute({
-      path: vm?.path ?? url.pathname!,
-      page: vm?.page ?? Number(url.searchParams.get("page")) ?? 1,
-    }),
-    { method: "GET", headers },
-  );
-
-  /* return ammoProduct.map((p) => toProduct(p)); */
-  console.log(vmDetails, vmExtraDetails);
-  return null;
+  return toProductListingPage({ vmDetails, url });
 };
 
 export default loader;
