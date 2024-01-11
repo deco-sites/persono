@@ -1,5 +1,5 @@
-import type { SiteNavigationElement } from "apps/commerce/types.ts";
 import Image from "apps/website/components/Image.tsx";
+import type { SiteNavigationElement } from "deco-sites/persono/components/header/Menu.tsx";
 import { headerHeight } from "./constants.ts";
 
 function NavItem({ item }: { item: SiteNavigationElement }) {
@@ -24,7 +24,7 @@ function NavItem({ item }: { item: SiteNavigationElement }) {
               <Image
                 class="p-6"
                 src={image.url}
-                alt={image.alternateName}
+                alt={image.alt}
                 width={300}
                 height={332}
                 loading="lazy"
@@ -36,16 +36,6 @@ function NavItem({ item }: { item: SiteNavigationElement }) {
                   <a class="hover:underline" href={node.url}>
                     <span>{node.name}</span>
                   </a>
-
-                  <ul class="flex flex-col gap-1 mt-4">
-                    {node.children?.map((leaf) => (
-                      <li>
-                        <a class="hover:underline" href={leaf.url}>
-                          <span class="text-xs">{leaf.name}</span>
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
                 </li>
               ))}
             </ul>

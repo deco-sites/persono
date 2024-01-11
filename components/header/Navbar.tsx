@@ -2,15 +2,15 @@ import type { Props as SearchbarProps } from "$store/components/search/Searchbar
 import Icon from "$store/components/ui/Icon.tsx";
 import { MenuButton, SearchButton } from "$store/islands/Header/Buttons.tsx";
 import CartButtonLinx from "$store/islands/Header/Cart/linx.tsx";
+import CartButtonNuvemshop from "$store/islands/Header/Cart/nuvemshop.tsx";
 import CartButtonShopify from "$store/islands/Header/Cart/shopify.tsx";
 import CartButtonVDNA from "$store/islands/Header/Cart/vnda.tsx";
 import CartButtonVTEX from "$store/islands/Header/Cart/vtex.tsx";
 import CartButtonWake from "$store/islands/Header/Cart/wake.tsx";
-import CartButtonNuvemshop from "$store/islands/Header/Cart/nuvemshop.tsx";
 import Searchbar from "$store/islands/Header/Searchbar.tsx";
 import { usePlatform } from "$store/sdk/usePlatform.tsx";
-import type { SiteNavigationElement } from "apps/commerce/types.ts";
 import Image from "apps/website/components/Image.tsx";
+import type { SiteNavigationElement } from "deco-sites/persono/components/header/Menu.tsx";
 import NavItem from "./NavItem.tsx";
 import { navbarHeight } from "./constants.ts";
 

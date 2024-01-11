@@ -1,5 +1,25 @@
 import Icon from "$store/components/ui/Icon.tsx";
-import type { SiteNavigationElement } from "apps/commerce/types.ts";
+import { ImageWidget } from "apps/admin/widgets.ts";
+
+export interface ImageObject {
+  url: ImageWidget;
+  alt: string;
+}
+
+export interface SiteNavigationElementLeaf {
+  /** @hidden */
+  "@type": "SiteNavigationElement";
+  /** @description An image of the item. This can be a {@link https://schema.org/URL URL} or a fully described {@link https://schema.org/ImageObject ImageObject}. */
+  image?: ImageObject[];
+  /** @description The name of the item. */
+  name?: string;
+  /** @description URL of the item. */
+  url?: string;
+}
+
+export interface SiteNavigationElement extends SiteNavigationElementLeaf {
+  children?: SiteNavigationElementLeaf[];
+}
 
 export interface Props {
   items: SiteNavigationElement[];
