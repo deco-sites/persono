@@ -182,3 +182,9 @@ export interface Recommendations {
 export interface Data {
   products: AmmoProduct[];
 }
+
+export interface ProductDetails {
+  //RETURN OF AN ENDPOINT
+  data: AmmoProduct;
+  meta: Meta;
+}

@@ -25,6 +25,9 @@ const paths = (publicUrl: string) => {
     recommendation: {
       sku: () => href("recommendation"),
     },
+    product: {
+      sku: (sku: string) => href(`product/sku/${sku}`),
+    },
   };
 };
 
