@@ -23,7 +23,8 @@ const getWorkableAttributes = (
   ammoProduct: AmmoProduct,
 ): WorkableAttributes => {
   //If there's an workable SKU, this is an PDP return
-  const workableSku = pickSku(ammoProduct);
+  const { skus, selectedSku } = ammoProduct;
+  const workableSku = skus?.find(({ sku }) => sku === selectedSku);
   return workableSku
     ? {
       images: pickSkuImages(workableSku!, ammoProduct.title),
@@ -36,52 +37,57 @@ const getWorkableAttributes = (
     };
 };
 
-const pickSku = ({ selectedSku, skus }: AmmoProduct): Sku | undefined =>
-  skus?.find(({ sku }) => sku === selectedSku);
-
 const pickSkuImages = (
   { photos, youtubeVideo }: Sku,
   name: string,
-): ImageObject[] => {
-  const imagesArray = [
-    photos.still,
-    photos.semiEnvironment,
-    ...photos.details.map(({ url }) => url),
-  ];
-  const videoArray: ImageObject[] = youtubeVideo
+): ImageObject[] => [
+  {
+    "@type": "ImageObject" as const,
+    url: photos.still,
+    additionalType: "image",
+    alternateName: name,
+    disambiguatingDescription: "still",
+  },
+  {
+    "@type": "ImageObject" as const,
+    url: photos.semiEnvironment,
+    additionalType: "image",
+    alternateName: name,
+    disambiguatingDescription: "semiEnvironment",
+  },
+  ...photos.details.map(({ url }, i) => ({
+    "@type": "ImageObject" as const,
+    url,
+    additionalType: "image",
+    alternateName: name,
+    disambiguatingDescription: `detail-${i}`,
+  })),
+  ...youtubeVideo
     ? [{
       "@type": "ImageObject" as const,
-      url: `${youtubeVideo}`,
-      alternateName: name,
+      url: youtubeVideo,
       additionalType: "video",
-    }]
-    : [];
-
-  return [
-    ...imagesArray.map((url) => ({
-      "@type": "ImageObject" as const,
-      url: `${url}`,
       alternateName: name,
-      additionalType: "image",
-    })),
-    ...videoArray,
-  ];
-};
+      disambiguatingDescription: `video`,
+    }]
+    : [],
+];
 
 const pickProductImages = (
   { image, hoverImage, title }: AmmoProduct,
-): ImageObject[] => {
-  const imagesArray = [
-    image,
-    hoverImage,
-  ];
-  return imagesArray.map((url) => ({
-    "@type": "ImageObject" as const,
-    url: `${url}`,
-    alternateName: title,
-    additionalType: "image",
-  }));
-};
+): ImageObject[] => [{
+  "@type": "ImageObject" as const,
+  url: `${image}`,
+  alternateName: title,
+  additionalType: "image",
+  disambiguatingDescription: "main",
+}, {
+  "@type": "ImageObject" as const,
+  url: `${hoverImage}`,
+  alternateName: title,
+  additionalType: "image",
+  disambiguatingDescription: "hover",
+}];
 
 export function toProduct(
   ammoProduct: AmmoProduct,

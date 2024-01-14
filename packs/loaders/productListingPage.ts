@@ -34,12 +34,12 @@ const loader = async (
   const { vm } = props;
   const url = new URL(req.url);
   const path = paths(publicUrl);
-  const filters = url.searchParams.get("f");
 
   const vmDetails = await fetchAPI<VMDetails>(
     path.productCatalog.resolveRoute({
-      path: vm?.path ?? filters ? `${url.pathname}?f=${filters}` : url.pathname,
+      path: vm?.path ?? url.pathname,
       page: vm?.page ?? Number(url.searchParams.get("page")) ?? 1,
+      f: url.searchParams.get("f") ?? undefined,
     }),
     {
       method: "GET",

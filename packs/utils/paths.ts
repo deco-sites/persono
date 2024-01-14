@@ -1,6 +1,7 @@
 interface ResolveRouteProps {
   path: string;
   page: number;
+  f?: string;
 }
 
 const paths = (publicUrl: string) => {
