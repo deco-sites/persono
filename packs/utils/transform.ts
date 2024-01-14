@@ -7,7 +7,6 @@ import {
 } from "apps/commerce/types.ts";
 
 import { AmmoProduct, Breadcrumb, Sku, VMDetails } from "$store/packs/types.ts";
-import { IMAGES_PROD_URL } from "$store/packs/constants.ts";
 
 interface ProductListingPageProps {
   vmDetails: VMDetails;
@@ -15,7 +14,6 @@ interface ProductListingPageProps {
 }
 
 interface WorkableAttributes {
-  //Only full processed attribute
   images: ImageObject[];
   gtin?: string;
   productUrl: string;
@@ -53,7 +51,7 @@ const pickSkuImages = (
   const videoArray: ImageObject[] = youtubeVideo
     ? [{
       "@type": "ImageObject" as const,
-      url: `${IMAGES_PROD_URL + youtubeVideo}`,
+      url: `${youtubeVideo}`,
       alternateName: name,
       additionalType: "video",
     }]
@@ -62,7 +60,7 @@ const pickSkuImages = (
   return [
     ...imagesArray.map((url) => ({
       "@type": "ImageObject" as const,
-      url: `${IMAGES_PROD_URL + url}`,
+      url: `${url}`,
       alternateName: name,
       additionalType: "image",
     })),
@@ -79,7 +77,7 @@ const pickProductImages = (
   ];
   return imagesArray.map((url) => ({
     "@type": "ImageObject" as const,
-    url: `${IMAGES_PROD_URL + url}`,
+    url: `${url}`,
     alternateName: title,
     additionalType: "image",
   }));
@@ -114,11 +112,12 @@ export function toProduct(
 export function toProductListingPage(
   { vmDetails, url }: ProductListingPageProps,
 ): ProductListingPage {
+  const { productCards } = vmDetails;
   return {
     "@type": "ProductListingPage",
     breadcrumb: toBreadcrumbList(url.origin, vmDetails),
     filters: [],
-    products: [],
+    products: productCards.map((p) => toProduct(p, url)),
     pageInfo: {
       currentPage: 1,
       nextPage: "",

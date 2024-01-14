@@ -6,6 +6,7 @@ import * as $$$0 from "./loaders/Layouts/ProductCard.tsx";
 import * as $$$1 from "./loaders/List/Sections.tsx";
 import * as $$$2 from "./loaders/product/productList.ts";
 import * as $$$3 from "./loaders/product/productListingPage.ts";
+import * as $$$4 from "./loaders/product/toProductTest.ts";
 import * as $$$$$$0 from "./sections/Animation/Animation.tsx";
 import * as $$$$$$1 from "./sections/Category/CategoryBanner.tsx";
 import * as $$$$$$2 from "./sections/Category/CategoryList.tsx";
@@ -50,6 +51,7 @@ const manifest = {
     "deco-sites/persono/loaders/List/Sections.tsx": $$$1,
     "deco-sites/persono/loaders/product/productList.ts": $$$2,
     "deco-sites/persono/loaders/product/productListingPage.ts": $$$3,
+    "deco-sites/persono/loaders/product/toProductTest.ts": $$$4,
   },
   "sections": {
     "deco-sites/persono/sections/Animation/Animation.tsx": $$$$$$0,
