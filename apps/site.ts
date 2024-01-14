@@ -6,10 +6,13 @@ import { color as wake } from "apps/wake/mod.ts";
 import { color as linx } from "apps/linx/mod.ts";
 import { color as nuvemshop } from "apps/nuvemshop/mod.ts";
 import { Section } from "deco/blocks/section.ts";
-import { App } from "deco/mod.ts";
 import { rgb24 } from "std/fmt/colors.ts";
 import manifest, { Manifest } from "../manifest.gen.ts";
+import { App, AppMiddlewareContext as AMC } from "deco/mod.ts";
 
+import Ammo from "../packs//utils/client.ts";
+import { fetchSafe } from "../packs/utils/fetch.ts";
+import { createHttpClient } from "apps/utils/http.ts";
 export type DefaultProps = {
   /**
    * @title Active Commerce Platform
@@ -74,9 +77,17 @@ let firstRun = true;
 
 export default function Site({
   theme,
-  ...state
+  ...stateSite
+  //@ts-ignore Um erro bizarro acontecendo quando remove o ts-ignore
 }: Props): App<Manifest, Props, [ReturnType<typeof commerce>]> {
-  _platform = state.platform || state.commerce?.platform || "custom";
+  _platform = stateSite.platform || stateSite.commerce?.platform || "custom";
+
+  const ammoc = createHttpClient<Ammo>({
+    base: "https://mmartan.com.br/api",
+    fetcher: fetchSafe,
+  });
+
+  const state = { ...stateSite, ammoc };
 
   // Prevent console.logging twice
   if (firstRun) {
@@ -103,4 +114,8 @@ export default function Site({
   };
 }
 
+export type Storefront = ReturnType<typeof Site>;
+export type AppMiddlewareContext = AMC<Storefront>;
+//@ts-ignore Um erro bizarro acontecendo quando remove o ts-ignore
+export type AppContext = AC<Storefront>;
 export { onBeforeResolveProps } from "apps/website/mod.ts";
