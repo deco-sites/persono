@@ -1,11 +1,11 @@
 import type { Props as SearchbarProps } from "$store/components/search/Searchbar.tsx";
 import Drawers from "$store/islands/Header/Drawers.tsx";
 import { usePlatform } from "$store/sdk/usePlatform.tsx";
-import type { ImageWidget } from "apps/admin/widgets.ts";
 import { SiteNavigationElement } from "deco-sites/persono/components/header/Menu.tsx";
+import { SectionProps } from "deco/mod.ts";
+import { FnContext } from "deco/types.ts";
 import Alert, { IAlert } from "./Alert.tsx";
 import Navbar from "./Navbar.tsx";
-import { headerHeight } from "./constants.ts";
 
 export interface Props {
   alerts: IAlert[];
@@ -18,40 +18,47 @@ export interface Props {
    * @description Navigation items used both on mobile and desktop menus
    */
   navItems?: SiteNavigationElement[] | null;
-
-  /** @title Logo */
-  logo?: { src: ImageWidget; alt: string };
 }
 
 function Header({
   alerts,
   searchbar,
   navItems,
-  logo,
-}: Props) {
+  device,
+}: SectionProps<typeof loader>) {
   const platform = usePlatform();
   const items = navItems ?? [];
 
   return (
-    <>
-      <header style={{ height: headerHeight }}>
-        <Drawers
-          menu={{ items }}
-          searchbar={searchbar}
-          platform={platform}
-        >
-          <div class="bg-base-100 fixed w-full z-50">
-            <Alert alerts={alerts} />
-            <Navbar
-              items={items}
-              searchbar={searchbar && { ...searchbar, platform }}
-              logo={logo}
-            />
-          </div>
-        </Drawers>
-      </header>
-    </>
+    <header class="border-b border-base-200">
+      <Drawers
+        menu={{ items }}
+        searchbar={searchbar}
+        platform={platform}
+      >
+        <div class="bg-base-100 w-full">
+          <Alert alerts={alerts} />
+          <Navbar
+            items={items}
+            searchbar={searchbar && { ...searchbar, platform }}
+            device={device}
+          />
+        </div>
+      </Drawers>
+    </header>
   );
 }
+
+export const loader = (
+  props: Props,
+  _req: Request,
+  ctx: FnContext,
+) => {
+  const device = ctx.device;
+  return {
+    ...props,
+    device: device || "desktop",
+  };
+};
 
 export default Header;

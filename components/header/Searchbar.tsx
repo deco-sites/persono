@@ -1,4 +1,3 @@
-import { headerHeight } from "$store/components/header/constants.ts";
 import Searchbar, {
   Props as SearchbarProps,
 } from "$store/components/search/Searchbar.tsx";
@@ -22,10 +21,7 @@ function SearchbarModal({ searchbar }: Props) {
       open={displaySearchPopup.value}
       onClose={() => displaySearchPopup.value = false}
     >
-      <div
-        class="absolute top-0 bg-base-100 container"
-        style={{ marginTop: headerHeight }}
-      >
+      <div class="absolute top-0 bg-base-100 container top-full">
         <Searchbar {...searchbar} />
       </div>
     </Modal>

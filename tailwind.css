@@ -41,3 +41,10 @@
     --dot-progress: 100%
   }
 }
+
+section[data-manifest-key="deco-sites/persono/sections/Header/Header.tsx"] {
+  position: -webkit-sticky;
+  position: sticky;
+  top: -44px;
+  z-index: 50;
+}
