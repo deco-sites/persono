@@ -36,8 +36,8 @@ function Header({
         searchbar={searchbar}
         platform={platform}
       >
-        <div class="bg-base-100 w-full">
-          <Alert alerts={alerts} />
+        <Alert alerts={alerts} />
+        <div class="border-t border-base-200 bg-base-100 w-full">
           <Navbar
             items={items}
             searchbar={searchbar && { ...searchbar, platform }}
