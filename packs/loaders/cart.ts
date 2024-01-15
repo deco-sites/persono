@@ -1,22 +1,20 @@
-import { Bag } from "../types.ts";
-import { AppContext } from "../../apps/site.ts";
+import { Bag } from "$store/packs/types.ts";
+import { AppContext } from "$store/apps/site.ts";
 import { getCookies } from "std/http/mod.ts";
-import { AMMO_DEVICE_ID_HEADER } from "../constants.ts";
+import { AMMO_DEVICE_ID_HEADER } from "$store/packs/constants.ts";
 
 const loader = async (
   _props: null,
-  _req: Request,
-  _ctx: AppContext,
+  req: Request,
+  ctx: AppContext,
 ): Promise<Bag | null> => {
-  const { ammoc, apiKey } = _ctx;
-
-  const cookies = getCookies(_req.headers);
-
+  const { ammoc, apiKey } = ctx;
+  const cookies = getCookies(req.headers);
   const deviceId = cookies[AMMO_DEVICE_ID_HEADER];
-
+  console.log("passou aqui")
   try {
     const response = await ammoc
-      ["GET /bag"](
+      ["GET /api/bag"](
         {
           headers: {
             "x-api-key": apiKey,
@@ -25,15 +23,13 @@ const loader = async (
         },
       );
 
-    const bag = await response.data.json();
+    const bag = await response.json();
 
-    if (bag) return bag;
+    if (bag) return bag.data.bag;
 
     return null;
   } catch (error) {
-    console.error(error);
-
-    throw error;
+    throw new Error(error);
   }
 };
 

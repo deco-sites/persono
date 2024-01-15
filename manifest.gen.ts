@@ -2,9 +2,10 @@
 // This file SHOULD be checked into source version control.
 // This file is automatically updated during development when running `dev.ts`.
 
-import * as $$$0 from "./loaders/Layouts/ProductCard.tsx";
-import * as $$$1 from "./loaders/List/Sections.tsx";
-import * as $$$2 from "./loaders/product/productList.ts";
+import * as $$$0 from "./loaders/cart.ts";
+import * as $$$1 from "./loaders/Layouts/ProductCard.tsx";
+import * as $$$2 from "./loaders/List/Sections.tsx";
+import * as $$$3 from "./loaders/product/productList.ts";
 import * as $$$$$$0 from "./sections/Animation/Animation.tsx";
 import * as $$$$$$1 from "./sections/Category/CategoryBanner.tsx";
 import * as $$$$$$2 from "./sections/Category/CategoryList.tsx";
@@ -45,9 +46,10 @@ import * as $$$$$$$$$$$1 from "./apps/site.ts";
 
 const manifest = {
   "loaders": {
-    "deco-sites/persono/loaders/Layouts/ProductCard.tsx": $$$0,
-    "deco-sites/persono/loaders/List/Sections.tsx": $$$1,
-    "deco-sites/persono/loaders/product/productList.ts": $$$2,
+    "deco-sites/persono/loaders/cart.ts": $$$0,
+    "deco-sites/persono/loaders/Layouts/ProductCard.tsx": $$$1,
+    "deco-sites/persono/loaders/List/Sections.tsx": $$$2,
+    "deco-sites/persono/loaders/product/productList.ts": $$$3,
   },
   "sections": {
     "deco-sites/persono/sections/Animation/Animation.tsx": $$$$$$0,

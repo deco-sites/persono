@@ -1,5 +1,5 @@
 import { getCookies } from "std/http/mod.ts";
-import { AMMO_DEVICE_ID_HEADER } from "../../../packs/constants.ts";
+import { AMMO_DEVICE_ID_HEADER } from "$store/packs/constants.ts";
 import { FreshContext } from "$fresh/server.ts";
 import { DecoState } from "deco/types.ts";
 
@@ -29,7 +29,7 @@ export const handler = async (
   const res = await ctx.next!();
   const cookies = getCookies(req.headers);
 
-  const deviceId = crypto.randomUUID().slice(24);
+  const deviceId = crypto.randomUUID();
 
   if (cookies[AMMO_DEVICE_ID_HEADER]) return res;
 

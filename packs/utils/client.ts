@@ -1,13 +1,13 @@
-import { Bag, BagItems } from "../types.ts";
+import { Bag, BagItems } from "$store/packs/types.ts";
 export default interface Ammo {
-  "GET /bag": {
+  "GET /api/bag": {
     response: Bag;
     headers: {
       "x-ammo-device-id": string;
       "x-api-key": string;
     };
   };
-  "PUT /bag/item": {
+  "PUT /api/bag/item": {
     response: Bag;
     headers: {
       "x-ammo-device-id": string;
@@ -15,21 +15,21 @@ export default interface Ammo {
     };
     body: BagItems[];
   };
-  "DELETE /bag/sku/:skuToRemove": {
+  "DELETE /api/bag/sku/:skuToRemove": {
     response: Bag;
     headers: {
       "x-ammo-device-id": string;
       "x-api-key": string;
     };
   };
-  "POST /bag/coupon/remove": {
+  "POST /api/bag/coupon/remove": {
     response: Bag;
     headers: {
       "x-ammo-device-id": string;
       "x-api-key": string;
     };
   };
-  "POST /bag/coupon": {
+  "POST /api/bag/coupon": {
     response: Bag;
     headers: {
       "x-ammo-device-id": string;
