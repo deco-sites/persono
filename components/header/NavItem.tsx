@@ -3,14 +3,14 @@ import type { SiteNavigationElement } from "deco-sites/persono/components/header
 import Icon from "deco-sites/persono/components/ui/Icon.tsx";
 
 function NavItem({ item }: { item: SiteNavigationElement }) {
-  const { url, name, children } = item;
-  const image = item?.image?.[0];
+  const { url, label, children } = item;
+  const image = item?.image;
 
   return (
     <li class="group flex items-center">
       <a href={url} class="pt-3 flex items-center gap-2">
-        <span class="group-hover:text-primary">
-          {name}
+        <span class="group-hover:text-primary uppercase">
+          {label}
         </span>
         {children && children.length > 0
           ? (
@@ -34,7 +34,7 @@ function NavItem({ item }: { item: SiteNavigationElement }) {
                 {children.map((node) => (
                   <li class="">
                     <a class="hover:text-primary" href={node.url}>
-                      {node.name}
+                      {node.label}
                     </a>
                   </li>
                 ))}

@@ -1,7 +1,11 @@
 import type { Props as SearchbarProps } from "$store/components/search/Searchbar.tsx";
 import Drawers from "$store/islands/Header/Drawers.tsx";
 import { usePlatform } from "$store/sdk/usePlatform.tsx";
-import { SiteNavigationElement } from "deco-sites/persono/components/header/Menu.tsx";
+import { SocialItem } from "deco-sites/persono/components/footer/Social.tsx";
+import {
+  FastLink,
+  SiteNavigationElement,
+} from "deco-sites/persono/components/header/Menu.tsx";
 import { SectionProps } from "deco/mod.ts";
 import { FnContext } from "deco/types.ts";
 import Alert, { IAlert } from "./Alert.tsx";
@@ -17,35 +21,47 @@ export interface Props {
    * @title Navigation items
    * @description Navigation items used both on mobile and desktop menus
    */
-  navItems?: SiteNavigationElement[] | null;
+  navItems?: SiteNavigationElement[];
+  /**
+   * @description Links used on mobile bottom menu
+   */
+  fastLinks?: FastLink[];
+  /**
+   * @description Links used on mobile bottom menu
+   */
+  socialLinks?: SocialItem[];
 }
 
 function Header({
   alerts,
   searchbar,
   navItems,
+  fastLinks,
   device,
 }: SectionProps<typeof loader>) {
   const platform = usePlatform();
   const items = navItems ?? [];
 
   return (
-    <header class="border-b border-base-200">
+    <>
+      <header class="h-[120px]" data-header>
+        <div class="fixed top-0 left-0 w-full z-30 ">
+          <Alert alerts={alerts} />
+          <div class="border-b border-t border-base-200 bg-base-100 w-full">
+            <Navbar
+              items={items}
+              searchbar={searchbar && { ...searchbar, platform }}
+              device={device}
+            />
+          </div>
+        </div>
+      </header>
       <Drawers
-        menu={{ items }}
+        menu={{ items, fastLinks }}
         searchbar={searchbar}
         platform={platform}
-      >
-        <Alert alerts={alerts} />
-        <div class="border-t border-base-200 bg-base-100 w-full">
-          <Navbar
-            items={items}
-            searchbar={searchbar && { ...searchbar, platform }}
-            device={device}
-          />
-        </div>
-      </Drawers>
-    </header>
+      />
+    </>
   );
 }
 

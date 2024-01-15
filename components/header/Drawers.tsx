@@ -1,13 +1,12 @@
+import { IS_BROWSER } from "$fresh/runtime.ts";
 import type { Props as MenuProps } from "$store/components/header/Menu.tsx";
 import Cart from "$store/components/minicart/Cart.tsx";
 import type { Props as SearchbarProps } from "$store/components/search/Searchbar.tsx";
-import Button from "$store/components/ui/Button.tsx";
 import Drawer from "$store/components/ui/Drawer.tsx";
-import Icon from "$store/components/ui/Icon.tsx";
-import { useUI } from "$store/sdk/useUI.ts";
 import { usePlatform } from "$store/sdk/usePlatform.tsx";
+import { useUI } from "$store/sdk/useUI.ts";
 import type { ComponentChildren } from "preact";
-import { lazy, Suspense } from "preact/compat";
+import { lazy, Suspense, useEffect } from "preact/compat";
 
 const Menu = lazy(() => import("$store/components/header/Menu.tsx"));
 const Searchbar = lazy(() => import("$store/components/search/Searchbar.tsx"));
@@ -23,23 +22,11 @@ export interface Props {
 }
 
 const Aside = (
-  { title, onClose, children }: {
-    title: string;
-    onClose?: () => void;
+  { children }: {
     children: ComponentChildren;
   },
 ) => (
-  <div class="bg-base-100 grid grid-rows-[auto_1fr] h-full divide-y max-w-[100vw]">
-    <div class="flex justify-between items-center">
-      <h1 class="px-4 py-3">
-        <span class="font-medium text-2xl">{title}</span>
-      </h1>
-      {onClose && (
-        <Button class="btn btn-ghost" onClick={onClose}>
-          <Icon id="XMark" size={24} strokeWidth={2} />
-        </Button>
-      )}
-    </div>
+  <div class="bg-base-100 flex flex-col items-stretch justify-items-stretch h-full divide w-full">
     <Suspense
       fallback={
         <div class="w-screen flex items-center justify-center">
@@ -52,43 +39,69 @@ const Aside = (
   </div>
 );
 
+const setup = () => {
+  const header = document.querySelector<HTMLElement>("[data-header]");
+  const topBar = document.querySelector<HTMLElement>("[data-top-bar]");
+  const drawer = document.querySelector<HTMLElement>(
+    ".menu-drawer > .drawer-side",
+  );
+
+  if (!header || !topBar || !drawer) return;
+
+  const handleScroll = () => {
+    if (window.scrollY > 40) {
+      drawer.style.height = "calc(100% - 80px)";
+      topBar.style.maxHeight = "0px";
+      return;
+    }
+    drawer.style.height = "calc(100% - 120px)";
+    topBar.style.maxHeight = "44px";
+  };
+
+  addEventListener("scroll", handleScroll);
+  handleScroll();
+
+  return () => {
+    removeEventListener("scroll", handleScroll);
+  };
+};
+
 function Drawers({ menu, searchbar, children, platform }: Props) {
   const { displayCart, displayMenu, displaySearchDrawer } = useUI();
 
+  useEffect(() => {
+    if (IS_BROWSER) {
+      return setup();
+    }
+  }, []);
+
   return (
     <Drawer // left drawer
-      open={displayMenu.value || displaySearchDrawer.value}
+      open={displayMenu.value}
       onClose={() => {
         displayMenu.value = false;
-        displaySearchDrawer.value = false;
       }}
+      class="menu-drawer"
+      showHeader
       aside={
-        <Aside
-          onClose={() => {
-            displayMenu.value = false;
-            displaySearchDrawer.value = false;
-          }}
-          title={displayMenu.value ? "Menu" : "Buscar"}
-        >
-          {displayMenu.value && <Menu {...menu} />}
-          {searchbar && displaySearchDrawer.value && (
-            <div class="w-screen">
-              <Searchbar {...searchbar} />
-            </div>
-          )}
+        <Aside>
+          <Menu {...menu} />
         </Aside>
       }
     >
       <Drawer // right drawer
         class="drawer-end"
-        open={displayCart.value !== false}
-        onClose={() => displayCart.value = false}
+        open={displayCart.value || displaySearchDrawer.value}
+        onClose={() => {
+          displayCart.value = false;
+          displaySearchDrawer.value = false;
+        }}
         aside={
-          <Aside
-            title="Minha sacola"
-            onClose={() => displayCart.value = false}
-          >
-            <Cart platform={platform} />
+          <Aside>
+            {displayCart.value ? <Cart platform={platform} /> : null}
+            {searchbar && displaySearchDrawer.value && (
+              <Searchbar {...searchbar} />
+            )}
           </Aside>
         }
       >

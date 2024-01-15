@@ -36,14 +36,18 @@ function Alert({ alerts = [], interval = 5 }: Props) {
   const id = useId();
 
   return (
-    <div id={id}>
+    <div
+      id={id}
+      data-top-bar
+      class="transition-all overflow-hidden duration-300"
+    >
       <Slider class="carousel carousel-center w-screen">
         {alerts.map((alert, index) => (
           <Slider.Item
             index={index}
             class={`carousel-item ${LAYOUT[alert.layout]}`}
           >
-            <p class="text-sm flex justify-center items-center w-screen gap-2 py-2.5">
+            <p class="text-sm flex justify-center items-center w-screen gap-2 lg:py-2.5 py-2">
               {alert.beforeIcon
                 ? (
                   <Image
