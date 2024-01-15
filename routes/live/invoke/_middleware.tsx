@@ -3,8 +3,6 @@ import { AMMO_DEVICE_ID_HEADER } from "$store/packs/constants.ts";
 import { FreshContext } from "$fresh/server.ts";
 import { DecoState } from "deco/types.ts";
 
-
-
 const setCookies = (res: Response, deviceId: string) => {
   res.headers.append(
     "Set-Cookie",
@@ -19,13 +17,14 @@ const setCookies = (res: Response, deviceId: string) => {
 export const handler = async (
   req: Request,
   ctx: FreshContext<
-  DecoState<
-    Record<string | number | symbol, never>,
-    Record<string | number | symbol, never>,
-    //@ts-ignore Um erro bizarro acontecendo quando remove o ts-ignore
-    Manifest
-  >
->,) => {
+    DecoState<
+      Record<string | number | symbol, never>,
+      Record<string | number | symbol, never>,
+      //@ts-ignore Um erro bizarro acontecendo quando remove o ts-ignore
+      Manifest
+    >
+  >,
+) => {
   const res = await ctx.next!();
   const cookies = getCookies(req.headers);
 
