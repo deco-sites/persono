@@ -13,7 +13,7 @@ const action = async (
   ctx: AppContext,
 ): Promise<Bag> => {
   const {
-    coupon
+    coupon,
   } = props;
   const { ammoc, apiKey } = ctx;
   const cookies = getCookies(req.headers);
@@ -29,15 +29,14 @@ const action = async (
             "x-ammo-device-id": deviceId,
           },
           body: {
-            coupon
+            coupon,
           },
         },
       );
 
     const bag = await response.json();
 
-   return bag.data;
-
+    return bag.data;
   } catch (error) {
     console.error(error);
 
