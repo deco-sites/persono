@@ -18,7 +18,7 @@ const action = async (
   const { ammoc, apiKey } = ctx;
   const cookies = getCookies(req.headers);
   const deviceId = cookies[AMMO_DEVICE_ID_HEADER];
-  
+
   try {
     const response = await ammoc
       ["PUT /api/bag/item"](
