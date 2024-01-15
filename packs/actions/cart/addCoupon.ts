@@ -1,10 +1,10 @@
-import { Bag, BagItems } from "$store/packs/types.ts";
+import { Bag } from "$store/packs/types.ts";
 import { AppContext } from "$store/apps/site.ts";
 import { getCookies } from "std/http/mod.ts";
 import { AMMO_DEVICE_ID_HEADER } from "$store/packs/constants.ts";
 
 export interface Props {
-  bagItems: BagItems[];
+  coupon: string;
 }
 
 const action = async (
@@ -13,7 +13,7 @@ const action = async (
   ctx: AppContext,
 ): Promise<Bag> => {
   const {
-    bagItems,
+    coupon
   } = props;
   const { ammoc, apiKey } = ctx;
   const cookies = getCookies(req.headers);
@@ -21,20 +21,23 @@ const action = async (
 
   try {
     const response = await ammoc
-      ["PUT /api/bag/item"](
+      ["POST /api/bag/coupon"](
         {},
         {
           headers: {
             "x-api-key": apiKey,
             "x-ammo-device-id": deviceId,
           },
-          body: bagItems,
+          body: {
+            coupon
+          },
         },
       );
 
     const bag = await response.json();
 
-    return bag.data;
+   return bag.data;
+
   } catch (error) {
     console.error(error);
 
