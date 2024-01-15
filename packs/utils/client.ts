@@ -15,7 +15,7 @@ export default interface Ammo {
     };
     body: BagItems[];
   };
-  "DELETE /api/bag/sku/:skuToRemove": {
+  "DELETE /api/bag/sku/:sku": {
     response: Bag;
     headers: {
       "x-ammo-device-id": string;
