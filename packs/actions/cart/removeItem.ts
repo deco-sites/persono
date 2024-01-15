@@ -1,10 +1,10 @@
-import { Bag, BagItems } from "$store/packs/types.ts";
+import { Bag } from "$store/packs/types.ts";
 import { AppContext } from "$store/apps/site.ts";
 import { getCookies } from "std/http/mod.ts";
 import { AMMO_DEVICE_ID_HEADER } from "$store/packs/constants.ts";
 
 export interface Props {
-  bagItems: BagItems[];
+  sku: string;
 }
 
 const action = async (
@@ -13,7 +13,7 @@ const action = async (
   ctx: AppContext,
 ): Promise<Bag | null> => {
   const {
-    bagItems,
+    sku,
   } = props;
   const { ammoc, apiKey } = ctx;
   const cookies = getCookies(req.headers);
@@ -21,14 +21,13 @@ const action = async (
 
   try {
     const response = await ammoc
-      ["PUT /api/bag/item"](
-        {},
+      ["DELETE /api/bag/sku/:sku"](
+        { sku },
         {
           headers: {
             "x-api-key": apiKey,
             "x-ammo-device-id": deviceId,
           },
-          body: bagItems,
         },
       );
 
