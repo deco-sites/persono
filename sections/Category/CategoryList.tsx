@@ -83,17 +83,17 @@ function CategoryList(props: Props) {
     >
       <Header
         title={header.title}
-        // description={header.description || ""} //
+      // description={header.description || ""} //
         alignment={layout.headerAlignment || "center"}
       />
 
       <Slider class="flex justify-center items-center carousel carousel-start gap-6 lg:gap-8 row-start-2 row-end-5 relative">
         <div class="z-10 col-start-1 row-start-2 absolute left-2 lg:left-2 2xl:left-32 md:hidden rounded-full bg-white">
-          <Slider.PrevButton
-            class="btn btn-circle bg-white cursor-pointer"
-            style={{
-              border: "1px solid #D4DBD7",
-            }}
+          <Slider.PrevButton class="btn btn-circle bg-white cursor-pointer"
+          
+          style={{
+            border: '1px solid #D4DBD7',
+          }}
           >
             <Icon
               class="text-sky-600"
@@ -127,9 +127,9 @@ function CategoryList(props: Props) {
                 )}
               {image &&
                 (
-                  <figure class="relative">
-                    <Image
-                      class="card w-full rounded-3xl relative"
+                  <figure class='relative'>
+                    <Image 
+                      class="card w-full rounded-3xl relative" 
                       src={image}
                       alt={description || label || tag}
                       width={280}
@@ -137,13 +137,9 @@ function CategoryList(props: Props) {
                       loading="lazy"
                     />
 
-                    <div class="card w-full absolute bottom-0 rounded-3xl h-full bg-gradient-to-b from-transparent to-black bg-opacity-10">
-                      {label && (
-                        <h3 class="flex text-lg self-center text-base text-white h-[60px] absolute bottom-1">
-                          {label}
-                        </h3>
-                      )}
-                    </div>
+                  <div class="card w-full absolute bottom-0 rounded-3xl h-full bg-gradient-to-b from-transparent to-black bg-opacity-10">
+                    {label && <h3 class="flex text-lg self-center text-base text-white h-[60px] absolute bottom-1">{label}</h3>}
+                  </div>
                   </figure>
                 )}
               {layout.categoryCard?.textPosition === "bottom" &&
@@ -162,10 +158,10 @@ function CategoryList(props: Props) {
         ))}
 
         <div class="z-10 col-start-3 row-start-2 absolute right-2 lg:right-2 2xl:right-32 md:hidden bg-white rounded-full  cursor-pointer">
-          <Slider.NextButton
-            class="btn btn-circle border-solid border-black bg-white"
+          <Slider.NextButton class="btn btn-circle border-solid border-black bg-white"
+            
             style={{
-              border: "1px solid #D4DBD7",
+              border: '1px solid #D4DBD7',
             }}
           >
             <Icon
