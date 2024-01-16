@@ -1,7 +1,9 @@
 import {
+  AggregateOffer,
   BreadcrumbList,
   ImageObject,
   ListItem,
+  Offer,
   Product,
   ProductGroup,
   ProductLeaf,
@@ -20,6 +22,7 @@ interface WorkableAttributes {
   gtin?: string;
   isVariantOf?: ProductGroup;
   productUrl: string;
+  offers: AggregateOffer;
 }
 
 interface ToVariantProps {
@@ -29,32 +32,70 @@ interface ToVariantProps {
   title: string;
 }
 
+interface ToOfferProps {
+  price: {
+    max: number;
+    min: number;
+  };
+  stock?: number;
+  available: boolean;
+}
+
 export function toProduct(
   ammoProduct: AmmoProduct,
   baseUrl: URL,
 ): Product {
-  const { images, gtin, productUrl } = getWorkableAttributes(
-    ammoProduct,
-    baseUrl,
-  );
+  const { skus, selectedSku, title, category } = ammoProduct;
+  const workableSku = skus?.find(({ sku }) => sku === selectedSku);
+  const workableUrl =
+    new URL(workableSku?.url ?? ammoProduct.url!, baseUrl.origin).href;
+
+  //If it have an workable SKU, so its a PDP!
+  const { images, gtin, productUrl, isVariantOf, offers }: WorkableAttributes =
+    workableSku
+      ? {
+        images: pickSkuImages(workableSku!, title),
+        gtin: workableSku!.ean,
+        productUrl: workableUrl,
+        isVariantOf: {
+          "@type": "ProductGroup" as const,
+          productGroupID: ammoProduct.groupKey!,
+          name: title,
+          url: workableUrl,
+          model: workableSku!.ean,
+          hasVariant: skus!.map((sku) =>
+            toVariant({ sku, baseUrl, category, title })
+          ),
+          //TODO - SKU additional properties
+          additionalProperty: [],
+        },
+        offers: toSkuAggregateOffer(workableSku!),
+      }
+      : {
+        images: pickProductImages(ammoProduct),
+        productUrl: workableUrl,
+        offers: toProductAggregateOffer(ammoProduct),
+      };
+
   return {
     "@type": "Product",
     productID: ammoProduct.id,
-    name: ammoProduct.title,
+    name: title,
     description: ammoProduct?.description,
-    sku: ammoProduct?.sku ?? ammoProduct.selectedSku!,
+    sku: ammoProduct?.sku ?? selectedSku!,
     image: images,
     gtin: gtin,
     url: productUrl,
+    //TODO - Product Additional Properties
     additionalProperty: [],
     brand: {
       "@type": "Brand",
       "@id": ammoProduct.brand,
     },
-    category: ammoProduct.category ?? ammoProduct.macroCategory,
+    category: category ?? ammoProduct.macroCategory,
     inProductGroupWithID: ammoProduct?.groupKey,
-    isVariantOf: undefined,
-    offers: undefined,
+    isVariantOf,
+    offers,
   };
 }
 
@@ -65,13 +106,16 @@ export function toProductListingPage(
   return {
     "@type": "ProductListingPage",
     breadcrumb: toBreadcrumbList(url.origin, vmDetails),
+    //TODO: PLP filters
     filters: [],
     products: productCards.map((p) => toProduct(p, url)),
+    //TODO: PLP pagination
     pageInfo: {
       currentPage: 1,
       nextPage: "",
       previousPage: "",
     },
+    //TODO: PLP sort options
     sortOptions: [],
   };
 }
@@ -110,37 +154,6 @@ const toItemListElement = (
     [],
   );
 
-const getWorkableAttributes = (
-  ammoProduct: AmmoProduct,
-  baseUrl: URL,
-): WorkableAttributes => {
-  const { skus, selectedSku, title, category } = ammoProduct;
-  const workableSku = skus?.find(({ sku }) => sku === selectedSku);
-  const workableUrl =
-    new URL(workableSku?.url ?? ammoProduct.url!, baseUrl.origin).href;
-  return workableSku
-    ? {
-      images: pickSkuImages(workableSku!, ammoProduct.title),
-      gtin: workableSku!.ean,
-      productUrl: workableUrl,
-      isVariantOf: {
-        "@type": "ProductGroup" as const,
-        productGroupID: ammoProduct.groupKey!,
-        name: title,
-        url: workableUrl,
-        model: workableSku!.ean,
-        hasVariant: skus!.map((sku) =>
-          toVariant({ sku, baseUrl, category, title })
-        ),
-        additionalProperty: [],
-      },
-    }
-    : {
-      images: pickProductImages(ammoProduct),
-      productUrl: workableUrl,
-    };
-};
-
 const pickSkuImages = (
   { photos, youtubeVideo }: Sku,
   name: string,
@@ -169,7 +182,7 @@ const pickSkuImages = (
   ...youtubeVideo
     ? [{
       "@type": "ImageObject" as const,
-      url: youtubeVideo,
+      url: `https://www.youtube.com/watch?v=${youtubeVideo}`,
       additionalType: "video",
       alternateName: name,
       disambiguatingDescription: `video`,
@@ -203,9 +216,62 @@ const toVariant = (
   productID: sku.sku,
   additionalProperty: [],
   image: pickSkuImages(sku, title),
+  offers: toSkuAggregateOffer(sku),
 });
 
-/* const toSkuAggregateOffer = ({ price, stock, available }: Sku) => ({
-  "@type": "AggregateOffer",
+const toSkuAggregateOffer = (
+  { price, stock, available }: Sku,
+): AggregateOffer => {
+  const { from, to } = price;
+  const max = from / 100;
+  const min = to / 100;
+  return {
+    "@type": "AggregateOffer",
+    highPrice: max,
+    lowPrice: min,
+    offerCount: 1,
+    priceCurrency: "BRL",
+    offers: [
+      toOffer({
+        price: { max, min },
+        stock,
+        available,
+      }),
+    ],
+  };
+};
+
+const toProductAggregateOffer = (
+  { price, available }: AmmoProduct,
+): AggregateOffer => {
+  const { max, min } = price!;
+  const highPrice = max / 100;
+  const lowPrice = min / 100;
+  return {
+    "@type": "AggregateOffer",
+    highPrice,
+    lowPrice,
+    offerCount: 1,
+    priceCurrency: "BRL",
+    offers: [
+      toOffer({
+        price: {
+          max: highPrice,
+          min: lowPrice,
+        },
+        available: available!,
+      }),
+    ],
+  };
+};
+
+const toOffer = ({ price, stock, available }: ToOfferProps): Offer => ({
+  "@type": "Offer",
+  availability: available
+    ? "https://schema.org/InStock"
+    : "https://schema.org/OutOfStock",
+  inventoryLevel: { value: stock },
+  price: price.min ?? price.max,
+  //TODO: define installments ranges
+  priceSpecification: [],
 });
- */

@@ -27,7 +27,7 @@ const loader = async (
   });
 
   const result = await fetchAPI<ProductDetails>(
-    path.product.sku("TRNEL.DAFP22VC"),
+    path.product.sku("PLKNP.CONT21BC"),
     { method: "GET", headers },
   );
 
