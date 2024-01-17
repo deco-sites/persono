@@ -1,4 +1,4 @@
-import { Bag } from "$store/packs/types.ts";
+import { Bag, Item } from "$store/packs/types.ts";
 import { state as storeState } from "$store/packs/hooks/context.ts";
 import { AnalyticsItem } from "apps/commerce/types.ts";
 import { withManifest } from "deco/clients/withManifest.ts";
@@ -7,11 +7,9 @@ import type { Manifest } from "$store/manifest.gen.ts";
 const { cart, loading } = storeState;
 const Runtime = withManifest<Manifest>();
 
-export const mapBagItemsToAnalyticsItems = (
-  Bag: Pick<Bag, "items">,
+const mapItemsToAnalyticsItems = (
+  items: Item[],
 ): AnalyticsItem[] => {
-  const { items } = Bag;
-
   if (!items) {
     return [];
   }
@@ -50,7 +48,7 @@ const state = {
   removeCoupon: wrap(
     Runtime.create("deco-sites/persono/loaders/actions/cart/removeCoupon.ts"),
   ),
-  mapItemsToAnalyticsItems: mapBagItemsToAnalyticsItems,
+  mapItemsToAnalyticsItems: mapItemsToAnalyticsItems,
 };
 
 export const useCart = () => state;

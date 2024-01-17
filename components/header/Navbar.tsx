@@ -1,16 +1,13 @@
 import type { Props as SearchbarProps } from "$store/components/search/Searchbar.tsx";
 import Icon from "$store/components/ui/Icon.tsx";
-import { MenuButton, SearchButton } from "$store/islands/Header/Buttons.tsx";
-import CartButtonLinx from "$store/islands/Header/Cart/linx.tsx";
-import CartButtonNuvemshop from "$store/islands/Header/Cart/nuvemshop.tsx";
-import CartButtonShopify from "$store/islands/Header/Cart/shopify.tsx";
-import CartButtonVDNA from "$store/islands/Header/Cart/vnda.tsx";
-import CartButtonVTEX from "$store/islands/Header/Cart/vtex.tsx";
-import CartButtonWake from "$store/islands/Header/Cart/wake.tsx";
+import {
+  CartButton,
+  MenuButton,
+  SearchButton,
+} from "$store/islands/Header/Buttons.tsx";
 import Searchbar from "$store/islands/Header/Searchbar.tsx";
-import { usePlatform } from "$store/sdk/usePlatform.tsx";
 import type { SiteNavigationElement } from "deco-sites/persono/components/header/Menu.tsx";
-import { Logo } from "../ui/Logo.tsx";
+import { Logo } from "deco-sites/persono/components/ui/Logo.tsx";
 import NavItem from "./NavItem.tsx";
 
 function Navbar({ items, searchbar, device }: {
@@ -18,8 +15,6 @@ function Navbar({ items, searchbar, device }: {
   device: string;
   searchbar?: SearchbarProps;
 }) {
-  const platform = usePlatform();
-
   if (device !== "desktop") {
     return (
       <div class="flex flex-row justify-between items-center w-full px-4 py-5 gap-2">
@@ -35,8 +30,7 @@ function Navbar({ items, searchbar, device }: {
 
         <div class="flex gap-1">
           <SearchButton />
-          {platform === "vtex" && <CartButtonVTEX />}
-          {platform === "vnda" && <CartButtonVDNA />}
+          <CartButton />
         </div>
       </div>
     );
@@ -56,7 +50,7 @@ function Navbar({ items, searchbar, device }: {
       <div class="flex-auto flex justify-start gap-8 self-stretch">
         {items.map((item) => <NavItem item={item} />)}
       </div>
-      <div class="flex-none w-44 flex items-center justify-end gap-2">
+      <div class="flex-none flex items-center justify-end gap-10">
         <SearchButton />
         <Searchbar searchbar={searchbar} />
         <a
@@ -66,24 +60,7 @@ function Navbar({ items, searchbar, device }: {
         >
           <Icon id="User" size={24} strokeWidth={0.4} />
         </a>
-        <a
-          class="btn btn-circle btn-sm btn-ghost"
-          href="/wishlist"
-          aria-label="Wishlist"
-        >
-          <Icon
-            id="Heart"
-            size={24}
-            strokeWidth={2}
-            fill="none"
-          />
-        </a>
-        {platform === "vtex" && <CartButtonVTEX />}
-        {platform === "vnda" && <CartButtonVDNA />}
-        {platform === "wake" && <CartButtonWake />}
-        {platform === "linx" && <CartButtonLinx />}
-        {platform === "shopify" && <CartButtonShopify />}
-        {platform === "nuvemshop" && <CartButtonNuvemshop />}
+        <CartButton />
       </div>
     </div>
   );

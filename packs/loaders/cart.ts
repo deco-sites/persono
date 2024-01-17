@@ -7,7 +7,7 @@ const loader = async (
   _props: null,
   req: Request,
   ctx: AppContext,
-): Promise<Bag | null> => {
+): Promise<Bag> => {
   const { ammoc, apiKey } = ctx;
   const cookies = getCookies(req.headers);
   const deviceId = cookies[AMMO_DEVICE_ID_HEADER];
@@ -23,11 +23,9 @@ const loader = async (
         },
       );
 
-    const bag = await response.json();
+    const { data } = await response.json();
 
-    if (bag) return bag.data.bag;
-
-    return null;
+    return data?.bag;
   } catch (error) {
     throw new Error(error);
   }

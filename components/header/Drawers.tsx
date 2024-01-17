@@ -26,7 +26,7 @@ const Aside = (
     children: ComponentChildren;
   },
 ) => (
-  <div class="bg-base-100 flex flex-col items-stretch justify-items-stretch h-full divide w-full">
+  <div class="bg-base-100 flex flex-col items-stretch justify-items-stretch h-full divide w-full sm:max-w-xl">
     <Suspense
       fallback={
         <div class="w-screen flex items-center justify-center">

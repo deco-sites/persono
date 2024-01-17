@@ -40,7 +40,7 @@ export interface Freebie {
   selectedFreebie: string;
 }
 
-interface Item {
+export interface Item {
   id: string;
   productId: string;
   sku: string;
@@ -75,7 +75,7 @@ interface Item {
   cashback?: boolean;
   photos: Photos;
 }
-interface Photos {
+export interface Photos {
   still: string;
   semiEnvironment: string;
   environment: string;
@@ -83,29 +83,29 @@ interface Photos {
   details: Detail[];
   panoramics: string[];
 }
-interface Detail {
+export interface Detail {
   url: string;
 }
-interface Banner {
+export interface Banner {
   background?: boolean;
   foreground?: boolean;
   width: number;
   height: number;
 }
-interface Price {
+export interface Price {
   min: number;
   max: number;
 }
-interface Color {
+export interface Color {
   id: string;
   name: string;
   hex: string;
 }
-interface Segment {
+export interface Segment {
   id: string;
   name: string;
 }
-interface Brand {
+export interface Brand {
   id: string;
   name: string;
   logo: string;
