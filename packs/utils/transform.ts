@@ -17,25 +17,24 @@ interface ProductListingPageProps {
   url: URL;
 }
 
-interface WorkableAttributes {
-  images: ImageObject[];
-  gtin?: string;
-  isVariantOf?: ProductGroup;
-  productUrl: string;
-  offers: AggregateOffer;
+interface SkuAndProduct {
+  sku?: Sku;
+  ammoProduct: AmmoProduct;
 }
 
-interface ToVariantProps {
+interface VariantProps extends Omit<SkuAndProduct, "sku"> {
   sku: Sku;
   baseUrl: URL;
-  category: string;
-  title: string;
+}
+
+interface AggregateOfferProps extends Omit<SkuAndProduct, "ammoProduct"> {
+  ammoProduct?: AmmoProduct;
 }
 
 interface ToOfferProps {
   price: {
-    max: number;
-    min: number;
+    highPrice: number;
+    lowPrice: number;
   };
   stock?: number;
   available: boolean;
@@ -47,35 +46,6 @@ export function toProduct(
 ): Product {
   const { skus, selectedSku, title, category } = ammoProduct;
   const workableSku = skus?.find(({ sku }) => sku === selectedSku);
-  const workableUrl =
-    new URL(workableSku?.url ?? ammoProduct.url!, baseUrl.origin).href;
-
-  //If it have an workable SKU, so its a PDP!
-  const { images, gtin, productUrl, isVariantOf, offers }: WorkableAttributes =
-    workableSku
-      ? {
-        images: pickSkuImages(workableSku!, title),
-        gtin: workableSku!.ean,
-        productUrl: workableUrl,
-        isVariantOf: {
-          "@type": "ProductGroup" as const,
-          productGroupID: ammoProduct.groupKey!,
-          name: title,
-          url: workableUrl,
-          model: workableSku!.ean,
-          hasVariant: skus!.map((sku) =>
-            toVariant({ sku, baseUrl, category, title })
-          ),
-          //TODO - SKU additional properties
-          additionalProperty: [],
-        },
-        offers: toSkuAggregateOffer(workableSku!),
-      }
-      : {
-        images: pickProductImages(ammoProduct),
-        productUrl: workableUrl,
-        offers: toProductAggregateOffer(ammoProduct),
-      };
 
   return {
     "@type": "Product",
@@ -83,9 +53,9 @@ export function toProduct(
     name: title,
     description: ammoProduct?.description,
     sku: ammoProduct?.sku ?? selectedSku!,
-    image: images,
-    gtin: gtin,
-    url: productUrl,
+    image: toImage({ sku: workableSku, ammoProduct }),
+    gtin: workableSku?.ean,
+    url: new URL(workableSku?.url ?? ammoProduct.url!, baseUrl.origin).href,
     //TODO - Product Additional Properties
     additionalProperty: [],
     brand: {
@@ -94,8 +64,10 @@ export function toProduct(
     },
     category: category ?? ammoProduct.macroCategory,
     inProductGroupWithID: ammoProduct?.groupKey,
-    isVariantOf,
-    offers,
+    isVariantOf: workableSku
+      ? toProductGroup({ ammoProduct, sku: workableSku, baseUrl })
+      : undefined,
+    offers: toAggregateOffer({ ammoProduct, sku: workableSku }),
   };
 }
 
@@ -154,99 +126,93 @@ const toItemListElement = (
     [],
   );
 
-const pickSkuImages = (
-  { photos, youtubeVideo }: Sku,
-  name: string,
-): ImageObject[] => [
-  {
-    "@type": "ImageObject" as const,
-    url: photos.still,
-    additionalType: "image",
-    alternateName: name,
-    disambiguatingDescription: "still",
-  },
-  {
-    "@type": "ImageObject" as const,
-    url: photos.semiEnvironment,
-    additionalType: "image",
-    alternateName: name,
-    disambiguatingDescription: "semiEnvironment",
-  },
-  ...photos.details.map(({ url }, i) => ({
-    "@type": "ImageObject" as const,
-    url,
-    additionalType: "image",
-    alternateName: name,
-    disambiguatingDescription: `detail-${i}`,
-  })),
-  ...youtubeVideo
-    ? [{
+const toImage = ({ sku, ammoProduct }: SkuAndProduct): ImageObject[] => {
+  const { title, hoverImage } = ammoProduct;
+  return sku
+    ? [
+      {
+        "@type": "ImageObject" as const,
+        url: sku.photos.still,
+        additionalType: "image",
+        alternateName: title,
+        disambiguatingDescription: "still",
+      },
+      {
+        "@type": "ImageObject" as const,
+        url: sku.photos.semiEnvironment,
+        additionalType: "image",
+        alternateName: title,
+        disambiguatingDescription: "semiEnvironment",
+      },
+      ...sku.photos.details.map(({ url }, i) => ({
+        "@type": "ImageObject" as const,
+        url,
+        additionalType: "image",
+        alternateName: title,
+        disambiguatingDescription: `detail-${i}`,
+      })),
+      ...sku.youtubeVideo
+        ? [{
+          "@type": "ImageObject" as const,
+          url: `https://www.youtube.com/watch?v=${sku.youtubeVideo}`,
+          additionalType: "video",
+          alternateName: title,
+          disambiguatingDescription: `video`,
+        }]
+        : [],
+    ]
+    : [{
       "@type": "ImageObject" as const,
-      url: `https://www.youtube.com/watch?v=${youtubeVideo}`,
-      additionalType: "video",
-      alternateName: name,
-      disambiguatingDescription: `video`,
-    }]
-    : [],
-];
+      url: `${ammoProduct.image}`,
+      alternateName: title,
+      additionalType: "image",
+      disambiguatingDescription: "main",
+    }, {
+      "@type": "ImageObject" as const,
+      url: `${hoverImage}`,
+      alternateName: title,
+      additionalType: "image",
+      disambiguatingDescription: "hover",
+    }];
+};
 
-const pickProductImages = (
-  { image, hoverImage, title }: AmmoProduct,
-): ImageObject[] => [{
-  "@type": "ImageObject" as const,
-  url: `${image}`,
-  alternateName: title,
-  additionalType: "image",
-  disambiguatingDescription: "main",
-}, {
-  "@type": "ImageObject" as const,
-  url: `${hoverImage}`,
-  alternateName: title,
-  additionalType: "image",
-  disambiguatingDescription: "hover",
-}];
-
-const toVariant = (
-  { sku, category, title, baseUrl }: ToVariantProps,
-): ProductLeaf => ({
-  "@type": "Product" as const,
-  category,
-  url: new URL(sku!.url, baseUrl.origin).href,
-  sku: sku.sku,
-  productID: sku.sku,
-  additionalProperty: [],
-  image: pickSkuImages(sku, title),
-  offers: toSkuAggregateOffer(sku),
-});
-
-const toSkuAggregateOffer = (
-  { price, stock, available }: Sku,
-): AggregateOffer => {
-  const { from, to } = price;
-  const max = from / 100;
-  const min = to / 100;
+const toProductGroup = (
+  { ammoProduct, sku, baseUrl }: VariantProps,
+): ProductGroup => {
+  const { title, skus } = ammoProduct;
+  const url = new URL(sku.url, baseUrl.origin).href;
   return {
-    "@type": "AggregateOffer",
-    highPrice: max,
-    lowPrice: min,
-    offerCount: 1,
-    priceCurrency: "BRL",
-    offers: [
-      toOffer({
-        price: { max, min },
-        stock,
-        available,
-      }),
-    ],
+    "@type": "ProductGroup" as const,
+    productGroupID: ammoProduct.groupKey!,
+    name: title,
+    url,
+    model: sku.ean,
+    hasVariant: skus!.map((thisSku) =>
+      toVariant({ sku: thisSku, baseUrl, ammoProduct })
+    ),
+    //TODO - SKU additional properties
+    additionalProperty: [],
   };
 };
 
-const toProductAggregateOffer = (
-  { price, available }: AmmoProduct,
+const toVariant = (
+  { sku, ammoProduct, baseUrl }: VariantProps,
+): ProductLeaf => ({
+  "@type": "Product" as const,
+  category: ammoProduct.category,
+  url: new URL(sku.url, baseUrl.origin).href,
+  sku: sku.sku,
+  productID: sku.sku,
+  additionalProperty: [],
+  image: toImage({ sku, ammoProduct }),
+  offers: toAggregateOffer({ sku }),
+});
+
+const toAggregateOffer = (
+  { ammoProduct, sku }: AggregateOfferProps,
 ): AggregateOffer => {
-  const { max, min } = price!;
-  const highPrice = max / 100;
-  const lowPrice = min / 100;
+  const highPrice = (ammoProduct?.price?.max ?? sku!.price.from) / 100;
+  const lowPrice = (ammoProduct?.price?.min ?? sku!.price.to) / 100;
   return {
     "@type": "AggregateOffer",
     highPrice,
@@ -256,10 +222,10 @@ const toProductAggregateOffer = (
     offers: [
       toOffer({
         price: {
-          max: highPrice,
-          min: lowPrice,
+          highPrice,
+          lowPrice,
         },
-        available: available!,
+        available: ammoProduct?.available ?? sku?.available!,
       }),
     ],
   };
@@ -271,7 +237,7 @@ const toOffer = ({ price, stock, available }: ToOfferProps): Offer => ({
     ? "https://schema.org/InStock"
     : "https://schema.org/OutOfStock",
   inventoryLevel: { value: stock },
-  price: price.min ?? price.max,
+  price: price.lowPrice ?? price.highPrice,
   //TODO: define installments ranges
   priceSpecification: [],
 });

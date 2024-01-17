@@ -20,6 +20,18 @@ export type DefaultProps = {
   theme?: Section;
 } & CommerceProps;
 
+export interface InstallmentConfig {
+  /**
+ @title Valor mínimo de uma parcela
+ */
+  minInstallmentValue: number;
+
+  /**
+ @title Quantidade mínima de uma parcelas
+ */
+  maxInstallmentQtd: number;
+}
+
 export type Props = {
   /**
   @title Ammo Device Id
@@ -32,10 +44,15 @@ export type Props = {
   ammoToken?: string;
 
   /**
-  @title Ammo Store Public URL
+  @title URL Pública do ecommerce
   @default https://mmartan.com.br/api/
   */
   publicUrl: string;
+
+  /**
+  @title Configurações de parcelamento
+  */
+  installmentConfig: InstallmentConfig;
 } & DefaultProps;
 
 export type Platform =
