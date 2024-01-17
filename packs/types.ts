@@ -55,7 +55,7 @@ export interface Sku {
   isOutlisted: boolean;
   kitItems: KitItem[];
   photos: Photos;
-  price: Price;
+  price: SkuPrice;
   size: string;
   sku: string;
   specifications: Specification[];
@@ -66,38 +66,14 @@ export interface Sku {
   youtubeVideo?: string;
 }
 
-export interface Color {
-  hex: string;
-  id: string;
-  name: string;
-}
-
+// HEAD
 export interface KitItem {
   dimensions: string;
   name: string;
   quantity: string;
 }
 
-export interface Photos {
-  banner: Banner;
-  details: Detail[];
-  panoramics: string[]; //unknown
-  semiEnvironment: string;
-  still: string;
-}
-
-export interface Banner {
-  background?: string;
-  foreground?: string;
-  height: number;
-  width: number;
-}
-
-export interface Detail {
-  url: string;
-}
-
-export interface Price {
+export interface SkuPrice {
   from: number;
   to: number;
 }
@@ -187,4 +163,114 @@ export interface ProductDetails {
   //RETURN OF AN ENDPOINT
   data: AmmoProduct;
   meta: Meta;
+}
+
+export interface Bag {
+  id: string;
+  address: string;
+  billingAddress: string;
+  paymentMethods: string;
+  isGift: boolean;
+  giftLetter: string;
+  giftRecipient: string;
+  hasOmsFreeShippingDiscount: boolean;
+  useCredit: boolean;
+  serverTime: string;
+  items: Item[];
+  subtotal: number;
+  total: number;
+  discounts: string[];
+  freebie: Freebie;
+  childBags: string[];
+  withDeliverySplit: boolean;
+}
+
+export interface Session {
+  deviceId: string;
+  bagId: string;
+}
+
+export interface Freebie {
+  eligible: boolean;
+  active: boolean;
+  items: string[];
+  drawerText: string;
+  drawerImage: string;
+  vmLink: string;
+  subtotalToActivate: string;
+  valueToReach: string;
+  selectedFreebie: string;
+}
+
+interface Item {
+  id: string;
+  productId: string;
+  sku: string;
+  available: boolean;
+  stock: number;
+  amount: number;
+  title: string;
+  line: string;
+  brand: Brand;
+  segment: Segment;
+  macroCategory: Segment;
+  category: Segment;
+  color: Color;
+  photoStill: string;
+  price: PriceList;
+  size: string;
+  groupKey: string;
+  hasExchangeItem: boolean;
+  isSurpriseBonusActivator: boolean;
+  isSurpriseBonusGenerator: boolean;
+  lockedAmountForSurpriseBonus?: boolean;
+  hasChargeback: boolean;
+  creditInvoice?: boolean;
+  hasStockOnlyOnStores: boolean;
+  url: string;
+  isFreebie: boolean;
+  ean: string;
+  isRemoved: boolean;
+  isEditedAfterPurchase: boolean;
+  amsUserId?: boolean;
+  hasAllocationProblem: boolean;
+  cashback?: boolean;
+  photos: Photos;
+}
+interface Photos {
+  still: string;
+  semiEnvironment: string;
+  environment: string;
+  banner: Banner;
+  details: Detail[];
+  panoramics: string[];
+}
+interface Detail {
+  url: string;
+}
+interface Banner {
+  background?: boolean;
+  foreground?: boolean;
+  width: number;
+  height: number;
+}
+
+interface Color {
+  id: string;
+  name: string;
+  hex: string;
+}
+interface Segment {
+  id: string;
+  name: string;
+}
+interface Brand {
+  id: string;
+  name: string;
+  logo: string;
+}
+
+export interface BagItems {
+  sku: string;
+  amount: number;
 }
