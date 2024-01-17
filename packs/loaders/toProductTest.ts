@@ -17,7 +17,7 @@ const loader = async (
   req: Request,
   ctx: AppContext,
 ): Promise<Product> => {
-  const { publicUrl, ammoDeviceId, ammoToken } = ctx;
+  const { publicUrl, ammoDeviceId, ammoToken, installmentConfig } = ctx;
   const url = new URL(req.url);
   const path = paths(publicUrl);
 
@@ -31,7 +31,7 @@ const loader = async (
     { method: "GET", headers },
   );
 
-  return toProduct(result.data, url);
+  return toProduct(result.data, url, installmentConfig);
 };
 
 export default loader;

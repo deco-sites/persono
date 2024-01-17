@@ -3,18 +3,18 @@ import {
   BreadcrumbList,
   ImageObject,
   ListItem,
-  Offer,
   Product,
   ProductGroup,
-  ProductLeaf,
   ProductListingPage,
 } from "apps/commerce/types.ts";
 
 import { AmmoProduct, Breadcrumb, Sku, VMDetails } from "$store/packs/types.ts";
+import { InstallmentConfig } from "$store/apps/site.ts";
 
 interface ProductListingPageProps {
   vmDetails: VMDetails;
   url: URL;
+  installmentConfig: InstallmentConfig;
 }
 
 interface SkuAndProduct {
@@ -25,24 +25,18 @@ interface SkuAndProduct {
 interface VariantProps extends Omit<SkuAndProduct, "sku"> {
   sku: Sku;
   baseUrl: URL;
+  installmentConfig: InstallmentConfig;
 }
 
 interface AggregateOfferProps extends Omit<SkuAndProduct, "ammoProduct"> {
   ammoProduct?: AmmoProduct;
-}
-
-interface ToOfferProps {
-  price: {
-    highPrice: number;
-    lowPrice: number;
-  };
-  stock?: number;
-  available: boolean;
+  installmentConfig: InstallmentConfig;
 }
 
 export function toProduct(
   ammoProduct: AmmoProduct,
   baseUrl: URL,
+  installmentConfig: InstallmentConfig,
 ): Product {
   const { skus, selectedSku, title, category } = ammoProduct;
   const workableSku = skus?.find(({ sku }) => sku === selectedSku);
@@ -65,14 +59,23 @@ export function toProduct(
     category: category ?? ammoProduct.macroCategory,
     inProductGroupWithID: ammoProduct?.groupKey,
     isVariantOf: workableSku
-      ? toProductGroup({ ammoProduct, sku: workableSku, baseUrl })
+      ? toProductGroup({
+        ammoProduct,
+        sku: workableSku,
+        baseUrl,
+        installmentConfig,
+      })
       : undefined,
-    offers: toAggregateOffer({ ammoProduct, sku: workableSku }),
+    offers: toAggregateOffer({
+      ammoProduct,
+      sku: workableSku,
+      installmentConfig,
+    }),
   };
 }
 
 export function toProductListingPage(
-  { vmDetails, url }: ProductListingPageProps,
+  { vmDetails, url, installmentConfig }: ProductListingPageProps,
 ): ProductListingPage {
   const { productCards } = vmDetails;
   return {
@@ -80,7 +83,7 @@ export function toProductListingPage(
     breadcrumb: toBreadcrumbList(url.origin, vmDetails),
     //TODO: PLP filters
     filters: [],
-    products: productCards.map((p) => toProduct(p, url)),
+    products: productCards.map((p) => toProduct(p, url, installmentConfig)),
     //TODO: PLP pagination
     pageInfo: {
       currentPage: 1,
@@ -177,7 +180,7 @@ const toImage = ({ sku, ammoProduct }: SkuAndProduct): ImageObject[] => {
 };
 
 const toProductGroup = (
-  { ammoProduct, sku, baseUrl }: VariantProps,
+  { ammoProduct, sku, baseUrl, installmentConfig }: VariantProps,
 ): ProductGroup => {
   const { title, skus } = ammoProduct;
   const url = new URL(sku.url, baseUrl.origin).href;
@@ -187,32 +190,37 @@ const toProductGroup = (
     name: title,
     url,
     model: sku.ean,
-    hasVariant: skus!.map((thisSku) =>
-      toVariant({ sku: thisSku, baseUrl, ammoProduct })
-    ),
+    hasVariant: skus!.map((thisSku) => ({
+      "@type": "Product" as const,
+      category: ammoProduct.category,
+      url: new URL(thisSku.url, baseUrl.origin).href,
+      sku: thisSku.sku,
+      productID: thisSku.sku,
+      additionalProperty: [],
+      image: toImage({ sku: thisSku, ammoProduct }),
+      offers: toAggregateOffer({ sku: thisSku, installmentConfig }),
+    })),
     //TODO - SKU additional properties
     additionalProperty: [],
   };
 };
 
-const toVariant = (
-  { sku, ammoProduct, baseUrl }: VariantProps,
-): ProductLeaf => ({
-  "@type": "Product" as const,
-  category: ammoProduct.category,
-  url: new URL(sku.url, baseUrl.origin).href,
-  sku: sku.sku,
-  productID: sku.sku,
-  additionalProperty: [],
-  image: toImage({ sku, ammoProduct }),
-  offers: toAggregateOffer({ sku }),
-});
-
 const toAggregateOffer = (
-  { ammoProduct, sku }: AggregateOfferProps,
+  { ammoProduct, sku, installmentConfig }: AggregateOfferProps,
 ): AggregateOffer => {
+  const { minInstallmentValue, maxInstallmentQtd } = installmentConfig;
   const highPrice = (ammoProduct?.price?.max ?? sku!.price.from) / 100;
   const lowPrice = (ammoProduct?.price?.min ?? sku!.price.to) / 100;
+  const available = ammoProduct?.available ?? sku?.available!;
+  const possibleInstallmentsQtd = Math.floor(lowPrice / minInstallmentValue) ||
+    1;
+  const installments = Array.from(
+    {
+      length: Math.min(possibleInstallmentsQtd, maxInstallmentQtd),
+    },
+    (_v, i) => +(lowPrice / (i + 1)).toFixed(2),
+  );
+
   return {
     "@type": "AggregateOffer",
     highPrice,
@@ -220,24 +228,28 @@ const toAggregateOffer = (
     offerCount: 1,
     priceCurrency: "BRL",
     offers: [
-      toOffer({
-        price: {
-          highPrice,
-          lowPrice,
-        },
-        available: ammoProduct?.available ?? sku?.available!,
-      }),
+      {
+        "@type": "Offer",
+        availability: available
+          ? "https://schema.org/InStock"
+          : "https://schema.org/OutOfStock",
+        inventoryLevel: { value: sku?.stock },
+        price: lowPrice ?? highPrice,
+        priceSpecification: installments.map((value, i) => {
+          const [description, billingIncrement] = !i
+            ? ["À vista", lowPrice]
+            : [i + 1 + " vezes sem juros", value];
+          return {
+            "@type": "UnitPriceSpecification",
+            priceType: "https://schema.org/SalePrice",
+            priceComponentType: "https://schema.org/Installment",
+            description,
+            billingDuration: i + 1,
+            billingIncrement,
+            price: lowPrice,
+          };
+        }),
+      },
     ],
   };
 };
-
-const toOffer = ({ price, stock, available }: ToOfferProps): Offer => ({
-  "@type": "Offer",
-  availability: available
-    ? "https://schema.org/InStock"
-    : "https://schema.org/OutOfStock",
-  inventoryLevel: { value: stock },
-  price: price.lowPrice ?? price.highPrice,
-  //TODO: define installments ranges
-  priceSpecification: [],
-});

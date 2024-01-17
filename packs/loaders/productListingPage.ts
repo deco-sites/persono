@@ -30,7 +30,7 @@ const loader = async (
   req: Request,
   ctx: AppContext,
 ): Promise<ProductListingPage> => {
-  const { publicUrl, ammoDeviceId, ammoToken } = ctx;
+  const { publicUrl, ammoDeviceId, ammoToken, installmentConfig } = ctx;
   const { vm } = props;
   const url = new URL(req.url);
   const path = paths(publicUrl);
@@ -50,7 +50,7 @@ const loader = async (
     },
   );
 
-  return toProductListingPage({ vmDetails, url });
+  return toProductListingPage({ vmDetails, url, installmentConfig });
 };
 
 export default loader;
