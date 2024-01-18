@@ -19,3 +19,13 @@ export const SIMPLE_PRODUCT_PROPERTIES = [
 export const SIMPLE_SKU_PROPERTIES = [
   "size",
 ];
+
+export const SKU_DEFAULT_PHOTOS = [
+    "still",
+    "semiEnvironment"
+]
+
+export const PRODUCT_DEFAULT_PHOTOS = [
+    "image",
+    "hoverImage"
+]

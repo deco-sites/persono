@@ -9,11 +9,19 @@ import {
   PropertyValue,
 } from "apps/commerce/types.ts";
 
-import { AmmoProduct, Breadcrumb, Sku, VMDetails } from "$store/packs/types.ts";
+import {
+  AmmoProduct,
+  Breadcrumb,
+  Photos,
+  Sku,
+  VMDetails,
+} from "$store/packs/types.ts";
 import { InstallmentConfig } from "$store/apps/site.ts";
 import {
+  PRODUCT_DEFAULT_PHOTOS,
   SIMPLE_PRODUCT_PROPERTIES,
   SIMPLE_SKU_PROPERTIES,
+  SKU_DEFAULT_PHOTOS,
 } from "$store/packs/constants.ts";
 
 interface ProductListingPageProps {
@@ -137,23 +145,16 @@ const toItemListElement = (
   );
 
 const toImage = ({ sku, ammoProduct }: SkuAndProduct): ImageObject[] => {
-  const { title, hoverImage } = ammoProduct;
+  const { title } = ammoProduct;
   return sku
     ? [
-      {
+      ...SKU_DEFAULT_PHOTOS.map((i) => ({
         "@type": "ImageObject" as const,
-        url: sku.photos.still,
+        url: sku.photos[i as keyof Photos].toString(),
         additionalType: "image",
         alternateName: title,
-        disambiguatingDescription: "still",
-      },
-      {
-        "@type": "ImageObject" as const,
-        url: sku.photos.semiEnvironment,
-        additionalType: "image",
-        alternateName: title,
-        disambiguatingDescription: "semiEnvironment",
-      },
+        disambiguatingDescription: i,
+      })),
       ...sku.photos.details.map(({ url }, i) => ({
         "@type": "ImageObject" as const,
         url,
@@ -171,19 +172,13 @@ const toImage = ({ sku, ammoProduct }: SkuAndProduct): ImageObject[] => {
         }]
         : [],
     ]
-    : [{
+    : PRODUCT_DEFAULT_PHOTOS.map((i) => ({
       "@type": "ImageObject" as const,
-      url: `${ammoProduct.image}`,
+      url: ammoProduct[i as keyof AmmoProduct]?.toString(),
       alternateName: title,
       additionalType: "image",
-      disambiguatingDescription: "main",
-    }, {
-      "@type": "ImageObject" as const,
-      url: `${hoverImage}`,
-      alternateName: title,
-      additionalType: "image",
-      disambiguatingDescription: "hover",
-    }];
+      disambiguatingDescription: i,
+    }));
 };
 
 const toProductGroup = (

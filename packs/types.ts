@@ -237,7 +237,7 @@ interface Item {
   cashback?: boolean;
   photos: Photos;
 }
-interface Photos {
+export interface Photos {
   still: string;
   semiEnvironment: string;
   environment: string;
