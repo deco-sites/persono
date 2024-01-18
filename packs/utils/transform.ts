@@ -6,10 +6,15 @@ import {
   Product,
   ProductGroup,
   ProductListingPage,
+  PropertyValue,
 } from "apps/commerce/types.ts";
 
 import { AmmoProduct, Breadcrumb, Sku, VMDetails } from "$store/packs/types.ts";
 import { InstallmentConfig } from "$store/apps/site.ts";
+import {
+  SIMPLE_PRODUCT_PROPERTIES,
+  SIMPLE_SKU_PROPERTIES,
+} from "$store/packs/constants.ts";
 
 interface ProductListingPageProps {
   vmDetails: VMDetails;
@@ -51,7 +56,9 @@ export function toProduct(
     gtin: workableSku?.ean,
     url: new URL(workableSku?.url ?? ammoProduct.url!, baseUrl.origin).href,
     //TODO - Product Additional Properties
-    additionalProperty: [],
+    additionalProperty: [
+      ...toSimpleProperty(ammoProduct, SIMPLE_PRODUCT_PROPERTIES),
+    ],
     brand: {
       "@type": "Brand",
       "@id": ammoProduct.brand,
@@ -196,11 +203,10 @@ const toProductGroup = (
       url: new URL(thisSku.url, baseUrl.origin).href,
       sku: thisSku.sku,
       productID: thisSku.sku,
-      additionalProperty: [],
+      additionalProperty: [...toSimpleProperty(thisSku, SIMPLE_SKU_PROPERTIES)],
       image: toImage({ sku: thisSku, ammoProduct }),
       offers: toAggregateOffer({ sku: thisSku, installmentConfig }),
     })),
-    //TODO - SKU additional properties
     additionalProperty: [],
   };
 };
@@ -252,4 +258,28 @@ const toAggregateOffer = (
       },
     ],
   };
+};
+
+const toSimpleProperty = (
+  obj: AmmoProduct | Sku,
+  properties: string[],
+): PropertyValue[] => {
+  type T = typeof obj;
+  return Object.keys(obj!).reduce<PropertyValue[]>(
+    (acc, k) => {
+      if (
+        !properties.find((v) => v === k) ||
+        !obj![k as keyof T]
+      ) {
+        return [...acc];
+      }
+      return [...acc, {
+        "@type": "PropertyValue" as const,
+        name: k.toLocaleUpperCase(),
+        propertyID: k,
+        value: obj![k as keyof T]?.toString(),
+      }];
+    },
+    [],
+  );
 };
