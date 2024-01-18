@@ -17,12 +17,7 @@ import {
   VMDetails,
 } from "$store/packs/types.ts";
 import { InstallmentConfig } from "$store/apps/site.ts";
-import {
-  PRODUCT_DEFAULT_PHOTOS,
-  SIMPLE_PRODUCT_PROPERTIES,
-  SIMPLE_SKU_PROPERTIES,
-  SKU_DEFAULT_PHOTOS,
-} from "$store/packs/constants.ts";
+import { PROPS_AMMO_API } from "$store/packs/constants.ts";
 
 interface ProductListingPageProps {
   vmDetails: VMDetails;
@@ -65,7 +60,7 @@ export function toProduct(
     url: new URL(workableSku?.url ?? ammoProduct.url!, baseUrl.origin).href,
     //TODO - Product Additional Properties
     additionalProperty: [
-      ...toSimpleProperty(ammoProduct, SIMPLE_PRODUCT_PROPERTIES),
+      ...toSimpleProperty(ammoProduct, PROPS_AMMO_API.product.simpleProperties),
     ],
     brand: {
       "@type": "Brand",
@@ -148,7 +143,7 @@ const toImage = ({ sku, ammoProduct }: SkuAndProduct): ImageObject[] => {
   const { title } = ammoProduct;
   return sku
     ? [
-      ...SKU_DEFAULT_PHOTOS.map((i) => ({
+      ...PROPS_AMMO_API.sku.defaultPhotos.map((i) => ({
         "@type": "ImageObject" as const,
         url: sku.photos[i as keyof Photos].toString(),
         additionalType: "image",
@@ -172,7 +167,7 @@ const toImage = ({ sku, ammoProduct }: SkuAndProduct): ImageObject[] => {
         }]
         : [],
     ]
-    : PRODUCT_DEFAULT_PHOTOS.map((i) => ({
+    : PROPS_AMMO_API.product.defaultPhotos.map((i) => ({
       "@type": "ImageObject" as const,
       url: ammoProduct[i as keyof AmmoProduct]?.toString(),
       alternateName: title,
@@ -198,7 +193,9 @@ const toProductGroup = (
       url: new URL(thisSku.url, baseUrl.origin).href,
       sku: thisSku.sku,
       productID: thisSku.sku,
-      additionalProperty: [...toSimpleProperty(thisSku, SIMPLE_SKU_PROPERTIES)],
+      additionalProperty: [
+        ...toSimpleProperty(thisSku, PROPS_AMMO_API.sku.simpleProperties),
+      ],
       image: toImage({ sku: thisSku, ammoProduct }),
       offers: toAggregateOffer({ sku: thisSku, installmentConfig }),
     })),

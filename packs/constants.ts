@@ -6,26 +6,40 @@ export const DECO_CACHE_OPTION = {
   cache: "stale-while-revalidate",
 } as DecoRequestInit["deco"];
 
-export const SIMPLE_PRODUCT_PROPERTIES = [
-  "cashback",
-  "segment",
-  "size",
-  "line",
-  "sizeType",
-  "isActiveBundlePickupInStore",
-  "macroCategory"
-];
-
-export const SIMPLE_SKU_PROPERTIES = [
-  "size",
-];
-
-export const SKU_DEFAULT_PHOTOS = [
-    "still",
-    "semiEnvironment"
-]
-
-export const PRODUCT_DEFAULT_PHOTOS = [
-    "image",
-    "hoverImage"
-]
+export const PROPS_AMMO_API = {
+  product: {
+    simpleProperties: [
+      "cashback",
+      "segment",
+      "size",
+      "line",
+      "sizeType",
+      "isActiveBundlePickupInStore",
+      "macroCategory",
+    ],
+    defaultPhotos: [
+      "image",
+      "hoverImage",
+    ],
+    complexProperties: [
+      "tags",
+      "bundle",
+      "relatedFilters",
+      "emotionalAttributes"
+    ]
+  },
+  sku: {
+    simpleProperties: [
+      "size",
+    ],
+    defaultPhotos: [
+      "still",
+      "semiEnvironment",
+    ],
+    complexProperties: [
+      "color",
+      "tags",
+      "kitItems",
+    ]
+  },
+};
