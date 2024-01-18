@@ -49,7 +49,7 @@ function CategoryList(props: Props) {
     >
       <Header title={header.title} />
       <div class="relative">
-        <Slider.PrevButton class="btn btn-circle border border-neutral bg-white z-10 absolute left-0 top-[calc(50%-24px)] hidden sm:block rounded-full cursor-pointer">
+        <Slider.PrevButton class="btn btn-circle border border-neutral bg-white z-10 absolute left-[-24px] top-[calc(50%-24px)] hidden sm:block rounded-full cursor-pointer">
           <Icon
             class="text-primary w-full"
             size={24}
@@ -93,7 +93,7 @@ function CategoryList(props: Props) {
                       class="w-full"
                     />
                   </Picture>
-                  <div class="absolute left-0 bottom-0 w-full h-full bg-gradient-to-b from-transparent to-black bg-opacity-10" />
+                  <div class="absolute left-0 bottom-0 w-full h-full bg-gradient-to-b from-transparent to-black bg-opacity-1" />
                   <h3 class="w-full text-center text-base text-white absolute bottom-[52px] left-0 px-2">
                     {label}
                   </h3>
@@ -102,7 +102,7 @@ function CategoryList(props: Props) {
             </Slider.Item>
           ))}
         </Slider>
-        <Slider.NextButton class="btn btn-circle border border-neutral bg-white z-10 absolute right-0 top-[calc(50%-24px)] hidden sm:block rounded-full cursor-pointer">
+        <Slider.NextButton class="btn btn-circle border border-neutral bg-white z-10 absolute right-[-24px] top-[calc(50%-24px)] hidden sm:block rounded-full cursor-pointer">
           <Icon
             class="text-primary w-full -rotate-180"
             size={23}
