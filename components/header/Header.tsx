@@ -10,6 +10,7 @@ import { SectionProps } from "deco/mod.ts";
 import { FnContext } from "deco/types.ts";
 import Alert, { IAlert } from "./Alert.tsx";
 import Navbar from "./Navbar.tsx";
+import type { EditableProps as CartProps } from "deco-sites/persono/components/minicart/Cart.tsx";
 
 export interface Props {
   alerts: IAlert[];
@@ -30,6 +31,9 @@ export interface Props {
    * @description Links used on mobile bottom menu
    */
   socialLinks?: SocialItem[];
+
+  /** @title Cart Settings */
+  cart?: CartProps;
 }
 
 function Header({
@@ -38,6 +42,7 @@ function Header({
   navItems,
   fastLinks,
   device,
+  cart,
 }: SectionProps<typeof loader>) {
   const platform = usePlatform();
   const items = navItems ?? [];
@@ -59,6 +64,7 @@ function Header({
       <Drawers
         menu={{ items, fastLinks }}
         searchbar={searchbar}
+        cart={cart}
         platform={platform}
       />
     </>

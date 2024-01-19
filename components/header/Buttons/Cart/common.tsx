@@ -28,7 +28,7 @@ function CartButton({ loading, currency, total, items }: Props) {
       {totalItems !== 0
         ? (
           <span class="bg-primary text-primary-content rounded-full absolute w-4 h-4 top-0 right-0 text-[10px] leading-4 text-center">
-            00
+            {totalItems}
           </span>
         )
         : null}

@@ -7,6 +7,7 @@ import { usePlatform } from "$store/sdk/usePlatform.tsx";
 import { useUI } from "$store/sdk/useUI.ts";
 import type { ComponentChildren } from "preact";
 import { lazy, Suspense, useEffect } from "preact/compat";
+import type { EditableProps as CartProps } from "deco-sites/persono/components/minicart/Cart.tsx";
 
 const Menu = lazy(() => import("$store/components/header/Menu.tsx"));
 const Searchbar = lazy(() => import("$store/components/search/Searchbar.tsx"));
@@ -14,6 +15,7 @@ const Searchbar = lazy(() => import("$store/components/search/Searchbar.tsx"));
 export interface Props {
   menu: MenuProps;
   searchbar?: SearchbarProps;
+  cart?: CartProps;
   /**
    * @ignore_gen true
    */
@@ -66,7 +68,7 @@ const setup = () => {
   };
 };
 
-function Drawers({ menu, searchbar, children, platform }: Props) {
+function Drawers({ menu, searchbar, cart, children, platform }: Props) {
   const { displayCart, displayMenu, displaySearchDrawer } = useUI();
 
   useEffect(() => {
@@ -98,7 +100,9 @@ function Drawers({ menu, searchbar, children, platform }: Props) {
         }}
         aside={
           <Aside>
-            {displayCart.value ? <Cart platform={platform} /> : null}
+            {displayCart.value
+              ? <Cart {...cart} onClose={() => displayCart.value = false} />
+              : null}
             {searchbar && displaySearchDrawer.value && (
               <Searchbar {...searchbar} />
             )}

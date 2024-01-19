@@ -28,6 +28,17 @@
   }
 }
 
+@layer components {
+  .btn {
+    min-width: 36px;
+    min-height: 36px;
+    height: 36px;
+  }
+  .btn-accent {
+    border: 1px solid #ccc;
+  }
+}
+
 .group:disabled .group-disabled\:animate-progress {
   animation: progress-frame ease normal
 }

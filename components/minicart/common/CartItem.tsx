@@ -12,6 +12,7 @@ export interface Item {
     src: string;
     alt: string;
   };
+  sku: string;
   name: string;
   quantity: number;
   price: {
@@ -27,8 +28,8 @@ export interface Props {
   locale: string;
   currency: string;
 
-  onUpdateQuantity: (quantity: number, index: number) => Promise<void>;
-  itemToAnalyticsItem: (index: number) => AnalyticsItem | null | undefined;
+  onUpdateQuantity: (quantity: number, sku: string) => Promise<void>;
+  itemToAnalyticsItem: (sku: string) => AnalyticsItem | null | undefined;
 }
 
 function CartItem(
@@ -80,9 +81,9 @@ function CartItem(
             loading={loading}
             class="btn-ghost btn-square"
             onClick={withLoading(async () => {
-              const analyticsItem = itemToAnalyticsItem(index);
+              const analyticsItem = itemToAnalyticsItem(item.sku);
 
-              await onUpdateQuantity(0, index);
+              await onUpdateQuantity(0, item.sku);
 
               analyticsItem && sendEvent({
                 name: "remove_from_cart",
@@ -106,10 +107,10 @@ function CartItem(
           disabled={loading || isGift}
           quantity={quantity}
           onChange={withLoading(async (quantity) => {
-            const analyticsItem = itemToAnalyticsItem(index);
+            const analyticsItem = itemToAnalyticsItem(item.sku);
             const diff = quantity - item.quantity;
 
-            await onUpdateQuantity(quantity, index);
+            await onUpdateQuantity(quantity, item.sku);
 
             if (analyticsItem) {
               sendEvent({

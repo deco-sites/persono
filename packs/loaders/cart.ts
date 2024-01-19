@@ -15,6 +15,7 @@ const loader = async (
   try {
     const response = await ammoc
       ["GET /api/bag"](
+        {},
         {
           headers: {
             "x-api-key": apiKey,
