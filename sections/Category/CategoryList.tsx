@@ -93,7 +93,7 @@ function CategoryList(props: Props) {
                       class="w-full"
                     />
                   </Picture>
-                  <div class="absolute left-0 bottom-0 w-full h-full bg-gradient-to-b from-transparent to-black bg-opacity-1" />
+                  <div class="absolute left-0 bottom-0 w-full h-full bg-gradient-to-b from-transparent via-transparent to-black bg-opacity-10" />
                   <h3 class="w-full text-center text-base text-white absolute bottom-[52px] left-0 px-2">
                     {label}
                   </h3>
