@@ -15,3 +15,5 @@ export const returnApiHeader = ({
   [AMMO_DEVICE_ID_HEADER]: ammoDeviceIdValue,
   [AMMO_TOKEN_HEADER]: ammoTokenValue,
 });
+
+export const typeChecher = <T extends object>(v: T, prop: keyof T) => prop in v;

@@ -18,6 +18,7 @@ import {
 } from "$store/packs/types.ts";
 import { InstallmentConfig } from "$store/apps/site.ts";
 import { PROPS_AMMO_API } from "$store/packs/constants.ts";
+import { typeChecher } from "$store/packs/utils/utils.ts";
 
 interface ProductListingPageProps {
   vmDetails: VMDetails;
@@ -30,14 +31,12 @@ interface SkuAndProduct {
   ammoProduct: AmmoProduct;
 }
 
-interface VariantProps extends Omit<SkuAndProduct, "sku"> {
-  sku: Sku;
+interface VariantProps extends Required<SkuAndProduct> {
   baseUrl: URL;
   installmentConfig: InstallmentConfig;
 }
 
-interface AggregateOfferProps extends Omit<SkuAndProduct, "ammoProduct"> {
-  ammoProduct?: AmmoProduct;
+interface AggregateOfferProps extends Partial<SkuAndProduct> {
   installmentConfig: InstallmentConfig;
 }
 
@@ -58,9 +57,8 @@ export function toProduct(
     image: toImage({ sku: workableSku, ammoProduct }),
     gtin: workableSku?.ean,
     url: new URL(workableSku?.url ?? ammoProduct.url!, baseUrl.origin).href,
-    //TODO - Product Additional Properties
     additionalProperty: [
-      ...toSimpleProperty(ammoProduct, PROPS_AMMO_API.product.simpleProperties),
+      ...toAdditionalProperties(ammoProduct, PROPS_AMMO_API.product.simpleProps),
     ],
     brand: {
       "@type": "Brand",
@@ -157,6 +155,13 @@ const toImage = ({ sku, ammoProduct }: SkuAndProduct): ImageObject[] => {
         alternateName: title,
         disambiguatingDescription: `detail-${i}`,
       })),
+      ...sku.photos.panoramics.map((v, i) => ({
+        "@type": "ImageObject" as const,
+        url: v,
+        additionalType: "image",
+        alternateName: title,
+        disambiguatingDescription: `panoramics-${i}`,
+      })),
       ...sku.youtubeVideo
         ? [{
           "@type": "ImageObject" as const,
@@ -194,7 +199,7 @@ const toProductGroup = (
       sku: thisSku.sku,
       productID: thisSku.sku,
       additionalProperty: [
-        ...toSimpleProperty(thisSku, PROPS_AMMO_API.sku.simpleProperties),
+        ...toAdditionalProperties(thisSku, PROPS_AMMO_API.sku.simpleProps),
       ],
       image: toImage({ sku: thisSku, ammoProduct }),
       offers: toAggregateOffer({ sku: thisSku, installmentConfig }),
@@ -252,26 +257,90 @@ const toAggregateOffer = (
   };
 };
 
-const toSimpleProperty = (
+const toAdditionalProperties = (
   obj: AmmoProduct | Sku,
-  properties: string[],
+  simplePropertiesList: string[],
 ): PropertyValue[] => {
   type T = typeof obj;
-  return Object.keys(obj!).reduce<PropertyValue[]>(
-    (acc, k) => {
-      if (
-        !properties.find((v) => v === k) ||
-        !obj![k as keyof T]
-      ) {
-        return [...acc];
-      }
-      return [...acc, {
-        "@type": "PropertyValue" as const,
-        name: k.toLocaleUpperCase(),
-        propertyID: k,
-        value: obj![k as keyof T]?.toString(),
-      }];
-    },
-    [],
-  );
+  const sku = obj as Sku;
+
+  const tagsProperties = (): PropertyValue[] => {
+    const tags = obj.tags;
+    if (!tags) return [];
+    return Object.entries(tags).map((v) => ({
+      "@type": "PropertyValue" as const,
+      propertyID: "TAG",
+      name: v[1].type,
+      identifier: v[0].toUpperCase(),
+      value: v[1].value ?? true,
+    }));
+  };
+
+  const colorProperty = (): PropertyValue => ({
+    "@type": "PropertyValue" as const,
+    propertyID: "COLOR",
+    name: "color",
+    value: sku.color.name,
+    unitCode: sku.color.hex,
+  });
+
+  const specificationsProperties = (): PropertyValue[] =>
+    sku.specifications.map(({ id, value, label }) => ({
+      "@type": "PropertyValue" as const,
+      propertyID: "SPECIFICATION",
+      name: "specification",
+      identifier: id,
+      value,
+      description: label,
+    }));
+
+  const kitItemsProperties = (): PropertyValue[] =>
+    sku.kitItems.map(({ name, quantity, dimensions }) => ({
+      "@type": "PropertyValue" as const,
+      propertyID: "KITITEM",
+      name,
+      value: quantity,
+      description: dimensions,
+    }));
+
+  const simpleProperties = () =>
+    Object.keys(obj!).reduce<PropertyValue[]>(
+      (acc, k) => {
+        if (
+          !simplePropertiesList.find((v) => v === k) ||
+          !obj![k as keyof T]
+        ) {
+          return [...acc];
+        }
+        return [...acc, {
+          "@type": "PropertyValue" as const,
+          propertyID: k.toUpperCase(),
+          name: k,
+          value: obj![k as keyof T]?.toString(),
+        }];
+      },
+      [],
+    );
+
+  return [
+    ...simpleProperties(),
+    ...tagsProperties(),
+    ...typeChecher<AmmoProduct>(obj as AmmoProduct, "id")
+      ? PROPS_AMMO_API.product.simpleArrayProps.flatMap((i) => {
+        const prop = obj[i as keyof T];
+        if (!prop) return [];
+        const propName = prop.toString();
+        return Object.values(prop).map((p) => ({
+          "@type": "PropertyValue" as const,
+          propertyID: propName.toUpperCase(),
+          name: propName,
+          value: p,
+        }));
+      })
+      : [
+        colorProperty(),
+        ...specificationsProperties(),
+        ...kitItemsProperties(),
+      ],
+  ];
 };

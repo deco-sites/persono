@@ -8,7 +8,7 @@ export const DECO_CACHE_OPTION = {
 
 export const PROPS_AMMO_API = {
   product: {
-    simpleProperties: [
+    simpleProps: [
       "cashback",
       "segment",
       "size",
@@ -16,30 +16,24 @@ export const PROPS_AMMO_API = {
       "sizeType",
       "isActiveBundlePickupInStore",
       "macroCategory",
+      "template",
     ],
     defaultPhotos: [
       "image",
       "hoverImage",
     ],
-    complexProperties: [
-      "tags",
-      "bundle",
+    simpleArrayProps: [
       "relatedFilters",
-      "emotionalAttributes"
-    ]
+      "emotionalAttributes",
+    ],
   },
   sku: {
-    simpleProperties: [
+    simpleProps: [
       "size",
     ],
     defaultPhotos: [
       "still",
       "semiEnvironment",
     ],
-    complexProperties: [
-      "color",
-      "tags",
-      "kitItems",
-    ]
   },
 };
