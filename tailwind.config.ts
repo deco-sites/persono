@@ -15,5 +15,10 @@ export default {
       "3xl": ["2.5rem", "normal"],
     },
     container: { center: true },
+    extend: {
+      colors: {
+        "blueNew": "#0070F7",
+      }
+    }
   },
 };

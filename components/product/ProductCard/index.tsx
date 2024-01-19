@@ -3,6 +3,7 @@ import { formatPrice } from "$store/sdk/format.ts";
 import { useOffer } from "$store/sdk/useOffer.ts";
 import type { Product } from "apps/commerce/types.ts";
 import Image from "apps/website/components/Image.tsx";
+// import ImageDecoded from "deco-sites/persono/components/ui/ImageDecoded.tsx";
 
 export interface Layout {
   basics?: {
@@ -67,12 +68,13 @@ function ProductCard({ product, preload, index }: Props) {
       class="card card-compact group w-full max-w-[287px] rounded-lg border border-gray-300 text-start"
       data-deco="view-product"
       href={url && relative(url)}
-      aria-label="view product"
+      aria-label="view product fgsdfsdfdgfg"
     >
       <figure
         class="relative overflow-hidden"
         style={{ aspectRatio: `${WIDTH} / ${HEIGHT}` }}
       >
+        {/* <ImageDecoded image={{ src: "", width: 10, height: 10 }} /> */}
         {/* Product Images */}
         <div class="w-full">
           <span class="py-1 px-3 flex absolute  rounded-br-xl justify-center items-center text-sm bg-blueNew text-white">

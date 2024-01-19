@@ -36,6 +36,13 @@ export type Props = {
   @default https://mmartan.com.br/api/
   */
   publicUrl: string;
+
+   /**
+  @title Image base UTL
+  */
+
+  imageBaseUrl:string;
+  
 } & DefaultProps;
 
 export type Platform =
