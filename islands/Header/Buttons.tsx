@@ -1,10 +1,3 @@
-import { default as MenuButtonComponent } from "$store/components/header/Buttons/Menu.tsx";
-import { default as SearchButtonComponent } from "$store/components/header/Buttons/Search.tsx";
-
-export function MenuButton() {
-  return <MenuButtonComponent />;
-}
-
-export function SearchButton() {
-  return <SearchButtonComponent />;
-}
+export { default as MenuButton } from "$store/components/header/Buttons/Menu.tsx";
+export { default as SearchButton } from "$store/components/header/Buttons/Search.tsx";
+export { default as CartButton } from "$store/components/header/Buttons/Cart.tsx";

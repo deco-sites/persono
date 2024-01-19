@@ -7,13 +7,15 @@ export default function MenuButton() {
 
   return (
     <Button
-      class="btn btn-circle btn-sm btn-ghost"
+      class="btn btn-ghost min-h-0 h-auto p-2"
       aria-label="open menu"
       onClick={() => {
-        displayMenu.value = true;
+        displayMenu.value = !displayMenu.peek();
       }}
     >
-      <Icon id="Bars3" size={24} strokeWidth={0.01} />
+      {displayMenu.value
+        ? <Icon id="XMark" size={20} strokeWidth={2} />
+        : <Icon id="Bars3" size={20} strokeWidth={0.01} />}
     </Button>
   );
 }
