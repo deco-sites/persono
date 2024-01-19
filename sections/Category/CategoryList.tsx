@@ -51,8 +51,8 @@ function CategoryList(props: Props) {
       <div class="relative">
         <Slider.PrevButton class="btn btn-circle border border-neutral bg-white z-10 absolute left-[-24px] top-[calc(50%-24px)] hidden sm:block rounded-full cursor-pointer">
           <Icon
-            class="text-primary w-full"
-            size={24}
+            class="text-primary"
+            size={20}
             id="ChevronLeft"
             strokeWidth={2}
           />
@@ -102,11 +102,11 @@ function CategoryList(props: Props) {
             </Slider.Item>
           ))}
         </Slider>
-        <Slider.NextButton class="btn btn-circle border border-neutral bg-white z-10 absolute right-[-24px] top-[calc(50%-24px)] hidden sm:block rounded-full cursor-pointer">
+        <Slider.NextButton class="btn btn-circle border h-9 w-9 border-neutral bg-white z-10 absolute right-[-24px] top-[calc(50%-24px)] hidden sm:block rounded-full cursor-pointer">
           <Icon
-            class="text-primary w-full -rotate-180"
-            size={23}
-            id="ChevronLeft"
+            class="text-primary"
+            size={20}
+            id="ChevronRight"
             strokeWidth={2}
           />
         </Slider.NextButton>
