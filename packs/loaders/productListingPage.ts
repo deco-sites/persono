@@ -13,12 +13,36 @@ export interface Props {
    * @description Listar produtos presentes nesta VM. É possível usar filtros de categoria, tamanho, marca etc personalizados
    */
   vm?: VM;
+  /**
+   * @title Filtros
+   * @description Filtros da VM
+   */
+  filters?: Filters[];
 }
 
 interface VM {
+  /**
+   * @title Caminho da VM
+   * @description Sempre começar com "/vm/".
+   * @example /vm/cama
+   */
   path: string;
+  /**
+   * @title Número da página
+   */
   page: number;
-  //TODO: FILTERS in deco
+}
+
+interface Filters {
+  /**
+   * @title Tipo
+   * @example category
+   */
+  type: string;
+  /**
+   * @title Slugs do filtro
+   */
+  slugs: string[];
 }
 
 /**
@@ -34,6 +58,7 @@ const loader = async (
   const { vm } = props;
   const url = new URL(req.url);
   const path = paths(publicUrl);
+
 
   const vmDetails = await fetchAPI<VMDetails>(
     path.productCatalog.resolveRoute({
