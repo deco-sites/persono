@@ -6,10 +6,11 @@ export interface Props {
   currency: string;
   locale: string;
   totalDiscounts: number;
+  coupon?: string;
 }
 
 export function Discounts(
-  { currency, locale, discounts, totalDiscounts: total }: Props,
+  { currency, locale, discounts, totalDiscounts: total, coupon }: Props,
 ) {
   if (discounts.length === 0) {
     return null;
@@ -17,9 +18,14 @@ export function Discounts(
 
   if (discounts.length === 1) {
     const [discount] = discounts;
+
     return (
       <div class="flex justify-between items-center">
-        <span class="text-sm">{discount.message}</span>
+        <span class="text-sm">
+          {discount.type !== "coupon"
+            ? discount.message
+            : ` ${discount.message} ${coupon}`}
+        </span>
         <span class="text-sm">
           - {formatPrice(discount.value / 100, currency, locale)}
         </span>
@@ -41,10 +47,12 @@ export function Discounts(
       </p>
 
       <ul class="collapse-content text-[#666] pl-6 !pb-0 pr-0 text-sm flex flex-col gap-3">
-        {discounts.map(({ message, value, items = [] }) => (
+        {discounts.map(({ message, value, items = [], type }) => (
           <li class="flex flex-col gap-1 first:pt-3">
             <p class="flex justify-between items-center">
-              <span class={hasChildren ? "font-bold" : ""}>{message}</span>
+              <span class={hasChildren ? "font-bold" : ""}>
+                {type !== "coupon" ? message : ` ${message} ${coupon}`}
+              </span>
               {items.length === 0
                 ? <span>- {formatPrice(value / 100, currency, locale)}</span>
                 : null}

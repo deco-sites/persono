@@ -58,20 +58,29 @@ function Cart({
     <div class="flex w-full h-full flex-col justify-center items-center overflow-hidden">
       <header class="flex justify-between items-center px-4 py-2 border-b border-[#ccc] w-full">
         <h3 class="text-xl font-medium">Minha sacola</h3>
-        <Button class="btn-ghost btn-circle" onClick={onClose}>
+        <Button class="btn-circle" onClick={onClose}>
           <Icon id="XMark" size={20} strokeWidth={2} />
         </Button>
       </header>
       {isEmpty
         ? (
-          <div class="flex flex-col gap-6">
-            <span class="font-medium text-2xl">Sua sacola está vazia</span>
-            <Button
-              class="btn-primary"
-              onClick={onClose}
-            >
-              Escolher produtos
-            </Button>
+          <div class="p-4 flex-grow flex flex-col w-full items-center">
+            {freeShippingTarget
+              ? (
+                <article class="p-2 w-full">
+                  <FreeShippingProgressBar
+                    total={total}
+                    locale={locale}
+                    currency={currency}
+                    target={freeShippingTarget}
+                    textTemplate={freeShippingTextTemplate}
+                  />
+                </article>
+              )
+              : null}
+            <p class="flex-grow flex flex-col gap-6 font-medium text-base text-[#666] justify-center">
+              Sua sacola está vazia
+            </p>
           </div>
         )
         : (
@@ -80,7 +89,7 @@ function Cart({
               role="list"
               class="p-4 flex-grow overflow-y-auto flex flex-col gap-6 w-full"
             >
-              {freeShippingTarget && freeShippingTextTemplate
+              {freeShippingTarget
                 ? (
                   <li class="p-2 w-full">
                     <FreeShippingProgressBar

@@ -4,6 +4,8 @@ import { formatPrice } from "$store/sdk/format.ts";
 export interface EditableProps {
   /** @description Use %price to auto replace for the current difference between total and target */
   textTemplate?: string;
+  /** @description When reach the target, this text will display */
+  completedText?: string;
   target?: number;
 }
 
@@ -15,6 +17,7 @@ interface Props extends EditableProps {
 
 function FreeShippingProgressBar(
   {
+    completedText = "Parabéns! Você ganhou frete grátis.",
     textTemplate = "Faltam %price para ganhar frete grátis!",
     target = 0,
     total,
@@ -38,7 +41,7 @@ function FreeShippingProgressBar(
               )}
             </span>
           )
-          : <span>Você ganhou frete grátis!</span>}
+          : <span>{completedText}</span>}
       </div>
       <div class="relative flex w-full">
         <progress
@@ -48,7 +51,7 @@ function FreeShippingProgressBar(
         />
         <div
           class="absolute top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-white border border-primary"
-          style={{ left: `${Math.min(percent - 4, 96)}%` }}
+          style={{ left: `${Math.min(Math.max(percent - 4, 0), 96)}%` }}
         />
       </div>
     </div>
