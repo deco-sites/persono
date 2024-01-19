@@ -3,22 +3,29 @@ import { sendEvent } from "$store/sdk/analytics.tsx";
 import { formatPrice } from "$store/sdk/format.ts";
 import { useUI } from "$store/sdk/useUI.ts";
 import { AnalyticsItem } from "apps/commerce/types.ts";
+import { Discounts } from "deco-sites/persono/components/minicart/Discounts.tsx";
+import {
+  CartFreebie,
+  FreebieChoice,
+} from "deco-sites/persono/components/minicart/common/FreebieChoice.tsx";
+import Icon from "deco-sites/persono/components/ui/Icon.tsx";
+import { Discount } from "deco-sites/persono/packs/types.ts";
 import CartItem, { Item, Props as ItemProps } from "./CartItem.tsx";
-import Coupon, { Props as CouponProps } from "./Coupon.tsx";
 import FreeShippingProgressBar from "./FreeShippingProgressBar.tsx";
 
 interface Props {
   items: Item[];
   loading: boolean;
   total: number;
-  subtotal: number;
-  discounts: number;
+  discounts: Discount[];
+  freebie?: CartFreebie | null;
   locale: string;
   currency: string;
   coupon?: string;
-  freeShippingTarget: number;
+  freeShippingTarget?: number;
+  freeShippingTextTemplate?: string;
   checkoutHref: string;
-  onAddCoupon?: CouponProps["onAddCoupon"];
+  onClose?: () => void;
   onUpdateQuantity: ItemProps["onUpdateQuantity"];
   itemToAnalyticsItem: ItemProps["itemToAnalyticsItem"];
 }
@@ -26,57 +33,85 @@ interface Props {
 function Cart({
   items,
   total,
-  subtotal,
   locale,
   coupon,
   loading,
   currency,
   discounts,
+  freebie,
   freeShippingTarget,
+  freeShippingTextTemplate,
   checkoutHref,
   itemToAnalyticsItem,
   onUpdateQuantity,
-  onAddCoupon,
+  onClose,
 }: Props) {
-  const { displayCart } = useUI();
-  const isEmtpy = items.length === 0;
+  const isEmpty = items.length === 0;
+  const totalDiscounts = discounts?.reduce(
+    (acc, { value }) => value + acc,
+    0,
+  );
+  const calcSubtotal = items.reduce((acc, { price }) => acc + price.sale, 0);
+  const calcTotal = calcSubtotal - totalDiscounts;
 
   return (
-    <div
-      class="flex flex-col justify-center items-center overflow-hidden"
-      style={{ minWidth: "calc(min(100vw, 425px))", maxWidth: "425px" }}
-    >
-      {isEmtpy
+    <div class="flex w-full h-full flex-col justify-center items-center overflow-hidden">
+      <header class="flex justify-between items-center px-4 py-2 border-b border-[#ccc] w-full">
+        <h3 class="text-xl font-medium">Minha sacola</h3>
+        <Button class="btn-circle" onClick={onClose}>
+          <Icon id="XMark" size={20} strokeWidth={2} />
+        </Button>
+      </header>
+      {isEmpty
         ? (
-          <div class="flex flex-col gap-6">
-            <span class="font-medium text-2xl">Sua sacola está vazia</span>
-            <Button
-              class="btn-outline"
-              onClick={() => {
-                displayCart.value = false;
-              }}
-            >
-              Escolher produtos
-            </Button>
+          <div class="p-4 flex-grow flex flex-col w-full items-center">
+            {freeShippingTarget
+              ? (
+                <article class="p-2 w-full">
+                  <FreeShippingProgressBar
+                    total={total}
+                    locale={locale}
+                    currency={currency}
+                    target={freeShippingTarget}
+                    textTemplate={freeShippingTextTemplate}
+                  />
+                </article>
+              )
+              : null}
+            <p class="flex-grow flex flex-col gap-6 font-medium text-base text-[#666] justify-center">
+              Sua sacola está vazia
+            </p>
           </div>
         )
         : (
           <>
-            {/* Free Shipping Bar */}
-            <div class="px-2 py-4 w-full">
-              <FreeShippingProgressBar
-                total={total}
-                locale={locale}
-                currency={currency}
-                target={freeShippingTarget}
-              />
-            </div>
-
-            {/* Cart Items */}
             <ul
               role="list"
-              class="mt-6 px-2 flex-grow overflow-y-auto flex flex-col gap-6 w-full"
+              class="p-4 flex-grow overflow-y-auto flex flex-col gap-6 w-full"
             >
+              {freeShippingTarget
+                ? (
+                  <li class="p-2 w-full">
+                    <FreeShippingProgressBar
+                      total={total}
+                      locale={locale}
+                      currency={currency}
+                      target={freeShippingTarget}
+                      textTemplate={freeShippingTextTemplate}
+                    />
+                  </li>
+                )
+                : null}
+              {freebie
+                ? (
+                  <FreebieChoice
+                    freebie={freebie}
+                    subtotal={calcSubtotal}
+                    currency={currency}
+                    locale={locale}
+                  />
+                )
+                : null}
               {items.map((item, index) => (
                 <li key={index}>
                   <CartItem
@@ -90,59 +125,55 @@ function Cart({
                 </li>
               ))}
             </ul>
-
-            {/* Cart Footer */}
-            <footer class="w-full">
-              {/* Subtotal */}
-              <div class="border-t border-base-200 py-2 flex flex-col">
-                {discounts > 0 && (
-                  <div class="flex justify-between items-center px-4">
-                    <span class="text-sm">Descontos</span>
-                    <span class="text-sm">
-                      {formatPrice(discounts, currency, locale)}
-                    </span>
+            <footer class="w-full flex flex-col gap-4">
+              {calcSubtotal !== calcTotal
+                ? (
+                  <div class="flex flex-col gap-4 px-4 pt-4 border-t border-[#ccc]">
+                    <div class="w-full flex justify-between text-sm">
+                      <span>Subtotal</span>
+                      <span>
+                        {formatPrice(calcSubtotal / 100, currency, locale)}
+                      </span>
+                    </div>
+                    <Discounts
+                      discounts={discounts}
+                      currency={currency}
+                      locale={locale}
+                      totalDiscounts={totalDiscounts}
+                    />
                   </div>
-                )}
-                <div class="w-full flex justify-between px-4 text-sm">
-                  <span>Subtotal</span>
-                  <span class="px-4">
-                    {formatPrice(subtotal, currency, locale)}
+                )
+                : null}
+              <div class="border-t border-[#ccc] pt-4 mx-4 flex flex-col justify-end items-end gap-2">
+                <div class="flex justify-between items-start w-full font-medium">
+                  <span class="text-xl">Total</span>
+                  <span class="text-2xl">
+                    {formatPrice(calcTotal / 100, currency, locale)}
                   </span>
                 </div>
-                {onAddCoupon && (
-                  <Coupon onAddCoupon={onAddCoupon} coupon={coupon} />
-                )}
-              </div>
-
-              {/* Total */}
-              <div class="border-t border-base-200 pt-4 flex flex-col justify-end items-end gap-2 mx-4">
-                <div class="flex justify-between items-center w-full">
-                  <span>Total</span>
-                  <span class="font-medium text-xl">
-                    {formatPrice(total, currency, locale)}
-                  </span>
-                </div>
-                <span class="text-sm text-base-300">
-                  Taxas e fretes serão calculados no checkout
+                <span class="text-sm text-[#666]">
+                  Frete e descontos serão informados no checkout.
                 </span>
               </div>
-
-              <div class="p-4">
-                <a class="inline-block w-full" href={checkoutHref}>
+              <div class="flex flex-col px-4 pb-4 justify-stretch gap-2">
+                <a class="block" href={checkoutHref}>
                   <Button
                     data-deco="buy-button"
                     class="btn-primary btn-block"
-                    disabled={loading || isEmtpy}
+                    disabled={loading || isEmpty}
                     onClick={() => {
                       sendEvent({
                         name: "begin_checkout",
                         params: {
                           coupon,
                           currency,
-                          value: total - discounts,
-                          items: items
-                            .map((_, index) => itemToAnalyticsItem(index))
-                            .filter((x): x is AnalyticsItem => Boolean(x)),
+                          value: calcTotal,
+                          items: items.reduce<AnalyticsItem[]>((acc, item) => {
+                            if (item) {
+                              return [...acc, itemToAnalyticsItem(item.sku)!];
+                            }
+                            return acc;
+                          }, [] as AnalyticsItem[]),
                         },
                       });
                     }}
@@ -150,6 +181,14 @@ function Cart({
                     Fechar pedido
                   </Button>
                 </a>
+                <Button
+                  data-deco="buy-button"
+                  class="btn-accent btn-block"
+                  disabled={loading || isEmpty}
+                  onClick={onClose}
+                >
+                  Continuar comprando
+                </Button>
               </div>
             </footer>
           </>

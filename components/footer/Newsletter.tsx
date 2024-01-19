@@ -63,12 +63,12 @@ function Newsletter(
         >
           <input
             name="email"
-            class="flex-auto md:flex-none md:max-w-xs w-full input-bordered input-accent input min-h-[36px] h-[36px] text-secondary-content bg-secondary placeholder:text-secondary-content"
+            class="flex-auto md:flex-none md:max-w-xs w-auto input-bordered input-accent input text-secondary-content bg-secondary placeholder:text-secondary-content"
             placeholder={content?.form?.placeholder || "Digite seu email"}
           />
           <button
             type="submit"
-            class="btn btn-accent md: min-h-[36px] h-[36px] group disabled:bg-white text-base"
+            class="btn btn-accent group disabled:bg-white text-base"
             disabled={loading}
           >
             <span class="group-disabled:loading group-disabled:text-black">

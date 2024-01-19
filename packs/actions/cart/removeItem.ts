@@ -11,7 +11,7 @@ const action = async (
   props: Props,
   req: Request,
   ctx: AppContext,
-): Promise<Bag | null> => {
+): Promise<Bag | undefined> => {
   const {
     sku,
   } = props;
@@ -31,11 +31,9 @@ const action = async (
         },
       );
 
-    const bag = await response.json();
+    const { data } = await response.json();
 
-    if (bag) return bag.data;
-
-    return null;
+    return data;
   } catch (error) {
     console.error(error);
 

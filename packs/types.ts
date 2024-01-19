@@ -17,10 +17,25 @@ export interface Bag {
   items: Item[];
   subtotal: number;
   total: number;
-  discounts: string[];
+  discounts: Discount[];
+  coupon: string;
   freebie: Freebie;
-  childBags: string[];
+  childBags: unknown[];
   withDeliverySplit: boolean;
+}
+
+export interface Discount {
+  type: string;
+  message: string;
+  value: number;
+  items?: DiscountItem[];
+}
+
+export interface DiscountItem {
+  amount: number;
+  id: string;
+  title: string;
+  value: number;
 }
 
 export interface Session {
@@ -31,16 +46,24 @@ export interface Session {
 export interface Freebie {
   eligible: boolean;
   active: boolean;
-  items: string[];
-  drawerText: string;
+  items: FreebieItem[];
+  drawerText: string | null;
   drawerImage: string;
   vmLink: string;
-  subtotalToActivate: string;
-  valueToReach: string;
+  subtotalToActivate: number;
+  valueToReach: number;
   selectedFreebie: string;
 }
 
-interface Item {
+export interface FreebieItem {
+  title: string;
+  image: string;
+  drawerText: string;
+  sku: string;
+  vmLink: string;
+}
+
+export interface Item {
   id: string;
   productId: string;
   sku: string;
@@ -75,7 +98,7 @@ interface Item {
   cashback?: boolean;
   photos: Photos;
 }
-interface Photos {
+export interface Photos {
   still: string;
   semiEnvironment: string;
   environment: string;
@@ -83,29 +106,29 @@ interface Photos {
   details: Detail[];
   panoramics: string[];
 }
-interface Detail {
+export interface Detail {
   url: string;
 }
-interface Banner {
+export interface Banner {
   background?: boolean;
   foreground?: boolean;
   width: number;
   height: number;
 }
-interface Price {
+export interface Price {
   min: number;
   max: number;
 }
-interface Color {
+export interface Color {
   id: string;
   name: string;
   hex: string;
 }
-interface Segment {
+export interface Segment {
   id: string;
   name: string;
 }
-interface Brand {
+export interface Brand {
   id: string;
   name: string;
   logo: string;
