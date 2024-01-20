@@ -1,7 +1,14 @@
-import { Bag, BagItems } from "$store/packs/types.ts";
+import { Bag, BagItems, Config } from "$store/packs/types.ts";
 export default interface Ammo {
   "GET /api/bag": {
     response: Bag;
+    headers: {
+      "x-ammo-device-id": string;
+      "x-api-key": string;
+    };
+  };
+  "GET /api/config": {
+    response: Config;
     headers: {
       "x-ammo-device-id": string;
       "x-api-key": string;
