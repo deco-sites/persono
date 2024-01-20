@@ -13,11 +13,6 @@ export interface Props {
    * @description Listar produtos presentes nesta VM. É possível usar filtros de categoria, tamanho, marca etc personalizados
    */
   vm?: VM;
-  /**
-   * @title Filtros
-   * @description Filtros da VM
-   */
-  filters?: Filters[];
 }
 
 interface VM {
@@ -28,9 +23,10 @@ interface VM {
    */
   path: string;
   /**
-   * @title Número da página
+   * @title Filtros
+   * @description Filtros da VM
    */
-  page: number;
+  filters?: Filters[];
 }
 
 interface Filters {
@@ -45,6 +41,11 @@ interface Filters {
   slugs: string[];
 }
 
+interface VmProps {
+  path: string[];
+  searchParams: string[];
+}
+
 /**
  * @title Ammo Varejo - Página de Listagem de Produtos
  * @description Funciona em páginas de categoria em rotas do tipo /vm/$categoria.
@@ -53,18 +54,25 @@ const loader = async (
   props: Props,
   req: Request,
   ctx: AppContext,
-): Promise<ProductListingPage> => {
+): Promise<ProductListingPage | null> => {
   const { publicUrl, ammoDeviceId, ammoToken, installmentConfig } = ctx;
   const { vm } = props;
   const url = new URL(req.url);
   const path = paths(publicUrl);
 
+  const vmProps = vm?.filters?.reduce<VmProps>((acc, f) => {
+    return {
+      path: [...acc.path, f?.slugs[0]],
+      searchParams: [...acc.searchParams, ...f?.slugs?.slice(1)?.map((s) => s)],
+    };
+  }, { path: [formatBaseVmPath(vm?.path ?? url.pathname)], searchParams: [] });
 
   const vmDetails = await fetchAPI<VMDetails>(
     path.productCatalog.resolveRoute({
-      path: vm?.path ?? url.pathname,
-      page: vm?.page ?? Number(url.searchParams.get("page")) ?? 1,
-      f: url.searchParams.get("f") ?? undefined,
+      path: vmProps!.path.join("/"),
+      page: Number(url.searchParams.get("page")) ?? 1,
+      f: vmProps?.searchParams.join("_") ?? url.searchParams.get("f") ??
+        undefined,
     }),
     {
       method: "GET",
@@ -73,9 +81,18 @@ const loader = async (
         ammoTokenValue: ammoToken!,
       }),
     },
-  );
+  ).then((vm) => vm)
+    .catch(() => null);
+
+  if (!vmDetails) return null;
 
   return toProductListingPage({ vmDetails, url, installmentConfig });
+};
+
+const formatBaseVmPath = (str: string) => {
+  str = str.startsWith("/") ? str : "/" + str;
+  str = str.endsWith("/") ? str.slice(0, -1) : str;
+  return str;
 };
 
 export default loader;
