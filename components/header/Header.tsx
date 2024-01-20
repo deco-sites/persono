@@ -52,7 +52,7 @@ function Header({
       <header class="h-[120px]" data-header>
         <div class="fixed top-0 left-0 w-full z-30 ">
           <Alert alerts={alerts} />
-          <div class="border-b border-t border-base-200 bg-base-100 w-full">
+          <div class="border-b border-t border-base-300 bg-base-100 w-full">
             <Navbar
               items={items}
               searchbar={searchbar && { ...searchbar, platform }}
