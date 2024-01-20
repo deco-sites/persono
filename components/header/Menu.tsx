@@ -20,7 +20,7 @@ export interface SiteNavigationElementLeaf {
 }
 
 export interface SiteNavigationElement extends SiteNavigationElementLeaf {
-  children?: Omit<SiteNavigationElement, 'image'>[];
+  children?: Omit<SiteNavigationElement, "image">[];
 }
 
 export type FastLink = Omit<SiteNavigationElementLeaf, "image"> & {
