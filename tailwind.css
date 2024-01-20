@@ -37,6 +37,9 @@
   .btn-accent {
     border: 1px solid #ccc;
   }
+  .btn-ghost:hover {
+    background-color: transparent;
+  }
   .input {
     height: 36px;
     min-height: 36px;

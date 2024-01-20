@@ -41,6 +41,8 @@ function Cart({ hiddenDiscounts = [], freeShipping, onClose }: Props) {
         quantity: item.amount,
         name: item.title,
         sku: item.sku,
+        stock: item.stock,
+        size: item.size,
         price: {
           sale: item.price.min,
           list: item.price.max,
