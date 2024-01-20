@@ -20,7 +20,7 @@ export interface SiteNavigationElementLeaf {
 }
 
 export interface SiteNavigationElement extends SiteNavigationElementLeaf {
-  children?: SiteNavigationElementLeaf[];
+  children?: Omit<SiteNavigationElement, 'image'>[];
 }
 
 export type FastLink = Omit<SiteNavigationElementLeaf, "image"> & {
@@ -28,6 +28,7 @@ export type FastLink = Omit<SiteNavigationElementLeaf, "image"> & {
 };
 
 export interface Props {
+  /** @description Recomended to max of 2 children trees */
   items?: SiteNavigationElement[];
   fastLinks?: FastLink[];
   socialItems?: SocialItem[];

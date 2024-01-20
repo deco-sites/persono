@@ -12,7 +12,7 @@ function NavItem({ item }: { item: SiteNavigationElement }) {
         <span class="group-hover:text-primary uppercase">
           {label}
         </span>
-        {children && children.length > 0
+        {children?.length
           ? (
             <>
               <Icon
@@ -26,16 +26,27 @@ function NavItem({ item }: { item: SiteNavigationElement }) {
           : null}
       </a>
 
-      {children && children.length > 0 &&
+      {!!children?.length &&
         (
           <>
-            <div class="-z-10 shadow-[0px_1px_5px_0px_rgba(0,0,0,0.14)] border-t border-base-200 left-1/2 top-full -translate-x-1/2 w-[85%] absolute hidden hover:flex group-hover:flex bg-base-100 items-start self-stretch justify-between gap-6 py-10 px-20 rounded-b-[20px]">
-              <ul class="flex flex-col justify-start gap-5 py-2">
+            <div class="-z-10 border-t border-base-200 left-1/2 top-full -translate-x-1/2 w-[85%] absolute hidden hover:flex group-hover:flex bg-base-100 items-stretch self-stretch justify-between gap-6 py-10 px-20 rounded-b-[20px] shadow-[0px_1px_5px_0px_rgba(0,0,0,0.14)]">
+              <ul class="flex flex-col justify-start gap-2 py-2 relative">
                 {children.map((node) => (
-                  <li class="">
-                    <a class="hover:text-primary" href={node.url}>
+                  <li class="group/item leading-8 hover:text-primary">
+                    <a class="pr-10" href={node.url}>
                       {node.label}
                     </a>
+                    {!!node.children?.length && (
+                      <ul class="py-2 pl-8 text-[#666] h-full absolute left-full top-0 group-hover/item:flex flex-col justify-start gap-2 hidden border-l border-[#ccc]">
+                        {node.children.map((node) => (
+                          <li class="leading-2">
+                            <a class="hover:text-black" href={node.url}>
+                              {node.label}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </li>
                 ))}
               </ul>
