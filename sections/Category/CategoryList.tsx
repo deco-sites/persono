@@ -9,7 +9,6 @@ import { Picture, Source } from "apps/website/components/Picture.tsx";
 
 export interface Category {
   label: string;
-  description: string;
   href: string;
   image: ImageWidget;
 }
@@ -17,7 +16,6 @@ export interface Category {
 export interface Props {
   header?: {
     title?: string;
-    description?: string;
   };
   list?: Category[];
 }
@@ -27,13 +25,11 @@ function CategoryList(props: Props) {
   const {
     header = {
       title: "",
-      description: "",
     },
     list = [
       {
         tag: "10% off",
         label: "Feminino",
-        description: "Moda feminina direto de Milão",
         href: "/feminino",
         image:
           "https://ik.imagekit.io/decocx/tr:w-680,h-680/https:/ozksgdmyrqcxcwhnbepg.supabase.co/storage/v1/object/public/assets/239/fdcb3c8f-d629-485e-bf70-8060bd8a9f65",
@@ -59,7 +55,7 @@ function CategoryList(props: Props) {
         </Slider.PrevButton>
         <Slider class="flex carousel carousel-start gap-6 lg:gap-14">
           {list.map((
-            { label, description, href, image },
+            { label, href, image },
             index,
           ) => (
             <Slider.Item
@@ -86,7 +82,6 @@ function CategoryList(props: Props) {
                     />
                     <img
                       src={image}
-                      alt={description}
                       width={220}
                       height={268}
                       loading="lazy"
