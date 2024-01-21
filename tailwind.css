@@ -44,6 +44,12 @@
     height: 36px;
     min-height: 36px;
   }
+  .link {
+    text-decoration: none;
+  }
+  .link:hover {
+    color: oklch(var(--p))
+  }
 }
 
 .group:disabled .group-disabled\:animate-progress {

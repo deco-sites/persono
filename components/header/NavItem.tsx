@@ -61,7 +61,7 @@ function NavItem({ item }: { item: SiteNavigationElement }) {
                 />
               )}
             </div>
-            <div class="group-hover:block hidden absolute w-screen h-screen bg-black opacity-[15%] top-0 left-0 -translate-x-[7%] -z-20 pointer-events-none" />
+            <div class="group-hover:block hidden absolute w-[200%] h-screen bg-black opacity-[15%] top-0 left-0 -translate-x-[7%] -z-20 pointer-events-none" />
           </>
         )}
     </li>

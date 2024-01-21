@@ -1,16 +1,16 @@
 import { IS_BROWSER } from "$fresh/runtime.ts";
 import type { Props as MenuProps } from "$store/components/header/Menu.tsx";
 import Cart from "$store/components/minicart/Cart.tsx";
-import type { Props as SearchbarProps } from "$store/components/search/Searchbar.tsx";
+import type { EditableProps as SearchbarProps } from "$store/components/search/Searchbar.tsx";
 import Drawer from "$store/components/ui/Drawer.tsx";
 import { usePlatform } from "$store/sdk/usePlatform.tsx";
 import { useUI } from "$store/sdk/useUI.ts";
+import type { EditableProps as CartProps } from "deco-sites/persono/components/minicart/Cart.tsx";
 import type { ComponentChildren } from "preact";
 import { lazy, Suspense, useEffect } from "preact/compat";
-import type { EditableProps as CartProps } from "deco-sites/persono/components/minicart/Cart.tsx";
 
 const Menu = lazy(() => import("$store/components/header/Menu.tsx"));
-const Searchbar = lazy(() => import("$store/components/search/Searchbar.tsx"));
+const SearchBar = lazy(() => import("$store/components/search/Searchbar.tsx"));
 
 export interface Props {
   menu: MenuProps;
@@ -104,7 +104,7 @@ function Drawers({ menu, searchbar, cart, children, platform }: Props) {
               ? <Cart {...cart} onClose={() => displayCart.value = false} />
               : null}
             {searchbar && displaySearchDrawer.value && (
-              <Searchbar {...searchbar} />
+              <SearchBar withHeader {...searchbar} />
             )}
           </Aside>
         }

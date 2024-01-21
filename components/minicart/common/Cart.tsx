@@ -12,6 +12,7 @@ import Icon from "deco-sites/persono/components/ui/Icon.tsx";
 import { Discount } from "deco-sites/persono/packs/types.ts";
 import CartItem, { Item, Props as ItemProps } from "./CartItem.tsx";
 import FreeShippingProgressBar from "./FreeShippingProgressBar.tsx";
+import { DrawerHeader } from "deco-sites/persono/components/ui/DrawerHeader.tsx";
 
 interface Props {
   items: Item[];
@@ -25,7 +26,7 @@ interface Props {
   freeShippingTarget?: number;
   freeShippingTextTemplate?: string;
   checkoutHref: string;
-  onClose?: () => void;
+  onClose: () => void;
   onUpdateQuantity: ItemProps["onUpdateQuantity"];
   itemToAnalyticsItem: ItemProps["itemToAnalyticsItem"];
 }
@@ -59,15 +60,10 @@ function Cart({
 
   return (
     <div class="flex w-full h-full flex-col justify-center items-center overflow-hidden">
-      <header class="flex justify-between items-center px-4 py-2 border-b border-[#ccc] w-full">
-        <h3 class="text-xl font-medium">Minha sacola</h3>
-        <Button
-          class="btn-ghost btn-circle btn-sm hover:text-primary"
-          onClick={onClose}
-        >
-          <Icon id="XMark" size={20} strokeWidth={2} />
-        </Button>
-      </header>
+      <DrawerHeader
+        title="Minha sacola"
+        onClose={onClose}
+      />
       {isEmpty
         ? (
           <div class="p-4 flex-grow flex flex-col w-full items-center">

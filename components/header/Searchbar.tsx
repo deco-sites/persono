@@ -1,7 +1,6 @@
 import Searchbar, {
-  Props as SearchbarProps,
+  EditableProps as SearchbarProps,
 } from "$store/components/search/Searchbar.tsx";
-import Modal from "$store/components/ui/Modal.tsx";
 import { useUI } from "$store/sdk/useUI.ts";
 
 export interface Props {
@@ -16,15 +15,13 @@ function SearchbarModal({ searchbar }: Props) {
   }
 
   return (
-    <Modal
-      loading="lazy"
-      open={displaySearchPopup.value}
-      onClose={() => displaySearchPopup.value = false}
+    <div
+      class={`${
+        !displaySearchPopup.value ? "-translate-y-full" : "translate-x-[1px]"
+      } absolute w-full bg-base-100 left-0 top-full transition-transform duration-300 -z-10 shadow-[0px_1px_5px_0px_rgba(0,0,0,0.14)]`}
     >
-      <div class="absolute top-0 bg-base-100 container top-full">
-        <Searchbar {...searchbar} />
-      </div>
-    </Modal>
+      <Searchbar {...searchbar} />
+    </div>
   );
 }
 
