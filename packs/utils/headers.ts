@@ -1,14 +1,17 @@
 import { getCookies } from "std/http/mod.ts";
-import { AMMO_DEVICE_ID_HEADER } from "$store/packs/constants.ts";
+import {
+  AMMO_DEVICE_ID_HEADER,
+  AMMO_TOKEN_HEADER,
+} from "$store/packs/constants.ts";
 
 export function getHeaders(
   req: Request,
   apiKey: string,
-  urlenconded = false,
+  urlenconded?: boolean,
 ) {
   const cookies = getCookies(req.headers);
   const deviceId = cookies[AMMO_DEVICE_ID_HEADER];
-  const token = cookies["X-Ammo-Token:"];
+  const token = cookies[AMMO_TOKEN_HEADER];
 
   const headers = new Headers({
     "x-api-key": apiKey,
