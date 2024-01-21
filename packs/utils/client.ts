@@ -1,4 +1,9 @@
-import { Bag, BagItems, Config } from "$store/packs/types.ts";
+import {
+  Bag,
+  BagItems,
+  Config,
+  ShippingSimulation,
+} from "$store/packs/types.ts";
 export default interface Ammo {
   "GET /api/bag": {
     response: Bag;
@@ -45,5 +50,14 @@ export default interface Ammo {
     body: {
       coupon: string;
     };
+  };
+  "POST /api/bag/shipping/product-page": {
+    response: ShippingSimulation;
+    headers: {
+      "x-ammo-device-id": string;
+      "x-api-key": string;
+      "Content-Type": "application/x-www-form-urlencoded";
+    };
+    body: URLSearchParams;
   };
 }
