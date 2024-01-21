@@ -65,7 +65,7 @@ function CartItem(
         fit="contain"
         class="rounded overflow-hidden"
       />
-      <div class="flex flex-col gap-6">
+      <div class="flex flex-col flex-grow gap-6">
         <div class="relative flex flex-col gap-1">
           <p class="text-base">{name}</p>
           <p class="text-sm capitalize">Tamanho {size}</p>
@@ -82,11 +82,10 @@ function CartItem(
           disabled={loading}
           quantity={quantity}
           onChange={withLoading(async (quantity) => {
-            const analyticsItem = itemToAnalyticsItem(item.sku);
-            const diff = quantity - item.quantity;
-
             await onUpdateQuantity(quantity, item.sku);
 
+            const analyticsItem = itemToAnalyticsItem(item.sku);
+            const diff = quantity - item.quantity;
             if (analyticsItem) {
               sendEvent({
                 name: diff < 0 ? "remove_from_cart" : "add_to_cart",
@@ -98,6 +97,24 @@ function CartItem(
           })}
         />
       </div>
+      <Button
+        class="btn-circle btn-ghost hover:text-error w-4"
+        onClick={withLoading(async () => {
+          await onUpdateQuantity(0, item.sku);
+
+          const analyticsItem = itemToAnalyticsItem(item.sku);
+          if (analyticsItem) {
+            sendEvent({
+              name: "remove_from_cart",
+              params: {
+                items: [{ ...analyticsItem, quantity: 0 }],
+              },
+            });
+          }
+        })}
+      >
+        <Icon id="Trash" size={20} />
+      </Button>
     </div>
   );
 }
