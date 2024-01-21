@@ -3,12 +3,14 @@ import {
   BagItems,
   Config,
   ShippingSimulation,
+  UserInfo,
 } from "$store/packs/types.ts";
 export default interface Ammo {
   "GET /api/bag": {
     response: Bag;
     headers: {
       "x-ammo-device-id": string;
+      "x-ammo-token"?: string;
       "x-api-key": string;
     };
   };
@@ -17,6 +19,7 @@ export default interface Ammo {
     headers: {
       "x-ammo-device-id": string;
       "x-api-key": string;
+      "x-ammo-token"?: string;
     };
   };
   "PUT /api/bag/item": {
@@ -24,6 +27,7 @@ export default interface Ammo {
     headers: {
       "x-ammo-device-id": string;
       "x-api-key": string;
+      "x-ammo-token"?: string;
     };
     body: BagItems[];
   };
@@ -32,6 +36,7 @@ export default interface Ammo {
     headers: {
       "x-ammo-device-id": string;
       "x-api-key": string;
+      "x-ammo-token"?: string;
     };
   };
   "POST /api/bag/coupon/remove": {
@@ -39,6 +44,7 @@ export default interface Ammo {
     headers: {
       "x-ammo-device-id": string;
       "x-api-key": string;
+      "x-ammo-token"?: string;
     };
   };
   "POST /api/bag/coupon": {
@@ -46,6 +52,7 @@ export default interface Ammo {
     headers: {
       "x-ammo-device-id": string;
       "x-api-key": string;
+      "x-ammo-token"?: string;
     };
     body: {
       coupon: string;
@@ -56,8 +63,17 @@ export default interface Ammo {
     headers: {
       "x-ammo-device-id": string;
       "x-api-key": string;
+      "x-ammo-token"?: string;
       "Content-Type": "application/x-www-form-urlencoded";
     };
     body: URLSearchParams;
+  };
+  "GET /api/user": {
+    response: UserInfo;
+    headers: {
+      "x-ammo-device-id": string;
+      "x-api-key": string;
+      "x-ammo-token": string;
+    };
   };
 }
