@@ -3,13 +3,16 @@
 // This file is automatically updated during development when running `dev.ts`.
 
 import * as $$$0 from "./loaders/product/productList.ts";
-import * as $$$1 from "./loaders/Layouts/ProductCard.tsx";
-import * as $$$2 from "./loaders/List/Sections.tsx";
-import * as $$$3 from "./loaders/actions/cart/removeItem.ts";
-import * as $$$4 from "./loaders/actions/cart/addCoupon.ts";
-import * as $$$5 from "./loaders/actions/cart/addItem.ts";
-import * as $$$6 from "./loaders/actions/cart/removeCoupon.ts";
-import * as $$$7 from "./loaders/cart.ts";
+import * as $$$1 from "./loaders/userInfo.ts";
+import * as $$$2 from "./loaders/Layouts/ProductCard.tsx";
+import * as $$$3 from "./loaders/List/Sections.tsx";
+import * as $$$4 from "./loaders/actions/cart/removeItem.ts";
+import * as $$$5 from "./loaders/actions/cart/addCoupon.ts";
+import * as $$$6 from "./loaders/actions/cart/addItem.ts";
+import * as $$$7 from "./loaders/actions/cart/removeCoupon.ts";
+import * as $$$8 from "./loaders/config.ts";
+import * as $$$9 from "./loaders/cart.ts";
+import * as $$$10 from "./loaders/shippingSimulation.ts";
 import * as $$$$$$0 from "./sections/Gallery.tsx";
 import * as $$$$$$1 from "./sections/Footer/Footer.tsx";
 import * as $$$$$$2 from "./sections/Category/CategoryBanner.tsx";
@@ -50,14 +53,17 @@ import * as $$$$$$$$$$$1 from "./apps/site.ts";
 
 const manifest = {
   "loaders": {
-    "deco-sites/persono/loaders/actions/cart/addCoupon.ts": $$$4,
-    "deco-sites/persono/loaders/actions/cart/addItem.ts": $$$5,
-    "deco-sites/persono/loaders/actions/cart/removeCoupon.ts": $$$6,
-    "deco-sites/persono/loaders/actions/cart/removeItem.ts": $$$3,
-    "deco-sites/persono/loaders/cart.ts": $$$7,
-    "deco-sites/persono/loaders/Layouts/ProductCard.tsx": $$$1,
-    "deco-sites/persono/loaders/List/Sections.tsx": $$$2,
+    "deco-sites/persono/loaders/actions/cart/addCoupon.ts": $$$5,
+    "deco-sites/persono/loaders/actions/cart/addItem.ts": $$$6,
+    "deco-sites/persono/loaders/actions/cart/removeCoupon.ts": $$$7,
+    "deco-sites/persono/loaders/actions/cart/removeItem.ts": $$$4,
+    "deco-sites/persono/loaders/cart.ts": $$$9,
+    "deco-sites/persono/loaders/config.ts": $$$8,
+    "deco-sites/persono/loaders/Layouts/ProductCard.tsx": $$$2,
+    "deco-sites/persono/loaders/List/Sections.tsx": $$$3,
     "deco-sites/persono/loaders/product/productList.ts": $$$0,
+    "deco-sites/persono/loaders/shippingSimulation.ts": $$$10,
+    "deco-sites/persono/loaders/userInfo.ts": $$$1,
   },
   "sections": {
     "deco-sites/persono/sections/Animation/Animation.tsx": $$$$$$12,
