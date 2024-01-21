@@ -825,3 +825,39 @@ export interface Duration {
   start: string;
   end: string;
 }
+
+export interface ShippingSimulation {
+  addressForPostalCode: AddressForPostalCode;
+  shippingOptions: ShippingOption[];
+  Bag: Bag;
+}
+
+export interface AddressForPostalCode {
+  postalCode: string;
+  state: string;
+  cityId: number;
+  city: string;
+  district: string;
+  address: string;
+  createdAt: string;
+  deletedAt: string;
+}
+
+export interface ShippingOption {
+  shippingMethod: ShippingMethod;
+  cost: number;
+  businessDaysUntilDelivery: number;
+  minBusinessDaysUntilDelivery: number;
+  maxBusinessDaysUntilDelivery: number;
+}
+
+export interface ShippingMethod {
+  id: string;
+  name: string;
+  icon: string;
+  group: string;
+  site: string;
+  idERP: number;
+  category: string;
+  active: boolean;
+}
