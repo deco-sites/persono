@@ -1,27 +1,14 @@
-/**
- * We use a custom route at /s?q= to perform the search. This component
- * redirects the user to /s?q={term} when the user either clicks on the
- * button or submits the form. Make sure this page exists in deco.cx/admin
- * of yout site. If not, create a new page on this route and add the appropriate
- * loader.
- *
- * Note that this is the most performatic way to perform a search, since
- * no JavaScript is shipped to the browser!
- */
-
-import ProductCard from "$store/components/product/ProductCard.tsx";
 import Button from "$store/components/ui/Button.tsx";
 import Icon from "$store/components/ui/Icon.tsx";
-import Slider from "$store/components/ui/Slider.tsx";
 import { sendEvent } from "$store/sdk/analytics.tsx";
 import { useId } from "$store/sdk/useId.ts";
 import { useSuggestions } from "$store/sdk/useSuggestions.ts";
 import { useUI } from "$store/sdk/useUI.ts";
 import { Product, Suggestion } from "apps/commerce/types.ts";
+import { SuggestionResult } from "deco-sites/persono/components/search/SuggestionResult.tsx";
+import { DrawerHeader } from "deco-sites/persono/components/ui/DrawerHeader.tsx";
 import { Resolved } from "deco/engine/core/resolver.ts";
 import { useEffect, useRef } from "preact/compat";
-import { DrawerHeader } from "deco-sites/persono/components/ui/DrawerHeader.tsx";
-import He120PinV135 from "https://esm.sh/he@1.2.0?pin=v135";
 
 interface Link {
   label: string;
@@ -81,7 +68,7 @@ function Searchbar({
   },
 }: Props) {
   const id = useId();
-  const { displaySearchPopup } = useUI();
+  const { displaySearchPopup, displaySearchDrawer } = useUI();
   const searchInputRef = useRef<HTMLInputElement>(null);
   const { setQuery, payload, loading, called, query } = useSuggestions(loader);
   const { products: payloadProducts = [], searches: payloadSearches = [] } =
@@ -103,25 +90,30 @@ function Searchbar({
   const hasTerms = Boolean(searches.length);
 
   useEffect(() => {
-    if (displaySearchPopup.value === true) {
-      searchInputRef.current?.focus();
+    if (
+      displaySearchPopup.value === true || displaySearchDrawer.value === true
+    ) {
+      setTimeout(() => searchInputRef.current?.focus(), 500);
     }
-  }, [displaySearchPopup.value]);
+  }, [displaySearchPopup.value, displaySearchDrawer.value]);
 
   return (
     <div
-      class="container grid gap-8 px-4 py-6 overflow-y-hidden"
+      class="container lg:gap-8 gap-6 overflow-y-auto lg:overflow-y-hidden flex flex-col lg:py-6 pb-4"
       style={{ gridTemplateRows: "min-content auto" }}
     >
       {withHeader
         ? (
           <DrawerHeader
             title="Buscar"
-            onClose={() => displaySearchPopup.value = false}
+            onClose={() => {
+              displaySearchPopup.value = false;
+              displaySearchDrawer.value = false;
+            }}
           />
         )
         : null}
-      <div class="flex justify-start items-center gap-4">
+      <div class="flex justify-start items-center gap-4 lg:px-0 px-4 -mt-2 lg:mt-0">
         <form
           id={id}
           action={action}
@@ -164,7 +156,7 @@ function Searchbar({
             ? (
               <Button
                 type="button"
-                class="join-item btn-ghost btn-circle hidden lg:inline-flex hover:text-primary"
+                class="join-item btn-ghost btn-circle hover:text-primary"
                 onClick={() => searchInputRef.current!.value = ""}
               >
                 limpar
@@ -180,66 +172,46 @@ function Searchbar({
           <Icon id="XMark" size={24} strokeWidth={2} />
         </Button>
       </div>
-
-      <div
-        class={`overflow-y-scroll ${!hasProducts && !hasTerms ? "hidden" : ""}`}
-      >
-        <div class="gap-12 grid grid-cols-1 sm:grid-rows-1 sm:grid-cols-[224px_1fr]">
-          <div class="flex flex-col gap-4">
-            <h3 class="text-base">
-              {called.value ? "Sugestões" : termsTitle}
-            </h3>
-            <ul id="search-suggestion" class="flex flex-col gap-2">
-              {searches.map(({ term }) => (
-                <li>
-                  <a href={`/s?q=${term}`} class="flex gap-4 items-center link">
-                    <span>
-                      <Icon
-                        id={called.value ? "MagnifyingGlass" : "ArrowRight"}
-                        size={20}
-                        class="text-[#666]"
-                      />
-                    </span>
-                    <span
-                      class="text-sm"
-                      dangerouslySetInnerHTML={{
-                        __html: called.value
-                          ? term.replace(
-                            new RegExp(`/${term}/g`),
-                            `<strong>${term}</strong`,
-                          )
-                          : term,
-                      }}
-                    />
-                  </a>
-                </li>
-              ))}
+      {loading.value
+        ? (
+          <div class="flex lg:flex-row flex-col gap-12 px-4">
+            <ul class="flex flex-col gap-4 max-w-[224px] w-full">
+              <li class="skeleton w-40 h-4"></li>
+              <li class="skeleton w-32 h-4 mt-2"></li>
+              <li class="skeleton w-32 h-4"></li>
+              <li class="skeleton w-32 h-4"></li>
             </ul>
+            <div class="flex flex-col gap-5 w-full">
+              <ul class="flex justify-between">
+                <li class="skeleton w-40 h-4"></li>
+                <li class="skeleton w-20 h-4"></li>
+              </ul>
+              <ul class="flex justify-between gap-8 w-full overflow-x-hidden">
+                {Array.from({ length: 5 }).map(() => (
+                  <li class="flex flex-col gap-2.5">
+                    <div class="skeleton w-36 h-52"></div>
+                    <ul class="flex flex-col gap-1">
+                      <li class="skeleton w-36 h-4"></li>
+                      <li class="skeleton w-1/2 h-4"></li>
+                      <li class="skeleton w-1/2 h-4"></li>
+                    </ul>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
-          <div class="flex flex-col pt-4 md:pt-0 gap-6 overflow-x-hidden">
-            <h3 class="text-base flex justify-between items-center">
-              <span>{called.value ? "Produtos sugeridos" : productsTitle}</span>
-              <a href={`${action}?${name}=${query.value}`} class="text-sm link">
-                Ver todos
-              </a>
-            </h3>
-            <Slider class="carousel">
-              {products.map((product, index) => (
-                <Slider.Item
-                  index={index}
-                  class="carousel-item first:ml-4 last:mr-4 min-w-[200px] max-w-[200px]"
-                >
-                  <ProductCard
-                    product={product}
-                    index={index}
-                    itemListName="Suggeestions"
-                  />
-                </Slider.Item>
-              ))}
-            </Slider>
-          </div>
-        </div>
-      </div>
+        )
+        : (
+          <SuggestionResult
+            showNotFound={!hasProducts && !hasTerms}
+            showDefaultValue={!called.value}
+            termsTitle={termsTitle}
+            searches={searches}
+            productsTitle={productsTitle}
+            products={products}
+            generalLink={`${action}?${name}=${query.value}`}
+          />
+        )}
     </div>
   );
 }

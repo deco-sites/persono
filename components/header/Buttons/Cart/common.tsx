@@ -12,7 +12,7 @@ interface Props {
 }
 
 function CartButton({ loading, currency, total, items }: Props) {
-  const { displayCart } = useUI();
+  const { displayCart, displayMenu } = useUI();
   const totalItems = items.length;
 
   const onClick = () => {
@@ -21,6 +21,7 @@ function CartButton({ loading, currency, total, items }: Props) {
       params: { currency, value: total, items },
     });
     displayCart.value = true;
+    displayMenu.value = false;
   };
 
   return (

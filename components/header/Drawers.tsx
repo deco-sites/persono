@@ -1,6 +1,5 @@
 import { IS_BROWSER } from "$fresh/runtime.ts";
 import type { Props as MenuProps } from "$store/components/header/Menu.tsx";
-import Cart from "$store/components/minicart/Cart.tsx";
 import type { EditableProps as SearchbarProps } from "$store/components/search/Searchbar.tsx";
 import Drawer from "$store/components/ui/Drawer.tsx";
 import { usePlatform } from "$store/sdk/usePlatform.tsx";
@@ -11,6 +10,7 @@ import { lazy, Suspense, useEffect } from "preact/compat";
 
 const Menu = lazy(() => import("$store/components/header/Menu.tsx"));
 const SearchBar = lazy(() => import("$store/components/search/Searchbar.tsx"));
+const Cart = lazy(() => import("$store/components/minicart/Cart.tsx"));
 
 export interface Props {
   menu: MenuProps;
@@ -78,19 +78,20 @@ function Drawers({ menu, searchbar, cart, children, platform }: Props) {
   }, []);
 
   return (
-    <Drawer // left drawer
-      open={displayMenu.value}
-      onClose={() => {
-        displayMenu.value = false;
-      }}
-      class="menu-drawer"
-      showHeader
-      aside={
-        <Aside>
-          <Menu {...menu} />
-        </Aside>
-      }
-    >
+    <>
+      <Drawer // left drawer
+        open={displayMenu.value}
+        onClose={() => {
+          displayMenu.value = false;
+        }}
+        class="menu-drawer"
+        showHeader
+        aside={
+          <Aside>
+            <Menu {...menu} />
+          </Aside>
+        }
+      />
       <Drawer // right drawer
         class="drawer-end"
         open={displayCart.value || displaySearchDrawer.value}
@@ -100,18 +101,16 @@ function Drawers({ menu, searchbar, cart, children, platform }: Props) {
         }}
         aside={
           <Aside>
+            {displaySearchDrawer.value
+              ? <SearchBar withHeader {...searchbar!} />
+              : null}
             {displayCart.value
               ? <Cart {...cart} onClose={() => displayCart.value = false} />
               : null}
-            {searchbar && displaySearchDrawer.value && (
-              <SearchBar withHeader {...searchbar} />
-            )}
           </Aside>
         }
-      >
-        {children}
-      </Drawer>
-    </Drawer>
+      />
+    </>
   );
 }
 
