@@ -1,7 +1,6 @@
 import { ShippingSimulation } from "$store/packs/types.ts";
 import { AppContext } from "$store/apps/site.ts";
-import { getCookies } from "std/http/mod.ts";
-import { AMMO_DEVICE_ID_HEADER } from "$store/packs/constants.ts";
+import { getHeaders } from "$store/packs/utils/headers.ts";
 
 export interface Props {
   postalCode: string;
@@ -13,8 +12,7 @@ const loader = async (
   ctx: AppContext,
 ): Promise<ShippingSimulation> => {
   const { ammoc, apiKey } = ctx;
-  const cookies = getCookies(req.headers);
-  const deviceId = cookies[AMMO_DEVICE_ID_HEADER];
+  const headers = getHeaders(req, apiKey, true);
 
   const params = new URLSearchParams();
 
@@ -29,11 +27,7 @@ const loader = async (
           body: params,
         },
         {
-          headers: {
-            "x-api-key": apiKey,
-            "x-ammo-device-id": deviceId,
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
+          headers: headers,
         },
       );
 

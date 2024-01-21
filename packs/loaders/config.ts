@@ -1,8 +1,7 @@
 // deno-lint-ignore-file no-explicit-any
 import { AppContext } from "$store/apps/site.ts";
-import { getCookies } from "std/http/mod.ts";
-import { AMMO_DEVICE_ID_HEADER } from "$store/packs/constants.ts";
 import { Config } from "$store/packs/types.ts";
+import { getHeaders } from "$store/packs/utils/headers.ts";
 
 export interface Props {
   fields: string[];
@@ -42,8 +41,8 @@ const loader = async (
   ctx: AppContext,
 ): Promise<Partial<Config>> => {
   const { ammoc, apiKey } = ctx;
-  const cookies = getCookies(req.headers);
-  const deviceId = cookies[AMMO_DEVICE_ID_HEADER];
+
+  const headers = getHeaders(req, apiKey);
 
   const storeConfigs = props.fields.map((item) => item.split("."));
   console.log(storeConfigs);
@@ -51,10 +50,7 @@ const loader = async (
     const response = await ammoc
       ["GET /api/config"](
         {
-          headers: {
-            "x-api-key": apiKey,
-            "x-ammo-device-id": deviceId,
-          },
+          headers: headers,
         },
       );
 
