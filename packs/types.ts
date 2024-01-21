@@ -861,3 +861,48 @@ export interface ShippingMethod {
   category: string;
   active: boolean;
 }
+
+export interface UserInfo {
+  user: User;
+  lifeTimeValue: number;
+  token: string;
+  birthdayDiscountPeriod: BirthdayDiscountPeriod;
+}
+
+export interface User {
+  id: string;
+  crossSiteUserId: string;
+  name: string;
+  email: string;
+  optin: boolean;
+  whatsappOptin: boolean;
+  phone: string;
+  phoneOptional: string;
+  cpf: string;
+  cnpj: string;
+  municipalRegistration: string;
+  stateRegistration: string;
+  legalRepresentative: string;
+  birthDateYear: number;
+  birthDateMonth: number;
+  birthDateDay: number;
+  birthDate: string;
+  profilePicture: string;
+  gender: string;
+  weddingRegistry: string;
+  hasPassword: boolean;
+  group: string;
+  site: string;
+  inviterCoupon: string;
+  inviteeCoupon: string;
+  salesman: string;
+  addresses: string;
+  loyaltyProgramMemberSince: string;
+}
+
+export interface BirthdayDiscountPeriod {
+  isEligible: boolean;
+  startAt: string;
+  endAt: string;
+  nextPeriodAt: string;
+}
