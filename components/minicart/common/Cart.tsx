@@ -51,14 +51,20 @@ function Cart({
     (acc, { value }) => value + acc,
     0,
   );
-  const calcSubtotal = items.reduce((acc, { price }) => acc + price.sale, 0);
+  const calcSubtotal = items.reduce(
+    (acc, { price, quantity }) => acc + (price.sale * quantity),
+    0,
+  );
   const calcTotal = calcSubtotal - totalDiscounts;
 
   return (
     <div class="flex w-full h-full flex-col justify-center items-center overflow-hidden">
       <header class="flex justify-between items-center px-4 py-2 border-b border-[#ccc] w-full">
         <h3 class="text-xl font-medium">Minha sacola</h3>
-        <Button class="btn-circle" onClick={onClose}>
+        <Button
+          class="btn-ghost btn-circle btn-sm hover:text-primary"
+          onClick={onClose}
+        >
           <Icon id="XMark" size={20} strokeWidth={2} />
         </Button>
       </header>
@@ -116,7 +122,6 @@ function Cart({
                 <li key={index}>
                   <CartItem
                     item={item}
-                    index={index}
                     locale={locale}
                     currency={currency}
                     onUpdateQuantity={onUpdateQuantity}

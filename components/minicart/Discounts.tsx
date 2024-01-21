@@ -16,7 +16,11 @@ export function Discounts(
     return null;
   }
 
-  if (discounts.length === 1) {
+  const hasChildren = discounts.some((_discount) =>
+    Boolean(_discount.items?.length)
+  );
+
+  if (discounts.length === 1 && !hasChildren) {
     const [discount] = discounts;
 
     return (
@@ -32,10 +36,6 @@ export function Discounts(
       </div>
     );
   }
-
-  const hasChildren = discounts.some((_discount) =>
-    Boolean(_discount.items?.length)
-  );
 
   return (
     <div class="collapse collapse-arrow min-h-0">

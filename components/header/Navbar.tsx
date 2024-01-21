@@ -1,11 +1,11 @@
 import type { Props as SearchbarProps } from "$store/components/search/Searchbar.tsx";
-import Icon from "$store/components/ui/Icon.tsx";
 import {
   CartButton,
   MenuButton,
   SearchButton,
 } from "$store/islands/Header/Buttons.tsx";
 import Searchbar from "$store/islands/Header/Searchbar.tsx";
+import UserButton from "deco-sites/persono/components/header/Buttons/User.tsx";
 import type { SiteNavigationElement } from "deco-sites/persono/components/header/Menu.tsx";
 import { Logo } from "deco-sites/persono/components/ui/Logo.tsx";
 import NavItem from "./NavItem.tsx";
@@ -53,13 +53,7 @@ function Navbar({ items, searchbar, device }: {
       <div class="flex-none flex items-center justify-end gap-10">
         <SearchButton />
         <Searchbar searchbar={searchbar} />
-        <a
-          class="btn btn-circle btn-sm btn-ghost"
-          href="/login"
-          aria-label="Log in"
-        >
-          <Icon id="User" size={24} strokeWidth={0.4} />
-        </a>
+        <UserButton />
         <CartButton />
       </div>
     </div>
