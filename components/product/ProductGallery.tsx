@@ -1,8 +1,6 @@
-import ProductCard, {
-  Layout as CardLayout,
-} from "$store/components/product/ProductCard.tsx";
 import { usePlatform } from "$store/sdk/usePlatform.tsx";
 import { Product } from "apps/commerce/types.ts";
+import ProductCard from "deco-sites/persono/components/product/ProductCard/index.tsx";
 
 export interface Columns {
   mobile?: 1 | 2;
@@ -13,7 +11,6 @@ export interface Props {
   products: Product[] | null;
   offset: number;
   layout?: {
-    card?: CardLayout;
     columns?: Columns;
   };
 }
@@ -42,8 +39,6 @@ function ProductGallery({ products, layout, offset }: Props) {
           product={product}
           preload={index === 0}
           index={offset + index}
-          layout={layout?.card}
-          platform={platform}
         />
       ))}
     </div>

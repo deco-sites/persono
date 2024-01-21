@@ -9,7 +9,6 @@
  * no JavaScript is shipped to the browser!
  */
 
-import ProductCard from "$store/components/product/ProductCard.tsx";
 import Button from "$store/components/ui/Button.tsx";
 import Icon from "$store/components/ui/Icon.tsx";
 import Slider from "$store/components/ui/Slider.tsx";
@@ -21,6 +20,7 @@ import { Suggestion } from "apps/commerce/types.ts";
 import { Resolved } from "deco/engine/core/resolver.ts";
 import { useEffect, useRef } from "preact/compat";
 import type { Platform } from "$store/apps/site.ts";
+import ProductCard from "deco-sites/persono/components/product/ProductCard/index.tsx";
 
 // Editable props
 export interface Props {
@@ -57,7 +57,6 @@ function Searchbar({
   action = "/s",
   name = "q",
   loader,
-  platform,
 }: Props) {
   const id = useId();
   const { displaySearchPopup } = useUI();
@@ -86,9 +85,11 @@ function Searchbar({
           for={id}
           tabIndex={-1}
         >
-          {loading.value
-            ? <span class="loading loading-spinner loading-xs" />
-            : <Icon id="MagnifyingGlass" size={24} strokeWidth={0.01} />}
+          {loading.value ? (
+            <span class="loading loading-spinner loading-xs" />
+          ) : (
+            <Icon id="MagnifyingGlass" size={24} strokeWidth={0.01} />
+          )}
         </Button>
         <input
           ref={searchInputRef}
@@ -115,7 +116,7 @@ function Searchbar({
         <Button
           type="button"
           class="join-item btn-ghost btn-square hidden sm:inline-flex"
-          onClick={() => displaySearchPopup.value = false}
+          onClick={() => (displaySearchPopup.value = false)}
         >
           <Icon id="XMark" size={24} strokeWidth={2} />
         </Button>
@@ -126,11 +127,7 @@ function Searchbar({
       >
         <div class="gap-4 grid grid-cols-1 sm:grid-rows-1 sm:grid-cols-[150px_1fr]">
           <div class="flex flex-col gap-6">
-            <span
-              class="font-medium text-xl"
-              role="heading"
-              aria-level={3}
-            >
+            <span class="font-medium text-xl" role="heading" aria-level={3}>
               Sugestões
             </span>
             <ul id="search-suggestion" class="flex flex-col gap-6">
@@ -138,11 +135,7 @@ function Searchbar({
                 <li>
                   <a href={`/s?q=${term}`} class="flex gap-4 items-center">
                     <span>
-                      <Icon
-                        id="MagnifyingGlass"
-                        size={24}
-                        strokeWidth={0.01}
-                      />
+                      <Icon id="MagnifyingGlass" size={24} strokeWidth={0.01} />
                     </span>
                     <span dangerouslySetInnerHTML={{ __html: term }} />
                   </a>
@@ -151,11 +144,7 @@ function Searchbar({
             </ul>
           </div>
           <div class="flex flex-col pt-6 md:pt-0 gap-6 overflow-x-hidden">
-            <span
-              class="font-medium text-xl"
-              role="heading"
-              aria-level={3}
-            >
+            <span class="font-medium text-xl" role="heading" aria-level={3}>
               Produtos sugeridos
             </span>
             <Slider class="carousel">
@@ -164,12 +153,7 @@ function Searchbar({
                   index={index}
                   class="carousel-item first:ml-4 last:mr-4 min-w-[200px] max-w-[200px]"
                 >
-                  <ProductCard
-                    product={product}
-                    platform={platform}
-                    index={index}
-                    itemListName="Suggeestions"
-                  />
+                  <ProductCard product={product} index={index} />
                 </Slider.Item>
               ))}
             </Slider>

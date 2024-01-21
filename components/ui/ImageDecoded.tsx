@@ -1,22 +1,21 @@
 import { Props as ImageProps } from "apps/website/components/Image.tsx";
 import Image from "apps/website/components/Image.tsx";
 import { imageSizeToUrl } from "deco-sites/persono/constants.tsx";
-import { FnContext } from "deco/types.ts";
-import { SectionProps } from "deco/mod.ts";
 
 export interface Props {
-  image: ImageProps;
+  settings: ImageProps;
+  imageBaseUrl: string;
 }
 
-function ImageDecoded({ image }: SectionProps<typeof loader>) {
-  const { src, ...defaultProps } = image;
+function ImageDecoded({ settings, imageBaseUrl }: Props) {
+  const { src, ...defaultProps } = settings;
 
   const extractImageType = (url: string) => {
     const pointIndex = url.lastIndexOf(".");
 
     if (pointIndex !== -1) {
-      const extensao = url.slice(pointIndex + 1).toLowerCase();
-      return extensao;
+      const extension = url.slice(pointIndex + 1).toLowerCase();
+      return extension;
     }
 
     return "";
@@ -24,7 +23,6 @@ function ImageDecoded({ image }: SectionProps<typeof loader>) {
 
   const imageType = extractImageType(src);
 
-  const imageBaseUrl = "";
   return (
     <Image
       src={`${imageBaseUrl}${imageSizeToUrl}/${imageType}${src}`}
@@ -32,12 +30,5 @@ function ImageDecoded({ image }: SectionProps<typeof loader>) {
     />
   );
 }
-
-export const loader = (props: Props, _req: Request, ctx: FnContext) => {
-  console.log("ctx", ctx);
-  return {
-    ...props,
-  };
-};
 
 export default ImageDecoded;
