@@ -179,10 +179,25 @@ export interface Bag {
   items: Item[];
   subtotal: number;
   total: number;
-  discounts: string[];
+  discounts: Discount[];
+  coupon: string;
   freebie: Freebie;
-  childBags: string[];
+  childBags: unknown[];
   withDeliverySplit: boolean;
+}
+
+export interface Discount {
+  type: string;
+  message: string;
+  value: number;
+  items?: DiscountItem[];
+}
+
+export interface DiscountItem {
+  amount: number;
+  id: string;
+  title: string;
+  value: number;
 }
 
 export interface Session {
@@ -193,16 +208,24 @@ export interface Session {
 export interface Freebie {
   eligible: boolean;
   active: boolean;
-  items: string[];
-  drawerText: string;
+  items: FreebieItem[];
+  drawerText: string | null;
   drawerImage: string;
   vmLink: string;
-  subtotalToActivate: string;
-  valueToReach: string;
+  subtotalToActivate: number;
+  valueToReach: number;
   selectedFreebie: string;
 }
 
-interface Item {
+export interface FreebieItem {
+  title: string;
+  image: string;
+  drawerText: string;
+  sku: string;
+  vmLink: string;
+}
+
+export interface Item {
   id: string;
   productId: string;
   sku: string;
@@ -245,26 +268,30 @@ export interface Photos {
   details: Detail[];
   panoramics: string[];
 }
-interface Detail {
+export interface Detail {
   url: string;
 }
-interface Banner {
+export interface Banner {
   background?: boolean;
   foreground?: boolean;
   width: number;
   height: number;
 }
-
-interface Color {
+// HEAD
+export interface Price {
+  min: number;
+  max: number;
+}
+export interface Color {
   id: string;
   name: string;
   hex: string;
 }
-interface Segment {
+export interface Segment {
   id: string;
   name: string;
 }
-interface Brand {
+export interface Brand {
   id: string;
   name: string;
   logo: string;
@@ -273,4 +300,772 @@ interface Brand {
 export interface BagItems {
   sku: string;
   amount: number;
+}
+
+export interface Config {
+  maxInstallments: number;
+  minInstallmentValue: number;
+  postalCodeLength: number;
+  couponLength: number;
+  creditCardNumberLength: number;
+  creditCardCvvMinLength: number;
+  searchPageLimit: number;
+  searchItemsPerPage: number;
+  vmItemsPerPage: number;
+  searchAutoloadScrollThreshold: number;
+  menuMaxCategories: number;
+  productMaxAmount: number;
+  wrHeadlineMaxLength: number;
+  wrDashboardVmMaxItems: number;
+  userActivityInterval: number;
+  sellerIds: SellerIds;
+  bucketUrl: string;
+  searchTypeLabels: SearchTypeLabels;
+  paymentMethodTypes: PaymentMethodTypes;
+  priceFormats: PriceFormats;
+  sizeTypes: SizeTypes;
+  productSegmentIds: ProductSegmentIds;
+  bedSizeValues: BedSizeValues;
+  companyRegistrationExempt: string;
+  homeComponentTypes: HomeComponentTypes;
+  wrItemStatuses: WrItemStatuses;
+  loggedUserTypes: LoggedUserTypes;
+  resolveRouteIncludeTypes: ResolveRouteIncludeTypes;
+  bagDiscountTypes: BagDiscountTypes;
+  vmBannerTypes: VmBannerTypes;
+  bagDrawerDiscounts: string[];
+  userPingDefaults: UserPingDefaults;
+  seller: Seller;
+  features: Features;
+  fbAppId: string;
+  googleApiKey: string;
+  birthdayDiscountBigBanner: BirthdayDiscountBigBanner;
+  birthdayDiscountVmBanner: BirthdayDiscountVmBanner;
+  searchTypes: SearchType[];
+  opportunityTags: OpportunityTag[];
+  contactSubjectTypes: ContactSubjectTypes;
+  productAttributeIds: string[];
+  surpriseBonus: SurpriseBonus;
+  allProductsVm: string;
+  collectionToApplyOpportunityTag: string;
+  discountOpportunity: DiscountOpportunity;
+  googleAuthenticationCredentials: GoogleAuthenticationCredentials;
+  opennpsUrl: string;
+  recaptchaShared: RecaptchaShared;
+  orderReturns: OrderReturns;
+  personoPdpRelease: PersonoPdpRelease;
+  personoDtexPdpRelease: PersonoDtexPdpRelease;
+  personoSupportFirmPdpRelease: PersonoSupportFirmPdpRelease;
+  personoSupportMediumPdpRelease: PersonoSupportMediumPdpRelease;
+  personoNasaPdpRelease: PersonoNasaPdpRelease;
+  personoAdaptPdpRelease: PersonoAdaptPdpRelease;
+  inviteCampaign: InviteCampaign;
+  occasions: Occasions;
+}
+
+export interface SellerIds {
+  mmartan: string;
+  artex: string;
+}
+
+export interface SearchTypeLabels {
+  product: string;
+  weddingRegistry: string;
+}
+
+export interface PaymentMethodTypes {
+  creditCard: string;
+  slip: string;
+}
+
+export interface PriceFormats {
+  range: string;
+  single: string;
+  simple: string;
+}
+
+export interface SizeTypes {
+  bed: string;
+}
+
+export interface ProductSegmentIds {
+  bed: string;
+}
+
+export interface BedSizeValues {
+  twin: string;
+  twinXl: string;
+  twinKing: string;
+  double: string;
+  queen: string;
+  king: string;
+  kid: string;
+}
+
+export interface HomeComponentTypes {
+  bigBanner: string;
+  doubleBanner: string;
+  vm: string;
+  pillar: string;
+  categorySlider: string;
+  mosaic: string;
+}
+
+export interface WrItemStatuses {
+  unavailable: string;
+  availableForPurchase: string;
+  purchasedStore: string;
+  shipped: string;
+  awaitingShipment: string;
+  awaitingPayment: string;
+}
+
+export interface LoggedUserTypes {
+  oms: string;
+}
+
+export interface ResolveRouteIncludeTypes {
+  data: string;
+  pageInfo: string;
+}
+
+export interface BagDiscountTypes {
+  omsFreeShipping: string;
+  paymentSlip: string;
+  coupon: string;
+}
+
+export interface VmBannerTypes {
+  top: string;
+  bottom: string;
+}
+
+export interface UserPingDefaults {
+  "google.com": SocialMedia;
+  "facebook.com": SocialMedia;
+  "instagram.com": SocialMedia;
+}
+
+export interface SocialMedia {
+  utmSource: string;
+  utmMedium: string;
+}
+export interface Seller {
+  id: string;
+  title: string;
+  socialLinks: SocialLinks;
+}
+
+export interface SocialLinks {
+  facebook: string;
+  instagram: string;
+}
+
+export interface Features {
+  giftCard: boolean;
+  bedSizeGuide: boolean;
+  illustrations: boolean;
+  productCardDescription: boolean;
+  productCardAttributes: boolean;
+  npsPurchase: boolean;
+  surpriseBonus: boolean;
+  memberGetMember: boolean;
+  outlookShare: boolean;
+  googleShare: boolean;
+  footerPaymentMethodsWithSlip: boolean;
+  menuWithLabels: boolean;
+  glossary: boolean;
+  pickupInStore: boolean;
+  billingAddress: boolean;
+  casacor: boolean;
+  newsletter: boolean;
+  newsletterFixed: boolean;
+  newsletterModal: boolean;
+  inspirationLinkInHeader: boolean;
+  mgmTagInHeader: boolean;
+  bfTagInHeaderLink: string;
+  relatedFiltersOnPDP: boolean;
+  neoAssistForm: boolean;
+  architectsRouteEnabled: boolean;
+  eventStreamEnabled: boolean;
+  newsletterFirstPurchaseCoupon: NewsletterFirstPurchaseCoupon;
+  getBagCall: boolean;
+  signUp: SignUp;
+  newsletterFirstPurchaseCouponOptions: NewsletterFirstPurchaseCouponOptions;
+  giftMessage: boolean;
+  whatsappOptinEnabled: boolean;
+  hideSellerPhone: boolean;
+  showWhatsapp: boolean;
+  newWebTreeEnabled: boolean;
+  loyaltyProgram: LoyaltyProgram;
+  blackFriday: BlackFriday;
+  freeShippingCampaigns: FreeShippingCampaign[];
+  SEO: Seo;
+  showWhatsappHeadline: boolean;
+  omniCampaigns: OmniCampaigns;
+  freeShippingOutlist: FreeShippingOutlist;
+}
+
+export interface NewsletterFirstPurchaseCoupon {
+  enabled: boolean;
+}
+
+export interface SignUp {
+  allowSignUpWithCpfOrCnpj: boolean;
+  mainDocumentType: string;
+}
+
+export interface NewsletterFirstPurchaseCouponOptions {
+  popupCloseIconColor: string;
+  emailPopup: PopupContent;
+  successSubscriptionPopup: PopupContent;
+  newsletterBar: NewsletterBar;
+}
+
+export interface PopupContent {
+  desktopImage: string;
+  mobileImage: string;
+  buttonBackgroundColor: string;
+  buttonTextColor: string;
+  inputBackgroundColor: string;
+  inputTextColor: string;
+}
+
+export interface NewsletterBar {
+  desktopImage: string;
+  mobileImage: string;
+  backgroundColor: string;
+  isCloseButtonExpanded: boolean;
+  closeIconColor: string;
+}
+
+export interface LoyaltyProgram {
+  loyaltyProgramEnabled: boolean;
+  defaultCashbackValue: number;
+  creditExpirationInDays: number;
+  minimumHoursForCreditRelease: number;
+  memberGetMemberCampaign: MemberGetMemberCampaign;
+  cashbackOrderPercentageLimit: number;
+  featureCancelCreditInRefund: boolean;
+  emailReminderInDays: number;
+  activeTransactionalEmails: string[];
+  description: string;
+  minAvailableDate: string;
+}
+
+export interface MemberGetMemberCampaign {
+  referrerBonus: number;
+  benefitType: string;
+  benefitValue: number;
+  minOrderValue: number;
+  validTo: string;
+}
+
+export interface BlackFriday {
+  blackFridayDate: string;
+}
+
+export interface FreeShippingCampaign {
+  minBagValue: number;
+  shippingMethodName: string;
+  appliableShippingCategories: string[];
+}
+
+export interface Seo {
+  dynamicRendering: DynamicRendering;
+  arborescence: Arborescence;
+}
+
+export interface DynamicRendering {
+  active: boolean;
+  enabledOnlyForSpecificSku: boolean;
+  skus: string[];
+  ips: string[];
+  userAgents: string[];
+}
+
+export interface Arborescence {
+  availableForMigration: string[];
+}
+
+export interface OmniCampaigns {
+  active: boolean;
+  enabledCampaignTypes: string[];
+}
+
+export interface FreeShippingOutlist {
+  outlist: string[];
+  isEnabled: boolean;
+  checkoutText: string;
+  showBagConditionsText: boolean;
+}
+
+export interface BirthdayDiscountBigBanner {
+  id: string;
+  images: Images;
+  callToAction: CallToAction;
+}
+
+export interface Images {
+  small: Image;
+  large: Image;
+}
+
+export interface CallToAction {
+  text: string;
+  link: Link;
+}
+
+export interface Link {
+  type: string;
+  url: string;
+  presentation: string;
+  name: string;
+  _target: string;
+}
+
+export interface BirthdayDiscountVmBanner {
+  images: Images;
+  title: string;
+}
+
+export interface SearchType {
+  type: string;
+  title: string;
+  placeholder: string;
+}
+
+export interface OpportunityTag {
+  id: string;
+  color: string;
+  priority: number;
+}
+
+export interface ContactSubjectTypes {
+  question: string;
+  compliment: string;
+  complaint: string;
+  franchisee: string;
+  bugReport: string;
+}
+
+export interface SurpriseBonus {
+  startDate: string;
+  endDate: string;
+  bonusType: string;
+  bonusValue: number;
+  activationType: string;
+  activationValue: number;
+}
+
+export interface DiscountOpportunity {
+  mask: Mask;
+  cutValue: number;
+  minDiscountValue: number;
+}
+
+export interface Mask {
+  single: Single;
+  range: Range;
+}
+
+export interface Single {
+  exact: string;
+  rounded: string;
+}
+
+export interface Range {
+  exact: string;
+  "rounded-start-end": string;
+  "rounded-start": string;
+  "rounded-end": string;
+}
+
+export interface GoogleAuthenticationCredentials {
+  clientId: string;
+}
+
+export interface RecaptchaShared {
+  siteKey: string;
+  enabled: boolean;
+}
+
+export interface OrderReturns {
+  isFeatureEnabled: boolean;
+  eligibleDays: number;
+  showOrderAfterRequestedDays: number;
+  requiredPictureReasons: string[];
+  requiredObservationReasons: string[];
+  reasons: Reasons;
+  deadlineForContactingInDays: number;
+  isUserDataFormEnabled: boolean;
+}
+
+export interface Reasons {
+  abandonment: string;
+  malfunction: string;
+  broken: string;
+  misleading_ad: string;
+  dissatisfaction: string;
+  did_not_purchase: string;
+  purchased_wrong_prodct: string;
+  others: string;
+}
+
+export interface PersonoPdpRelease {
+  waitingListReleaseDate: string;
+  saleReleaseDate: string;
+  saleEndDate: string;
+  sku: string;
+  showBeforeWaitingListReleaseDate: boolean;
+  packs: string[];
+  content: Content;
+}
+
+export interface PersonoDtexPdpRelease {
+  waitingListReleaseDate: string;
+  saleReleaseDate: string;
+  saleEndDate: string;
+  sku: string;
+  showBeforeWaitingListReleaseDate: boolean;
+  packs: string[];
+  content: Content;
+}
+
+export interface Content {
+  presentation: Presentation;
+  quotes: Quotes;
+  detail: Detail;
+  differentials: Differentials;
+  aboutSleep: AboutSleep;
+  package: Package;
+  technicalSpecs: TechnicalSpecs;
+  faq: Faq;
+  warranty: Warranty;
+  social: Social;
+}
+
+export interface Presentation {
+  subtitle: string;
+  title: string;
+  sections: Section[];
+}
+
+export interface Section {
+  key: string;
+  dir: string;
+  image: ImageInfo;
+  title: Title;
+  description: Description;
+  group?: Group;
+  download?: Download;
+}
+
+export interface Title {
+  text: string;
+  icon?: string;
+  subtitle?: string;
+}
+
+export interface Description {
+  text?: string;
+  mt: number;
+}
+
+export interface Group {
+  direction: string;
+  fixWidth: boolean;
+  items: Item[];
+}
+
+export interface Item {
+  key: string;
+  icon: string;
+  width: number;
+  title: string;
+}
+
+export interface Download {
+  text: string;
+  items: Item[];
+}
+
+export interface Quotes {
+  title: string;
+  items: QuoteItem[];
+}
+
+export interface QuoteItem {
+  stars: number;
+  text: string;
+  name: string;
+  achievements: number;
+  label: string;
+}
+
+export interface Detail {
+  title: string;
+  items: DetailItem[];
+}
+
+export interface DetailItem {
+  isLtr: boolean;
+  showMask: boolean;
+  showFullVideo: boolean;
+  title: string;
+  description: string;
+  image: ImageInfo;
+  desktopText?: DesktopText;
+  ml?: number;
+  list?: string[];
+}
+
+export interface Image {
+  url: string;
+  width: number;
+  height: number;
+}
+
+export interface ImageInfo {
+  mobile: string;
+  tablet: string;
+  desktop: string;
+  alt: string;
+  mr: number;
+  hasMobile: boolean;
+  domain: string;
+}
+
+export interface DesktopText {
+  title?: string;
+  image: ImageInfo;
+  description?: string;
+}
+
+export interface Differentials {
+  title: string;
+  items: DifferentialItem[];
+}
+
+export interface DifferentialItem {
+  title: string;
+  persono: boolean;
+  other_apps: boolean;
+}
+
+export interface AboutSleep {
+  title: string;
+  description: string;
+  items: AboutSleepItem[];
+}
+
+export interface AboutSleepItem {
+  key: string;
+  icon: string;
+  title: string;
+  description: string;
+}
+
+export interface Package {
+  title: string;
+  items: PackageItem[];
+}
+
+export interface PackageItem {
+  key: number;
+  title: string;
+  quantity: number;
+}
+
+export interface TechnicalSpecs {
+  title: string;
+  items: TechnicalSpecsItem[];
+}
+
+export interface TechnicalSpecsItem {
+  key: string;
+  title: string;
+  items: TechnicalSpecItem[];
+}
+
+export interface TechnicalSpecItem {
+  key: string;
+  title: string;
+  description: string;
+}
+
+export interface Faq {
+  title: string;
+  items: FaqItem[];
+}
+
+export interface FaqItem {
+  question: string;
+  answer: string;
+}
+
+export interface Warranty {
+  key: string;
+  icon: string;
+  title: string;
+  description: string;
+}
+
+export interface Social {
+  key: string;
+  icon: string;
+  title: string;
+  description: string;
+  items: SocialItem[];
+}
+
+export interface SocialItem {
+  key: string;
+  title: string;
+  link: Link;
+  icon: string;
+}
+
+export interface PersonoSupportFirmPdpRelease {
+  waitingListReleaseDate: string;
+  saleReleaseDate: string;
+  saleEndDate: string;
+  sku: string;
+  showBeforeWaitingListReleaseDate: boolean;
+}
+
+export interface PersonoSupportMediumPdpRelease {
+  waitingListReleaseDate: string;
+  saleReleaseDate: string;
+  saleEndDate: string;
+  sku: string;
+  showBeforeWaitingListReleaseDate: boolean;
+}
+
+export interface PersonoNasaPdpRelease {
+  waitingListReleaseDate: string;
+  saleReleaseDate: string;
+  saleEndDate: string;
+  sku: string;
+  showBeforeWaitingListReleaseDate: boolean;
+  packs: string[];
+  content: Content;
+}
+
+export interface PersonoAdaptPdpRelease {
+  waitingListReleaseDate: string;
+  saleReleaseDate: string;
+  saleEndDate: string;
+  sku: string;
+  showBeforeWaitingListReleaseDate: boolean;
+  packs: string[];
+  content: Content;
+}
+
+export interface InviteCampaign {
+  id: string;
+  hash: string;
+  inviterCredit: number;
+  formattedInviterCredit: string;
+  inviteeDiscount: number;
+  formattedInviteeDiscount: string;
+  minInviteeBagTotal: number;
+  formattedMinInviteeBagTotal: string;
+  twitterShareText: string;
+  whatsappShareText: string;
+  termsUrl: string;
+  expiresAt: string;
+  createdAt: string;
+}
+
+export interface Occasions {
+  blackFriday: Duration;
+  blackFridayFinalDays: Duration;
+  christmas: Duration;
+}
+
+export interface Duration {
+  start: string;
+  end: string;
+}
+
+export interface ShippingSimulation {
+  addressForPostalCode: AddressForPostalCode;
+  shippingOptions: ShippingOption[];
+  Bag: Bag;
+}
+
+export interface AddressForPostalCode {
+  postalCode: string;
+  state: string;
+  cityId: number;
+  city: string;
+  district: string;
+  address: string;
+  createdAt: string;
+  deletedAt: string;
+}
+
+export interface ShippingOption {
+  shippingMethod: ShippingMethod;
+  cost: number;
+  businessDaysUntilDelivery: number;
+  minBusinessDaysUntilDelivery: number;
+  maxBusinessDaysUntilDelivery: number;
+}
+
+export interface ShippingMethod {
+  id: string;
+  name: string;
+  icon: string;
+  group: string;
+  site: string;
+  idERP: number;
+  category: string;
+  active: boolean;
+}
+
+export interface UserInfo {
+  user: User;
+  lifeTimeValue: number;
+  token: string;
+  birthdayDiscountPeriod: BirthdayDiscountPeriod;
+}
+
+export interface User {
+  id: string;
+  crossSiteUserId: string;
+  name: string;
+  email: string;
+  optin: boolean;
+  whatsappOptin: boolean;
+  phone: string;
+  phoneOptional: string;
+  cpf: string;
+  cnpj: string;
+  municipalRegistration: string;
+  stateRegistration: string;
+  legalRepresentative: string;
+  birthDateYear: number;
+  birthDateMonth: number;
+  birthDateDay: number;
+  birthDate: string;
+  profilePicture: string;
+  gender: string;
+  weddingRegistry: string;
+  hasPassword: boolean;
+  group: string;
+  site: string;
+  inviterCoupon: string;
+  inviteeCoupon: string;
+  salesman: string;
+  addresses: string;
+  loyaltyProgramMemberSince: string;
+}
+
+export interface BirthdayDiscountPeriod {
+  isEligible: boolean;
+  startAt: string;
+  endAt: string;
+  nextPeriodAt: string;
 }

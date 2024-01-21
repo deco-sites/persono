@@ -1,7 +1,9 @@
 import Button from "../ui/Button.tsx";
+import Icon from "deco-sites/persono/components/ui/Icon.tsx";
 
 interface Props {
   quantity: number;
+  max?: number;
   disabled?: boolean;
   loading?: boolean;
   onChange?: (quantity: number) => void;
@@ -9,28 +11,29 @@ interface Props {
 
 const QUANTITY_MAX_VALUE = 100;
 
-function QuantitySelector({ onChange, quantity, disabled, loading }: Props) {
+function QuantitySelector(
+  { onChange, quantity, disabled, loading, max = QUANTITY_MAX_VALUE }: Props,
+) {
   const decrement = () => onChange?.(Math.max(0, quantity - 1));
 
-  const increment = () =>
-    onChange?.(Math.min(quantity + 1, QUANTITY_MAX_VALUE));
+  const increment = () => onChange?.(Math.min(quantity + 1, max));
 
   return (
-    <div class="join border rounded-none w-min">
+    <div class="join border border-[#ccc] hover:border-black rounded-full w-min">
       <Button
-        class="btn-square btn-ghost join-item"
+        class="btn-circle btn-ghost w-9 disabled:bg-white disabled:text-[#999] join-item"
         onClick={decrement}
-        disabled={disabled}
+        disabled={disabled || quantity === 1}
         loading={loading}
       >
-        -
+        <Icon id="MinusSign" size={16} />
       </Button>
       <input
-        class="input text-center join-item [appearance:textfield]"
+        class="input w-auto px-0 text-center join-item [appearance:textfield]"
         type="number"
         inputMode="numeric"
         pattern="[0-9]*"
-        max={QUANTITY_MAX_VALUE}
+        max={max}
         min={1}
         value={quantity}
         disabled={disabled}
@@ -39,12 +42,12 @@ function QuantitySelector({ onChange, quantity, disabled, loading }: Props) {
         size={3}
       />
       <Button
-        class="btn-square btn-ghost join-item"
+        class="btn-circle btn-ghost w-9 disabled:bg-white disabled:text-[#999] join-item"
         onClick={increment}
-        disabled={disabled}
+        disabled={disabled || quantity === max}
         loading={loading}
       >
-        +
+        <Icon id="PlusSign" size={16} />
       </Button>
     </div>
   );

@@ -28,6 +28,30 @@
   }
 }
 
+@layer components {
+  .btn {
+    min-width: 36px;
+    min-height: 36px;
+    height: 36px;
+  }
+  .btn-accent {
+    border: 1px solid #ccc;
+  }
+  .btn-ghost:hover {
+    background-color: transparent;
+  }
+  .input {
+    height: 36px;
+    min-height: 36px;
+  }
+  .link {
+    text-decoration: none;
+  }
+  .link:hover {
+    color: oklch(var(--p))
+  }
+}
+
 .group:disabled .group-disabled\:animate-progress {
   animation: progress-frame ease normal
 }

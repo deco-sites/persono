@@ -11,7 +11,7 @@ interface Context {
 const Runtime = withManifest<Manifest>();
 const loading = signal<boolean>(true);
 const context = {
-  cart: signal<Bag | null>(null),
+  cart: signal<Bag | undefined>(undefined),
 };
 
 let queue = Promise.resolve();

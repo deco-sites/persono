@@ -1,44 +1,75 @@
-// import { platform } from "$store/apps/storefront.ts";
-import { lazy } from "preact/compat";
-import { usePlatform } from "$store/sdk/usePlatform.tsx";
+import BaseCart from "deco-sites/persono/components/minicart/common/Cart.tsx";
+import { EditableProps as FreeShippingProps } from "deco-sites/persono/components/minicart/common/FreeShippingProgressBar.tsx";
+import { CartFreebie } from "deco-sites/persono/components/minicart/common/FreebieChoice.tsx";
+import { useCart } from "deco-sites/persono/packs/hooks/useCart.ts";
 
-const CartVTEX = lazy(() => import("./vtex/Cart.tsx"));
-const CartVNDA = lazy(() => import("./vnda/Cart.tsx"));
-const CartWake = lazy(() => import("./wake/Cart.tsx"));
-const CartLinx = lazy(() => import("./linx/Cart.tsx"));
-const CartShopify = lazy(() => import("./shopify/Cart.tsx"));
-const CartNuvemshop = lazy(() => import("./nuvemshop/Cart.tsx"));
-
-export interface Props {
-  platform: ReturnType<typeof usePlatform>;
+export interface EditableProps {
+  /** @description Use discount type to despise this discount */
+  hiddenDiscounts?: string[];
+  freeShipping?: FreeShippingProps;
 }
 
-function Cart({ platform }: Props) {
-  if (platform === "vtex") {
-    return <CartVTEX />;
-  }
+export interface Props extends EditableProps {
+  onClose: () => void;
+}
 
-  if (platform === "vnda") {
-    return <CartVNDA />;
-  }
+function Cart({ hiddenDiscounts = [], freeShipping, onClose }: Props) {
+  const { cart, loading, addItems, mapItemsToAnalyticsItems } = useCart();
+  const {
+    items = [],
+    total = 0,
+    discounts = [],
+  } = cart.value ??
+    {};
+  const coupon = cart.value?.coupon;
+  const freebie: CartFreebie | null | undefined =
+    cart.value?.freebie.eligible && cart.value?.freebie.active
+      ? {
+        selectedSku: cart.value.freebie.items.find((item) =>
+          item.sku === cart.value!.freebie.selectedFreebie
+        ),
+        items: cart.value.freebie.items,
+        image: cart.value.freebie.drawerImage,
+        target: cart.value.freebie.subtotalToActivate,
+      }
+      : null;
 
-  if (platform === "wake") {
-    return <CartWake />;
-  }
+  return (
+    <BaseCart
+      items={items.map((item) => ({
+        image: { src: item.photoStill, alt: item.title },
+        quantity: item.amount,
+        name: item.title,
+        sku: item.sku,
+        stock: item.stock,
+        size: item.size,
+        price: {
+          sale: item.price.min,
+          list: item.price.max,
+        },
+      }))}
+      total={total}
+      discounts={discounts.filter((discount) =>
+        !hiddenDiscounts.includes(discount.type)
+      )}
+      loading={loading.value}
+      freeShippingTextTemplate={freeShipping?.textTemplate}
+      freeShippingTarget={freeShipping?.target}
+      coupon={coupon}
+      onClose={onClose}
+      freebie={freebie}
+      onUpdateQuantity={(amount: number, sku: string) =>
+        addItems({ bagItems: [{ sku, amount }] })}
+      itemToAnalyticsItem={(sku: string) => {
+        const item = items.find((item) => item.sku = sku);
 
-  if (platform === "linx") {
-    return <CartLinx />;
-  }
-
-  if (platform === "shopify") {
-    return <CartShopify />;
-  }
-
-  if (platform === "nuvemshop") {
-    return <CartNuvemshop />;
-  }
-
-  return null;
+        return item && mapItemsToAnalyticsItems([item!]).at(0);
+      }}
+      locale="pt-BR"
+      checkoutHref="/checkout"
+      currency="BRL"
+    />
+  );
 }
 
 export default Cart;

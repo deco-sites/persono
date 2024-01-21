@@ -8,6 +8,7 @@ export type AvailableIcons =
   | "ChevronRight"
   | "ChevronUp"
   | "ChevronDown"
+  | "ArrowRight"
   | "CreditCard"
   | "Deco"
   | "Diners"
@@ -41,6 +42,8 @@ export type AvailableIcons =
   | "Visa"
   | "WhatsApp"
   | "XMark"
+  | "PlusSign"
+  | "MinusSign"
   | "Zoom";
 
 interface Props extends JSX.SVGAttributes<SVGSVGElement> {
