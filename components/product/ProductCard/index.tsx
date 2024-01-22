@@ -36,12 +36,12 @@ function ProductCard({ product, preload, index, imageBaseUrl, search }: Props) {
     return { hasNews, newsTitle };
   }, [product]);
 
-  const { hasDiscount, discount, hasMultiplePrice } = useMemo(() => {
+  const { hasDiscount, discount, hasMultiplePrices } = useMemo(() => {
     const variantPrices = product.isVariantOf?.hasVariant.map(
       (item) => item.offers?.offers?.[0]?.price
     );
 
-    const hasMultiplePrice =
+    const hasMultiplePrices =
       variantPrices && variantPrices?.length > 2
         ? variantPrices.some(
             (price) => price !== Math.min(...(variantPrices as number[]))
@@ -49,7 +49,7 @@ function ProductCard({ product, preload, index, imageBaseUrl, search }: Props) {
         : false;
 
     return {
-      hasMultiplePrice,
+      hasMultiplePrices,
       hasDiscount: listPrice > price,
       discount: Math.floor(((listPrice - price) / listPrice) * 100),
     };
@@ -80,7 +80,7 @@ function ProductCard({ product, preload, index, imageBaseUrl, search }: Props) {
 
         <PriceAndName
           hasDiscount={hasDiscount}
-          hasMultiplePrice={hasMultiplePrice}
+          hasMultiplePrices={hasMultiplePrices}
           installments={installments}
           listPrice={listPrice}
           price={price}
