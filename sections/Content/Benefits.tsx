@@ -2,7 +2,6 @@ import Icon, { AvailableIcons } from "$store/components/ui/Icon.tsx";
 import Header from "$store/components/ui/SectionHeader.tsx";
 
 export interface Props {
-  title?: string;
   description?: string;
   benefits?: Array<{
     label: string;
@@ -19,7 +18,6 @@ export default function Benefits(
   props: Props,
 ) {
   const {
-    title = "",
     description = "",
     benefits = [{
       icon: "Truck",
@@ -48,7 +46,7 @@ export default function Benefits(
       <div
         class={`${
           reverse ? "bg-primary text-primary-content p-4 lg:px-8 lg:py-4" : ""
-        } flex gap-4 ${
+        } flex flex-col gap-4 ${
           benefitLayout == "piledup" ? "flex-col items-center text-center" : ""
         } ${
           showDivider && benefitLayout !== "piledup"
@@ -77,8 +75,8 @@ export default function Benefits(
             {benefit.label}
           </div>
           <p
-            class={`text-sm leading-5 ${
-              reverse ? "text-base-100" : "text-neutral"
+            class={`text-sm leading-5${
+              reverse ? "text-base-100" : "text-gray-800"
             } ${benefitLayout == "piledup" ? "hidden lg:block" : ""}`}
           >
             {benefit.description}
@@ -92,9 +90,8 @@ export default function Benefits(
     <>
       {!layout?.variation || layout?.variation === "Simple"
         ? (
-          <div class="w-full container px-4 py-8 flex flex-col gap-8 lg:gap-10 lg:py-10 lg:px-0">
+          <div class="w-full container px-10 py-10 flex flex-col gap-8 lg:gap-10 lg:py-10 lg:px-0">
             <Header
-              title={title}
               description={description}
               alignment={layout?.headerAlignment || "center"}
             />
@@ -109,7 +106,6 @@ export default function Benefits(
       {layout?.variation === "With border" && (
         <div class="w-full container flex flex-col px-4 py-8 gap-8 lg:gap-10 lg:py-10 lg:px-0">
           <Header
-            title={title}
             description={description}
             alignment={layout?.headerAlignment || "center"}
           />
@@ -123,7 +119,6 @@ export default function Benefits(
       {layout?.variation === "Color reverse" && (
         <div class="w-full container flex flex-col px-4 py-8 gap-8 lg:gap-10 lg:py-10 lg:px-0">
           <Header
-            title={title}
             description={description}
             alignment={layout?.headerAlignment || "center"}
           />
