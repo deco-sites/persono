@@ -1,9 +1,13 @@
-import type { Props as AppContext } from "deco-sites/persono/apps/site.ts";
+import { AppContext } from "$store/apps/site.ts";
 import type { ProductListingPage } from "apps/commerce/types.ts";
 import paths from "$store/packs/utils/paths.ts";
 import { fetchAPI } from "apps/utils/fetch.ts";
-import { VMDetails, VMDetailsRedirect } from "$store/packs/types.ts";
-import { returnApiHeader } from "$store/packs/utils/utils.ts";
+import {
+  InstallmentConfig,
+  VMDetails,
+  VMDetailsRedirect,
+} from "$store/packs/types.ts";
+import { getHeaders } from "$store/packs/utils/headers.ts";
 import { toProductListingPage } from "$store/packs/utils/transform.ts";
 import { typeChecher } from "$store/packs/utils/utils.ts";
 
@@ -21,7 +25,7 @@ interface VM {
    * @description Sempre começar com "/vm/".
    * @example /vm/cama
    */
-  path: string;
+  path?: string;
   /**
    * @title Filtros
    * @description Filtros da VM
@@ -54,15 +58,12 @@ const loader = async (
   props: Props,
   req: Request,
   ctx: AppContext,
-): Promise<ProductListingPage | null> => {
-  const { publicUrl, ammoDeviceId, ammoToken, installmentConfig } = ctx;
+): Promise<ProductListingPage> => {
+  const { publicUrl, apiKey } = ctx;
   const { vm } = props;
   const url = new URL(req.url);
   const path = paths(publicUrl);
-  const headers = returnApiHeader({
-    ammoDeviceIdValue: ammoDeviceId!,
-    ammoTokenValue: ammoToken!,
-  });
+  const headers = getHeaders(req, apiKey);
 
   const vmProps = vm?.path
     ? vm!.filters?.reduce<VmProps>((acc, f) => {
@@ -89,10 +90,12 @@ const loader = async (
       method: "GET",
       headers,
     },
-  ).then((vm) => vm)
-    .catch(() => null);
+  );
 
-  if (!response) return null;
+  const installmentConfig = await ctx
+    .invoke["deco-sites/persono"].loaders.config({
+      fields: ["maxInstallments", "minInstallmentValue"],
+    }).then((c: InstallmentConfig) => c);
 
   if (typeChecher<VMDetails>(response as VMDetails, "basePath")) {
     return toProductListingPage({
@@ -112,7 +115,7 @@ const loader = async (
       method: "GET",
       headers,
     },
-  ).then((vm) => vm);
+  );
 
   return toProductListingPage({
     vmDetails: redirectedResponse,

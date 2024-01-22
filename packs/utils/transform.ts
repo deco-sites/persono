@@ -13,11 +13,11 @@ import {
 import {
   AmmoProduct,
   Breadcrumb,
+  InstallmentConfig,
   Photos,
   Sku,
   VMDetails,
 } from "$store/packs/types.ts";
-import { InstallmentConfig } from "$store/apps/site.ts";
 import { PROPS_AMMO_API } from "$store/packs/constants.ts";
 import { typeChecher } from "$store/packs/utils/utils.ts";
 
@@ -251,15 +251,16 @@ const toProductGroup = (
 const toAggregateOffer = (
   { ammoProduct, sku, installmentConfig }: AggregateOfferProps,
 ): AggregateOffer => {
-  const { minInstallmentValue, maxInstallmentQtd } = installmentConfig;
+  const { minInstallmentValue, maxInstallments } = installmentConfig;
   const highPrice = (ammoProduct?.price?.max ?? sku!.price.from) / 100;
   const lowPrice = (ammoProduct?.price?.min ?? sku!.price.to) / 100;
   const available = ammoProduct?.available ?? sku?.available!;
-  const possibleInstallmentsQtd = Math.floor(lowPrice / minInstallmentValue) ||
+  const possibleInstallmentsQtd =
+    Math.floor(lowPrice / (minInstallmentValue / 100)) ||
     1;
   const installments = Array.from(
     {
-      length: Math.min(possibleInstallmentsQtd, maxInstallmentQtd),
+      length: Math.min(possibleInstallmentsQtd, maxInstallments),
     },
     (_v, i) => +(lowPrice / (i + 1)).toFixed(2),
   );
