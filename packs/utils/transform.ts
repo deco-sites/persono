@@ -1,6 +1,7 @@
 import {
   AggregateOffer,
   BreadcrumbList,
+  Filter,
   ImageObject,
   ListItem,
   Product,
@@ -58,7 +59,10 @@ export function toProduct(
     gtin: workableSku?.ean,
     url: new URL(workableSku?.url ?? ammoProduct.url!, baseUrl.origin).href,
     additionalProperty: [
-      ...toAdditionalProperties(ammoProduct, PROPS_AMMO_API.product.simpleProps),
+      ...toAdditionalProperties(
+        ammoProduct,
+        PROPS_AMMO_API.product.simpleProps,
+      ),
     ],
     brand: {
       "@type": "Brand",
@@ -89,8 +93,7 @@ export function toProductListingPage(
   return {
     "@type": "ProductListingPage",
     breadcrumb: toBreadcrumbList(url.origin, vmDetails),
-    //TODO: PLP filters
-    filters: [],
+    filters: toFilters(vmDetails, url),
     products: productCards.map((p) => toProduct(p, url, installmentConfig)),
     //TODO: PLP pagination
     pageInfo: {
@@ -136,6 +139,39 @@ const toItemListElement = (
     },
     [],
   );
+
+const toFilters = (
+  { sidebar, appliedFilters, basePath }: VMDetails,
+  url: URL,
+): Filter[] => {
+  return sidebar.map((
+    { filterType, filterLabel, values },
+  ) => {
+    return {
+      "@type": "FilterToggle",
+      label: filterLabel,
+      key: filterType,
+      quantity: 0,
+      values: values.sort((a, b) => a.value.localeCompare(b.value)).map((v) => {
+        const selected = !!appliedFilters.filter(({ type }) =>
+          type === filterType
+        ).find(({ value }) => value === v.value);
+        return {
+          label: v.value,
+          value: v.value,
+          selected,
+          url: new URL(
+            basePath + "/" +
+              appliedFilters.map(({ slug }) => slug).filter((f) => f != v.slug)
+                .join("/"),
+            url.origin,
+          ).href,
+          quantity: 0,
+        };
+      }),
+    };
+  });
+};
 
 const toImage = ({ sku, ammoProduct }: SkuAndProduct): ImageObject[] => {
   const { title } = ammoProduct;

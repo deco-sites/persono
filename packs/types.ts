@@ -107,11 +107,10 @@ export interface PriceList {
 
 export interface VMDetails {
   //RETURN OF AN ENDPOINT
-
   filtersOrdered: string[];
   basePath: string;
   meta: Meta;
-  appliedFilters: string[]; //unknown
+  appliedFilters: Value[];
   headerColors: HeaderColors;
   productCards: AmmoProduct[];
   skusTotal: number;
