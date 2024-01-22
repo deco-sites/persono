@@ -156,14 +156,18 @@ const toFilters = (
         const selected = !!appliedFilters.filter(({ type }) =>
           type === filterType
         ).find(({ value }) => value === v.value);
+        const slugs = selected
+          ? appliedFilters.map(({ slug }) => slug).filter((
+            f,
+          ) => f != v.slug)
+          : appliedFilters.map(({ slug }) => slug).concat([v.slug]);
         return {
           label: v.value,
           value: v.value,
           selected,
           url: new URL(
             basePath + "/" +
-              appliedFilters.map(({ slug }) => slug).filter((f) => f != v.slug)
-                .join("/"),
+              slugs.join("/"),
             url.origin,
           ).href,
           quantity: 0,

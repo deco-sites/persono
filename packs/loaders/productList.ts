@@ -45,14 +45,14 @@ interface getProductDataProps {
 const loader = async (
   props: Props,
   req: Request,
-  ctx: AppContext
+  ctx: AppContext,
 ): Promise<Product[] | null> => {
   const { publicUrl, ammoDeviceId, ammoToken } = ctx;
   const { sku, category, searchByUrlSku } = props;
   const url = new URL(req.url);
   const path = paths(publicUrl);
 
-  //How the PDP route will work? 
+  //How the PDP route will work?
   const productSku = searchByUrlSku ? url.searchParams.get("sku") : sku;
 
   const headers = returnApiHeader({
@@ -63,26 +63,26 @@ const loader = async (
   //Deco Stale While Revalidate is returning HTTPError 400
   const ammoProduct = productSku
     ? await fetchAPI<Recommendations>(path.recommendation.sku(), {
-        method: "POST",
-        headers: {
-          ...headers,
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: JSON.stringify({
-          sku: productSku,
-        }),
-      }).then((p) => p.data.products)
+      method: "POST",
+      headers: {
+        ...headers,
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: JSON.stringify({
+        sku: productSku,
+      }),
+    }).then((p) => p.data.products)
     : await fetchAPI<VMDetails>(
-        path.productCatalog.resolveRoute({
-          path: category!.path,
-          page: category!.page,
-        }),
-        { method: "GET", headers }
-      ).then((p) => p.productCards);
+      path.productCatalog.resolveRoute({
+        path: category!.path,
+        page: category!.page,
+      }),
+      { method: "GET", headers },
+    ).then((p) => p.productCards);
 
   /* return ammoProduct.map((p) => toProduct(p)); */
-  console.log(ammoProduct)
-  return null
+  console.log(ammoProduct);
+  return null;
 };
 
 export default loader;
