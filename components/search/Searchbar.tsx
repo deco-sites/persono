@@ -1,29 +1,21 @@
-/**
- * We use a custom route at /s?q= to perform the search. This component
- * redirects the user to /s?q={term} when the user either clicks on the
- * button or submits the form. Make sure this page exists in deco.cx/admin
- * of yout site. If not, create a new page on this route and add the appropriate
- * loader.
- *
- * Note that this is the most performatic way to perform a search, since
- * no JavaScript is shipped to the browser!
- */
-
 import Button from "$store/components/ui/Button.tsx";
 import Icon from "$store/components/ui/Icon.tsx";
-import Slider from "$store/components/ui/Slider.tsx";
 import { sendEvent } from "$store/sdk/analytics.tsx";
 import { useId } from "$store/sdk/useId.ts";
 import { useSuggestions } from "$store/sdk/useSuggestions.ts";
 import { useUI } from "$store/sdk/useUI.ts";
-import { Suggestion } from "apps/commerce/types.ts";
+import { Product, Suggestion } from "apps/commerce/types.ts";
+import { SuggestionResult } from "deco-sites/persono/components/search/SuggestionResult.tsx";
+import { DrawerHeader } from "deco-sites/persono/components/ui/DrawerHeader.tsx";
 import { Resolved } from "deco/engine/core/resolver.ts";
 import { useEffect, useRef } from "preact/compat";
-import type { Platform } from "$store/apps/site.ts";
-import ProductCard from "deco-sites/persono/components/product/ProductCard/index.tsx";
 
-// Editable props
-export interface Props {
+interface Link {
+  label: string;
+  href: string;
+}
+
+export interface EditableProps {
   /**
    * @title Placeholder
    * @description Search bar default placeholder message
@@ -44,12 +36,22 @@ export interface Props {
   name?: string;
 
   /**
-   * @title Suggestions Integration
-   * @todo: improve this typings ({query: string, count: number}) => Suggestions
+   * @title Featured Info
+   * @description This data will be displayed on the first render of Search Bar
    */
-  loader: Resolved<Suggestion | null>;
+  featured: {
+    termsTitle?: string;
+    topSearches: Link[];
+    productsTitle?: string;
+    products: Product[] | null;
+  };
 
-  platform?: Platform;
+  /** @title Suggestions Integration   */
+  loader: Resolved<Suggestion | null>;
+}
+
+export interface Props extends EditableProps {
+  withHeader?: boolean;
 }
 
 function Searchbar({
@@ -57,109 +59,159 @@ function Searchbar({
   action = "/s",
   name = "q",
   loader,
+  withHeader,
+  featured: {
+    productsTitle = "Produtos mais vendidos",
+    products: featuredProducts,
+    termsTitle = "Mais buscados",
+    topSearches: featuredSearches,
+  },
 }: Props) {
   const id = useId();
-  const { displaySearchPopup } = useUI();
+  const { displaySearchPopup, displaySearchDrawer } = useUI();
   const searchInputRef = useRef<HTMLInputElement>(null);
-  const { setQuery, payload, loading } = useSuggestions(loader);
-  const { products = [], searches = [] } = payload.value ?? {};
+  const { setQuery, payload, loading, called, query } = useSuggestions(loader);
+  const { products: payloadProducts = [], searches: payloadSearches = [] } =
+    payload.value ?? {};
+
+  const { products, searches } = called.value
+    ? {
+      products: payloadProducts,
+      searches: payloadSearches,
+    }
+    : {
+      products: featuredProducts ?? [],
+      searches: featuredSearches.map(({ label, ...item }) => ({
+        term: label,
+        ...item,
+      })),
+    };
   const hasProducts = Boolean(products.length);
   const hasTerms = Boolean(searches.length);
 
   useEffect(() => {
-    if (displaySearchPopup.value === true) {
-      searchInputRef.current?.focus();
+    if (
+      displaySearchPopup.value === true || displaySearchDrawer.value === true
+    ) {
+      setTimeout(() => searchInputRef.current?.focus(), 500);
     }
-  }, [displaySearchPopup.value]);
+  }, [displaySearchPopup.value, displaySearchDrawer.value]);
 
   return (
     <div
-      class="w-full grid gap-8 px-4 py-6 overflow-y-hidden"
+      class="container lg:gap-8 gap-6 overflow-y-auto lg:overflow-y-hidden flex flex-col lg:py-6 pb-4"
       style={{ gridTemplateRows: "min-content auto" }}
     >
-      <form id={id} action={action} class="join">
-        <Button
-          type="submit"
-          class="join-item btn-square"
-          aria-label="Search"
-          for={id}
-          tabIndex={-1}
+      {withHeader
+        ? (
+          <DrawerHeader
+            title="Buscar"
+            onClose={() => {
+              displaySearchPopup.value = false;
+              displaySearchDrawer.value = false;
+            }}
+          />
+        )
+        : null}
+      <div class="flex justify-start items-center gap-4 lg:px-0 px-4 -mt-2 lg:mt-0">
+        <form
+          id={id}
+          action={action}
+          class="join gap-2 flex-grow px-3 sm:pr-6 py-2 items-center rounded-full border border-[#CCC] focus-within:border-black"
         >
-          {loading.value ? (
-            <span class="loading loading-spinner loading-xs" />
-          ) : (
-            <Icon id="MagnifyingGlass" size={24} strokeWidth={0.01} />
-          )}
-        </Button>
-        <input
-          ref={searchInputRef}
-          id="search-input"
-          class="input input-bordered join-item flex-grow"
-          name={name}
-          onInput={(e) => {
-            const value = e.currentTarget.value;
+          <Button
+            type="submit"
+            class="join-item btn-ghost btn-circle w-4 hover:text-primary"
+            aria-label="Search"
+            for={id}
+            tabIndex={-1}
+          >
+            {loading.value
+              ? <span class="loading loading-spinner loading-xs" />
+              : <Icon id="MagnifyingGlass" size={24} strokeWidth={0.01} />}
+          </Button>
+          <input
+            ref={searchInputRef}
+            id="search-input"
+            class="input join-item flex-grow text-base placeholder:text-[#666] !outline-0 border-none px-0"
+            name={name}
+            onInput={(e) => {
+              const value = e.currentTarget.value;
 
-            if (value) {
-              sendEvent({
-                name: "search",
-                params: { search_term: value },
-              });
-            }
+              if (value) {
+                sendEvent({
+                  name: "search",
+                  params: { search_term: value },
+                });
+              }
 
-            setQuery(value);
-          }}
-          placeholder={placeholder}
-          role="combobox"
-          aria-controls="search-suggestion"
-          autocomplete="off"
-        />
+              setQuery(value);
+            }}
+            placeholder={placeholder}
+            role="combobox"
+            aria-controls="search-suggestion"
+            autocomplete="off"
+          />
+          {query?.value
+            ? (
+              <Button
+                type="button"
+                class="join-item btn-ghost btn-circle hover:text-primary"
+                onClick={() => searchInputRef.current!.value = ""}
+              >
+                limpar
+              </Button>
+            )
+            : null}
+        </form>
         <Button
           type="button"
-          class="join-item btn-ghost btn-square hidden sm:inline-flex"
-          onClick={() => (displaySearchPopup.value = false)}
+          class="join-item btn-ghost btn-circle w-4 hidden lg:inline-flex hover:text-error"
+          onClick={() => displaySearchPopup.value = false}
         >
           <Icon id="XMark" size={24} strokeWidth={2} />
         </Button>
-      </form>
-
-      <div
-        class={`overflow-y-scroll ${!hasProducts && !hasTerms ? "hidden" : ""}`}
-      >
-        <div class="gap-4 grid grid-cols-1 sm:grid-rows-1 sm:grid-cols-[150px_1fr]">
-          <div class="flex flex-col gap-6">
-            <span class="font-medium text-xl" role="heading" aria-level={3}>
-              Sugestões
-            </span>
-            <ul id="search-suggestion" class="flex flex-col gap-6">
-              {searches.map(({ term }) => (
-                <li>
-                  <a href={`/s?q=${term}`} class="flex gap-4 items-center">
-                    <span>
-                      <Icon id="MagnifyingGlass" size={24} strokeWidth={0.01} />
-                    </span>
-                    <span dangerouslySetInnerHTML={{ __html: term }} />
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div class="flex flex-col pt-6 md:pt-0 gap-6 overflow-x-hidden">
-            <span class="font-medium text-xl" role="heading" aria-level={3}>
-              Produtos sugeridos
-            </span>
-            <Slider class="carousel">
-              {products.map((product, index) => (
-                <Slider.Item
-                  index={index}
-                  class="carousel-item first:ml-4 last:mr-4 min-w-[200px] max-w-[200px]"
-                >
-                  <ProductCard product={product} index={index} />
-                </Slider.Item>
-              ))}
-            </Slider>
-          </div>
-        </div>
       </div>
+      {loading.value
+        ? (
+          <div class="flex lg:flex-row flex-col gap-12 px-4">
+            <ul class="flex flex-col gap-4 max-w-[224px] w-full">
+              <li class="skeleton w-40 h-4"></li>
+              <li class="skeleton w-32 h-4 mt-2"></li>
+              <li class="skeleton w-32 h-4"></li>
+              <li class="skeleton w-32 h-4"></li>
+            </ul>
+            <div class="flex flex-col gap-5 w-full">
+              <ul class="flex justify-between">
+                <li class="skeleton w-40 h-4"></li>
+                <li class="skeleton w-20 h-4"></li>
+              </ul>
+              <ul class="flex justify-between gap-8 w-full overflow-x-hidden">
+                {Array.from({ length: 5 }).map(() => (
+                  <li class="flex flex-col gap-2.5">
+                    <div class="skeleton w-36 h-52"></div>
+                    <ul class="flex flex-col gap-1">
+                      <li class="skeleton w-36 h-4"></li>
+                      <li class="skeleton w-1/2 h-4"></li>
+                      <li class="skeleton w-1/2 h-4"></li>
+                    </ul>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        )
+        : (
+          <SuggestionResult
+            showNotFound={!hasProducts && !hasTerms}
+            showDefaultValue={!called.value}
+            termsTitle={termsTitle}
+            searches={searches}
+            productsTitle={productsTitle}
+            products={products}
+            generalLink={`${action}?${name}=${query.value}`}
+          />
+        )}
     </div>
   );
 }

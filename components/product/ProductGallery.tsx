@@ -1,4 +1,3 @@
-import { usePlatform } from "$store/sdk/usePlatform.tsx";
 import { Product } from "apps/commerce/types.ts";
 import ProductCard from "deco-sites/persono/components/product/ProductCard/index.tsx";
 
@@ -28,7 +27,6 @@ const DESKTOP_COLUMNS = {
 };
 
 function ProductGallery({ products, layout, offset }: Props) {
-  const platform = usePlatform();
   const mobile = MOBILE_COLUMNS[layout?.columns?.mobile ?? 2];
   const desktop = DESKTOP_COLUMNS[layout?.columns?.desktop ?? 4];
 
@@ -36,6 +34,7 @@ function ProductGallery({ products, layout, offset }: Props) {
     <div class={`grid ${mobile} gap-2 items-center ${desktop} sm:gap-10`}>
       {products?.map((product, index) => (
         <ProductCard
+          // imageBaseUrl="https://images-prod.mmartan.com.br/"  Agregar propiedade quando as informações do produto estiverem correta
           product={product}
           preload={index === 0}
           index={offset + index}

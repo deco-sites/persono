@@ -4,7 +4,7 @@ import { imageSizeToUrl } from "deco-sites/persono/constants.tsx";
 
 export interface Props {
   settings: ImageProps;
-  imageBaseUrl: string;
+  imageBaseUrl?: string;
 }
 
 function ImageDecoded({ settings, imageBaseUrl }: Props) {
@@ -25,7 +25,11 @@ function ImageDecoded({ settings, imageBaseUrl }: Props) {
 
   return (
     <Image
-      src={`${imageBaseUrl}${imageSizeToUrl}/${imageType}${src}`}
+      src={
+        imageBaseUrl
+          ? `${imageBaseUrl}${imageSizeToUrl}/${imageType}${src}`
+          : src
+      }
       {...defaultProps}
     />
   );

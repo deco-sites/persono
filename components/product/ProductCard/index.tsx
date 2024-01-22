@@ -13,6 +13,8 @@ interface Props {
   index?: number;
 
   imageBaseUrl?: string;
+
+  search?: boolean;
 }
 
 const relative = (url: string) => {
@@ -20,17 +22,34 @@ const relative = (url: string) => {
   return `${link.pathname}${link.search}`;
 };
 
-function ProductCard({ product, preload, index, imageBaseUrl = "" }: Props) {
+function ProductCard({ product, preload, index, imageBaseUrl, search }: Props) {
   const { url, productID, name, image: images, offers } = product;
   const { price = 0, installments, listPrice = 0 } = useOffer(offers);
   const [front] = images ?? [];
 
   const id = `product-card-${productID}`;
-  const hasMultiplePrice = true;
-  const hasNews = false;
 
-  const { hasDiscount, discount } = useMemo(() => {
+  const { hasNews, newsTitle } = useMemo(() => {
+    // Necessario atualizar quando as especificações dos produtos retorarem corretamente
+    const newsTitle = "Novidade";
+    const hasNews = false;
+    return { hasNews, newsTitle };
+  }, [product]);
+
+  const { hasDiscount, discount, hasMultiplePrice } = useMemo(() => {
+    const variantPrices = product.isVariantOf?.hasVariant.map(
+      (item) => item.offers?.offers?.[0]?.price
+    );
+
+    const hasMultiplePrice =
+      variantPrices && variantPrices?.length > 2
+        ? variantPrices.some(
+            (price) => price !== Math.min(...(variantPrices as number[]))
+          )
+        : false;
+
     return {
+      hasMultiplePrice,
       hasDiscount: listPrice > price,
       discount: Math.floor(((listPrice - price) / listPrice) * 100),
     };
@@ -41,16 +60,20 @@ function ProductCard({ product, preload, index, imageBaseUrl = "" }: Props) {
       <a
         key={`${id}-${index}`}
         id={id}
-        class="card card-compact group w-full max-w-[230px] sm:max-w-[280px] rounded-lg border border-gray-300 text-start"
+        class={`card card-compact group ${
+          search ? "w-[160px] md:w-[170px]" : "w-[230px] md:w-[280px]"
+        }    rounded-lg border border-gray-300 text-start`}
         data-deco="view-product"
         href={url && relative(url)}
         aria-label="view product"
       >
         <ImageAndTag
+          imageSrc={front.url!}
           imageBaseUrl={imageBaseUrl}
           discount={discount}
           hasDiscount={hasDiscount}
           hasNews={hasNews}
+          newsTitle={newsTitle}
           imageAlt={front?.alternateName}
           preload={preload}
         />

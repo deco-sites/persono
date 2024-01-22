@@ -6,9 +6,10 @@ import { invoke } from "../runtime.ts";
 
 const payload = signal<Suggestion | null>(null);
 const loading = signal<boolean>(false);
+const called = signal<boolean>(false);
+const latestQuery = signal<string>("");
 
 let queue = Promise.resolve();
-let latestQuery = "";
 
 const NULLABLE: Resolved<null> = {
   __resolveType: "resolved",
@@ -20,7 +21,7 @@ const doFetch = async (
   { __resolveType, ...extraProps }: Resolved<Suggestion | null> = NULLABLE,
 ) => {
   // Debounce query to API speed
-  if (latestQuery !== query) return;
+  if (latestQuery.value !== query) return;
 
   try {
     // Figure out a better way to type this loader
@@ -45,7 +46,8 @@ export const useSuggestions = (
 ) => {
   const setQuery = useCallback((query: string) => {
     loading.value = true;
-    latestQuery = query;
+    called.value = true;
+    latestQuery.value = query;
     queue = queue.then(() => doFetch(query, loader));
   }, [loader]);
 
@@ -53,5 +55,7 @@ export const useSuggestions = (
     loading,
     payload,
     setQuery,
+    called,
+    query: latestQuery,
   };
 };

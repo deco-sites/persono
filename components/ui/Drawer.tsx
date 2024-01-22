@@ -6,9 +6,10 @@ import { useEffect } from "preact/hooks";
 interface Props {
   onClose?: () => void;
   open?: boolean;
+  showHeader?: boolean;
   class?: string;
   loading?: "eager" | "lazy";
-  children: ComponentChildren;
+  children?: ComponentChildren;
   aside: ComponentChildren;
 }
 
@@ -17,6 +18,7 @@ function Drawer(props: Props) {
     children,
     aside,
     open,
+    showHeader,
     onClose,
     class: _class = "",
     loading = "lazy",
@@ -53,7 +55,11 @@ function Drawer(props: Props) {
         {children}
       </div>
 
-      <aside class="drawer-side h-full z-50">
+      <aside
+        class={`drawer-side z-50 ${
+          showHeader ? "bottom-0 top-auto" : "h-full"
+        }`}
+      >
         <label for={id} class="drawer-overlay" />
         {!lazy.value && aside}
       </aside>

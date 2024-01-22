@@ -1,4 +1,3 @@
-import { usePlatform } from "$store/sdk/usePlatform.tsx";
 import ProductCard from "deco-sites/persono/components/product/ProductCard/index.tsx";
 
 /** @title Product Card Layout */

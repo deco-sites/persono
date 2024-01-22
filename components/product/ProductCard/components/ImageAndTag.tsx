@@ -6,7 +6,9 @@ interface Props {
   preload?: boolean;
   discount: number;
   imageAlt?: string;
-  imageBaseUrl: string;
+  imageBaseUrl?: string;
+  newsTitle: string;
+  imageSrc: string;
 }
 
 export const ImageAndTag = ({
@@ -15,7 +17,9 @@ export const ImageAndTag = ({
   discount,
   preload,
   imageAlt = "",
-  imageBaseUrl
+  imageBaseUrl,
+  imageSrc,
+  newsTitle,
 }: Props) => {
   const WIDTH = 287;
   const HEIGHT = 287;
@@ -31,13 +35,13 @@ export const ImageAndTag = ({
               hasNews ? "bg-blueNew" : "bg-black"
             }  text-white`}
           >
-            {hasNews ? "Novidade" : `${discount}% OFF`}
+            {hasNews ? { newsTitle } : `${discount}% OFF`}
           </span>
         )}
         <ImageDecoded
           imageBaseUrl={imageBaseUrl}
           settings={{
-            src: "/products/photos/still/mm180frsa1060-1536px-1680099970832.png", //Remover esta endereço fixo quando os dados de produtos estiverem retornando corretamento
+            src: imageSrc, //Necessario atualizar quando os produtos tiverem retornando a url correta
             alt: imageAlt,
             width: WIDTH,
             height: HEIGHT,

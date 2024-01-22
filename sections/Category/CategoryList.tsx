@@ -30,14 +30,16 @@ export interface Props {
   };
 }
 
-function CardText(
-  { tag, label, alignment }: {
-    tag?: string;
-    label?: string;
-    description?: string;
-    alignment?: "center" | "left";
-  },
-) {
+function CardText({
+  tag,
+  label,
+  alignment,
+}: {
+  tag?: string;
+  label?: string;
+  description?: string;
+  alignment?: "center" | "left";
+}) {
   return (
     <div
       class={`flex flex-col text-center${
@@ -83,7 +85,7 @@ function CategoryList(props: Props) {
     >
       <Header
         title={header.title}
-        // description={header.description || ""} //
+        description={header.description || ""}
         alignment={layout.headerAlignment || "center"}
       />
 
@@ -104,20 +106,17 @@ function CategoryList(props: Props) {
           </Slider.PrevButton>
         </div>
 
-        {list.map((
-          { tag, label, description, href, image, buttonText },
-          index,
-        ) => (
-          <Slider.Item
-            index={index}
-            class="flex flex-col gap-12 carousel-item first:pl-6 sm:first:pl-0 last:pr-6 sm:last:pr-0"
-          >
-            <a
-              href={href}
-              class="flex flex-col gap-4 lg:w-[280px] w-40 lg:h-auto"
+        {list.map(
+          ({ tag, label, description, href, image, buttonText }, index) => (
+            <Slider.Item
+              index={index}
+              class="flex flex-col gap-12 carousel-item first:pl-6 sm:first:pl-0 last:pr-6 sm:last:pr-0"
             >
-              {layout.categoryCard?.textPosition === "top" &&
-                (
+              <a
+                href={href}
+                class="flex flex-col gap-4 lg:w-[280px] w-40 lg:h-auto"
+              >
+                {layout.categoryCard?.textPosition === "top" && (
                   <CardText
                     tag={tag}
                     label={label}
@@ -125,8 +124,7 @@ function CategoryList(props: Props) {
                     alignment={layout?.categoryCard?.textAlignment}
                   />
                 )}
-              {image &&
-                (
+                {image && (
                   <figure class="relative">
                     <Image
                       class="card w-full rounded-3xl relative"
@@ -146,8 +144,7 @@ function CategoryList(props: Props) {
                     </div>
                   </figure>
                 )}
-              {layout.categoryCard?.textPosition === "bottom" &&
-                (
+                {layout.categoryCard?.textPosition === "bottom" && (
                   <CardText
                     tag={tag}
                     label={label}
@@ -155,11 +152,15 @@ function CategoryList(props: Props) {
                     alignment={layout?.categoryCard?.textAlignment}
                   />
                 )}
-            </a>
-            {buttonText &&
-              <a href={href} class="btn">{buttonText}</a>}
-          </Slider.Item>
-        ))}
+              </a>
+              {buttonText && (
+                <a href={href} class="btn">
+                  {buttonText}
+                </a>
+              )}
+            </Slider.Item>
+          )
+        )}
 
         <div class="z-10 col-start-3 row-start-2 absolute right-2 lg:right-2 2xl:right-32 md:hidden bg-white rounded-full  cursor-pointer">
           <Slider.NextButton

@@ -1,5 +1,4 @@
 import Icon from "$store/components/ui/Icon.tsx";
-import Header from "$store/components/ui/SectionHeader.tsx";
 import Slider from "$store/components/ui/Slider.tsx";
 import SliderJS from "$store/islands/SliderJS.tsx";
 import { useId } from "$store/sdk/useId.ts";
@@ -7,18 +6,18 @@ import type { Product } from "apps/commerce/types.ts";
 import ProductCard from "deco-sites/persono/components/product/ProductCard/index.tsx";
 import { FnContext } from "deco/types.ts";
 import { SectionProps } from "deco/mod.ts";
+import ShelfSectionHeader from "deco-sites/persono/components/ui/ShelfSectionHeader.tsx";
 
 export interface Props {
   products: Product[] | null;
   title?: string;
   description?: string;
   layout?: {
-    headerAlignment?: "center" | "left";
+    headerAlignment?: { desktop: "center" | "left"; mobile: "center" | "left" };
   };
 }
 
 export const loader = (props: Props, _req: Request, ctx: FnContext) => {
-  console.log("@@@ ctx ", ctx);
   return {
     ...props,
   };
@@ -38,24 +37,26 @@ function ProductShelf({
 
   return (
     <div class="w-full container ">
-      <Header
+      <ShelfSectionHeader
         title={title}
         description={description || ""}
-        alignment={layout?.headerAlignment || "center"}
+        alignment={
+          layout?.headerAlignment ?? { desktop: "center", mobile: "center" }
+        }
       />
 
       <div
         id={id}
         class="container grid grid-cols-[48px_1fr_48px] px-0 sm:px-5"
       >
-        <Slider class="carousel carousel-center sm:carousel-end gap-6 col-span-full row-start-2 row-end-5">
+        <Slider class="carousel carousel-center  justify-around sm:carousel-end gap-6 col-span-full row-start-2 row-end-5">
           {products?.map((product, index) => (
             <Slider.Item
               index={index}
-              class="carousel-item w-[230px] sm:w-[280px] first:pl-6 sm:first:pl-0 last:pr-6 sm:last:pr-0"
+              class="carousel-item first:pl-6 sm:first:pl-0 last:pr-6 sm:last:pr-0"
             >
               <ProductCard
-                imageBaseUrl="https://images-prod.mmartan.com.br/"
+                // imageBaseUrl="https://images-prod.mmartan.com.br/"  Agregar propiedade quando as informações do produto estiverem correta
                 product={product}
                 index={index}
               />
