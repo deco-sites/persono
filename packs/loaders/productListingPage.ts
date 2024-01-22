@@ -2,10 +2,10 @@ import type { Props as AppContext } from "deco-sites/persono/apps/site.ts";
 import type { ProductListingPage } from "apps/commerce/types.ts";
 import paths from "$store/packs/utils/paths.ts";
 import { fetchAPI } from "apps/utils/fetch.ts";
-/* import { DECO_CACHE_OPTION } from "$store/packs/constants.ts"; */
-import { VMDetails } from "$store/packs/types.ts";
+import { VMDetails, VMDetailsRedirect } from "$store/packs/types.ts";
 import { returnApiHeader } from "$store/packs/utils/utils.ts";
 import { toProductListingPage } from "$store/packs/utils/transform.ts";
+import { typeChecher } from "$store/packs/utils/utils.ts";
 
 export interface Props {
   /**
@@ -59,34 +59,66 @@ const loader = async (
   const { vm } = props;
   const url = new URL(req.url);
   const path = paths(publicUrl);
+  const headers = returnApiHeader({
+    ammoDeviceIdValue: ammoDeviceId!,
+    ammoTokenValue: ammoToken!,
+  });
 
-  const vmProps = vm?.filters?.reduce<VmProps>((acc, f) => {
-    return {
-      path: [...acc.path, f?.slugs[0]],
-      searchParams: [...acc.searchParams, ...f?.slugs?.slice(1)?.map((s) => s)],
+  const vmProps = vm?.path
+    ? vm!.filters?.reduce<VmProps>((acc, f) => {
+      return {
+        path: [...acc.path, f?.slugs[0]],
+        searchParams: [
+          ...acc.searchParams,
+          ...f?.slugs?.slice(1)?.map((s) => s),
+        ],
+      };
+    }, { path: [formatBaseVmPath(vm?.path ?? url.pathname)], searchParams: [] })
+    : {
+      path: [formatBaseVmPath(url.pathname)],
+      searchParams: [url.searchParams.get("f")],
     };
-  }, { path: [formatBaseVmPath(vm?.path ?? url.pathname)], searchParams: [] });
 
-  const vmDetails = await fetchAPI<VMDetails>(
+  const response = await fetchAPI<VMDetails | VMDetailsRedirect>(
     path.productCatalog.resolveRoute({
       path: vmProps!.path.join("/"),
       page: Number(url.searchParams.get("page")) ?? 1,
-      f: vmProps?.searchParams.join("_") ?? url.searchParams.get("f") ??
-        undefined,
+      f: vmProps?.searchParams.join("_") ?? undefined,
     }),
     {
       method: "GET",
-      headers: returnApiHeader({
-        ammoDeviceIdValue: ammoDeviceId!,
-        ammoTokenValue: ammoToken!,
-      }),
+      headers,
     },
   ).then((vm) => vm)
     .catch(() => null);
 
-  if (!vmDetails) return null;
+  if (!response) return null;
 
-  return toProductListingPage({ vmDetails, url, installmentConfig });
+  if (typeChecher<VMDetails>(response as VMDetails, "basePath")) {
+    return toProductListingPage({
+      vmDetails: response as VMDetails,
+      url,
+      installmentConfig,
+    });
+  }
+
+  const redirectPath = response as VMDetailsRedirect;
+  const redirectedResponse = await fetchAPI<VMDetails>(
+    path.productCatalog.resolveRoute({
+      path: redirectPath.location,
+      page: Number(url.searchParams.get("page")) ?? 1,
+    }),
+    {
+      method: "GET",
+      headers,
+    },
+  ).then((vm) => vm);
+
+  return toProductListingPage({
+    vmDetails: redirectedResponse,
+    url,
+    installmentConfig,
+  });
 };
 
 const formatBaseVmPath = (str: string) => {

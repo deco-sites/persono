@@ -119,6 +119,12 @@ export interface VMDetails {
   miniVms: string[]; //unknown
 }
 
+export interface VMDetailsRedirect {
+  //RETURN OF AN ENDPOINT
+  type: "redirect";
+  location: string;
+}
+
 export interface Meta {
   index: boolean;
   title: string;
