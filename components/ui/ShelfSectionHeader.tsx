@@ -1,26 +1,21 @@
 interface Props {
   title?: string;
-  description?: string;
   alignment: { desktop: "center" | "left"; mobile: "center" | "left" };
 }
 
-function ShelfSectionHeader(props: Props) {
+function ShelfSectionHeader({ title, alignment }: Props) {
+  if (title === "") {
+    return null;
+  }
+
   return (
-    <>
-      {props.title ? (
-        <div
-          class={`flex flex-col py-10 ${
-            props.alignment.mobile === "left" ? "text-left" : "text-center"
-          } md:${
-            props.alignment.desktop === "left" ? "text-left" : "text-center"
-          }`}
-        >
-          {props.title && (
-            <h1 class="text-black font-medium text-2xl">{props.title}</h1>
-          )}
-        </div>
-      ) : null}
-    </>
+    <div
+      class={`flex flex-col py-10 ${
+        alignment.mobile === "left" ? "text-left" : "text-center"
+      }  ${alignment.desktop === "left" ? "md:text-left" : "md:text-center"}`}
+    >
+      <h1 class="text-black font-medium text-2xl">{title}</h1>
+    </div>
   );
 }
 

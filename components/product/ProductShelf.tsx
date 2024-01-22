@@ -4,8 +4,6 @@ import SliderJS from "$store/islands/SliderJS.tsx";
 import { useId } from "$store/sdk/useId.ts";
 import type { Product } from "apps/commerce/types.ts";
 import ProductCard from "deco-sites/persono/components/product/ProductCard/index.tsx";
-import { FnContext } from "deco/types.ts";
-import { SectionProps } from "deco/mod.ts";
 import ShelfSectionHeader from "deco-sites/persono/components/ui/ShelfSectionHeader.tsx";
 
 export interface Props {
@@ -17,18 +15,7 @@ export interface Props {
   };
 }
 
-export const loader = (props: Props, _req: Request, ctx: FnContext) => {
-  return {
-    ...props,
-  };
-};
-
-function ProductShelf({
-  products,
-  title,
-  description,
-  layout,
-}: SectionProps<typeof loader>) {
+function ProductShelf({ products, title, description, layout }: Props) {
   const id = useId();
 
   if (!products || products.length === 0) {
@@ -39,15 +26,14 @@ function ProductShelf({
     <div class="w-full container ">
       <ShelfSectionHeader
         title={title}
-        description={description || ""}
         alignment={
-          layout?.headerAlignment ?? { desktop: "center", mobile: "center" }
+          layout?.headerAlignment ?? { desktop: "center", mobile: "left" }
         }
       />
 
       <div
         id={id}
-        class="container grid grid-cols-[48px_1fr_48px] px-0 sm:px-5"
+        class="container grid grid-cols-[48px_1fr_48px] px-0 sm:px-5 pb-28"
       >
         <Slider class="carousel carousel-center  justify-around sm:carousel-end gap-6 col-span-full row-start-2 row-end-5">
           {products?.map((product, index) => (
