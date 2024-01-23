@@ -18,7 +18,7 @@ import {
   Sku,
   VMDetails,
 } from "$store/packs/types.ts";
-import { PROPS_AMMO_API } from "$store/packs/constants.ts";
+import { PROPS_AMMO_API, SORT_OPTIONS } from "$store/packs/constants.ts";
 import { typeChecher } from "$store/packs/utils/utils.ts";
 
 interface ProductListingPageProps {
@@ -89,7 +89,7 @@ export function toProduct(
 export function toProductListingPage(
   { vmDetails, url, installmentConfig }: ProductListingPageProps,
 ): ProductListingPage {
-  const { productCards } = vmDetails;
+  const { productCards, meta } = vmDetails;
   return {
     "@type": "ProductListingPage",
     breadcrumb: toBreadcrumbList(url.origin, vmDetails),
@@ -101,8 +101,12 @@ export function toProductListingPage(
       nextPage: "",
       previousPage: "",
     },
-    //TODO: PLP sort options
-    sortOptions: [],
+    sortOptions: SORT_OPTIONS,
+    seo: {
+      title: meta.title,
+      description: meta.description,
+      canonical: "",
+    },
   };
 }
 

@@ -2,6 +2,7 @@ interface ResolveRouteProps {
   path: string;
   page: number;
   f?: string;
+  sort?: string;
 }
 
 const paths = (publicUrl: string) => {

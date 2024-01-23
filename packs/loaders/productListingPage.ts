@@ -31,6 +31,10 @@ interface VM {
    * @description Filtros da VM
    */
   filters?: Filters[];
+  /**
+   * @title Ordernar por
+   */
+  sort?: "recomendations" | "discount_desc" | "price_asc";
 }
 
 interface Filters {
@@ -48,6 +52,7 @@ interface Filters {
 interface VmProps {
   path: string[];
   searchParams: string[];
+  sort?: string;
 }
 
 /**
@@ -73,11 +78,17 @@ const loader = async (
           ...acc.searchParams,
           ...f?.slugs?.slice(1)?.map((s) => s),
         ],
+        sort: acc.sort,
       };
-    }, { path: [formatBaseVmPath(vm?.path ?? url.pathname)], searchParams: [] })
+    }, {
+      path: [formatBaseVmPath(vm?.path ?? url.pathname)],
+      searchParams: [],
+      sort: vm.sort === "recomendations" ? undefined : vm.sort,
+    })
     : {
       path: [formatBaseVmPath(url.pathname)],
       searchParams: [url.searchParams.get("f")],
+      sort: url.searchParams.get("sort") ?? undefined,
     };
 
   const response = await fetchAPI<VMDetails | VMDetailsRedirect>(
@@ -85,6 +96,7 @@ const loader = async (
       path: vmProps!.path.join("/"),
       page: Number(url.searchParams.get("page")) ?? 1,
       f: vmProps?.searchParams.join("_") ?? undefined,
+      sort: vmProps?.sort,
     }),
     {
       method: "GET",
@@ -110,6 +122,7 @@ const loader = async (
     path.productCatalog.resolveRoute({
       path: redirectPath.location,
       page: Number(url.searchParams.get("page")) ?? 1,
+      sort: vmProps?.sort,
     }),
     {
       method: "GET",
