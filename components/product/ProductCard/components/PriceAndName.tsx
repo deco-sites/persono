@@ -19,8 +19,6 @@ export const PriceAndName = ({
   installments,
   priceCurrency = "BRL",
 }: Props) => {
-
-  
   return (
     <div class="flex-auto flex flex-col p-4 ">
       <h2
@@ -30,25 +28,27 @@ export const PriceAndName = ({
 
       <div class="flex flex-col">
         <div class="flex flex-col gap-0  justify-start">
-          <p
-            class={`text-gray-600 font-normal text-xs ${
-              !hasMultiplePrices && hasDiscount ? "line-through" : ""
-            }`}
-          >
-            {hasMultiplePrices
-              ? "a partir de"
-              : hasDiscount
-              ? formatPrice(listPrice, priceCurrency)
-              : ""}
-          </p>
+          {(hasMultiplePrices || hasDiscount) && (
+            <p
+              class={`text-gray-600 font-normal text-xs ${
+                !hasMultiplePrices && hasDiscount ? "line-through" : ""
+              }`}
+            >
+              {hasMultiplePrices
+                ? "a partir de"
+                : formatPrice(listPrice, priceCurrency)}
+            </p>
+          )}
           <span class="text-black text-base ">
             {formatPrice(price, priceCurrency)}
           </span>
         </div>
 
-        <div class="text-gray-600 font-normal text-xs truncate">
-          ou {installments}
-        </div>
+        {installments && (
+          <div class="text-gray-600 font-normal text-xs truncate">
+            ou {installments}
+          </div>
+        )}
       </div>
     </div>
   );

@@ -52,7 +52,6 @@ export interface EditableProps {
 
 export interface Props extends EditableProps {
   withHeader?: boolean;
-  imageBaseUrl?: string;
 }
 
 function Searchbar({
@@ -67,7 +66,6 @@ function Searchbar({
     termsTitle = "Mais buscados",
     topSearches: featuredSearches,
   },
-  imageBaseUrl,
 }: Props) {
   const id = useId();
   const { displaySearchPopup, displaySearchDrawer } = useUI();
@@ -202,7 +200,6 @@ function Searchbar({
         </div>
       ) : (
         <SuggestionResult
-          imageBaseUrl={imageBaseUrl}
           showNotFound={!hasProducts && !hasTerms}
           showDefaultValue={!called.value}
           termsTitle={termsTitle}

@@ -21,7 +21,6 @@ export interface Props {
    */
   children?: ComponentChildren;
   platform: ReturnType<typeof usePlatform>;
-  imageBaseUrl?: string;
 }
 
 const Aside = ({ children }: { children: ComponentChildren }) => (
@@ -65,14 +64,7 @@ const setup = () => {
   };
 };
 
-function Drawers({
-  menu,
-  searchbar,
-  cart,
-  children,
-  platform,
-  imageBaseUrl,
-}: Props) {
+function Drawers({ menu, searchbar, cart, children, platform }: Props) {
   const { displayCart, displayMenu, displaySearchDrawer } = useUI();
 
   useEffect(() => {
@@ -106,11 +98,7 @@ function Drawers({
         aside={
           <Aside>
             {displaySearchDrawer.value ? (
-              <SearchBar
-                imageBaseUrl={imageBaseUrl}
-                withHeader
-                {...searchbar!}
-              />
+              <SearchBar withHeader {...searchbar!} />
             ) : null}
             {displayCart.value ? (
               <Cart {...cart} onClose={() => (displayCart.value = false)} />

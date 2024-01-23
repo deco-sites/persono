@@ -4,24 +4,26 @@ import SliderJS from "$store/islands/SliderJS.tsx";
 import { useId } from "$store/sdk/useId.ts";
 import type { Product } from "apps/commerce/types.ts";
 import ProductCard from "deco-sites/persono/components/product/ProductCard/index.tsx";
-import ShelfSectionHeader from "deco-sites/persono/components/ui/ShelfSectionHeader.tsx";
+import Header from "$store/components/ui/SectionHeader.tsx";
+
 import { SectionProps } from "deco/mod.ts";
 import { FnCustomContext } from "deco-sites/persono/packs/types.ts";
 
 export interface Props {
   products: Product[] | null;
   title?: string;
-  layout?: {
-    headerAlignment?: { desktop: "center" | "left"; mobile: "center" | "left" };
-  };
+
+  /** @description used for analytics event */
+
+  itemListName?: string;
 }
 
 function ProductShelf({
   products,
   title,
-  layout,
-}: // imageBaseUrl !! Remover após integração de produtos
-SectionProps<typeof loader>) {
+  device,
+  itemListName,
+}: SectionProps<typeof loader>) {
   const id = useId();
 
   if (!products || products.length === 0) {
@@ -29,26 +31,25 @@ SectionProps<typeof loader>) {
   }
 
   return (
-    <div class="w-full container ">
-      <ShelfSectionHeader
+    <div class="w-full container">
+      <Header
         title={title}
-        alignment={
-          layout?.headerAlignment ?? { desktop: "center", mobile: "left" }
-        }
+
+        alignment={device === "mobile" ? "left" : "center"}
       />
 
       <div
         id={id}
         class="container grid grid-cols-[48px_1fr_48px] px-0 sm:px-5 pb-28"
       >
-        <Slider class="carousel carousel-center  justify-around sm:carousel-end gap-6 col-span-full row-start-2 row-end-5">
+        <Slider class="carousel  carousel-start  justify-around sm:carousel-end gap-6 col-span-full row-start-2 row-end-5">
           {products?.map((product, index) => (
             <Slider.Item
               index={index}
               class="carousel-item first:pl-6 sm:first:pl-0 last:pr-6 sm:last:pr-0"
             >
               <ProductCard
-                // imageBaseUrl={imageBaseUrl} !! Remover após integração de produtos
+                itemListName={itemListName}
                 product={product}
                 index={index}
               />
@@ -74,9 +75,9 @@ SectionProps<typeof loader>) {
 }
 
 export const loader = (props: Props, _req: Request, ctx: FnCustomContext) => {
-  const imageBaseUrl = ctx.imageBaseUrl;
+  const device = ctx.device;
   return {
-    imageBaseUrl,
+    device,
     ...props,
   };
 };

@@ -2,7 +2,9 @@ import { useOffer } from "$store/sdk/useOffer.ts";
 import type { Product } from "apps/commerce/types.ts";
 import { PriceAndName } from "deco-sites/persono/components/product/ProductCard/components/PriceAndName.tsx";
 import { useMemo } from "preact/compat";
-import { ImageAndTag } from "deco-sites/persono/components/product/ProductCard/components/ImageAndTag.tsx";
+import { ProductCardImage } from "./components/ProductCardImage.tsx";
+import { SendEventOnClick } from "deco-sites/persono/components/Analytics.tsx";
+import { mapProductToAnalyticsItem } from "apps/commerce/utils/productToAnalyticsItem.ts";
 
 interface Props {
   product: Product;
@@ -12,9 +14,9 @@ interface Props {
   /** @description index of the product card in the list */
   index?: number;
 
-  imageBaseUrl?: string;
-
   search?: boolean;
+
+  itemListName?: string;
 }
 
 const relative = (url: string) => {
@@ -22,19 +24,16 @@ const relative = (url: string) => {
   return `${link.pathname}${link.search}`;
 };
 
-function ProductCard({ product, preload, index, imageBaseUrl, search }: Props) {
+function ProductCard({ product, preload, index, search, itemListName }: Props) {
   const { url, productID, name, image: images, offers } = product;
   const { price = 0, installments, listPrice = 0 } = useOffer(offers);
   const [front] = images ?? [];
 
   const id = `product-card-${productID}`;
 
-  const { hasNews, newsTitle } = useMemo(() => {
-    // Necessario atualizar quando as especificações dos produtos retorarem corretamente
-    const newsTitle = "Novidade";
-    const hasNews = false;
-    return { hasNews, newsTitle };
-  }, [product]);
+  // Necessario atualizar quando as especificações dos produtos retorarem corretamente
+  const newsTitle = "Novidade";
+  const hasNews = false;
 
   const { hasDiscount, discount, hasMultiplePrices } = useMemo(() => {
     const variantPrices = product.isVariantOf?.hasVariant.map(
@@ -67,9 +66,25 @@ function ProductCard({ product, preload, index, imageBaseUrl, search }: Props) {
         href={url && relative(url)}
         aria-label="view product"
       >
-        <ImageAndTag
+        <SendEventOnClick
+          id={id}
+          event={{
+            name: "select_item" as const,
+            params: {
+              item_list_name: itemListName ?? "",
+              items: [
+                mapProductToAnalyticsItem({
+                  product,
+                  price,
+                  listPrice,
+                  index,
+                }),
+              ],
+            },
+          }}
+        />
+        <ProductCardImage
           imageSrc={front.url!}
-          imageBaseUrl={imageBaseUrl}
           discount={discount}
           hasDiscount={hasDiscount}
           hasNews={hasNews}

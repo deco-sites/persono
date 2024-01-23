@@ -40,10 +40,6 @@ export type Props = {
   */
   publicUrl: string;
 
-   /**
-  @title Image base UTL
-  */
-
   imageBaseUrl:string;
   
 } & DefaultProps;

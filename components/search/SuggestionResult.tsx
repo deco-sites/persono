@@ -16,7 +16,6 @@ interface SuggestionResultProps {
   productsTitle: string;
   products: Product[];
   generalLink: string;
-  imageBaseUrl?: string;
 }
 
 export function SuggestionResult({
@@ -27,7 +26,6 @@ export function SuggestionResult({
   productsTitle,
   products,
   generalLink,
-  imageBaseUrl,
 }: SuggestionResultProps) {
   if (showNotFound) {
     return (
@@ -89,12 +87,7 @@ export function SuggestionResult({
               index={index}
               class="carousel-item first:ml-4 last:mr-4 min-w-[200px] max-w-[200px]"
             >
-              <ProductCard
-                search
-                product={product}
-                index={index}
-                // imageBaseUrl={imageBaseUrl} !! Remover após integração de produtos
-              />
+              <ProductCard search product={product} index={index} />
             </Slider.Item>
           ))}
         </Slider>

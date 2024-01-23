@@ -34,7 +34,6 @@ function ProductGallery({ products, layout, offset }: Props) {
     <div class={`grid ${mobile} gap-2 items-center ${desktop} sm:gap-10`}>
       {products?.map((product, index) => (
         <ProductCard
-          // imageBaseUrl="https://images-prod.mmartan.com.br/"  Agregar propiedade quando as informações do produto estiverem correta
           product={product}
           preload={index === 0}
           index={offset + index}

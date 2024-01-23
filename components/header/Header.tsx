@@ -43,7 +43,6 @@ function Header({
   fastLinks,
   device,
   cart,
-  imageBaseUrl,
 }: SectionProps<typeof loader>) {
   const platform = usePlatform();
   const items = navItems ?? [];
@@ -55,7 +54,6 @@ function Header({
           <Alert alerts={alerts} />
           <div class="border-b border-t border-base-300 bg-base-100 w-full relative">
             <Navbar
-              imageBaseUrl={imageBaseUrl}
               items={items}
               searchbar={searchbar && { ...searchbar }}
               device={device}
@@ -64,7 +62,6 @@ function Header({
         </div>
       </header>
       <Drawers
-        imageBaseUrl={imageBaseUrl}
         menu={{ items, fastLinks }}
         searchbar={searchbar}
         cart={cart}
@@ -76,10 +73,10 @@ function Header({
 
 export const loader = (props: Props, _req: Request, ctx: FnCustomContext) => {
   const device = ctx.device;
-  const imageBaseUrl = ctx.imageBaseUrl;
+
   return {
     ...props,
-    imageBaseUrl,
+
     device: device || "desktop",
   };
 };

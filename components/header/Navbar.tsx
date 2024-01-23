@@ -14,12 +14,10 @@ function Navbar({
   items,
   searchbar,
   device,
-  imageBaseUrl,
 }: {
   items: SiteNavigationElement[];
   device: string;
   searchbar?: SearchbarProps;
-  imageBaseUrl?: string;
 }) {
   if (device !== "desktop") {
     return (
@@ -61,7 +59,7 @@ function Navbar({
           <CartButton />
         </div>
       </div>
-      <Searchbar imageBaseUrl={imageBaseUrl} searchbar={searchbar} />
+      <Searchbar searchbar={searchbar} />
     </>
   );
 }
