@@ -51,7 +51,7 @@ function FreeShippingProgressBar(
         />
         <div
           class="absolute top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-white border border-primary"
-          style={{ left: `${Math.min(Math.max(percent - 4, 0), 96)}%` }}
+          style={{ left: `${Math.min(Math.max(percent, 0), 97)}%` }}
         />
       </div>
     </div>

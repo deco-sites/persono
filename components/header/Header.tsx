@@ -1,4 +1,4 @@
-import type { Props as SearchbarProps } from "$store/components/search/Searchbar.tsx";
+import type { EditableProps as SearchbarProps } from "$store/components/search/Searchbar.tsx";
 import Drawers from "$store/islands/Header/Drawers.tsx";
 import { usePlatform } from "$store/sdk/usePlatform.tsx";
 import { SocialItem } from "deco-sites/persono/components/footer/Social.tsx";
@@ -52,10 +52,10 @@ function Header({
       <header class="h-[120px]" data-header>
         <div class="fixed top-0 left-0 w-full z-30 ">
           <Alert alerts={alerts} />
-          <div class="border-b border-t border-base-200 bg-base-100 w-full">
+          <div class="border-b border-t border-base-300 bg-base-100 w-full relative">
             <Navbar
               items={items}
-              searchbar={searchbar && { ...searchbar, platform }}
+              searchbar={searchbar && { ...searchbar }}
               device={device}
             />
           </div>
