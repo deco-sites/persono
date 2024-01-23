@@ -20,7 +20,7 @@ export interface SiteNavigationElementLeaf {
 }
 
 export interface SiteNavigationElement extends SiteNavigationElementLeaf {
-  children?: SiteNavigationElementLeaf[];
+  children?: Omit<SiteNavigationElement, "image">[];
 }
 
 export type FastLink = Omit<SiteNavigationElementLeaf, "image"> & {
@@ -28,6 +28,7 @@ export type FastLink = Omit<SiteNavigationElementLeaf, "image"> & {
 };
 
 export interface Props {
+  /** @description Recomended to max of 2 children trees */
   items?: SiteNavigationElement[];
   fastLinks?: FastLink[];
   socialItems?: SocialItem[];
@@ -41,8 +42,8 @@ const TEXT = [
 
 const CHILD_TITLE = [
   "!p-4",
-  "!py-4 !px-0",
-  "!py-4 !px-0",
+  "!py-4 !px-4 peer-checked:bg-base-300 peer-checked:border-b border-white",
+  "!py-4 !px-8 bg-base-300",
 ];
 
 function MenuItem(
@@ -50,24 +51,20 @@ function MenuItem(
 ) {
   const hasChildren = !!item.children?.length;
   return (
-    <div
+    <li
       class={`${
-        hasChildren ? "collapse collapse-plus" : ""
+        hasChildren ? "collapse collapse-plus rounded-none" : ""
       } relative items-start`}
     >
       {hasChildren
         ? (
           <>
-            <input type="checkbox" class="w-1/4 h-full justify-self-end" />
-            <div class="collapse-content">
-              <ul>
-                {item.children?.map((node, index) => (
-                  <li key={index}>
-                    <MenuItem item={node} child={child + 1} />
-                  </li>
-                ))}
-              </ul>
-            </div>
+            <input type="checkbox" class="w-1/4 h-full justify-self-end peer" />
+            <ul class="collapse-content !px-0 divide-y divide-white">
+              {item.children?.map((node, index) => (
+                <MenuItem key={index} item={node} child={child + 1} />
+              ))}
+            </ul>
           </>
         )
         : null}
@@ -76,9 +73,9 @@ function MenuItem(
           CHILD_TITLE[child]
         } collapse-title after:!w-5 after:!h-5 after:!static after:!leading-5 after:!text-center after:!text-2xl flex items-center justify-between`}
       >
-        <a class={`${TEXT[child]}`} href={item.url}>{item.label}</a>
+        <a class={`${TEXT[child]} flex-grow`} href={item.url}>{item.label}</a>
       </div>
-    </div>
+    </li>
   );
 }
 
@@ -86,11 +83,7 @@ function Menu({ items = [], fastLinks = [], socialItems = [] }: Props) {
   return (
     <div class="flex flex-col h-full">
       <ul class="px-4 flex-grow flex flex-col divide-y divide-[#D4DBD7]">
-        {items?.map((item) => (
-          <li>
-            <MenuItem item={item} />
-          </li>
-        ))}
+        {items?.map((item) => <MenuItem item={item} />)}
       </ul>
 
       <ul class="px-4 flex flex-col py-2 bg-base-200">

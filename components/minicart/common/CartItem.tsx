@@ -14,7 +14,9 @@ export interface Item {
   };
   sku: string;
   name: string;
+  size: string;
   quantity: number;
+  stock: number;
   price: {
     sale: number;
     list: number;
@@ -23,11 +25,8 @@ export interface Item {
 
 export interface Props {
   item: Item;
-  index: number;
-
   locale: string;
   currency: string;
-
   onUpdateQuantity: (quantity: number, sku: string) => Promise<void>;
   itemToAnalyticsItem: (sku: string) => AnalyticsItem | null | undefined;
 }
@@ -35,15 +34,13 @@ export interface Props {
 function CartItem(
   {
     item,
-    index,
     locale,
     currency,
     onUpdateQuantity,
     itemToAnalyticsItem,
   }: Props,
 ) {
-  const { image, name, price: { sale, list }, quantity } = item;
-  const isGift = sale < 0.01;
+  const { image, name, size, price: { sale, list }, quantity } = item;
   const [loading, setLoading] = useState(false);
 
   const withLoading = useCallback(
@@ -59,59 +56,36 @@ function CartItem(
   );
 
   return (
-    <div
-      class="grid grid-rows-1 gap-2"
-      style={{
-        gridTemplateColumns: "auto 1fr",
-      }}
-    >
+    <div class="flex items-start justify-stretch gap-4">
       <Image
         {...image}
         style={{ aspectRatio: "108 / 150" }}
         width={108}
         height={150}
-        class="h-full object-contain"
+        fit="contain"
+        class="rounded overflow-hidden"
       />
-
-      <div class="flex flex-col gap-2">
-        <div class="flex justify-between items-center">
-          <span>{name}</span>
-          <Button
-            disabled={loading || isGift}
-            loading={loading}
-            class="btn-ghost btn-square"
-            onClick={withLoading(async () => {
-              const analyticsItem = itemToAnalyticsItem(item.sku);
-
-              await onUpdateQuantity(0, item.sku);
-
-              analyticsItem && sendEvent({
-                name: "remove_from_cart",
-                params: { items: [analyticsItem] },
-              });
-            })}
-          >
-            <Icon id="Trash" size={24} />
-          </Button>
+      <div class="flex flex-col flex-grow gap-6">
+        <div class="relative flex flex-col gap-1">
+          <p class="text-base">{name}</p>
+          <p class="text-sm capitalize">Tamanho {size}</p>
+          <div class="flex items-center gap-2">
+            <p class="line-through text-[#666] text-xs">
+              {formatPrice(list / 100, currency, locale)}
+            </p>
+            <p class="text-base">
+              {formatPrice(sale / 100, currency, locale)}
+            </p>
+          </div>
         </div>
-        <div class="flex items-center gap-2">
-          <span class="line-through text-base-300 text-sm">
-            {formatPrice(list, currency, locale)}
-          </span>
-          <span class="text-sm text-secondary">
-            {isGift ? "Grátis" : formatPrice(sale, currency, locale)}
-          </span>
-        </div>
-
         <QuantitySelector
-          disabled={loading || isGift}
+          disabled={loading}
           quantity={quantity}
           onChange={withLoading(async (quantity) => {
-            const analyticsItem = itemToAnalyticsItem(item.sku);
-            const diff = quantity - item.quantity;
-
             await onUpdateQuantity(quantity, item.sku);
 
+            const analyticsItem = itemToAnalyticsItem(item.sku);
+            const diff = quantity - item.quantity;
             if (analyticsItem) {
               sendEvent({
                 name: diff < 0 ? "remove_from_cart" : "add_to_cart",
@@ -123,6 +97,24 @@ function CartItem(
           })}
         />
       </div>
+      <Button
+        class="btn-circle btn-ghost hover:text-error w-4"
+        onClick={withLoading(async () => {
+          await onUpdateQuantity(0, item.sku);
+
+          const analyticsItem = itemToAnalyticsItem(item.sku);
+          if (analyticsItem) {
+            sendEvent({
+              name: "remove_from_cart",
+              params: {
+                items: [{ ...analyticsItem, quantity: 0 }],
+              },
+            });
+          }
+        })}
+      >
+        <Icon id="Trash" size={20} />
+      </Button>
     </div>
   );
 }

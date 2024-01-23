@@ -1,7 +1,6 @@
 import { Bag } from "$store/packs/types.ts";
 import { AppContext } from "$store/apps/site.ts";
-import { getCookies } from "std/http/mod.ts";
-import { AMMO_DEVICE_ID_HEADER } from "$store/packs/constants.ts";
+import { getHeaders } from "$store/packs/utils/headers.ts";
 
 const action = async (
   _props: null,
@@ -9,18 +8,14 @@ const action = async (
   ctx: AppContext,
 ): Promise<Bag> => {
   const { ammoc, apiKey } = ctx;
-  const cookies = getCookies(req.headers);
-  const deviceId = cookies[AMMO_DEVICE_ID_HEADER];
+  const headers = getHeaders(req, apiKey);
 
   try {
     const response = await ammoc
       ["POST /api/bag/coupon/remove"](
         {},
         {
-          headers: {
-            "x-api-key": apiKey,
-            "x-ammo-device-id": deviceId,
-          },
+          headers: headers,
         },
         {},
       );

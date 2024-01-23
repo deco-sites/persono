@@ -9,7 +9,7 @@ interface Props {
   showHeader?: boolean;
   class?: string;
   loading?: "eager" | "lazy";
-  children: ComponentChildren;
+  children?: ComponentChildren;
   aside: ComponentChildren;
 }
 
