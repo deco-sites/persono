@@ -5,9 +5,10 @@ import { useUI } from "$store/sdk/useUI.ts";
 
 export interface Props {
   searchbar?: SearchbarProps;
+  imageBaseUrl?: string;
 }
 
-function SearchbarModal({ searchbar }: Props) {
+function SearchbarModal({ searchbar, imageBaseUrl }: Props) {
   const { displaySearchPopup } = useUI();
 
   if (!searchbar) {
@@ -20,7 +21,7 @@ function SearchbarModal({ searchbar }: Props) {
         !displaySearchPopup.value ? "-translate-y-full" : "translate-x-[1px]"
       } absolute w-full bg-base-100 left-0 top-full transition-transform duration-300 -z-10 shadow-[0px_1px_5px_0px_rgba(0,0,0,0.14)]`}
     >
-      <Searchbar {...searchbar} />
+      <Searchbar imageBaseUrl={imageBaseUrl} {...searchbar} />
     </div>
   );
 }

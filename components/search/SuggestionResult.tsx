@@ -16,6 +16,7 @@ interface SuggestionResultProps {
   productsTitle: string;
   products: Product[];
   generalLink: string;
+  imageBaseUrl?: string;
 }
 
 export function SuggestionResult({
@@ -26,6 +27,7 @@ export function SuggestionResult({
   productsTitle,
   products,
   generalLink,
+  imageBaseUrl,
 }: SuggestionResultProps) {
   if (showNotFound) {
     return (
@@ -91,7 +93,7 @@ export function SuggestionResult({
                 search
                 product={product}
                 index={index}
-                // imageBaseUrl="https://images-prod.mmartan.com.br/"  Agregar propiedade quando as informações do produto estiverem correta
+                // imageBaseUrl={imageBaseUrl} !! Remover após integração de produtos
               />
             </Slider.Item>
           ))}

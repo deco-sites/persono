@@ -21,13 +21,10 @@ export interface Props {
    */
   children?: ComponentChildren;
   platform: ReturnType<typeof usePlatform>;
+  imageBaseUrl?: string;
 }
 
-const Aside = (
-  { children }: {
-    children: ComponentChildren;
-  },
-) => (
+const Aside = ({ children }: { children: ComponentChildren }) => (
   <div class="bg-base-100 flex flex-col items-stretch justify-items-stretch h-full divide w-full sm:max-w-xl">
     <Suspense
       fallback={
@@ -45,7 +42,7 @@ const setup = () => {
   const header = document.querySelector<HTMLElement>("[data-header]");
   const topBar = document.querySelector<HTMLElement>("[data-top-bar]");
   const drawer = document.querySelector<HTMLElement>(
-    ".menu-drawer > .drawer-side",
+    ".menu-drawer > .drawer-side"
   );
 
   if (!header || !topBar || !drawer) return;
@@ -68,7 +65,14 @@ const setup = () => {
   };
 };
 
-function Drawers({ menu, searchbar, cart, children, platform }: Props) {
+function Drawers({
+  menu,
+  searchbar,
+  cart,
+  children,
+  platform,
+  imageBaseUrl,
+}: Props) {
   const { displayCart, displayMenu, displaySearchDrawer } = useUI();
 
   useEffect(() => {
@@ -101,12 +105,16 @@ function Drawers({ menu, searchbar, cart, children, platform }: Props) {
         }}
         aside={
           <Aside>
-            {displaySearchDrawer.value
-              ? <SearchBar withHeader {...searchbar!} />
-              : null}
-            {displayCart.value
-              ? <Cart {...cart} onClose={() => displayCart.value = false} />
-              : null}
+            {displaySearchDrawer.value ? (
+              <SearchBar
+                imageBaseUrl={imageBaseUrl}
+                withHeader
+                {...searchbar!}
+              />
+            ) : null}
+            {displayCart.value ? (
+              <Cart {...cart} onClose={() => (displayCart.value = false)} />
+            ) : null}
           </Aside>
         }
       />

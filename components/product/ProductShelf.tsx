@@ -5,17 +5,23 @@ import { useId } from "$store/sdk/useId.ts";
 import type { Product } from "apps/commerce/types.ts";
 import ProductCard from "deco-sites/persono/components/product/ProductCard/index.tsx";
 import ShelfSectionHeader from "deco-sites/persono/components/ui/ShelfSectionHeader.tsx";
+import { SectionProps } from "deco/mod.ts";
+import { FnCustomContext } from "deco-sites/persono/packs/types.ts";
 
 export interface Props {
   products: Product[] | null;
   title?: string;
-  description?: string;
   layout?: {
     headerAlignment?: { desktop: "center" | "left"; mobile: "center" | "left" };
   };
 }
 
-function ProductShelf({ products, title, description, layout }: Props) {
+function ProductShelf({
+  products,
+  title,
+  layout,
+}: // imageBaseUrl !! Remover após integração de produtos
+SectionProps<typeof loader>) {
   const id = useId();
 
   if (!products || products.length === 0) {
@@ -42,7 +48,7 @@ function ProductShelf({ products, title, description, layout }: Props) {
               class="carousel-item first:pl-6 sm:first:pl-0 last:pr-6 sm:last:pr-0"
             >
               <ProductCard
-                // imageBaseUrl="https://images-prod.mmartan.com.br/"  Agregar propiedade quando as informações do produto estiverem correta
+                // imageBaseUrl={imageBaseUrl} !! Remover após integração de produtos
                 product={product}
                 index={index}
               />
@@ -66,5 +72,13 @@ function ProductShelf({ products, title, description, layout }: Props) {
     </div>
   );
 }
+
+export const loader = (props: Props, _req: Request, ctx: FnCustomContext) => {
+  const imageBaseUrl = ctx.imageBaseUrl;
+  return {
+    imageBaseUrl,
+    ...props,
+  };
+};
 
 export default ProductShelf;
