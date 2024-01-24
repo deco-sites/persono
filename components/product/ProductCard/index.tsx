@@ -31,7 +31,7 @@ function ProductCard({ product, preload, index, search, itemListName }: Props) {
 
   const id = `product-card-${productID}`;
 
-  // Necessario atualizar quando as especificações dos produtos retorarem corretamente
+  // Necessario atualizar quando as especificações dos produtos retornarem corretamente
   const newsTitle = "Novidade";
   const hasNews = false;
 
