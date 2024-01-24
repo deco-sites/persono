@@ -2,7 +2,6 @@ import Icon, { AvailableIcons } from "$store/components/ui/Icon.tsx";
 import Header from "$store/components/ui/SectionHeader.tsx";
 
 export interface Props {
-  description?: string;
   benefits?: Array<{
     label: string;
     icon: AvailableIcons;
@@ -18,7 +17,6 @@ export default function Benefits(
   props: Props,
 ) {
   const {
-    description = "",
     benefits = [{
       icon: "Truck",
       label: "Entrega em todo Brasil",
@@ -68,7 +66,7 @@ export default function Benefits(
         </div>
         <div class="flex-auto flex flex-col gap-1 lg:gap-2">
           <div
-            class={`text-base lg:text-xl leading-7 font-medium antialiased ${
+            class={`text-base lg:text-xl leading-7 font-bold antialiased ${
               reverse ? "text-base-100" : "text-base-content"
             }`}
           >
@@ -92,7 +90,6 @@ export default function Benefits(
         ? (
           <div class="w-full container px-6 py-9 flex flex-col gap-8 lg:gap-10 lg:py-10 lg:px-0">
             <Header
-              description={description}
               alignment={layout?.headerAlignment || "center"}
             />
             <div class="w-full flex justify-center">
@@ -103,32 +100,6 @@ export default function Benefits(
           </div>
         )
         : ""}
-      {layout?.variation === "With border" && (
-        <div class="w-full container flex flex-col px-4 py-8 gap-8 lg:gap-10 lg:py-10 lg:px-0">
-          <Header
-            description={description}
-            alignment={layout?.headerAlignment || "center"}
-          />
-          <div class="w-full flex justify-center">
-            <div class="grid grid-cols-2 gap-4 w-full py-6 px-4 border border-base-300 lg:gap-8 lg:grid-flow-col lg:auto-cols-fr lg:p-10">
-              {listOfBenefits}
-            </div>
-          </div>
-        </div>
-      )}
-      {layout?.variation === "Color reverse" && (
-        <div class="w-full container flex flex-col px-4 py-8 gap-8 lg:gap-10 lg:py-10 lg:px-0">
-          <Header
-            description={description}
-            alignment={layout?.headerAlignment || "center"}
-          />
-          <div class="w-full flex justify-center">
-            <div class="grid grid-cols-2 gap-4 w-full lg:gap-8 lg:grid-flow-col lg:auto-cols-fr">
-              {listOfBenefits}
-            </div>
-          </div>
-        </div>
-      )}
     </>
   );
 }
