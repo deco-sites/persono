@@ -38,11 +38,11 @@ function ProductShelf({
       />
 
       <div id={id} class="container grid grid-cols-[48px_1fr_48px] pb-28">
-        <Slider class="carousel carousel-start sm:carousel-end gap-2 md:gap-8 justify-between col-span-full row-start-2 row-end-5">
+        <Slider class="carousel carousel-start sm:carousel-end  md:gap-8 justify-between col-span-full row-start-2 row-end-5">
           {products?.map((product, index) => (
             <Slider.Item
               index={index}
-              class="carousel-item first:pl-6 sm:first:pl-0 last:pr-6 sm:last:pr-0 lg:w-[calc(25%-30px)] sm:w-[calc(33.3%-30px)] w-2/3"
+              class="carousel-item pl-6 sm:pl-0 last:pr-6 sm:last:pr-0 lg:w-[calc(25%-30px)] sm:w-[calc(33.3%-30px)] w-2/3"
             >
               <ProductCard
                 itemListName={itemListName}

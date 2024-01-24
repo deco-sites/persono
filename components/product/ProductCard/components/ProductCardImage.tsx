@@ -32,7 +32,7 @@ export const ProductCardImage = ({
               hasNews ? "bg-blueNew" : "bg-black"
             }  text-white`}
           >
-            {hasNews ? { newsTitle } : `${discount}% OFF`}
+            {hasNews ? { newsTitle } : `${discount}% off`}
           </span>
         )}
 
