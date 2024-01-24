@@ -60,7 +60,7 @@ const loader = async (
   props: Props,
   req: Request,
   ctx: AppContext,
-): Promise<ProductListingPage> => {
+): Promise<ProductListingPage | null> => {
   const { publicUrl, apiKey } = ctx;
   const { vm } = props;
   const url = new URL(req.url);
@@ -100,7 +100,11 @@ const loader = async (
       method: "GET",
       headers,
     },
-  );
+  ).catch(() => undefined);
+
+  if (!response) {
+    return null;
+  }
 
   const vmConfig = await ctx
     .invoke["deco-sites/persono"].loaders.config({
