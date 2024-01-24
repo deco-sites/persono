@@ -2,14 +2,11 @@ import { AppContext } from "$store/apps/site.ts";
 import type { ProductListingPage } from "apps/commerce/types.ts";
 import paths from "$store/packs/utils/paths.ts";
 import { fetchAPI } from "apps/utils/fetch.ts";
-import {
-  InstallmentConfig,
-  VMDetails,
-  VMDetailsRedirect,
-} from "$store/packs/types.ts";
+import { VMDetails, VMDetailsRedirect } from "$store/packs/types.ts";
 import { getHeaders } from "$store/packs/utils/headers.ts";
 import { toProductListingPage } from "$store/packs/utils/transform.ts";
 import { typeChecher } from "$store/packs/utils/utils.ts";
+import type { VMConfig } from "$store/packs/utils/transform.ts";
 
 export interface Props {
   /**
@@ -69,6 +66,7 @@ const loader = async (
   const url = new URL(req.url);
   const path = paths(publicUrl);
   const headers = getHeaders(req, apiKey);
+  const page = Number(url.searchParams.get("page") ?? 1);
 
   const vmProps = vm?.path
     ? vm!.filters?.reduce<VmProps>((acc, f) => {
@@ -94,8 +92,8 @@ const loader = async (
   const response = await fetchAPI<VMDetails | VMDetailsRedirect>(
     path.productCatalog.resolveRoute({
       path: vmProps!.path.join("/"),
-      page: Number(url.searchParams.get("page")) ?? 1,
       f: vmProps?.searchParams.join("_") ?? undefined,
+      page,
       sort: vmProps?.sort,
     }),
     {
@@ -104,16 +102,16 @@ const loader = async (
     },
   );
 
-  const installmentConfig = await ctx
+  const vmConfig = await ctx
     .invoke["deco-sites/persono"].loaders.config({
-      fields: ["maxInstallments", "minInstallmentValue"],
-    }).then((c: InstallmentConfig) => c);
+      fields: ["maxInstallments", "minInstallmentValue", "vmItemsPerPage"],
+    }).then((c: VMConfig) => c);
 
   if (typeChecher<VMDetails>(response as VMDetails, "basePath")) {
     return toProductListingPage({
       vmDetails: response as VMDetails,
       url,
-      installmentConfig,
+      vmConfig,
     });
   }
 
@@ -121,7 +119,7 @@ const loader = async (
   const redirectedResponse = await fetchAPI<VMDetails>(
     path.productCatalog.resolveRoute({
       path: redirectPath.location,
-      page: Number(url.searchParams.get("page")) ?? 1,
+      page,
       sort: vmProps?.sort,
     }),
     {
@@ -133,7 +131,7 @@ const loader = async (
   return toProductListingPage({
     vmDetails: redirectedResponse,
     url,
-    installmentConfig,
+    vmConfig,
   });
 };
 

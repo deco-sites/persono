@@ -4,9 +4,10 @@ import { AppContext } from "$store/apps/site.ts";
 import type { Product } from "apps/commerce/types.ts";
 import paths from "$store/packs/utils/paths.ts";
 import { fetchAPI } from "apps/utils/fetch.ts";
-import { InstallmentConfig, ProductDetails } from "$store/packs/types.ts";
+import { ProductDetails } from "$store/packs/types.ts";
 import { getHeaders } from "$store/packs/utils/headers.ts";
 import { toProduct } from "$store/packs/utils/transform.ts";
+import type { VMConfig } from "$store/packs/utils/transform.ts";
 
 /**
  * @title Ammo Varejo - Teste de conversão de interfaces
@@ -24,8 +25,8 @@ const loader = async (
 
   const installmentConfig = await ctx
     .invoke["deco-sites/persono"].loaders.config({
-      fields: ["maxInstallments", "minInstallmentValue"],
-    }).then((c: InstallmentConfig) => c);
+      fields: ["maxInstallments", "minInstallmentValue", "vmItemsPerPage"],
+    }).then((c: VMConfig) => c);
 
   const result = await fetchAPI<ProductDetails>(
     path.product.sku("PLKNP.CONT21BC"),

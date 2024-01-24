@@ -4,7 +4,7 @@ export const AMMO_TOKEN_HEADER = "X-Ammo-Token";
 export const SORT_OPTIONS: SortOption[] = [
   { value: "", label: "Recomendados" },
   { value: "discount_desc", label: "Maior desconto" },
-  { value: "price_asc", label: "Menor preço" }
+  { value: "price_asc", label: "Menor preço" },
 ];
 export const PROPS_AMMO_API = {
   product: {
