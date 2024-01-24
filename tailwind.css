@@ -30,6 +30,7 @@
 
 @layer components {
   .btn {
+    width: auto;
     min-width: 36px;
     min-height: 36px;
     height: 36px;

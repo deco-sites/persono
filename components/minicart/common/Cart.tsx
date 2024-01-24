@@ -25,6 +25,7 @@ interface Props {
   coupon?: string;
   freeShippingTarget?: number;
   freeShippingTextTemplate?: string;
+  freeShippingCompletedText?: string;
   checkoutHref: string;
   onClose: () => void;
   onUpdateQuantity: ItemProps["onUpdateQuantity"];
@@ -42,6 +43,7 @@ function Cart({
   freebie,
   freeShippingTarget,
   freeShippingTextTemplate,
+  freeShippingCompletedText,
   checkoutHref,
   itemToAnalyticsItem,
   onUpdateQuantity,
@@ -76,6 +78,7 @@ function Cart({
                     currency={currency}
                     target={freeShippingTarget}
                     textTemplate={freeShippingTextTemplate}
+                    completedText={freeShippingCompletedText}
                   />
                 </article>
               )
