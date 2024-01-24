@@ -41,7 +41,7 @@ function ProductCard({ product, preload, index, search, itemListName }: Props) {
     );
 
     const hasMultiplePrices =
-      variantPrices && variantPrices?.length > 2
+      variantPrices && variantPrices?.length > 1
         ? variantPrices.some(
             (price) => price !== Math.min(...(variantPrices as number[]))
           )
