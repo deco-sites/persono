@@ -42,14 +42,13 @@ function Result({
   page,
   layout,
   cardLayout,
-  startingPage = 0,
 }: Omit<Props, "page"> & { page: ProductListingPage }) {
   const { products, filters, breadcrumb, pageInfo, sortOptions } = page;
   const perPage = pageInfo.recordPerPage || products.length;
 
   const id = useId();
 
-  const zeroIndexedOffsetPage = pageInfo.currentPage - startingPage;
+  const zeroIndexedOffsetPage = pageInfo.currentPage;
   const offset = zeroIndexedOffsetPage * perPage;
 
   return (
@@ -111,7 +110,7 @@ function Result({
             item_list_id: breadcrumb.itemListElement?.at(-1)?.item,
             items: page.products?.map((product, index) =>
               mapProductToAnalyticsItem({
-                ...(useOffer(product.offers)),
+                ...useOffer(product.offers),
                 index: offset + index,
                 product,
                 breadcrumbList: page.breadcrumb,
