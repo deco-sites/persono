@@ -15,10 +15,6 @@
 		viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 		<path fill-rule="evenodd" clip-rule="evenodd" d="M6.91205 4.41205C7.23748 4.08661 7.76512 4.08661 8.09056 4.41205L13.0906 9.41205C13.416 9.73748 13.416 10.2651 13.0906 10.5906L8.09056 15.5906C7.76512 15.916 7.23748 15.916 6.91205 15.5906C6.58661 15.2651 6.58661 14.7375 6.91205 14.412L11.3228 10.0013L6.91205 5.59056C6.58661 5.26512 6.58661 4.73748 6.91205 4.41205Z" fill="currentColor"/>
 	</symbol>
-	<symbol id="ChevronLeft"
-		viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-		<path fill-rule="evenodd" clip-rule="evenodd" d="M13.0906 4.41205C13.416 4.73748 13.416 5.26512 13.0906 5.59056L8.67981 10.0013L13.0906 14.412C13.416 14.7375 13.416 15.2651 13.0906 15.5906C12.7651 15.916 12.2375 15.916 11.912 15.5906L6.91205 10.5906C6.58661 10.2651 6.58661 9.73748 6.91205 9.41205L11.912 4.41205C12.2375 4.08661 12.7651 4.08661 13.0906 4.41205Z" fill="currentColor"/>
-	</symbol>
 	<symbol id="ChevronUp"
 		xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 24" fill="currentColor">
 		<path fill-rule="evenodd" clip-rule="evenodd" d="M11.7929 8.29289C12.1834 7.90237 12.8166 7.90237 13.2071 8.29289L19.2071 14.2929C19.5976 14.6834 19.5976 15.3166 19.2071 15.7071C18.8166 16.0976 18.1834 16.0976 17.7929 15.7071L12.5 10.4142L7.20711 15.7071C6.81658 16.0976 6.18342 16.0976 5.79289 15.7071C5.40237 15.3166 5.40237 14.6834 5.79289 14.2929L11.7929 8.29289Z"/>
@@ -56,14 +52,6 @@
 	<symbol id="XMark"
 		xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 		<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-	</symbol>
-	<symbol id="Plus"
-		xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-		<path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-	</symbol>
-	<symbol id="Minus"
-		xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-		<path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12h-15" />
 	</symbol>
 	<symbol id="MapPin"
 		xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">

@@ -45,6 +45,7 @@ export default function Benefits(
         class={`${
           reverse ? "bg-primary text-primary-content p-4 lg:px-8 py-4" : ""
         } flex flex-col max-lg:flex-row gap-4${
+        
           benefitLayout == "piledup" ? "flex-col items-center text-center" : ""
         } ${
           showDivider && benefitLayout !== "piledup"
