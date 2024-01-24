@@ -34,19 +34,15 @@ function ProductShelf({
     <div class="w-full container">
       <Header
         title={title}
-
         alignment={device === "mobile" ? "left" : "center"}
       />
 
-      <div
-        id={id}
-        class="container grid grid-cols-[48px_1fr_48px] px-0 sm:px-5 pb-28"
-      >
-        <Slider class="carousel  carousel-start  justify-around sm:carousel-end gap-6 col-span-full row-start-2 row-end-5">
+      <div id={id} class="container grid grid-cols-[48px_1fr_48px] pb-28">
+        <Slider class="carousel carousel-start sm:carousel-end gap-2 md:gap-8 justify-between col-span-full row-start-2 row-end-5">
           {products?.map((product, index) => (
             <Slider.Item
               index={index}
-              class="carousel-item first:pl-6 sm:first:pl-0 last:pr-6 sm:last:pr-0"
+              class="carousel-item first:pl-6 sm:first:pl-0 last:pr-6 sm:last:pr-0 lg:w-[calc(25%-30px)] sm:w-[calc(33.3%-30px)] w-2/3"
             >
               <ProductCard
                 itemListName={itemListName}
@@ -58,13 +54,23 @@ function ProductShelf({
         </Slider>
 
         <div class="hidden relative sm:block z-10 col-start-1 row-start-3">
-          <Slider.PrevButton class="btn btn-circle btn-outline absolute right-1/2 bg-base-100">
-            <Icon size={24} id="ChevronLeft" strokeWidth={3} />
+          <Slider.PrevButton class="justify-center btn btn-circle border border-neutral bg-white z-10 absolute left-[-18px] top-[calc(50%-18px)] hidden sm:flex rounded-full cursor-pointer">
+            <Icon
+              class="text-primary"
+              size={20}
+              id="ChevronLeft"
+              strokeWidth={2}
+            />
           </Slider.PrevButton>
         </div>
         <div class="hidden relative sm:block z-10 col-start-3 row-start-3">
-          <Slider.NextButton class="btn btn-circle btn-outline absolute left-1/2 bg-base-100">
-            <Icon size={24} id="ChevronRight" strokeWidth={3} />
+          <Slider.NextButton class="justify-center btn btn-circle border border-neutral bg-white z-10 absolute right-[-18px] top-[calc(50%-18px)] hidden sm:flex rounded-full cursor-pointer">
+            <Icon
+              class="text-primary"
+              size={20}
+              id="ChevronRight"
+              strokeWidth={2}
+            />
           </Slider.NextButton>
         </div>
 

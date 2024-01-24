@@ -53,6 +53,7 @@ function Cart({ hiddenDiscounts = [], freeShipping, onClose }: Props) {
         !hiddenDiscounts.includes(discount.type)
       )}
       loading={loading.value}
+      freeShippingCompletedText={freeShipping?.completedText}
       freeShippingTextTemplate={freeShipping?.textTemplate}
       freeShippingTarget={freeShipping?.target}
       coupon={coupon}

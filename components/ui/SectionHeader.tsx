@@ -1,8 +1,7 @@
 interface Props {
   title?: string;
-  fontSize?: "Normal" | "Large";
   description?: string;
-  alignment: "center" | "left";
+  alignment?: "center" | "left";
   colorReverse?: boolean;
 }
 
@@ -11,21 +10,14 @@ function Header(props: Props) {
     <>
       {props.title || props.description ? (
         <div
-          class={`flex flex-col gap-2 my-10 ${
-            props.alignment === "left" ? "text-left" : "text-center"
+          class={`flex flex-col gap-2 my-10  ${
+            props.alignment === "left"
+              ? "text-left ml-6 md:ml-0"
+              : "text-center"
           }`}
         >
           {props.title && (
-            <h1
-              class={`text-2xl leading-8 lg:leading-10
-                  ${
-                    props.colorReverse
-                      ? "text-primary-content"
-                      : "text-base-content"
-                  }
-                  ${props.fontSize === "Normal" ? "lg:text-3xl" : "lg:text-4xl"}
-                `}
-            >
+            <h1 class="text-2xl font-medium  leading-8 lg:leading-10 text-black">
               {props.title}
             </h1>
           )}
@@ -36,7 +28,7 @@ function Header(props: Props) {
                   ${
                     props.colorReverse ? "text-primary-content" : "text-neutral"
                   }
-                  ${props.fontSize === "Normal" ? "lg:text-xl" : "lg:text-2xl"}
+                  text-base
                 `}
             >
               {props.description}

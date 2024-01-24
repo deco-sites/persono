@@ -8,6 +8,7 @@ interface Props {
   price: number;
   priceCurrency?: string;
   installments: string | null;
+  search?: boolean;
 }
 
 export const PriceAndName = ({
@@ -18,6 +19,7 @@ export const PriceAndName = ({
   productName,
   installments,
   priceCurrency = "BRL",
+  search,
 }: Props) => {
   return (
     <div class="flex-auto flex flex-col p-4 ">
@@ -27,7 +29,11 @@ export const PriceAndName = ({
       />
 
       <div class="flex flex-col">
-        <div class="flex flex-col gap-0  justify-start">
+        <div
+          class={`flex ${
+            search ? "flex-row gap-2" : "flex-col gap-0"
+          } justify-start`}
+        >
           {(hasMultiplePrices || hasDiscount) && (
             <p
               class={`text-gray-600 font-normal text-xs ${
@@ -39,12 +45,12 @@ export const PriceAndName = ({
                 : formatPrice(listPrice, priceCurrency)}
             </p>
           )}
-          <span class="text-black text-base ">
+          <span class="text-black text-base font-medium ">
             {formatPrice(price, priceCurrency)}
           </span>
         </div>
 
-        {installments && (
+        {!search && installments && (
           <div class="text-gray-600 font-normal text-xs truncate">
             ou {installments}
           </div>

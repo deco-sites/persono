@@ -8,6 +8,7 @@ interface Props {
   imageAlt?: string;
   newsTitle: string;
   imageSrc: string;
+  search?: boolean;
 }
 
 export const ProductCardImage = ({
@@ -18,11 +19,12 @@ export const ProductCardImage = ({
   imageAlt = "",
   imageSrc,
   newsTitle,
+  search,
 }: Props) => {
   const showHighlightTag = hasNews || hasDiscount;
 
   return (
-    <figure class="relative ">
+    <figure class="relative">
       <div class="w-full">
         {showHighlightTag && (
           <span
@@ -37,9 +39,9 @@ export const ProductCardImage = ({
         <Image
           src={imageSrc}
           alt={imageAlt}
-          width={287}
-          height={287}
-          class="bg-base-100 col-span-full row-span-full  w-full rounded-tl-[10px] rounded-tr-[10px] "
+          width={search ? 230 : 287}
+          height={search ? 230 : 287}
+          class="bg-base-100 col-span-full row-span-full w-full rounded-tl-[10px] rounded-tr-[10px] "
           sizes="(max-width: 640px) 50vw, 20vw"
           preload={preload}
           loading={preload ? "eager" : "lazy"}

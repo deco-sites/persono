@@ -73,7 +73,7 @@ export function SuggestionResult({
         </ul>
       </div>
       <div class="flex flex-col pt-0 gap-6 overflow-x-hidden">
-        <h3 class="text-base flex justify-between items-center lg:px-0 px-4">
+        <h3 class="text-base flex justify-between items-center sm:pl-0 lg:px-0 px-4">
           <span>
             {!showDefaultValue ? "Produtos encontrados" : productsTitle}
           </span>
@@ -81,11 +81,12 @@ export function SuggestionResult({
             Ver todos
           </a>
         </h3>
-        <Slider class="carousel justify-between ">
+
+        <Slider class="carousel carousel-start sm:carousel-end justify-normal sm:justify-between  gap-2  col-span-full row-start-2 row-end-5">
           {products.map((product, index) => (
             <Slider.Item
               index={index}
-              class="carousel-item first:ml-4 last:mr-4 min-w-[200px] max-w-[200px]"
+              class="carousel-item first:pl-4 sm:first:pl-0 last:pr-6 sm:last:pr-0 w-[43%] lg:w-[calc(25%-8px)] xl:w-[calc(20%-30px)]   "
             >
               <ProductCard search product={product} index={index} />
             </Slider.Item>

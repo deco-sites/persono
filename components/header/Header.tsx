@@ -76,7 +76,6 @@ export const loader = (props: Props, _req: Request, ctx: FnCustomContext) => {
 
   return {
     ...props,
-
     device: device || "desktop",
   };
 };

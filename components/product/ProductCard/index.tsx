@@ -59,9 +59,7 @@ function ProductCard({ product, preload, index, search, itemListName }: Props) {
       <a
         key={`${id}-${index}`}
         id={id}
-        class={`card card-compact group ${
-          search ? "w-[160px] md:w-[170px]" : "w-[230px] md:w-[280px]"
-        }    rounded-lg border border-gray-300 text-start`}
+        class="card card-compact group rounded-lg border border-gray-300 text-start w-full"
         data-deco="view-product"
         href={url && relative(url)}
         aria-label="view product"
@@ -84,6 +82,7 @@ function ProductCard({ product, preload, index, search, itemListName }: Props) {
           }}
         />
         <ProductCardImage
+          search={search}
           imageSrc={front.url!}
           discount={discount}
           hasDiscount={hasDiscount}
@@ -94,6 +93,7 @@ function ProductCard({ product, preload, index, search, itemListName }: Props) {
         />
 
         <PriceAndName
+          search={search}
           hasDiscount={hasDiscount}
           hasMultiplePrices={hasMultiplePrices}
           installments={installments}
