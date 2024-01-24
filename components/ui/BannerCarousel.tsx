@@ -3,6 +3,10 @@ import SliderJS from "$store/islands/SliderJS.tsx";
 import { useId } from "$store/sdk/useId.ts";
 import type { ImageWidget } from "apps/admin/widgets.ts";
 import { Picture, Source } from "apps/website/components/Picture.tsx";
+import {
+  SendEventOnClick,
+  SendEventOnView,
+} from "$store/components/Analytics.tsx";
 
 /**
  * @titleBy alt
@@ -33,36 +37,7 @@ export interface Props {
   interval?: number;
 }
 
-const DEFAULT_PROPS = {
-  images: [
-    {
-      alt: "/feminino",
-      link:"https://www.deco.cx/",
-      mobile:
-        "https://ozksgdmyrqcxcwhnbepg.supabase.co/storage/v1/object/public/assets/239/24278f9e-412d-4a8a-b2d3-57353bb1b368",
-      desktop:
-        "https://ozksgdmyrqcxcwhnbepg.supabase.co/storage/v1/object/public/assets/239/afa2c07c-74f4-496d-8647-5cc58f48117b",
-    },
-    {
-      alt: "/feminino",
-      link:"https://www.deco.cx/",
-      mobile:
-        "https://ozksgdmyrqcxcwhnbepg.supabase.co/storage/v1/object/public/assets/239/eeaa624c-a3e1-45e8-a6fe-034233cfbcd0",
-      desktop:
-        "https://ozksgdmyrqcxcwhnbepg.supabase.co/storage/v1/object/public/assets/239/7949d031-9a79-4639-b85e-62fd90af85a9",
-      
-    },
-    {
-      alt: "/feminino",
-      link:"https://www.deco.cx/",
-      mobile:
-        "https://ozksgdmyrqcxcwhnbepg.supabase.co/storage/v1/object/public/assets/239/ae89571c-4a7c-44bf-9aeb-a341fd049d19",
-      desktop:
-        "https://ozksgdmyrqcxcwhnbepg.supabase.co/storage/v1/object/public/assets/239/7ec121e4-5cfe-4b7b-b942-d1ed4493803d",
-    },
-  ],
-  preload: true,
-};
+
 
 function BannerItem(
   { image, lcp, id }: { image: Banner; lcp?: boolean; id: string },
@@ -97,7 +72,7 @@ function BannerItem(
           height={441}
         />
         <img
-          class="object-cover w-full  h-[441px]"
+          class="object-cover w-full"
           loading={lcp ? "eager" : "lazy"}
           src={desktop}
           alt={alt}
@@ -108,13 +83,8 @@ function BannerItem(
   );
 }
 
-
-
-
-
-function BannerCarousel(props: Props) {
+function BannerCarousel({images,preload,interval}: Props) {
   const id = useId();
-  const { images, preload, interval } = { ...DEFAULT_PROPS, ...props };
 
   return (
     <div
@@ -133,12 +103,20 @@ function BannerCarousel(props: Props) {
                 id={`${id}::${index}`}
               />
              
+             <SendEventOnClick
+                id={`${id}::${index}`}
+                event={{ name: "select_promotion", params }}
+              />
+              <SendEventOnView
+                id={`${id}::${index}`}
+                event={{ name: "view_promotion", params }}
+              />
             </Slider.Item>
           );
         })}
       </Slider>
 
-      <SliderJS rootId={id} interval={0.1} infinite />
+      <SliderJS rootId={id} interval={interval && interval * 1e3} infinite />
     </div>
   );
 }
