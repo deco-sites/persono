@@ -16,6 +16,7 @@ interface SuggestionResultProps {
   productsTitle: string;
   products: Product[];
   generalLink: string;
+  itemListName?: string;
 }
 
 export function SuggestionResult({
@@ -26,6 +27,7 @@ export function SuggestionResult({
   productsTitle,
   products,
   generalLink,
+  itemListName,
 }: SuggestionResultProps) {
   if (showNotFound) {
     return (
@@ -88,7 +90,12 @@ export function SuggestionResult({
               index={index}
               class="carousel-item first:pl-4 sm:first:pl-0 last:pr-6 sm:last:pr-0 w-[43%] lg:w-[calc(25%-8px)] xl:w-[calc(20%-30px)]   "
             >
-              <ProductCard search product={product} index={index} />
+              <ProductCard
+                itemListName={itemListName}
+                search
+                product={product}
+                index={index}
+              />
             </Slider.Item>
           ))}
         </Slider>

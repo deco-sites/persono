@@ -46,6 +46,15 @@ export interface EditableProps {
     products: Product[] | null;
   };
 
+  /**
+   * @title Featured Info
+   * @description This data will be displayed on the first render of Search Bar
+   */
+
+  /** @description used for analytics event on suggestion product */
+
+  itemListName?: string;
+
   /** @title Suggestions Integration   */
   loader: Resolved<Suggestion | null>;
 }
@@ -66,6 +75,7 @@ function Searchbar({
     termsTitle = "Mais buscados",
     topSearches: featuredSearches,
   },
+  itemListName,
 }: Props) {
   const id = useId();
   const { displaySearchPopup, displaySearchDrawer } = useUI();
@@ -200,6 +210,7 @@ function Searchbar({
         </div>
       ) : (
         <SuggestionResult
+          itemListName={itemListName}
           showNotFound={!hasProducts && !hasTerms}
           showDefaultValue={!called.value}
           termsTitle={termsTitle}
