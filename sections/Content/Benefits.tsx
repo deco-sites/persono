@@ -44,14 +44,13 @@ export default function Benefits(
       <div
         class={`${
           reverse ? "bg-primary text-primary-content p-4 lg:px-8 py-4" : ""
-        } flex flex-col max-lg:flex-row gap-4${
-        
+        } flex flex-col gap-4 ${
           benefitLayout == "piledup" ? "flex-col items-center text-center" : ""
         } ${
           showDivider && benefitLayout !== "piledup"
-            ? "border-b border-neutral-300"
+            ? "2-xl:border-b 2-xl:border-neutral-300"
             : ""
-        } ${showDivider ? "pb-4 lg:pr-8 lg:border-r lg:border-b-0" : ""} ${
+        } ${showDivider ? "lg:pr-8 lg:border-r lg:border-b-0" : ""} ${
           showDivider && !reverse ? "lg:pb-0" : ""
         }`}
       >
@@ -65,7 +64,7 @@ export default function Benefits(
             fill="currentColor"
           />
         </div>
-        <div class="flex-auto flex flex-col gap-1 lg:gap-2">
+        <div class="flex-auto flex flex-col gap-1 lg:gap-2 max-lg:border-b max-lg:border-neutral-300">
           <div
             class={`text-base lg:text-xl leading-7 font-bold antialiased ${
               reverse ? "text-base-100" : "text-base-content"
@@ -74,7 +73,7 @@ export default function Benefits(
             {benefit.label}
           </div>
           <p
-            class={`text-sm leading-5${
+            class={`text-sm leading-5 pb-6 ${
               reverse ? "text-base-100" : "text-gray-800"
             } ${benefitLayout == "piledup" ? "hidden lg:block" : ""}`}
           >
@@ -94,7 +93,7 @@ export default function Benefits(
               alignment={layout?.headerAlignment || "center"}
             />
             <div class="w-full flex justify-center">
-              <div class="flex flex-col gap-4 max-sm:gap-6 max-lg:gap-8 w-full lg:grid grid-flow-col auto-cols-fr max-sm:px-6 max-sm:py-6 px-10 py-10 border border-neutral">
+              <div class="flex max-sm:justify-around max-sm:flex-wrap gap-4 max-lg:gap-8 w-full lg:grid grid-flow-col auto-cols-fr max-sm:px-6 max-sm:py-6 px-10 py-10 border border-neutral">
                 {listOfBenefits}
               </div>
             </div>
