@@ -1074,8 +1074,3 @@ export interface BirthdayDiscountPeriod {
   endAt: string;
   nextPeriodAt: string;
 }
-
-export interface InstallmentConfig {
-  maxInstallments: number;
-  minInstallmentValue: number;
-}
