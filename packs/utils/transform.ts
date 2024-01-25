@@ -5,6 +5,7 @@ import {
   ImageObject,
   ListItem,
   Product,
+  ProductDetailsPage,
   ProductGroup,
   ProductListingPage,
   PropertyValue,
@@ -26,16 +27,24 @@ export type VMConfig = Pick<
   "minInstallmentValue" | "maxInstallments" | "vmItemsPerPage"
 >;
 
+export type PDPConfig = Pick<Config, "minInstallmentValue" | "maxInstallments">;
+
 interface ProductListingPageProps {
   vmDetails: VMDetails;
   url: URL;
   vmConfig: VMConfig;
 }
 
+interface ProductDetailsPageProps {
+  ammoProduct: AmmoProduct;
+  url: URL;
+  pdpConfig: PDPConfig;
+}
+
 interface SkuAndProduct {
   sku?: Sku;
   ammoProduct: AmmoProduct;
-  vmConfig: VMConfig;
+  config: VMConfig | PDPConfig;
 }
 
 interface VariantProps extends Required<SkuAndProduct> {
@@ -45,7 +54,7 @@ interface VariantProps extends Required<SkuAndProduct> {
 export function toProduct(
   ammoProduct: AmmoProduct,
   baseUrl: URL,
-  vmConfig: VMConfig,
+  config: VMConfig | PDPConfig,
 ): Product {
   const { skus, selectedSku, title, category } = ammoProduct;
   const workableSku = skus?.find(({ sku }) => sku === selectedSku);
@@ -53,7 +62,7 @@ export function toProduct(
   return {
     "@type": "Product",
     productID: ammoProduct.id,
-    name: title,
+    name: title.trim(),
     description: ammoProduct?.description,
     sku: ammoProduct?.sku ?? selectedSku!,
     image: toImage({ sku: workableSku, ammoProduct }),
@@ -76,13 +85,13 @@ export function toProduct(
         ammoProduct,
         sku: workableSku,
         baseUrl,
-        vmConfig,
+        config,
       })
       : undefined,
     offers: toAggregateOffer({
       ammoProduct,
       sku: workableSku,
-      vmConfig,
+      config,
     }),
   };
 }
@@ -106,11 +115,26 @@ export function toProductListingPage(
   };
 }
 
+export function toProductDetailsPage(
+  { ammoProduct, url, pdpConfig }: ProductDetailsPageProps,
+): ProductDetailsPage {
+  return {
+    "@type": "ProductDetailsPage",
+    breadcrumbList: toBreadcrumbList(url.origin, ammoProduct),
+    product: toProduct(ammoProduct, url, pdpConfig),
+    seo: {
+      title: ammoProduct.title.trim(),
+      description: ammoProduct?.description ?? "",
+      canonical: "",
+    },
+  };
+}
+
 const toBreadcrumbList = (
   origin: string,
-  { breadcrumbs }: VMDetails,
+  { breadcrumbs }: VMDetails | AmmoProduct,
 ): BreadcrumbList => {
-  const itemListElement = toItemListElement(breadcrumbs, origin);
+  const itemListElement = toItemListElement(breadcrumbs!, origin);
   return {
     "@type": "BreadcrumbList",
     itemListElement,
@@ -122,7 +146,7 @@ const toItemListElement = (
   breadcrumbs: Breadcrumb[] | [Breadcrumb[]],
   origin: string,
 ): ListItem[] =>
-  breadcrumbs.flat(1).reduce<ListItem[]>(
+  breadcrumbs?.flat(1).reduce<ListItem[]>(
     (acc, { path, name, position, hasSibling }) => {
       const item = path ? new URL(new URL(path).pathname, origin).href : "";
       const newItem: ListItem = {
@@ -208,7 +232,7 @@ const toPageInfo = (
 };
 
 const toImage = (
-  { sku, ammoProduct }: Omit<SkuAndProduct, "vmConfig">,
+  { sku, ammoProduct }: Omit<SkuAndProduct, "config">,
 ): ImageObject[] => {
   const { title } = ammoProduct;
   return sku
@@ -254,14 +278,14 @@ const toImage = (
 };
 
 const toProductGroup = (
-  { ammoProduct, sku, baseUrl, vmConfig }: VariantProps,
+  { ammoProduct, sku, baseUrl, config }: VariantProps,
 ): ProductGroup => {
   const { title, skus } = ammoProduct;
   const url = new URL(sku.url, baseUrl.origin).href;
   return {
     "@type": "ProductGroup" as const,
     productGroupID: ammoProduct.groupKey!,
-    name: title,
+    name: title.trim(),
     url,
     model: sku.ean,
     hasVariant: skus!.map((thisSku) => ({
@@ -274,16 +298,16 @@ const toProductGroup = (
         ...toAdditionalProperties(thisSku, PROPS_AMMO_API.sku.simpleProps),
       ],
       image: toImage({ sku: thisSku, ammoProduct }),
-      offers: toAggregateOffer({ sku: thisSku, vmConfig }),
+      offers: toAggregateOffer({ sku: thisSku, config }),
     })),
     additionalProperty: [],
   };
 };
 
 const toAggregateOffer = (
-  { ammoProduct, sku, vmConfig }: Partial<SkuAndProduct>,
+  { ammoProduct, sku, config }: Partial<SkuAndProduct>,
 ): AggregateOffer => {
-  const { minInstallmentValue, maxInstallments } = vmConfig!;
+  const { minInstallmentValue, maxInstallments } = config!;
   const highPrice = (ammoProduct?.price?.max ?? sku!.price.from) / 100;
   const lowPrice = (ammoProduct?.price?.min ?? sku!.price.to) / 100;
   const available = ammoProduct?.available ?? sku?.available!;
