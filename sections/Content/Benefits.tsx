@@ -43,16 +43,12 @@ export default function Benefits(
     return (
       <div
         class={`${
-          reverse ? "bg-primary text-primary-content p-4 lg:px-8 py-4" : ""
-        } flex flex-col gap-4 ${
+          reverse ? "bg-primary text-primary-content px-8 py-4" : ""
+        } flex sm:flex-row md:flex-col gap-4 sm:w-[48%] w-full${
           benefitLayout == "piledup" ? "flex-col items-center text-center" : ""
-        } ${
-          showDivider && benefitLayout !== "piledup"
-            ? "2-xl:border-b 2-xl:border-neutral-300"
-            : ""
-        } ${showDivider ? "lg:pr-8 lg:border-r lg:border-b-0" : ""} ${
-          showDivider && !reverse ? "lg:pb-0" : ""
-        }`}
+        } ${showDivider && benefitLayout !== "piledup" ? "max-lg:py-6" : ""} ${
+          showDivider ? "lg:pr-8 lg:border-r lg:border-b-0" : ""
+        } ${showDivider && !reverse ? "lg:pb-0" : ""}`}
       >
         <div class="flex items-center">
           <Icon
@@ -64,7 +60,7 @@ export default function Benefits(
             fill="currentColor"
           />
         </div>
-        <div class="flex-auto flex flex-col gap-1 lg:gap-2 max-lg:border-b max-lg:border-neutral-300">
+        <div class="flex-auto flex flex-col gap-1 lg:gap-2">
           <div
             class={`text-base lg:text-xl leading-7 font-bold antialiased ${
               reverse ? "text-base-100" : "text-base-content"
@@ -73,7 +69,7 @@ export default function Benefits(
             {benefit.label}
           </div>
           <p
-            class={`text-sm leading-5 pb-6 ${
+            class={`text-sm leading-5 ${
               reverse ? "text-base-100" : "text-gray-800"
             } ${benefitLayout == "piledup" ? "hidden lg:block" : ""}`}
           >
@@ -88,14 +84,12 @@ export default function Benefits(
     <>
       {!layout?.variation || layout?.variation === "Simple"
         ? (
-          <div class="w-full container px-6 py-9 flex flex-col gap-8 lg:gap-10 lg:py-10 lg:px-0">
+          <div class="flex w-full container p-6 lg:gap-10 lg:py-10 lg:px-0">
             <Header
               alignment={layout?.headerAlignment || "center"}
             />
-            <div class="w-full flex justify-center">
-              <div class="flex max-sm:justify-around max-sm:flex-wrap gap-4 max-lg:gap-8 w-full lg:grid grid-flow-col auto-cols-fr max-sm:px-6 max-sm:py-6 px-10 py-10 border border-neutral">
-                {listOfBenefits}
-              </div>
+            <div class="flex flex-col md:flex-wrap lg:flex-row sm:justify-center w-full max-sm:[&>*:first-child]:pt-0 max-lg:[&>*:last-child]:pt-6 border max-lg:divide-y divide-neutral-300 lg:gap-9 p-10">
+              {listOfBenefits}
             </div>
           </div>
         )
