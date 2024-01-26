@@ -44,7 +44,7 @@ export default function Benefits(
       <div
         class={`${
           reverse ? "bg-primary text-primary-content px-8 py-4" : ""
-        } flex sm:flex-row md:flex-col gap-4 sm:w-[48%] w-full${
+        } flex sm:flex-row md:flex-col gap-4 w-full${
           benefitLayout == "piledup" ? "flex-col items-center text-center" : ""
         } ${showDivider && benefitLayout !== "piledup" ? "max-lg:py-6" : ""} ${
           showDivider ? "lg:pr-8 lg:border-r lg:border-b-0" : ""
@@ -88,7 +88,7 @@ export default function Benefits(
             <Header
               alignment={layout?.headerAlignment || "center"}
             />
-            <div class="flex flex-col md:flex-wrap lg:flex-row sm:justify-center w-full max-sm:[&>*:first-child]:pt-0 max-lg:[&>*:last-child]:pt-6 border max-lg:divide-y divide-neutral-300 lg:gap-9 p-10">
+            <div class="flex max-lg:flex-col sm:justify-center w-full max-sm:[&>*:first-child]:pt-0 max-lg:[&>*:last-child]:pt-6 border max-lg:divide-y divide-neutral-300 lg:gap-9 p-10">
               {listOfBenefits}
             </div>
           </div>
