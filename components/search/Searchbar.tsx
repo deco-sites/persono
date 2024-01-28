@@ -210,6 +210,7 @@ function Searchbar({
         </div>
       ) : (
         <SuggestionResult
+          action={action}
           itemListName={itemListName}
           showNotFound={!hasProducts && !hasTerms}
           showDefaultValue={!called.value}
