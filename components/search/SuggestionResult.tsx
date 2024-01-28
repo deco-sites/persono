@@ -14,6 +14,7 @@ interface SuggestionResultProps {
   productsTitle: string;
   products: Product[];
   generalLink: string;
+  action: string;
 }
 
 export function SuggestionResult(
@@ -25,6 +26,7 @@ export function SuggestionResult(
     productsTitle,
     products,
     generalLink,
+    action,
   }: SuggestionResultProps,
 ) {
   if (showNotFound) {
@@ -49,7 +51,7 @@ export function SuggestionResult(
           {searches.map(({ term }) => (
             <li>
               <a
-                href={`/s?q=${term}`}
+                href={`${action}?q=${term}`}
                 class="flex gap-4 items-center link"
               >
                 <span>

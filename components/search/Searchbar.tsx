@@ -209,6 +209,7 @@ function Searchbar({
             searches={searches}
             productsTitle={productsTitle}
             products={products}
+            action={action}
             generalLink={`${action}?${name}=${query.value}`}
           />
         )}
