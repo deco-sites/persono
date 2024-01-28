@@ -1,3 +1,6 @@
+import { Props as SiteProps } from "$store/apps/site.ts";
+import { FnContext as DefaultFnContext } from "deco/types.ts";
+
 export interface AmmoProduct {
   //Default
   brand: string;
@@ -1075,6 +1078,8 @@ export interface BirthdayDiscountPeriod {
   nextPeriodAt: string;
 }
 
+
+export type FnCustomContext = SiteProps & DefaultFnContext
 export interface InstallmentConfig {
   maxInstallments: number;
   minInstallmentValue: number;

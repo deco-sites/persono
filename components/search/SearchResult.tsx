@@ -1,5 +1,4 @@
 import { SendEventOnView } from "$store/components/Analytics.tsx";
-import { Layout as CardLayout } from "$store/components/product/ProductCard.tsx";
 import Filters from "$store/components/search/Filters.tsx";
 import Icon from "$store/components/ui/Icon.tsx";
 import SearchControls from "$store/islands/SearchControls.tsx";
@@ -24,10 +23,6 @@ export interface Props {
   /** @title Integration */
   page: ProductListingPage | null;
   layout?: Layout;
-  cardLayout?: CardLayout;
-
-  /** @description 0 for ?page=0 as your first page */
-  startingPage?: 0 | 1;
 }
 
 function NotFound() {
@@ -41,15 +36,13 @@ function NotFound() {
 function Result({
   page,
   layout,
-  cardLayout,
-  startingPage = 0,
 }: Omit<Props, "page"> & { page: ProductListingPage }) {
   const { products, filters, breadcrumb, pageInfo, sortOptions } = page;
   const perPage = pageInfo.recordPerPage || products.length;
 
   const id = useId();
 
-  const zeroIndexedOffsetPage = pageInfo.currentPage - startingPage;
+  const zeroIndexedOffsetPage = pageInfo.currentPage;
   const offset = zeroIndexedOffsetPage * perPage;
 
   return (
@@ -72,7 +65,7 @@ function Result({
             <ProductGallery
               products={products}
               offset={offset}
-              layout={{ card: cardLayout, columns: layout?.columns }}
+              layout={{ columns: layout?.columns }}
             />
           </div>
         </div>
@@ -111,7 +104,7 @@ function Result({
             item_list_id: breadcrumb.itemListElement?.at(-1)?.item,
             items: page.products?.map((product, index) =>
               mapProductToAnalyticsItem({
-                ...(useOffer(product.offers)),
+                ...useOffer(product.offers),
                 index: offset + index,
                 product,
                 breadcrumbList: page.breadcrumb,

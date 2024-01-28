@@ -1,1 +1,1 @@
-export { default } from "$store/components/product/ProductShelf.tsx";
+export { default, loader } from "$store/components/product/ProductShelf.tsx";
