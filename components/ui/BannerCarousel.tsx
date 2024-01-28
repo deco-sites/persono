@@ -7,6 +7,21 @@ import {
   SendEventOnClick,
   SendEventOnView,
 } from "$store/components/Analytics.tsx";
+import Button from "$store/components/ui/Button.tsx";
+
+interface ActionProps {
+  /**
+   * @format html
+   */
+  title: string;
+
+  /**
+   * @format html
+   */
+  subTitle: string;
+
+  label: string;
+}
 
 /**
  * @titleBy alt
@@ -20,8 +35,9 @@ export interface Banner {
   alt: string;
 
   /** @description Image's redirect link */
-  link?:string
- 
+  link?: string;
+
+  action?: ActionProps;
 }
 
 export interface Props {
@@ -37,17 +53,16 @@ export interface Props {
   interval?: number;
 }
 
-
-
-function BannerItem(
-  { image, lcp, id }: { image: Banner; lcp?: boolean; id: string },
-) {
-  const {
-    alt,
-    mobile,
-    desktop,
-    link = ""
-  } = image;
+function BannerItem({
+  image,
+  lcp,
+  id,
+}: {
+  image: Banner;
+  lcp?: boolean;
+  id: string;
+}) {
+  const { alt, mobile, desktop, link = "", action } = image;
 
   return (
     <a
@@ -78,12 +93,47 @@ function BannerItem(
           alt={alt}
         />
       </Picture>
-      
+
+      <BannerActionLayout action={action} />
     </a>
   );
 }
 
-function BannerCarousel({images,preload,interval}: Props) {
+export const BannerActionLayout = ({ action }: { action?: ActionProps }) => {
+  if (action) {
+    return (
+      <div class=" absolute lg:max-w-3xl p-4 lg:p-0  h-min top-0 bottom-0 m-auto left-0 right-0 text-center  max-h-min  flex flex-col items-center">
+        {action?.title && (
+          <span
+            class="font-medium text-3xl text-white mb-6  "
+            dangerouslySetInnerHTML={{
+              __html: action.title ?? "",
+            }}
+          >
+          </span>
+        )}
+        {action?.subTitle && (
+          <span
+            class="font-normal  text-base text-white mb-9 md:mb-5  lg:mb-9"
+            dangerouslySetInnerHTML={{
+              __html: action.subTitle ?? "",
+            }}
+          >
+          </span>
+        )}
+        {action?.label && (
+          <Button class=" w-[calc(60%)] md:w-[calc(50%-36px)] bg-white h-9 px-2 py-3 text-center ">
+            {action.label}
+          </Button>
+        )}
+      </div>
+    );
+  }
+
+  return null;
+};
+
+function BannerCarousel({ images, preload, interval }: Props) {
   const id = useId();
 
   return (
@@ -102,8 +152,8 @@ function BannerCarousel({images,preload,interval}: Props) {
                 lcp={index === 0 && preload}
                 id={`${id}::${index}`}
               />
-             
-             <SendEventOnClick
+
+              <SendEventOnClick
                 id={`${id}::${index}`}
                 event={{ name: "select_promotion", params }}
               />
