@@ -1,34 +1,36 @@
 import { Product, Search } from "apps/commerce/types.ts";
-import ProductCard from "deco-sites/persono/components/product/ProductCard.tsx";
 import Icon from "deco-sites/persono/components/ui/Icon.tsx";
 import Slider from "deco-sites/persono/components/ui/Slider.tsx";
+import ProductCard from "deco-sites/persono/components/product/ProductCard/index.tsx";
 
 interface SuggestionResultProps {
   showNotFound: boolean;
   showDefaultValue: boolean;
   termsTitle: string;
-  searches: Search[] | {
-    href: string;
-    term: string;
-  }[];
+  searches:
+    | Search[]
+    | {
+        href: string;
+        term: string;
+      }[];
   productsTitle: string;
   products: Product[];
   generalLink: string;
+  itemListName?: string;
   action: string;
 }
 
-export function SuggestionResult(
-  {
-    showNotFound,
-    showDefaultValue,
-    termsTitle,
-    searches,
-    productsTitle,
-    products,
-    generalLink,
-    action,
-  }: SuggestionResultProps,
-) {
+export function SuggestionResult({
+  showNotFound,
+  showDefaultValue,
+  termsTitle,
+  searches,
+  productsTitle,
+  products,
+  action,
+  generalLink,
+  itemListName,
+}: SuggestionResultProps) {
   if (showNotFound) {
     return (
       <div class="flex flex-col gap-4 pt-14 px-4 md:py-6 text-center">
@@ -66,9 +68,9 @@ export function SuggestionResult(
                   dangerouslySetInnerHTML={{
                     __html: showDefaultValue
                       ? term.replace(
-                        new RegExp(`/${term}/g`),
-                        `<strong>${term}</strong`,
-                      )
+                          new RegExp(`/${term}/g`),
+                          `<strong>${term}</strong`
+                        )
                       : term,
                   }}
                 />
@@ -78,27 +80,26 @@ export function SuggestionResult(
         </ul>
       </div>
       <div class="flex flex-col pt-0 gap-6 overflow-x-hidden">
-        <h3 class="text-base flex justify-between items-center lg:px-0 px-4">
+        <h3 class="text-base flex justify-between items-center sm:pl-0 lg:px-0 px-4">
           <span>
             {!showDefaultValue ? "Produtos encontrados" : productsTitle}
           </span>
-          <a
-            href={generalLink}
-            class="text-sm link"
-          >
+          <a href={generalLink} class="text-sm link">
             Ver todos
           </a>
         </h3>
-        <Slider class="carousel">
+
+        <Slider class="carousel carousel-start sm:carousel-end justify-normal sm:justify-between  gap-2  col-span-full row-start-2 row-end-5">
           {products.map((product, index) => (
             <Slider.Item
               index={index}
-              class="carousel-item first:ml-4 last:mr-4 min-w-[200px] max-w-[200px]"
+              class="carousel-item first:pl-4 sm:first:pl-0 last:pr-6 sm:last:pr-0 w-[43%] lg:w-[calc(25%-8px)] xl:w-[calc(20%-30px)]   "
             >
               <ProductCard
+                itemListName={itemListName}
+                search
                 product={product}
                 index={index}
-                itemListName="Suggeestions"
               />
             </Slider.Item>
           ))}
