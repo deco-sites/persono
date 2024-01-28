@@ -25,23 +25,16 @@ export type DefaultProps = {
 
 export type Props = {
   /**
-  @title Ammo Device Id
-  */
-  ammoDeviceId: string;
-
-  /**
-  @title Ammo Token
-  */
-  ammoToken: string;
-
-  /**
-  @title Ammo Store Public URL
+  @title URL Pública do ecommerce
   @default https://mmartan.com.br/api/
   */
   publicUrl: string;
 
   imageBaseUrl:string;
   
+  /**
+  @title Configurações de parcelamento
+  */
 } & DefaultProps;
 
 export type Platform =

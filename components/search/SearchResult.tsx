@@ -23,9 +23,6 @@ export interface Props {
   /** @title Integration */
   page: ProductListingPage | null;
   layout?: Layout;
-
-  /** @description 0 for ?page=0 as your first page */
-  startingPage?: 0 | 1;
 }
 
 function NotFound() {
@@ -39,14 +36,13 @@ function NotFound() {
 function Result({
   page,
   layout,
-  startingPage = 0,
 }: Omit<Props, "page"> & { page: ProductListingPage }) {
   const { products, filters, breadcrumb, pageInfo, sortOptions } = page;
   const perPage = pageInfo.recordPerPage || products.length;
 
   const id = useId();
 
-  const zeroIndexedOffsetPage = pageInfo.currentPage - startingPage;
+  const zeroIndexedOffsetPage = pageInfo.currentPage;
   const offset = zeroIndexedOffsetPage * perPage;
 
   return (

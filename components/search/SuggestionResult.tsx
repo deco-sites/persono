@@ -17,6 +17,7 @@ interface SuggestionResultProps {
   products: Product[];
   generalLink: string;
   itemListName?: string;
+  action: string;
 }
 
 export function SuggestionResult({
@@ -26,6 +27,7 @@ export function SuggestionResult({
   searches,
   productsTitle,
   products,
+  action,
   generalLink,
   itemListName,
 }: SuggestionResultProps) {
@@ -50,7 +52,10 @@ export function SuggestionResult({
         <ul id="search-suggestion" class="flex flex-col gap-2">
           {searches.map(({ term }) => (
             <li>
-              <a href={`/s?q=${term}`} class="flex gap-4 items-center link">
+              <a
+                href={`${action}?q=${term}`}
+                class="flex gap-4 items-center link"
+              >
                 <span>
                   <Icon
                     id={!showDefaultValue ? "MagnifyingGlass" : "ArrowRight"}
