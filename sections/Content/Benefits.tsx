@@ -7,9 +7,6 @@ export interface Props {
     icon: AvailableIcons;
     description: string;
   }>;
-  layout?: {
-    headerAlignment?: "center";
-  };
 }
 
 export default function Benefits(
@@ -35,7 +32,7 @@ export default function Benefits(
     return (
       <div
         class={`
-          flex sm:flex-row lg:flex-col gap-4 w-full first:pt-0 last:pt-6 h-full
+          flex sm:flex-row lg:flex-col gap-4 w-full first:pt-0 last:pb-0 h-full  
           ${"lg:flex-col"} 
           ${"max-lg:py-6"} 
           ${"lg:pr-8 lg:border-r lg:last:border-r-0"} 
@@ -51,7 +48,7 @@ export default function Benefits(
             fill="currentColor"
           />
         </div>
-        <div class="flex-auto flex flex-col gap-1 lg:gap-2">
+        <div class="flex-auto gap-1 lg:gap-2">
           <div
             class={`text-base lg:text-xl leading-7 font-bold antialiased ${"text-base-content"}`}
           >
@@ -72,10 +69,8 @@ export default function Benefits(
   return (
     <>
       <div class="flex w-full container p-6 lg:gap-10 lg:py-10 lg:px-0">
-        <Header
-          alignment={"center"}
-        />
-        <div class="flex max-lg:flex-col sm:justify-center sm:items-center w-full border divide-y lg:divide-y-0 divide-neutral-300 lg:gap-9 p-6 lg:p-10 rounded">
+        <Header />
+        <div class="flex max-lg:flex-col sm:justify-center sm:items-center w-full border lg:gap-9 p-6 lg:p-10 rounded divide-y lg:divide-y-0 divide-neutral-300">
           {listOfBenefits}
         </div>
       </div>
