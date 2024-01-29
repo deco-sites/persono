@@ -35,7 +35,7 @@ export default function Benefits(
     return (
       <div
         class={`
-          flex sm:flex-row lg:flex-col gap-4 w-full sm:w-[48%] first:pt-0 last:pt-6 h-full
+          flex sm:flex-row lg:flex-col gap-4 w-full first:pt-0 last:pt-6 h-full
           ${"lg:flex-col"} 
           ${"max-lg:py-6"} 
           ${"lg:pr-8 lg:border-r lg:last:border-r-0"} 
@@ -75,7 +75,7 @@ export default function Benefits(
         <Header
           alignment={"center"}
         />
-        <div class="flex max-lg:flex-col sm:justify-center sm:items-center w-full border max-lg:divide-y divide-neutral-300 lg:gap-9 p-6 lg:p-10 rounded">
+        <div class="flex max-lg:flex-col sm:justify-center sm:items-center w-full border divide-y lg:divide-y-0 divide-neutral-300 lg:gap-9 p-6 lg:p-10 rounded">
           {listOfBenefits}
         </div>
       </div>
