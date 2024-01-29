@@ -88,7 +88,7 @@ export default function Benefits(
             <Header
               alignment={layout?.headerAlignment || "center"}
             />
-            <div class="flex max-lg:flex-col sm:justify-center sm:items-center w-full max-lg:[&>*:first-child]:pt-0 max-lg:[&>*:last-child]:pt-6 border max-lg:divide-y divide-neutral-300 lg:gap-9 p-10">
+            <div class="flex max-lg:flex-row sm:justify-center sm:items-center w-full max-lg:[&>*:first-child]:pt-0 max-lg:[&>*:last-child]:pt-6 border max-lg:divide-y divide-neutral-300 lg:gap-9 p-10">
               {listOfBenefits}
             </div>
           </div>
