@@ -29,6 +29,9 @@ export type Props = {
   @default https://mmartan.com.br/api/
   */
   publicUrl: string;
+
+  imageBaseUrl:string;
+  
   /**
   @title Configurações de parcelamento
   */
