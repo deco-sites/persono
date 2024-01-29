@@ -35,7 +35,7 @@ export default function Benefits(
     return (
       <div
         class={`
-          flex sm:flex-row lg:flex-col gap-4 w-full sm:w-[48%] sm:first:pt-0:last:pt-6 h-full
+          flex sm:flex-row lg:flex-col gap-4 w-full sm:w-[48%] first:pt-0 last:pt-6 h-full
           ${"lg:flex-col"} 
           ${"max-lg:py-6"} 
           ${"lg:pr-8 lg:border-r lg:last:border-r-0"} 
