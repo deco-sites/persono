@@ -11,12 +11,13 @@ export const PROPS_AMMO_API = {
     simpleProps: [
       "cashback",
       "segment",
+      "macroCategory",
+      "category",
       "size",
       "line",
       "sizeType",
       "isActiveBundlePickupInStore",
-      "macroCategory",
-      "template",
+      "template"
     ],
     defaultPhotos: [
       "image",

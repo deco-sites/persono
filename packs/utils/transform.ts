@@ -305,7 +305,34 @@ const toProductGroup = (
       image: toImage({ sku: thisSku, ammoProduct }),
       offers: toAggregateOffer({ sku: thisSku, config }),
     })),
-    additionalProperty: [],
+    additionalProperty: skus!.reduce<PropertyValue[]>(
+      (acc, { color, size }) => {
+        const result = acc;
+        const uniqueValues = new Set(acc.map(({ value }) => value));
+
+        if (!uniqueValues.has(color.name)) {
+          result.push({
+            "@type": "PropertyValue" as const,
+            propertyID: "COLOR",
+            name: "color",
+            value: color.name,
+            unitCode: color.hex,
+            valueReference: "PROPERTY",
+          });
+        }
+        if (!uniqueValues.has(size)) {
+          result.push({
+            "@type": "PropertyValue",
+            propertyID: "SIZE",
+            name: "size",
+            value: size,
+            valueReference: "PROPERTY",
+          });
+        }
+        return result;
+      },
+      [],
+    ),
   };
 };
 
@@ -399,13 +426,14 @@ const toAdditionalProperties = (
     name: "color",
     value: sku.color.name,
     unitCode: sku.color.hex,
+    valueReference: "SPECIFICATION",
   });
 
   const specificationsProperties = (): PropertyValue[] =>
     sku.specifications.map(({ id, value, label }) => ({
       "@type": "PropertyValue" as const,
-      propertyID: "SPECIFICATION",
-      name: "specification",
+      propertyID: "TECNICALSPECIFICATION",
+      name: "tecnicalSpecification",
       identifier: id,
       value,
       description: label,
@@ -434,6 +462,9 @@ const toAdditionalProperties = (
           propertyID: k.toUpperCase(),
           name: k,
           value: obj![k as keyof T]?.toString(),
+          valueReference: typeChecher<AmmoProduct>(obj as AmmoProduct, "id")
+            ? undefined
+            : "SPECIFICATION",
         }];
       },
       [],
