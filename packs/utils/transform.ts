@@ -9,6 +9,7 @@ import {
   ProductGroup,
   ProductListingPage,
   PropertyValue,
+  UnitPriceSpecification,
 } from "apps/commerce/types.ts";
 
 import {
@@ -56,7 +57,8 @@ export function toProduct(
   baseUrl: URL,
   config: VMConfig | PDPConfig,
 ): Product {
-  const { skus, selectedSku, title, category } = ammoProduct;
+  const { skus, selectedSku, title, macroCategory, segment, brand } =
+    ammoProduct;
   const workableSku = skus?.find(({ sku }) => sku === selectedSku);
 
   return {
@@ -76,9 +78,12 @@ export function toProduct(
     ],
     brand: {
       "@type": "Brand",
-      "@id": ammoProduct.brand,
+      "@id": brand,
+      name: brand,
     },
-    category: category ?? ammoProduct.macroCategory,
+    category: `${segment}>${macroCategory}${
+      macroCategory === ammoProduct.category ? "" : `>${ammoProduct.category}`
+    }`,
     inProductGroupWithID: ammoProduct?.groupKey,
     isVariantOf: workableSku
       ? toProductGroup({
@@ -335,20 +340,35 @@ const toAggregateOffer = (
           : "https://schema.org/OutOfStock",
         inventoryLevel: { value: sku?.stock },
         price: lowPrice ?? highPrice,
-        priceSpecification: installments.map((value, i) => {
-          const [description, billingIncrement] = !i
-            ? ["À vista", lowPrice]
-            : [i + 1 + " vezes sem juros", value];
-          return {
+        seller: ammoProduct?.brand ?? "persono",
+        priceSpecification: [
+          {
+            "@type": "UnitPriceSpecification",
+            priceType: "https://schema.org/ListPrice",
+            price: highPrice,
+          },
+          {
             "@type": "UnitPriceSpecification",
             priceType: "https://schema.org/SalePrice",
-            priceComponentType: "https://schema.org/Installment",
-            description,
-            billingDuration: i + 1,
-            billingIncrement,
             price: lowPrice,
-          };
-        }),
+          },
+          ...installments.map<UnitPriceSpecification>(
+            (value, i) => {
+              const [description, billingIncrement] = !i
+                ? ["À vista", lowPrice]
+                : [i + 1 + " vezes sem juros", value];
+              return {
+                "@type": "UnitPriceSpecification",
+                priceType: "https://schema.org/SalePrice",
+                priceComponentType: "https://schema.org/Installment",
+                description,
+                billingDuration: i + 1,
+                billingIncrement,
+                price: lowPrice,
+              };
+            },
+          ),
+        ],
       },
     ],
   };
