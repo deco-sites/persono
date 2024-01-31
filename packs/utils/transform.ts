@@ -414,9 +414,10 @@ const toAdditionalProperties = (
     return Object.entries(tags).map((v) => ({
       "@type": "PropertyValue" as const,
       propertyID: "TAG",
-      name: v[1].type,
+      name: "tag",
       identifier: v[0].toUpperCase(),
-      value: v[1].value ?? true,
+      value: v[1].type,
+      valueReference: v[1].value,
     }));
   };
 
@@ -443,9 +444,10 @@ const toAdditionalProperties = (
     sku.kitItems.map(({ name, quantity, dimensions }) => ({
       "@type": "PropertyValue" as const,
       propertyID: "KITITEM",
-      name,
-      value: quantity,
+      name: "kitItem",
+      value: name,
       description: dimensions,
+      valueReference: quantity,
     }));
 
   const simpleProperties = () =>
@@ -472,7 +474,6 @@ const toAdditionalProperties = (
 
   return [
     ...simpleProperties(),
-    ...tagsProperties(),
     ...typeChecher<AmmoProduct>(obj as AmmoProduct, "id")
       ? PROPS_AMMO_API.product.simpleArrayProps.flatMap((i) => {
         const prop = obj[i as keyof T];
@@ -490,5 +491,6 @@ const toAdditionalProperties = (
         ...specificationsProperties(),
         ...kitItemsProperties(),
       ],
+    ...tagsProperties(),
   ];
 };
