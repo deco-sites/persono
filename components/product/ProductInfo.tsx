@@ -16,6 +16,7 @@ import { usePlatform } from "$store/sdk/usePlatform.tsx";
 import { ProductDetailsPage } from "apps/commerce/types.ts";
 import { mapProductToAnalyticsItem } from "apps/commerce/utils/productToAnalyticsItem.ts";
 import ProductSelector from "./ProductVariantSelector.tsx";
+import Benefities from "../../sections/Product/Benefities.tsx";
 
 interface Props {
   page: ProductDetailsPage | null;
@@ -37,10 +38,7 @@ function ProductInfo({ page, layout }: Props) {
     throw new Error("Missing Product Details Page Info");
   }
 
-  const {
-    breadcrumbList,
-    product,
-  } = page;
+  const { breadcrumbList, product } = page;
   const {
     productID,
     offers,
@@ -72,16 +70,15 @@ function ProductInfo({ page, layout }: Props) {
   });
 
   return (
-    <div class="flex flex-col" id={id}>
-      <Breadcrumb itemListElement={breadcrumb.itemListElement} />
+    <div class="flex flex-col mt-10" id={id}>
+      <Breadcrumb
+        itemListElement={breadcrumb.itemListElement}
+        productsQtt={breadcrumb.numberOfItems}
+      />
       {/* Code and name */}
       <div class="mt-4 sm:mt-8">
         <div>
-          {gtin && (
-            <span class="text-sm text-base-300">
-              Cod. {gtin}
-            </span>
-          )}
+          {gtin && <span class="text-sm text-[#666]">Cod. {gtin}</span>}
         </div>
         <h1>
           <span class="font-medium text-xl capitalize">
@@ -97,17 +94,15 @@ function ProductInfo({ page, layout }: Props) {
       <div class="mt-4">
         <div class="flex flex-row gap-2 items-center">
           {(listPrice ?? 0) > price && (
-            <span class="line-through text-base-300 text-xs">
+            <span class="line-through text-[#666] text-xs">
               {formatPrice(listPrice, offers?.priceCurrency)}
             </span>
           )}
-          <span class="font-medium text-xl text-secondary">
+          <span class="font-medium text-xl text-black">
             {formatPrice(price, offers?.priceCurrency)}
           </span>
         </div>
-        <span class="text-sm text-base-300">
-          {installments}
-        </span>
+        <span class="text-sm text-[#666]">{installments}</span>
       </div>
       {/* Sku Selector */}
       <div class="mt-4 sm:mt-6">
@@ -169,15 +164,36 @@ function ProductInfo({ page, layout }: Props) {
           )
           : <OutOfStock productID={productID} />}
       </div>
+      {/* Benefities */}
+      <div>
+        <Benefities
+          layout={[
+            {
+              title: "Suporte médio",
+              description:
+                "Proporciona equilíbrio entre firmeza e maciez, com apoio adequado",
+              icon: { alt: "asas", src: "/IconCloud.svg" },
+            },
+            {
+              title: "Ideal para quem dorme de barriga para cima",
+              description:
+                "Dá suporte para a coluna cervical, mantendo uma posição natural",
+              icon: { alt: "asas", src: "/ArrowUp.svg" },
+            },
+          ]}
+        />
+      </div>
       {/* Shipping Simulation */}
       <div class="mt-8">
         {platform === "vtex" && (
           <ShippingSimulation
-            items={[{
-              id: Number(product.sku),
-              quantity: 1,
-              seller: seller,
-            }]}
+            items={[
+              {
+                id: Number(product.sku),
+                quantity: 1,
+                seller: seller,
+              },
+            ]}
           />
         )}
       </div>
