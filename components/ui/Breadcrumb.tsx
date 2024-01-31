@@ -2,13 +2,16 @@ import type { BreadcrumbList } from "apps/commerce/types.ts";
 
 interface Props {
   itemListElement: BreadcrumbList["itemListElement"];
+  productsQtt?: number;
 }
 
-function Breadcrumb({ itemListElement = [] }: Props) {
-  const items = [{ name: "Home", item: "/" }, ...itemListElement];
+function Breadcrumb({ itemListElement = [], productsQtt }: Props) {
+  const rawItems = [{ name: "Home", item: "/" }, ...itemListElement];
+
+  const items = [rawItems[0], rawItems[rawItems.length - 1]];
 
   return (
-    <div class="breadcrumbs">
+    <div class="breadcrumbs flex items-center gap-2">
       <ul>
         {items
           .filter(({ name, item }) => name && item)
@@ -18,6 +21,9 @@ function Breadcrumb({ itemListElement = [] }: Props) {
             </li>
           ))}
       </ul>
+      {productsQtt
+        ? <p class="text-gray-500">({productsQtt} produtos)</p>
+        : null}
     </div>
   );
 }
