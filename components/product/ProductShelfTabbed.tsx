@@ -1,7 +1,5 @@
 import { SendEventOnView } from "$store/components/Analytics.tsx";
-import ProductCard, {
-  Layout as cardLayout,
-} from "$store/components/product/ProductCard.tsx";
+
 import Icon from "$store/components/ui/Icon.tsx";
 import Header from "$store/components/ui/SectionHeader.tsx";
 import Slider from "$store/components/ui/Slider.tsx";
@@ -12,6 +10,7 @@ import { usePlatform } from "$store/sdk/usePlatform.tsx";
 import type { Product } from "apps/commerce/types.ts";
 import { mapProductToAnalyticsItem } from "apps/commerce/utils/productToAnalyticsItem.ts";
 import { usePartialSection } from "deco/hooks/usePartialSection.ts";
+import ProductCard from "deco-sites/persono/components/product/ProductCard/index.tsx";
 
 /** @titleBy title */
 interface Tab {
@@ -27,7 +26,7 @@ export interface Props {
     headerAlignment?: "center" | "left";
     headerfontSize?: "Normal" | "Large";
   };
-  cardLayout?: cardLayout;
+
   tabIndex?: number;
 }
 
@@ -36,14 +35,14 @@ function TabbedProductShelf({
   title,
   description,
   layout,
-  cardLayout,
   tabIndex,
 }: Props) {
   const id = useId();
   const platform = usePlatform();
-  const ti = typeof tabIndex === "number"
-    ? Math.min(Math.max(tabIndex, 0), tabs.length)
-    : 0;
+  const ti =
+    typeof tabIndex === "number"
+      ? Math.min(Math.max(tabIndex, 0), tabs.length)
+      : 0;
   const { products } = tabs[ti];
 
   if (!products || products.length === 0) {
@@ -55,7 +54,6 @@ function TabbedProductShelf({
       <Header
         title={title || ""}
         description={description || ""}
-        fontSize={layout?.headerfontSize || "Large"}
         alignment={layout?.headerAlignment || "center"}
       />
 
@@ -82,13 +80,7 @@ function TabbedProductShelf({
               index={index}
               class="carousel-item w-[270px] sm:w-[292px] first:pl-6 sm:first:pl-0 last:pr-6 sm:last:pr-0"
             >
-              <ProductCard
-                product={product}
-                itemListName={title}
-                layout={cardLayout}
-                platform={platform}
-                index={index}
-              />
+              <ProductCard product={product} index={index} />
             </Slider.Item>
           ))}
         </Slider>
@@ -116,7 +108,7 @@ function TabbedProductShelf({
                 mapProductToAnalyticsItem({
                   index,
                   product,
-                  ...(useOffer(product.offers)),
+                  ...useOffer(product.offers),
                 })
               ),
             },

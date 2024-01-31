@@ -10,7 +10,11 @@ import type { SiteNavigationElement } from "deco-sites/persono/components/header
 import { Logo } from "deco-sites/persono/components/ui/Logo.tsx";
 import NavItem from "./NavItem.tsx";
 
-function Navbar({ items, searchbar, device }: {
+function Navbar({
+  items,
+  searchbar,
+  device,
+}: {
   items: SiteNavigationElement[];
   device: string;
   searchbar?: SearchbarProps;
@@ -40,16 +44,14 @@ function Navbar({ items, searchbar, device }: {
     <>
       <div class="container flex flex-row justify-between items-center w-full pl-2 pr-6 relative">
         <div class="flex-none w-40">
-          <a
-            href="/"
-            aria-label="Store logo"
-            class="block py-6 w-[160px]"
-          >
+          <a href="/" aria-label="Store logo" class="block py-6 w-[160px]">
             <Logo />
           </a>
         </div>
         <div class="flex-auto flex justify-start gap-8 self-stretch">
-          {items.map((item) => <NavItem item={item} />)}
+          {items.map((item) => (
+            <NavItem item={item} />
+          ))}
         </div>
         <div class="flex-none flex items-center justify-end gap-10">
           <SearchButton />
