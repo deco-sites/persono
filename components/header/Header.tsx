@@ -7,10 +7,10 @@ import {
   SiteNavigationElement,
 } from "deco-sites/persono/components/header/Menu.tsx";
 import { SectionProps } from "deco/mod.ts";
-import { FnContext } from "deco/types.ts";
 import Alert, { IAlert } from "./Alert.tsx";
 import Navbar from "./Navbar.tsx";
 import type { EditableProps as CartProps } from "deco-sites/persono/components/minicart/Cart.tsx";
+import { FnCustomContext } from "deco-sites/persono/packs/types.ts";
 
 export interface Props {
   alerts: IAlert[];
@@ -71,12 +71,9 @@ function Header({
   );
 }
 
-export const loader = (
-  props: Props,
-  _req: Request,
-  ctx: FnContext,
-) => {
+export const loader = (props: Props, _req: Request, ctx: FnCustomContext) => {
   const device = ctx.device;
+
   return {
     ...props,
     device: device || "desktop",

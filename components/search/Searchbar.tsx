@@ -46,6 +46,15 @@ export interface EditableProps {
     products: Product[] | null;
   };
 
+  /**
+   * @title Featured Info
+   * @description This data will be displayed on the first render of Search Bar
+   */
+
+  /** @description used for analytics event on suggestion product */
+
+  itemListName?: string;
+
   /** @title Suggestions Integration   */
   loader: Resolved<Suggestion | null>;
 }
@@ -66,6 +75,7 @@ function Searchbar({
     termsTitle = "Mais buscados",
     topSearches: featuredSearches,
   },
+  itemListName,
 }: Props) {
   const id = useId();
   const { displaySearchPopup, displaySearchDrawer } = useUI();
@@ -76,22 +86,23 @@ function Searchbar({
 
   const { products, searches } = called.value
     ? {
-      products: payloadProducts,
-      searches: payloadSearches,
-    }
+        products: payloadProducts,
+        searches: payloadSearches,
+      }
     : {
-      products: featuredProducts ?? [],
-      searches: featuredSearches.map(({ label, ...item }) => ({
-        term: label,
-        ...item,
-      })),
-    };
+        products: featuredProducts ?? [],
+        searches: featuredSearches.map(({ label, ...item }) => ({
+          term: label,
+          ...item,
+        })),
+      };
   const hasProducts = Boolean(products.length);
   const hasTerms = Boolean(searches.length);
 
   useEffect(() => {
     if (
-      displaySearchPopup.value === true || displaySearchDrawer.value === true
+      displaySearchPopup.value === true ||
+      displaySearchDrawer.value === true
     ) {
       setTimeout(() => searchInputRef.current?.focus(), 500);
     }
@@ -102,17 +113,15 @@ function Searchbar({
       class="container lg:gap-8 gap-6 overflow-y-auto lg:overflow-y-hidden flex flex-col lg:py-6 pb-4"
       style={{ gridTemplateRows: "min-content auto" }}
     >
-      {withHeader
-        ? (
-          <DrawerHeader
-            title="Buscar"
-            onClose={() => {
-              displaySearchPopup.value = false;
-              displaySearchDrawer.value = false;
-            }}
-          />
-        )
-        : null}
+      {withHeader ? (
+        <DrawerHeader
+          title="Buscar"
+          onClose={() => {
+            displaySearchPopup.value = false;
+            displaySearchDrawer.value = false;
+          }}
+        />
+      ) : null}
       <div class="flex justify-start items-center gap-4 lg:px-0 px-4 -mt-2 lg:mt-0">
         <form
           id={id}
@@ -126,9 +135,11 @@ function Searchbar({
             for={id}
             tabIndex={-1}
           >
-            {loading.value
-              ? <span class="loading loading-spinner loading-xs" />
-              : <Icon id="MagnifyingGlass" size={24} strokeWidth={0.01} />}
+            {loading.value ? (
+              <span class="loading loading-spinner loading-xs" />
+            ) : (
+              <Icon id="MagnifyingGlass" size={24} strokeWidth={0.01} />
+            )}
           </Button>
           <input
             ref={searchInputRef}
@@ -152,66 +163,64 @@ function Searchbar({
             aria-controls="search-suggestion"
             autocomplete="off"
           />
-          {query?.value
-            ? (
-              <Button
-                type="button"
-                class="join-item btn-ghost btn-circle hover:text-primary"
-                onClick={() => searchInputRef.current!.value = ""}
-              >
-                limpar
-              </Button>
-            )
-            : null}
+          {query?.value ? (
+            <Button
+              type="button"
+              class="join-item btn-ghost btn-circle hover:text-primary"
+              onClick={() => (searchInputRef.current!.value = "")}
+            >
+              limpar
+            </Button>
+          ) : null}
         </form>
         <Button
           type="button"
           class="join-item btn-ghost btn-circle w-4 hidden lg:inline-flex hover:text-error"
-          onClick={() => displaySearchPopup.value = false}
+          onClick={() => (displaySearchPopup.value = false)}
         >
           <Icon id="XMark" size={24} strokeWidth={2} />
         </Button>
       </div>
-      {loading.value
-        ? (
-          <div class="flex lg:flex-row flex-col gap-12 px-4">
-            <ul class="flex flex-col gap-4 max-w-[224px] w-full">
+      {loading.value ? (
+        <div class="flex lg:flex-row flex-col gap-12 px-4">
+          <ul class="flex flex-col gap-4 max-w-[224px] w-full">
+            <li class="skeleton w-40 h-4"></li>
+            <li class="skeleton w-32 h-4 mt-2"></li>
+            <li class="skeleton w-32 h-4"></li>
+            <li class="skeleton w-32 h-4"></li>
+          </ul>
+          <div class="flex flex-col gap-5 w-full">
+            <ul class="flex justify-between">
               <li class="skeleton w-40 h-4"></li>
-              <li class="skeleton w-32 h-4 mt-2"></li>
-              <li class="skeleton w-32 h-4"></li>
-              <li class="skeleton w-32 h-4"></li>
+              <li class="skeleton w-20 h-4"></li>
             </ul>
-            <div class="flex flex-col gap-5 w-full">
-              <ul class="flex justify-between">
-                <li class="skeleton w-40 h-4"></li>
-                <li class="skeleton w-20 h-4"></li>
-              </ul>
-              <ul class="flex justify-between gap-8 w-full overflow-x-hidden">
-                {Array.from({ length: 5 }).map(() => (
-                  <li class="flex flex-col gap-2.5">
-                    <div class="skeleton w-36 h-52"></div>
-                    <ul class="flex flex-col gap-1">
-                      <li class="skeleton w-36 h-4"></li>
-                      <li class="skeleton w-1/2 h-4"></li>
-                      <li class="skeleton w-1/2 h-4"></li>
-                    </ul>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            <ul class="flex justify-between gap-8 w-full overflow-x-hidden">
+              {Array.from({ length: 5 }).map(() => (
+                <li class="flex flex-col gap-2.5">
+                  <div class="skeleton w-36 h-52"></div>
+                  <ul class="flex flex-col gap-1">
+                    <li class="skeleton w-36 h-4"></li>
+                    <li class="skeleton w-1/2 h-4"></li>
+                    <li class="skeleton w-1/2 h-4"></li>
+                  </ul>
+                </li>
+              ))}
+            </ul>
           </div>
-        )
-        : (
-          <SuggestionResult
-            showNotFound={!hasProducts && !hasTerms}
-            showDefaultValue={!called.value}
-            termsTitle={termsTitle}
-            searches={searches}
-            productsTitle={productsTitle}
-            products={products}
-            generalLink={`${action}?${name}=${query.value}`}
-          />
-        )}
+        </div>
+      ) : (
+        <SuggestionResult
+          action={action}
+          itemListName={itemListName}
+          showNotFound={!hasProducts && !hasTerms}
+          showDefaultValue={!called.value}
+          termsTitle={termsTitle}
+          searches={searches}
+          productsTitle={productsTitle}
+          products={products}
+          generalLink={`${action}?${name}=${query.value}`}
+        />
+      )}
     </div>
   );
 }

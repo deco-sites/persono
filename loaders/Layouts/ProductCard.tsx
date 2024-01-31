@@ -1,94 +1,82 @@
-import ProductCard, { Layout } from "$store/components/product/ProductCard.tsx";
-import { usePlatform } from "$store/sdk/usePlatform.tsx";
-
-interface Props {
-  /** @title Product Card layout props */
-  layout: Layout;
-}
+import ProductCard from "deco-sites/persono/components/product/ProductCard/index.tsx";
 
 /** @title Product Card Layout */
-const loader = ({ layout }: Props): Layout => layout;
+const loader = () => Preview;
 
-export const Preview = (props: Props) => {
-  const { layout } = props;
-
+export const Preview = () => {
   return (
     <div class="h-full w-full grid place-items-center">
       <div class="max-w-xs">
         <ProductCard
-          layout={layout}
-          platform={usePlatform()}
           product={{
             "@type": "Product",
-            "category": "Masculino>Camisetas Gola Lisa",
-            "productID": "165",
-            "url": "",
-            "name": "Product Test",
-            "description": "Product Description",
-            "brand": {
+            category: "Masculino>Camisetas Gola Lisa",
+            productID: "165",
+            url: "",
+            name: "Product Test",
+            description: "Product Description",
+            brand: {
               "@type": "Brand",
               "@id": "2000000",
-              "name": "deco.cx",
+              name: "deco.cx",
             },
-            "inProductGroupWithID": "33",
-            "sku": "165",
-            "gtin": "789456123003305",
-            "additionalProperty": [
+            inProductGroupWithID: "33",
+            sku: "165",
+            gtin: "789456123003305",
+            additionalProperty: [
               {
                 "@type": "PropertyValue",
-                "name": "TAMANHO",
-                "value": "GG",
-                "valueReference": "SPECIFICATION",
+                name: "TAMANHO",
+                value: "GG",
+                valueReference: "SPECIFICATION",
               },
             ],
-            "isVariantOf": {
+            isVariantOf: {
               "@type": "ProductGroup",
-              "productGroupID": "33",
-              "hasVariant": [],
-              "name": "Camiseta Masculina Gola Lisa Olive",
-              "additionalProperty": [],
+              productGroupID: "33",
+              hasVariant: [],
+              name: "Camiseta Masculina Gola Lisa Olive",
+              additionalProperty: [],
             },
-            "image": [
+            image: [
               {
                 "@type": "ImageObject",
-                "alternateName": "test",
-                "url":
-                  "https://ozksgdmyrqcxcwhnbepg.supabase.co/storage/v1/object/public/assets/2291/b9e0a819-6a75-47af-84fe-90b44fecda5f",
+                alternateName: "test",
+                url: "https://ozksgdmyrqcxcwhnbepg.supabase.co/storage/v1/object/public/assets/2291/b9e0a819-6a75-47af-84fe-90b44fecda5f",
               },
               {
                 "@type": "ImageObject",
-                "alternateName": "test",
-                "url":
-                  "https://ozksgdmyrqcxcwhnbepg.supabase.co/storage/v1/object/public/assets/2291/b9e0a819-6a75-47af-84fe-90b44fecda5f",
+                alternateName: "test",
+                url: "https://ozksgdmyrqcxcwhnbepg.supabase.co/storage/v1/object/public/assets/2291/b9e0a819-6a75-47af-84fe-90b44fecda5f",
               },
             ],
-            "offers": {
+            offers: {
               "@type": "AggregateOffer",
-              "priceCurrency": "BRL",
-              "highPrice": 69.3,
-              "lowPrice": 69.3,
-              "offerCount": 1,
-              "offers": [
+              priceCurrency: "BRL",
+              highPrice: 69.3,
+              lowPrice: 69.3,
+              offerCount: 1,
+              offers: [
                 {
                   "@type": "Offer",
-                  "price": 69.3,
-                  "seller": "1",
-                  "priceValidUntil": "2024-09-04T13:03:31Z",
-                  "inventoryLevel": { "value": 10000 },
-                  "teasers": [],
-                  "priceSpecification": [
+                  price: 69.3,
+                  seller: "1",
+                  priceValidUntil: "2024-09-04T13:03:31Z",
+                  inventoryLevel: { value: 10000 },
+                  teasers: [],
+                  priceSpecification: [
                     {
                       "@type": "UnitPriceSpecification",
-                      "priceType": "https://schema.org/ListPrice",
-                      "price": 179,
+                      priceType: "https://schema.org/ListPrice",
+                      price: 179,
                     },
                     {
                       "@type": "UnitPriceSpecification",
-                      "priceType": "https://schema.org/SalePrice",
-                      "price": 69.3,
+                      priceType: "https://schema.org/SalePrice",
+                      price: 69.3,
                     },
                   ],
-                  "availability": "https://schema.org/InStock",
+                  availability: "https://schema.org/InStock",
                 },
               ],
             },
