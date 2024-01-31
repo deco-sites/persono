@@ -7,20 +7,19 @@ import {
   SendEventOnClick,
   SendEventOnView,
 } from "$store/components/Analytics.tsx";
-import Button from "$store/components/ui/Button.tsx";
 
 interface ActionProps {
   /**
    * @format html
    */
-  title: string;
+  title?: string;
 
   /**
    * @format html
    */
-  subTitle: string;
+  subTitle?: string;
 
-  label: string;
+  label?: string;
 }
 
 /**
@@ -94,56 +93,49 @@ function BannerItem({
         />
       </Picture>
 
-      <BannerActionLayout action={action} />
+      {action && <BannerActionLayout action={action} />}
     </a>
   );
 }
 
-export const BannerActionLayout = ({ action }: { action?: ActionProps }) => {
-  if (action) {
-    return (
-      <div class=" absolute lg:max-w-3xl p-4 lg:p-0  md:top-[-20px]  max-[900px]:top-[-20px]  h-min top-0 bottom-0 m-auto left-0 right-0 text-center  max-h-min  flex flex-col items-center">
-        {action?.title && (
-          <span
-            class="font-medium text-3xl text-white mb-6 md:mb-2 max-[900px]:mb-2"
-            dangerouslySetInnerHTML={{
-              __html: action.title ?? "",
-            }}
-          ></span>
-        )}
-        {action?.subTitle && (
-          <span
-            class="font-normal  text-base text-white mb-9 md:mb-5 lg:mb-9 "
-            dangerouslySetInnerHTML={{
-              __html: action.subTitle ?? "",
-            }}
-          ></span>
-        )}
-        {action?.label && (
-          <Button class=" w-[calc(60%)] md:w-[calc(50%-36px)] text-blueNew bg-white h-9 px-2 py-3 text-center ">
-            {action.label}
-          </Button>
-        )}
-      </div>
-    );
-  }
-
-  return null;
+export const BannerActionLayout = ({ action }: { action: ActionProps }) => {
+  return (
+    <div class="absolute lg:max-w-3xl p-4 lg:p-0 h-min top-0 bottom-0 m-auto left-0 right-0 text-center max-h-min flex flex-col items-center justify-center">
+      {action?.title && (
+        <span
+          class="font-medium text-3xl text-white mb-4 lg:mb-6"
+          dangerouslySetInnerHTML={{
+            __html: action.title ?? "",
+          }}
+        ></span>
+      )}
+      {action?.subTitle && (
+        <span
+          class="font-normal text-base text-white mb-6 lg:mb-9"
+          dangerouslySetInnerHTML={{
+            __html: action.subTitle ?? "",
+          }}
+        ></span>
+      )}
+      {action?.label && (
+        <button class="btn w-full max-w-[117px] md:max-w-[396px] text-blueNew bg-white h-9 rounded-xl">
+          {action.label}
+        </button>
+      )}
+    </div>
+  );
 };
 
-function Dots({ images = [], interval = 0 }: Props) {
+function Dots({ images = [] }: { images?: Banner[] }) {
   if (images.length <= 1) {
     return null;
   }
   return (
-    <ul class="absolute w-full flex items-center justify-center max-[760px]:bottom-5 lg:bottom-5 min-[760px]:bottom-2 max-[900px]:bottom-2 gap-2">
+    <ul class="absolute w-full flex items-center justify-center bottom-5 gap-2">
       {images?.map((_, index) => (
         <li class="carousel-item">
           <Slider.Dot index={index}>
-            <div
-              class="w-2 h-2 rounded-xl bg-white group-disabled:bg-gray-100"
-              style={{ animationDuration: `${interval}s` }}
-            />
+            <div class="w-2 h-2 rounded-xl bg-white group-disabled:bg-gray-100" />
           </Slider.Dot>
         </li>
       ))}
@@ -157,7 +149,7 @@ function BannerCarousel({ images, preload, interval }: Props) {
   return (
     <div
       id={id}
-      class="grid grid-cols-[48px_1fr_48px]   sm:grid-cols-[120px_1fr_120px] grid-rows-[1fr_48px_1fr_64px] relative "
+      class="grid grid-cols-[48px_1fr_48px] sm:grid-cols-[120px_1fr_120px] grid-rows-[1fr_48px_1fr_64px] relative "
     >
       <Slider class="carousel carousel-center w-full col-span-full row-span-full gap-6">
         {images?.map((image, index) => {
@@ -184,7 +176,7 @@ function BannerCarousel({ images, preload, interval }: Props) {
         })}
       </Slider>
 
-      <Dots images={images} interval={interval} />
+      <Dots images={images} />
       <SliderJS rootId={id} interval={interval && interval * 1e3} infinite />
     </div>
   );
