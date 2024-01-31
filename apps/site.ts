@@ -30,8 +30,7 @@ export type Props = {
   */
   publicUrl: string;
 
-  imageBaseUrl:string;
-  
+  imageBaseUrl: string;
   /**
   @title Configurações de parcelamento
   */

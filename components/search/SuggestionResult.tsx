@@ -10,9 +10,9 @@ interface SuggestionResultProps {
   searches:
     | Search[]
     | {
-        href: string;
-        term: string;
-      }[];
+      href: string;
+      term: string;
+    }[];
   productsTitle: string;
   products: Product[];
   generalLink: string;
@@ -68,9 +68,9 @@ export function SuggestionResult({
                   dangerouslySetInnerHTML={{
                     __html: showDefaultValue
                       ? term.replace(
-                          new RegExp(`/${term}/g`),
-                          `<strong>${term}</strong`
-                        )
+                        new RegExp(`/${term}/g`),
+                        `<strong>${term}</strong`,
+                      )
                       : term,
                   }}
                 />
