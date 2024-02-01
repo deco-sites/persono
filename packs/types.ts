@@ -1078,8 +1078,7 @@ export interface BirthdayDiscountPeriod {
   nextPeriodAt: string;
 }
 
-
-export type FnCustomContext = SiteProps & DefaultFnContext
+export type FnCustomContext = SiteProps & DefaultFnContext;
 export interface InstallmentConfig {
   maxInstallments: number;
   minInstallmentValue: number;

@@ -39,10 +39,9 @@ function TabbedProductShelf({
 }: Props) {
   const id = useId();
   const platform = usePlatform();
-  const ti =
-    typeof tabIndex === "number"
-      ? Math.min(Math.max(tabIndex, 0), tabs.length)
-      : 0;
+  const ti = typeof tabIndex === "number"
+    ? Math.min(Math.max(tabIndex, 0), tabs.length)
+    : 0;
   const { products } = tabs[ti];
 
   if (!products || products.length === 0) {

@@ -30,6 +30,11 @@ export type VMConfig = Pick<
   "minInstallmentValue" | "maxInstallments" | "vmItemsPerPage"
 >;
 
+export type VMConfig = Pick<
+  Config,
+  "minInstallmentValue" | "maxInstallments" | "vmItemsPerPage"
+>;
+
 interface ProductListingPageProps {
   vmDetails: VMDetails;
   url: URL;

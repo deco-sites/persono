@@ -41,7 +41,7 @@ const setup = () => {
   const header = document.querySelector<HTMLElement>("[data-header]");
   const topBar = document.querySelector<HTMLElement>("[data-top-bar]");
   const drawer = document.querySelector<HTMLElement>(
-    ".menu-drawer > .drawer-side"
+    ".menu-drawer > .drawer-side",
   );
 
   if (!header || !topBar || !drawer) return;
@@ -97,12 +97,12 @@ function Drawers({ menu, searchbar, cart, children, platform }: Props) {
         }}
         aside={
           <Aside>
-            {displaySearchDrawer.value ? (
-              <SearchBar withHeader {...searchbar!} />
-            ) : null}
-            {displayCart.value ? (
-              <Cart {...cart} onClose={() => (displayCart.value = false)} />
-            ) : null}
+            {displaySearchDrawer.value
+              ? <SearchBar withHeader {...searchbar!} />
+              : null}
+            {displayCart.value
+              ? <Cart {...cart} onClose={() => (displayCart.value = false)} />
+              : null}
           </Aside>
         }
       />
