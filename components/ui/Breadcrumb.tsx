@@ -6,9 +6,7 @@ interface Props {
 }
 
 function Breadcrumb({ itemListElement = [], productsQtt }: Props) {
-  const rawItems = [{ name: "Home", item: "/" }, ...itemListElement];
-
-  const items = [rawItems[0], rawItems[rawItems.length - 1]];
+  const items = itemListElement;
 
   return (
     <div class="breadcrumbs flex items-center gap-2">

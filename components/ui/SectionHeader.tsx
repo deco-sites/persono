@@ -3,6 +3,7 @@ interface Props {
   description?: string;
   alignment?: "center" | "left";
   colorReverse?: boolean;
+  fontSize?: "Large" | "Normal";
 }
 
 function Header(props: Props) {
