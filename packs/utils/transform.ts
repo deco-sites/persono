@@ -18,12 +18,17 @@ import {
   Config,
   Photos,
   Sku,
+  Value,
   VMDetails,
 } from "$store/packs/types.ts";
 import { PROPS_AMMO_API, SORT_OPTIONS } from "$store/packs/constants.ts";
 import { typeChecher } from "$store/packs/utils/utils.ts";
 
 export type PDPConfig = Pick<Config, "minInstallmentValue" | "maxInstallments">;
+export type VMConfig = Pick<
+  Config,
+  "minInstallmentValue" | "maxInstallments" | "vmItemsPerPage"
+>;
 
 interface ProductListingPageProps {
   vmDetails: VMDetails;
@@ -164,39 +169,74 @@ const toItemListElement = (
     [],
   );
 
+/* const toFiltersUrl = ({ appliedFilters }: VMDetails) => {
+  const values = appliedFilters.reduce<
+    { url: Omit<Value, "value">[]; param: string[] }
+  >(
+    (acc, f) => {
+      if (!acc.url.filter(({ type }) => type === f.type)) {
+        return {
+          url: acc.url,
+          param: [...acc.param, f.value],
+        };
+      }
+
+      return {
+        url: [...acc.url, f],
+        param: acc.param,
+      };
+    },
+    { url: [], param: [] },
+  );
+
+}; */
+
 const toFilters = (
-  { sidebar, appliedFilters, basePath }: VMDetails,
+  vm: VMDetails,
   url: URL,
 ): Filter[] => {
+  const { sidebar, appliedFilters, basePath } = vm;
+  //Pega tudo que é filtro que ta aplicado e transforma em uma url
+  /* const baseFiltersUrl = toFiltersUrl(vm); */
+
   return sidebar.map((
     { filterType, filterLabel, values },
   ) => {
+    //confere se há algum filtro desta categoria aplicado
+    /* const hasAppliedFilter = !!appliedFilters.find(({ type }) =>
+      type === filterType
+    ); */
+
     return {
       "@type": "FilterToggle",
       label: filterLabel,
       key: filterType,
       quantity: 0,
-      values: values.sort((a, b) => a.value.localeCompare(b.value)).map((v) => {
-        const selected = !!appliedFilters.filter(({ type }) =>
-          type === filterType
-        ).find(({ value }) => value === v.value);
-        const slugs = selected
-          ? appliedFilters.map(({ slug }) => slug).filter((
-            f,
-          ) => f != v.slug)
-          : appliedFilters.map(({ slug }) => slug).concat([v.slug]);
-        return {
-          label: v.value,
-          value: v.value,
-          selected,
-          url: new URL(
-            basePath + "/" +
-              slugs.join("/"),
-            url.origin,
-          ).href,
-          quantity: 0,
-        };
-      }),
+      values: values.sort((a, b) => a.value.localeCompare(b.value))
+        .map((v) => {
+          //Filtro ta selecionado?
+          const selected = !!appliedFilters.filter(({ type }) =>
+            type === filterType
+          ).find(({ value }) => value === v.value);
+
+          //Aqui entra a lógica de adicionar ou não no f
+          const slugs = selected
+            ? appliedFilters.map(({ slug }) => slug).filter((
+              f,
+            ) => f != v.slug)
+            : appliedFilters.map(({ slug }) => slug).concat([v.slug]);
+          return {
+            label: v.value,
+            value: v.value,
+            selected,
+            url: new URL(
+              basePath + "/" +
+                slugs.join("/"),
+              url.origin,
+            ).href,
+            quantity: 0,
+          };
+        }),
     };
   });
 };
