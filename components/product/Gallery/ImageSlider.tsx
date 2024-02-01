@@ -32,7 +32,7 @@ export default function GallerySlider(props: Props) {
   const aspectRatio = `${width} / ${height}`;
 
   return (
-    <div id={id} class="flex flow-col">
+    <div id={id} class="flex flex-col mt-10 self-center">
       {images.map((img, index) => (
         <Image
           class="w-full"

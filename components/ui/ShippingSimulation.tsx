@@ -60,9 +60,7 @@ function ShippingContent({ simulation }: {
         </li>
       ))}
       <span class="text-base-300">
-        Os prazos de entrega começam a contar a partir da confirmação do
-        pagamento e podem variar de acordo com a quantidade de produtos na
-        sacola.
+      Os prazos de entrega começam a contar a partir da confirmação do pagamento e podem variar de acordo com a quantidade de produtos na sacola.
       </span>
     </ul>
   );
@@ -93,15 +91,14 @@ function ShippingSimulation({ items }: Props) {
 
   return (
     <div class="flex flex-col gap-2">
-      <div class="flex flex-col">
-        <span>Calcular frete</span>
+      <div class="flex flex-col text-[#666]">
         <span>
           Informe seu CEP para consultar os prazos de entrega
         </span>
       </div>
 
       <form
-        class="join"
+        class="join flex gap-2"
         onSubmit={(e) => {
           e.preventDefault();
           handleSimulation();
@@ -110,8 +107,8 @@ function ShippingSimulation({ items }: Props) {
         <input
           as="input"
           type="text"
-          class="input input-bordered join-item"
-          placeholder="Seu cep aqui"
+          class="input input-bordered rounded-full "
+          placeholder="22291-170"
           value={postalCode.value}
           maxLength={8}
           size={8}
@@ -119,7 +116,7 @@ function ShippingSimulation({ items }: Props) {
             postalCode.value = e.currentTarget.value;
           }}
         />
-        <Button type="submit" loading={loading.value} class="join-item">
+        <Button type="submit" loading={loading.value} class=" bg-primary px-5 py-2 text-primary-content">
           Calcular
         </Button>
       </form>

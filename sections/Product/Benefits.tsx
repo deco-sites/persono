@@ -11,9 +11,8 @@ interface Props {
 }
 
 export default function Benefits({ layout }: Props) {
-  console.log(layout);
   return (
-    <div class="border-b-2 py-6">
+    <div class="py-6">
       <h4 class="text-base">Benefícios para o sono</h4>
       <span class="flex flex-col gap-8 mt-8">
         {layout.map((l) => (

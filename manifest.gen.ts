@@ -37,7 +37,7 @@ import * as $$$$$$19 from "./sections/Links/Shortcuts.tsx";
 import * as $$$$$$20 from "./sections/Miscellaneous/CampaignTimer.tsx";
 import * as $$$$$$21 from "./sections/Miscellaneous/CookieConsent.tsx";
 import * as $$$$$$22 from "./sections/Newsletter/Newsletter.tsx";
-import * as $$$$$$23 from "./sections/Product/Benefities.tsx";
+import * as $$$$$$23 from "./sections/Product/Benefits.tsx";
 import * as $$$$$$24 from "./sections/Product/ImageGalleryFrontBack.tsx";
 import * as $$$$$$25 from "./sections/Product/ImageGallerySlider.tsx";
 import * as $$$$$$26 from "./sections/Product/NotFound.tsx";
@@ -92,7 +92,7 @@ const manifest = {
     "deco-sites/persono/sections/Miscellaneous/CampaignTimer.tsx": $$$$$$20,
     "deco-sites/persono/sections/Miscellaneous/CookieConsent.tsx": $$$$$$21,
     "deco-sites/persono/sections/Newsletter/Newsletter.tsx": $$$$$$22,
-    "deco-sites/persono/sections/Product/Benefities.tsx": $$$$$$23,
+    "deco-sites/persono/sections/Product/Benefits.tsx": $$$$$$23,
     "deco-sites/persono/sections/Product/ImageGalleryFrontBack.tsx": $$$$$$24,
     "deco-sites/persono/sections/Product/ImageGallerySlider.tsx": $$$$$$25,
     "deco-sites/persono/sections/Product/NotFound.tsx": $$$$$$26,

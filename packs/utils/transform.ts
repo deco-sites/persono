@@ -24,6 +24,10 @@ import { PROPS_AMMO_API, SORT_OPTIONS } from "$store/packs/constants.ts";
 import { typeChecher } from "$store/packs/utils/utils.ts";
 
 export type PDPConfig = Pick<Config, "minInstallmentValue" | "maxInstallments">;
+export type VMConfig = Pick<
+  Config,
+  "minInstallmentValue" | "maxInstallments" | "vmItemsPerPage"
+>;
 
 interface ProductListingPageProps {
   vmDetails: VMDetails;

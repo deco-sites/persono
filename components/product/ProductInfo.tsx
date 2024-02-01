@@ -16,7 +16,8 @@ import { usePlatform } from "$store/sdk/usePlatform.tsx";
 import { ProductDetailsPage } from "apps/commerce/types.ts";
 import { mapProductToAnalyticsItem } from "apps/commerce/utils/productToAnalyticsItem.ts";
 import ProductSelector from "./ProductVariantSelector.tsx";
-import Benefities from "../../sections/Product/Benefities.tsx";
+import Benefits from "../../sections/Product/Benefits.tsx";
+import Icon from "deco-sites/persono/components/ui/Icon.tsx";
 
 interface Props {
   page: ProductDetailsPage | null;
@@ -110,119 +111,144 @@ function ProductInfo({ page, layout }: Props) {
       </div>
       {/* Add to Cart and Favorites button */}
       <div class="mt-4 sm:mt-10 flex flex-col gap-2">
-        {availability === "https://schema.org/InStock"
-          ? (
-            <>
-              {platform === "vtex" && (
-                <>
-                  <AddToCartButtonVTEX
-                    eventParams={{ items: [eventItem] }}
-                    productID={productID}
-                    seller={seller}
-                  />
-                  <WishlistButton
-                    variant="full"
-                    productID={productID}
-                    productGroupID={productGroupID}
-                  />
-                </>
-              )}
-              {platform === "wake" && (
-                <AddToCartButtonWake
+        {availability === "https://schema.org/InStock" ? (
+          <>
+            {platform === "vtex" && (
+              <>
+                <AddToCartButtonVTEX
                   eventParams={{ items: [eventItem] }}
                   productID={productID}
+                  seller={seller}
                 />
-              )}
-              {platform === "linx" && (
-                <AddToCartButtonLinx
-                  eventParams={{ items: [eventItem] }}
-                  productID={productID}
-                  productGroupID={productGroupID}
-                />
-              )}
-              {platform === "vnda" && (
-                <AddToCartButtonVNDA
-                  eventParams={{ items: [eventItem] }}
-                  productID={productID}
-                  additionalProperty={additionalProperty}
-                />
-              )}
-              {platform === "shopify" && (
-                <AddToCartButtonShopify
-                  eventParams={{ items: [eventItem] }}
-                  productID={productID}
-                />
-              )}
-              {platform === "nuvemshop" && (
-                <AddToCartButtonNuvemshop
-                  productGroupID={productGroupID}
-                  eventParams={{ items: [eventItem] }}
-                  additionalProperty={additionalProperty}
-                />
-              )}
-            </>
-          )
-          : <OutOfStock productID={productID} />}
+              </>
+            )}
+            {platform === "wake" && (
+              <AddToCartButtonWake
+                eventParams={{ items: [eventItem] }}
+                productID={productID}
+              />
+            )}
+            {platform === "linx" && (
+              <AddToCartButtonLinx
+                eventParams={{ items: [eventItem] }}
+                productID={productID}
+                productGroupID={productGroupID}
+              />
+            )}
+            {platform === "vnda" && (
+              <AddToCartButtonVNDA
+                eventParams={{ items: [eventItem] }}
+                productID={productID}
+                additionalProperty={additionalProperty}
+              />
+            )}
+            {platform === "shopify" && (
+              <AddToCartButtonShopify
+                eventParams={{ items: [eventItem] }}
+                productID={productID}
+              />
+            )}
+            {platform === "nuvemshop" && (
+              <AddToCartButtonNuvemshop
+                productGroupID={productGroupID}
+                eventParams={{ items: [eventItem] }}
+                additionalProperty={additionalProperty}
+              />
+            )}
+          </>
+        ) : (
+          <OutOfStock productID={productID} />
+        )}
       </div>
       {/* Benefities */}
       <div>
-        <Benefities
+        <Benefits
           layout={[
             {
               title: "Suporte médio",
               description:
                 "Proporciona equilíbrio entre firmeza e maciez, com apoio adequado",
-              icon: { alt: "asas", src: "/IconCloud.svg" },
+              icon: { alt: "asas", src: "Cloud" },
             },
             {
               title: "Ideal para quem dorme de barriga para cima",
               description:
                 "Dá suporte para a coluna cervical, mantendo uma posição natural",
-              icon: { alt: "asas", src: "/ArrowUp.svg" },
+              icon: { alt: "asas", src: "ArrowUp" },
             },
           ]}
         />
       </div>
-      {/* Shipping Simulation */}
-      <div class="mt-8">
-        {platform === "vtex" && (
-          <ShippingSimulation
-            items={[
-              {
-                id: Number(product.sku),
-                quantity: 1,
-                seller: seller,
-              },
-            ]}
-          />
-        )}
-      </div>
       {/* Description card */}
       <div class="mt-4 sm:mt-6">
-        <span class="text-sm">
-          {description && (
-            <details>
-              <summary class="cursor-pointer">Descrição</summary>
+        {description && (
+          <div class="flex flex-col">
+            <details class="py-5 px-4 first:border-t-2 border-b-2 border-neutral">
+              <summary class="cursor-pointer flex justify-between items-center text-base">
+                Descrição{" "}
+                <Icon
+                  id="PlusSign"
+                  class="text-primary"
+                  width={22}
+                  height={22}
+                  strokeWidth={0.01}
+                  fill="currentColor"
+                />
+              </summary>
               <div
-                class="ml-2 mt-2"
+                class="ml-2 mt-2 max-w-sm"
                 dangerouslySetInnerHTML={{ __html: description }}
               />
             </details>
-          )}
-        </span>
+            <details class="py-5 px-4 border-b-2 border-neutral">
+              <summary class="cursor-pointer flex justify-between items-center text-base">
+                Descrição{" "}
+                <Icon
+                  id="PlusSign"
+                  class="text-primary"
+                  width={22}
+                  height={22}
+                  strokeWidth={0.01}
+                  fill="currentColor"
+                />
+              </summary>
+              <div
+                class="ml-2 mt-2 max-w-sm"
+                dangerouslySetInnerHTML={{ __html: description }}
+              />
+            </details>
+
+            <details class="py-5 px-4 border-b-2 border-neutral">
+              <summary class="cursor-pointer flex justify-between items-center text-base">
+                Calcular frete{" "}
+                <Icon
+                  id="PlusSign"
+                  class="text-primary"
+                  width={22}
+                  height={22}
+                  strokeWidth={0.01}
+                  fill="currentColor"
+                />
+              </summary>
+              <div class="mt-5 max-w-sm">
+                {platform === "vtex" && (
+                  <ShippingSimulation
+                    items={[
+                      {
+                        id: Number(product.sku),
+                        quantity: 1,
+                        seller: seller,
+                      },
+                    ]}
+                  />
+                )}
+              </div>
+            </details>
+          </div>
+        )}
       </div>
+      {/* Shipping Simulation */}
       {/* Analytics Event */}
-      <SendEventOnView
-        id={id}
-        event={{
-          name: "view_item",
-          params: {
-            item_list_id: "product",
-            item_list_name: "Product",
-            items: [eventItem],
-          },
-        }}
-      />
     </div>
   );
 }
