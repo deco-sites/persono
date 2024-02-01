@@ -30,11 +30,6 @@ export type VMConfig = Pick<
   "minInstallmentValue" | "maxInstallments" | "vmItemsPerPage"
 >;
 
-export type VMConfig = Pick<
-  Config,
-  "minInstallmentValue" | "maxInstallments" | "vmItemsPerPage"
->;
-
 interface ProductListingPageProps {
   vmDetails: VMDetails;
   url: URL;
@@ -53,8 +48,9 @@ interface SkuAndProduct {
   config: VMConfig | PDPConfig;
 }
 
-interface VariantProps extends Required<SkuAndProduct> {
-  baseUrl: URL;
+interface ReducedFilters {
+  url: Value[];
+  param: string[];
 }
 
 export function toProduct(
@@ -174,15 +170,48 @@ const toItemListElement = (
     [],
   );
 
-/* const toFiltersUrl = ({ appliedFilters }: VMDetails) => {
-  const values = appliedFilters.reduce<
-    { url: Omit<Value, "value">[]; param: string[] }
-  >(
+const toFilterUrl = (
+  { url, param }: ReducedFilters,
+  newFilter: Value,
+  hasAppliedFilter: boolean,
+  baseUrl: URL,
+) => {
+  const path = url.reduce<string[]>((acc, f) => {
+    if (f.slug === newFilter.slug) {
+      return acc
+    }
+    return [...acc, f.slug];
+  }, []);
+  const urlParam = param.filter((p) => p !== newFilter.slug);
+
+  if (path.length === url.length && urlParam.length === param.length) {
+    switch (hasAppliedFilter) {
+      case true:
+        urlParam.push(newFilter.slug);
+        break;
+      case false:
+        path.push(newFilter.slug);
+        break;
+    }
+  }
+  const newUrl = new URL(path.join("/"), baseUrl.origin);
+  if (urlParam.length) {
+    newUrl.searchParams.set("f", urlParam.join("_"));
+  }
+  return newUrl;
+};
+
+const toFilters = (
+  vm: VMDetails,
+  url: URL,
+): Filter[] => {
+  const { sidebar, appliedFilters, basePath } = vm;
+  const filters = appliedFilters.reduce<ReducedFilters>(
     (acc, f) => {
-      if (!acc.url.filter(({ type }) => type === f.type)) {
+      if (acc.url.find(({ type }) => type === f.type)) {
         return {
           url: acc.url,
-          param: [...acc.param, f.value],
+          param: [...acc.param, f.slug],
         };
       }
 
@@ -191,27 +220,15 @@ const toItemListElement = (
         param: acc.param,
       };
     },
-    { url: [], param: [] },
+    { url: [{ slug: basePath, type: "0", value: "base" }], param: [] },
   );
-
-}; */
-
-const toFilters = (
-  vm: VMDetails,
-  url: URL,
-): Filter[] => {
-  const { sidebar, appliedFilters, basePath } = vm;
-  //Pega tudo que é filtro que ta aplicado e transforma em uma url
-  /* const baseFiltersUrl = toFiltersUrl(vm); */
 
   return sidebar.map((
     { filterType, filterLabel, values },
   ) => {
-    //confere se há algum filtro desta categoria aplicado
-    /* const hasAppliedFilter = !!appliedFilters.find(({ type }) =>
+    const hasAppliedFilter = !!filters.url.find(({ type }) =>
       type === filterType
-    ); */
-
+    );
     return {
       "@type": "FilterToggle",
       label: filterLabel,
@@ -219,26 +236,14 @@ const toFilters = (
       quantity: 0,
       values: values.sort((a, b) => a.value.localeCompare(b.value))
         .map((v) => {
-          //Filtro ta selecionado?
           const selected = !!appliedFilters.filter(({ type }) =>
             type === filterType
           ).find(({ value }) => value === v.value);
-
-          //Aqui entra a lógica de adicionar ou não no f
-          const slugs = selected
-            ? appliedFilters.map(({ slug }) => slug).filter((
-              f,
-            ) => f != v.slug)
-            : appliedFilters.map(({ slug }) => slug).concat([v.slug]);
           return {
             label: v.value,
             value: v.value,
             selected,
-            url: new URL(
-              basePath + "/" +
-                slugs.join("/"),
-              url.origin,
-            ).href,
+            url: toFilterUrl(filters, v, hasAppliedFilter, url).href,
             quantity: 0,
           };
         }),
@@ -323,7 +328,9 @@ const toImage = (
 };
 
 const toProductGroup = (
-  { ammoProduct, sku, baseUrl, config }: VariantProps,
+  { ammoProduct, sku, baseUrl, config }: Required<SkuAndProduct> & {
+    baseUrl: URL;
+  },
 ): ProductGroup => {
   const { title, skus } = ammoProduct;
   const url = new URL(sku.url, baseUrl.origin).href;
