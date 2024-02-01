@@ -49,9 +49,7 @@ function Navbar({
           </a>
         </div>
         <div class="flex-auto flex justify-start gap-8 self-stretch">
-          {items.map((item) => (
-            <NavItem item={item} />
-          ))}
+          {items.map((item) => <NavItem item={item} />)}
         </div>
         <div class="flex-none flex items-center justify-end gap-10">
           <SearchButton />

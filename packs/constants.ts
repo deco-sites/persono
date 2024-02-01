@@ -17,7 +17,7 @@ export const PROPS_AMMO_API = {
       "line",
       "sizeType",
       "isActiveBundlePickupInStore",
-      "template"
+      "template",
     ],
     defaultPhotos: [
       "image",
