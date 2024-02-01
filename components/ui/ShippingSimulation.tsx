@@ -60,7 +60,9 @@ function ShippingContent({ simulation }: {
         </li>
       ))}
       <span class="text-base-300">
-      Os prazos de entrega começam a contar a partir da confirmação do pagamento e podem variar de acordo com a quantidade de produtos na sacola.
+        Os prazos de entrega começam a contar a partir da confirmação do
+        pagamento e podem variar de acordo com a quantidade de produtos na
+        sacola.
       </span>
     </ul>
   );
@@ -116,7 +118,11 @@ function ShippingSimulation({ items }: Props) {
             postalCode.value = e.currentTarget.value;
           }}
         />
-        <Button type="submit" loading={loading.value} class=" bg-primary px-5 py-2 text-primary-content">
+        <Button
+          type="submit"
+          loading={loading.value}
+          class=" bg-primary px-5 py-2 text-primary-content"
+        >
           Calcular
         </Button>
       </form>

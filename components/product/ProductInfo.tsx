@@ -111,54 +111,54 @@ function ProductInfo({ page, layout }: Props) {
       </div>
       {/* Add to Cart and Favorites button */}
       <div class="mt-4 sm:mt-10 flex flex-col gap-2">
-        {availability === "https://schema.org/InStock" ? (
-          <>
-            {platform === "vtex" && (
-              <>
-                <AddToCartButtonVTEX
+        {availability === "https://schema.org/InStock"
+          ? (
+            <>
+              {platform === "vtex" && (
+                <>
+                  <AddToCartButtonVTEX
+                    eventParams={{ items: [eventItem] }}
+                    productID={productID}
+                    seller={seller}
+                  />
+                </>
+              )}
+              {platform === "wake" && (
+                <AddToCartButtonWake
                   eventParams={{ items: [eventItem] }}
                   productID={productID}
-                  seller={seller}
                 />
-              </>
-            )}
-            {platform === "wake" && (
-              <AddToCartButtonWake
-                eventParams={{ items: [eventItem] }}
-                productID={productID}
-              />
-            )}
-            {platform === "linx" && (
-              <AddToCartButtonLinx
-                eventParams={{ items: [eventItem] }}
-                productID={productID}
-                productGroupID={productGroupID}
-              />
-            )}
-            {platform === "vnda" && (
-              <AddToCartButtonVNDA
-                eventParams={{ items: [eventItem] }}
-                productID={productID}
-                additionalProperty={additionalProperty}
-              />
-            )}
-            {platform === "shopify" && (
-              <AddToCartButtonShopify
-                eventParams={{ items: [eventItem] }}
-                productID={productID}
-              />
-            )}
-            {platform === "nuvemshop" && (
-              <AddToCartButtonNuvemshop
-                productGroupID={productGroupID}
-                eventParams={{ items: [eventItem] }}
-                additionalProperty={additionalProperty}
-              />
-            )}
-          </>
-        ) : (
-          <OutOfStock productID={productID} />
-        )}
+              )}
+              {platform === "linx" && (
+                <AddToCartButtonLinx
+                  eventParams={{ items: [eventItem] }}
+                  productID={productID}
+                  productGroupID={productGroupID}
+                />
+              )}
+              {platform === "vnda" && (
+                <AddToCartButtonVNDA
+                  eventParams={{ items: [eventItem] }}
+                  productID={productID}
+                  additionalProperty={additionalProperty}
+                />
+              )}
+              {platform === "shopify" && (
+                <AddToCartButtonShopify
+                  eventParams={{ items: [eventItem] }}
+                  productID={productID}
+                />
+              )}
+              {platform === "nuvemshop" && (
+                <AddToCartButtonNuvemshop
+                  productGroupID={productGroupID}
+                  eventParams={{ items: [eventItem] }}
+                  additionalProperty={additionalProperty}
+                />
+              )}
+            </>
+          )
+          : <OutOfStock productID={productID} />}
       </div>
       {/* Benefities */}
       <div>
