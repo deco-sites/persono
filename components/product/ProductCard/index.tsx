@@ -37,15 +37,14 @@ function ProductCard({ product, preload, index, search, itemListName }: Props) {
 
   const { hasDiscount, discount, hasMultiplePrices } = useMemo(() => {
     const variantPrices = product.isVariantOf?.hasVariant.map(
-      (item) => item.offers?.offers?.[0]?.price
+      (item) => item.offers?.offers?.[0]?.price,
     );
 
-    const hasMultiplePrices =
-      variantPrices && variantPrices?.length > 1
-        ? variantPrices.some(
-            (price) => price !== Math.min(...(variantPrices as number[]))
-          )
-        : false;
+    const hasMultiplePrices = variantPrices && variantPrices?.length > 1
+      ? variantPrices.some(
+        (price) => price !== Math.min(...(variantPrices as number[])),
+      )
+      : false;
 
     return {
       hasMultiplePrices,
@@ -104,7 +103,7 @@ function ProductCard({ product, preload, index, search, itemListName }: Props) {
         />
       </a>
     ),
-    [product]
+    [product],
   );
 }
 

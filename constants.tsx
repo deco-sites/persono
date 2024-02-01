@@ -246,5 +246,4 @@ export const flex = {
   },
 };
 
-
-export const imageSizeToUrl = "1536x1536"
+export const imageSizeToUrl = "1536x1536";
