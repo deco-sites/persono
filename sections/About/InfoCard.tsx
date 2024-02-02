@@ -5,14 +5,13 @@ export interface Props {
   title?: string;
   description?: string;
 
-  image:{
+  image: {
     desktop: ImageWidget;
     mobile: ImageWidget;
   };
 }
 
-function About({ title, description, image }:Props) {
-
+function About({ title, description, image }: Props) {
   const {
     desktop,
     mobile,
@@ -20,15 +19,15 @@ function About({ title, description, image }:Props) {
 
   return (
     <div class="flex flex-col items-center w-full bg-[#f8f8f8]">
-      <div class="flex flex-col py-14 gap-12 w-4/5">
+      <div class="flex flex-col py-14 lg:pb-[76px] gap-12 w-4/5 lg:w-3/4">
         <h1 class=" sm:w-auto sm:text-center text-2xl font-medium">{title}</h1>
         <p class="font-normal sm:text-center">{description}</p>
       </div>
       <Picture>
         <Source
-          media="(max-width: 500px)"
+          media="(max-width: 600px)"
           src={mobile}
-          width={500}
+          width={600}
           height={336}
         />
         <Source
