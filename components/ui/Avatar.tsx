@@ -23,6 +23,7 @@ const colors: Record<string, string> = {
 
 interface Props {
   variant?: "active" | "disabled" | "default";
+  name?: string;
   content: string;
 }
 
@@ -33,18 +34,32 @@ const variants = {
   default: "border border-base-200 hover:border-primary",
 };
 
-function Avatar({ content, variant = "default" }: Props) {
+function Avatar({ name, content, variant = "default" }: Props) {
   return (
-    <div class="avatar placeholder text-xs">
-      <div
-        class={`rounded-full w-8 h-8 ${colors[content] ?? colors[variant]} ${
-          variants[variant]
-        }`}
-      >
-        <span class="uppercase">
-          {colors[content] ? "" : content.substring(0, 2)}
-        </span>
-      </div>
+    <div class="placeholder text-xs">
+      {name == "size"
+        ? (
+          <div
+            class={`rounded-full py-2 px-4 ${
+              colors[content] ?? colors[variant]
+            } ${variants[variant]}`}
+          >
+            <span class="uppercase">
+              {colors[content] ? "" : content.substring(0, 2)}
+            </span>
+          </div>
+        )
+        : (
+          <div
+            class={`rounded-full w-8 h-8 p-2 ${
+              colors[content] ?? colors[variant]
+            } ${variants[variant]}`}
+          >
+            <span class="uppercase">
+              {colors[content] ? "" : content.substring(0, 2)}
+            </span>
+          </div>
+        )}
     </div>
   );
 }
