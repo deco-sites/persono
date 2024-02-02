@@ -65,7 +65,7 @@ interface Props {
       /** @default stretch */
       mobile?: "center" | "start" | "end" | "baseline" | "stretch" | "none";
       /** @default stretch */
-      desktop?: "center" | "start" | "end" | "baseline" | "stretch" | "none" ;
+      desktop?: "center" | "start" | "end" | "baseline" | "stretch" | "none";
     };
   };
 }
