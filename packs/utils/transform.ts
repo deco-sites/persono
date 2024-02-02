@@ -18,13 +18,13 @@ import {
   Config,
   Photos,
   Sku,
+  Value,
   VMDetails,
 } from "$store/packs/types.ts";
 import { PROPS_AMMO_API, SORT_OPTIONS } from "$store/packs/constants.ts";
 import { typeChecher } from "$store/packs/utils/utils.ts";
 
 export type PDPConfig = Pick<Config, "minInstallmentValue" | "maxInstallments">;
-
 export type VMConfig = Pick<
   Config,
   "minInstallmentValue" | "maxInstallments" | "vmItemsPerPage"
@@ -48,8 +48,9 @@ interface SkuAndProduct {
   config: VMConfig | PDPConfig;
 }
 
-interface VariantProps extends Required<SkuAndProduct> {
-  baseUrl: URL;
+interface ReducedFilters {
+  url: Value[];
+  param: string[];
 }
 
 export function toProduct(
@@ -169,39 +170,83 @@ const toItemListElement = (
     [],
   );
 
+const toFilterUrl = (
+  { url, param }: ReducedFilters,
+  newFilter: Value,
+  hasAppliedFilter: boolean,
+  baseUrl: URL,
+) => {
+  const path = url.reduce<string[]>((acc, f) => {
+    if (f.slug === newFilter.slug) {
+      return acc
+    }
+    return [...acc, f.slug];
+  }, []);
+  const urlParam = param.filter((p) => p !== newFilter.slug);
+
+  if (path.length === url.length && urlParam.length === param.length) {
+    switch (hasAppliedFilter) {
+      case true:
+        urlParam.push(newFilter.slug);
+        break;
+      case false:
+        path.push(newFilter.slug);
+        break;
+    }
+  }
+  const newUrl = new URL(path.join("/"), baseUrl.origin);
+  if (urlParam.length) {
+    newUrl.searchParams.set("f", urlParam.join("_"));
+  }
+  return newUrl;
+};
+
 const toFilters = (
-  { sidebar, appliedFilters, basePath }: VMDetails,
+  vm: VMDetails,
   url: URL,
 ): Filter[] => {
+  const { sidebar, appliedFilters, basePath } = vm;
+  const filters = appliedFilters.reduce<ReducedFilters>(
+    (acc, f) => {
+      if (acc.url.find(({ type }) => type === f.type)) {
+        return {
+          url: acc.url,
+          param: [...acc.param, f.slug],
+        };
+      }
+
+      return {
+        url: [...acc.url, f],
+        param: acc.param,
+      };
+    },
+    { url: [{ slug: basePath, type: "0", value: "base" }], param: [] },
+  );
+
   return sidebar.map((
     { filterType, filterLabel, values },
   ) => {
+    const hasAppliedFilter = !!filters.url.find(({ type }) =>
+      type === filterType
+    );
     return {
       "@type": "FilterToggle",
       label: filterLabel,
       key: filterType,
       quantity: 0,
-      values: values.sort((a, b) => a.value.localeCompare(b.value)).map((v) => {
-        const selected = !!appliedFilters.filter(({ type }) =>
-          type === filterType
-        ).find(({ value }) => value === v.value);
-        const slugs = selected
-          ? appliedFilters.map(({ slug }) => slug).filter((
-            f,
-          ) => f != v.slug)
-          : appliedFilters.map(({ slug }) => slug).concat([v.slug]);
-        return {
-          label: v.value,
-          value: v.value,
-          selected,
-          url: new URL(
-            basePath + "/" +
-              slugs.join("/"),
-            url.origin,
-          ).href,
-          quantity: 0,
-        };
-      }),
+      values: values.sort((a, b) => a.value.localeCompare(b.value))
+        .map((v) => {
+          const selected = !!appliedFilters.filter(({ type }) =>
+            type === filterType
+          ).find(({ value }) => value === v.value);
+          return {
+            label: v.value,
+            value: v.value,
+            selected,
+            url: toFilterUrl(filters, v, hasAppliedFilter, url).href,
+            quantity: 0,
+          };
+        }),
     };
   });
 };
@@ -283,7 +328,9 @@ const toImage = (
 };
 
 const toProductGroup = (
-  { ammoProduct, sku, baseUrl, config }: VariantProps,
+  { ammoProduct, sku, baseUrl, config }: Required<SkuAndProduct> & {
+    baseUrl: URL;
+  },
 ): ProductGroup => {
   const { title, skus } = ammoProduct;
   const url = new URL(sku.url, baseUrl.origin).href;
