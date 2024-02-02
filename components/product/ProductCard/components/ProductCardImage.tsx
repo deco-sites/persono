@@ -26,16 +26,6 @@ export const ProductCardImage = ({
   return (
     <figure class="relative">
       <div class="w-full">
-        {showHighlightTag && (
-          <span
-            class={`py-1 px-3 flex absolute  rounded-br-xl justify-center items-center text-sm ${
-              hasNews ? "bg-blueNew" : "bg-black"
-            }  text-white`}
-          >
-            {hasNews ? { newsTitle } : `${discount}% off`}
-          </span>
-        )}
-
         <Image
           src={imageSrc}
           alt={imageAlt}

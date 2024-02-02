@@ -58,7 +58,7 @@ function ProductCard({ product, preload, index, search, itemListName }: Props) {
       <a
         key={`${id}-${index}`}
         id={id}
-        class="card card-compact group rounded-lg border border-gray-300 text-start w-full"
+        class="card card-compact group rounded-xl border border-gray-300 text-start w-full"
         data-deco="view-product"
         href={url && relative(url)}
         aria-label="view product"

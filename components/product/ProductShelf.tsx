@@ -31,7 +31,7 @@ function ProductShelf({
   }
 
   return (
-    <div class="w-full container">
+    <div class="w-full container mt-10">
       <Header
         title={title}
         alignment={device === "mobile" ? "left" : "center"}

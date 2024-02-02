@@ -18,6 +18,7 @@ import { mapProductToAnalyticsItem } from "apps/commerce/utils/productToAnalytic
 import ProductSelector from "./ProductVariantSelector.tsx";
 import Benefits from "../../sections/Product/Benefits.tsx";
 import Icon from "deco-sites/persono/components/ui/Icon.tsx";
+import { useOfferWithoutTaxes } from "deco-sites/persono/sdk/useOfferWithoutTaxes.ts";
 
 interface Props {
   page: ProductDetailsPage | null;
@@ -55,7 +56,7 @@ function ProductInfo({ page, layout }: Props) {
     seller = "1",
     installments,
     availability,
-  } = useOffer(offers);
+  } = useOfferWithoutTaxes(offers);
   const productGroupID = isVariantOf?.productGroupID ?? "";
   const breadcrumb = {
     ...breadcrumbList,
@@ -71,7 +72,7 @@ function ProductInfo({ page, layout }: Props) {
   });
 
   return (
-    <div class="flex flex-col mt-10" id={id}>
+    <div class="flex flex-col mt-10 mb-10" id={id}>
       <Breadcrumb
         itemListElement={breadcrumb.itemListElement}
         productsQtt={breadcrumb.numberOfItems}
@@ -161,7 +162,7 @@ function ProductInfo({ page, layout }: Props) {
           : <OutOfStock productID={productID} />}
       </div>
       {/* Benefities */}
-      <div>
+      <div class="mt-12 mb-6">
         <Benefits
           layout={[
             {
@@ -183,12 +184,20 @@ function ProductInfo({ page, layout }: Props) {
       <div class="mt-4 sm:mt-6">
         {description && (
           <div class="flex flex-col">
-            <details class="py-5 px-4 first:border-t-2 border-b-2 border-neutral">
+            <details class="py-5 px-4 first:border-t-2 border-b-2 border-neutral group">
               <summary class="cursor-pointer flex justify-between items-center text-base">
                 Descrição{" "}
                 <Icon
                   id="PlusSign"
-                  class="text-primary"
+                  class="text-primary block group-open:hidden"
+                  width={22}
+                  height={22}
+                  strokeWidth={0.01}
+                  fill="currentColor"
+                />
+                <Icon
+                  id="MinusSign"
+                  class="text-primary hidden group-open:block"
                   width={22}
                   height={22}
                   strokeWidth={0.01}
@@ -200,12 +209,20 @@ function ProductInfo({ page, layout }: Props) {
                 dangerouslySetInnerHTML={{ __html: description }}
               />
             </details>
-            <details class="py-5 px-4 border-b-2 border-neutral">
+            <details class="py-5 px-4 border-b-2 border-neutral group">
               <summary class="cursor-pointer flex justify-between items-center text-base">
-                Descrição{" "}
+                asas{" "}
                 <Icon
                   id="PlusSign"
-                  class="text-primary"
+                  class="text-primary block group-open:hidden"
+                  width={22}
+                  height={22}
+                  strokeWidth={0.01}
+                  fill="currentColor"
+                />
+                <Icon
+                  id="MinusSign"
+                  class="text-primary hidden group-open:block"
                   width={22}
                   height={22}
                   strokeWidth={0.01}
@@ -218,19 +235,27 @@ function ProductInfo({ page, layout }: Props) {
               />
             </details>
 
-            <details class="py-5 px-4 border-b-2 border-neutral">
+            <details class="py-5 px-4 border-b-2 border-neutral group">
               <summary class="cursor-pointer flex justify-between items-center text-base">
                 Calcular frete{" "}
                 <Icon
                   id="PlusSign"
-                  class="text-primary"
+                  class="text-primary block group-open:hidden"
+                  width={22}
+                  height={22}
+                  strokeWidth={0.01}
+                  fill="currentColor"
+                />
+                <Icon
+                  id="MinusSign"
+                  class="text-primary hidden group-open:block"
                   width={22}
                   height={22}
                   strokeWidth={0.01}
                   fill="currentColor"
                 />
               </summary>
-              <div class="mt-5 max-w-sm">
+              <div class="mt-5 max-w-md">
                 {platform === "vtex" && (
                   <ShippingSimulation
                     items={[
@@ -249,6 +274,17 @@ function ProductInfo({ page, layout }: Props) {
       </div>
       {/* Shipping Simulation */}
       {/* Analytics Event */}
+      <SendEventOnView
+        id={id}
+        event={{
+          name: "view_item",
+          params: {
+            item_list_id: "product",
+            item_list_name: "Product",
+            items: [eventItem],
+          },
+        }}
+      />
     </div>
   );
 }

@@ -24,7 +24,7 @@ export const PriceAndName = ({
   return (
     <div class="flex-auto flex flex-col p-4 ">
       <h2
-        class=" line-clamp-2 text-sm lg:text-lg font-normal  text-black h-10 mb-2"
+        class=" line-clamp-2 text-sm lg:text-lg font-normal  text-black mb-2"
         dangerouslySetInnerHTML={{ __html: productName ?? "" }}
       />
 

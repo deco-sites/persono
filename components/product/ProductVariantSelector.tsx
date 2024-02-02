@@ -21,6 +21,7 @@ function VariantSelector({ product }: Props) {
               <li>
                 <button f-partial={link} f-client-nav>
                   <Avatar
+                    name={name}
                     content={value}
                     variant={link === url
                       ? "active"
