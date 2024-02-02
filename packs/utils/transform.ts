@@ -178,7 +178,7 @@ const toFilterUrl = (
 ) => {
   const path = url.reduce<string[]>((acc, f) => {
     if (f.slug === newFilter.slug) {
-      return acc
+      return acc;
     }
     return [...acc, f.slug];
   }, []);
@@ -287,13 +287,19 @@ const toImage = (
   const { title } = ammoProduct;
   return sku
     ? [
-      ...PROPS_AMMO_API.sku.defaultPhotos.map((i) => ({
-        "@type": "ImageObject" as const,
-        url: sku.photos[i as keyof Photos].toString(),
-        additionalType: "image",
-        alternateName: title,
-        disambiguatingDescription: i,
-      })),
+      ...PROPS_AMMO_API.sku.defaultPhotos.reduce<ImageObject[]>((acc, i) => {
+        const index = i as keyof Photos;
+        if (sku.photos[index]) {
+          return [...acc, {
+            "@type": "ImageObject" as const,
+            url: sku.photos[index].toString(),
+            additionalType: "image",
+            alternateName: title,
+            disambiguatingDescription: i,
+          }];
+        }
+        return acc;
+      }, []),
       ...sku.photos.details.map(({ url }, i) => ({
         "@type": "ImageObject" as const,
         url,
@@ -318,13 +324,19 @@ const toImage = (
         }]
         : [],
     ]
-    : PROPS_AMMO_API.product.defaultPhotos.map((i) => ({
-      "@type": "ImageObject" as const,
-      url: ammoProduct[i as keyof AmmoProduct]?.toString(),
-      alternateName: title,
-      additionalType: "image",
-      disambiguatingDescription: i,
-    }));
+    : PROPS_AMMO_API.product.defaultPhotos.reduce<ImageObject[]>((acc, i) => {
+      const index = i as keyof AmmoProduct;
+      if (ammoProduct[index]) {
+        return [...acc, {
+          "@type": "ImageObject" as const,
+          url: ammoProduct[index]?.toString(),
+          alternateName: title,
+          additionalType: "image",
+          disambiguatingDescription: i,
+        }];
+      }
+      return acc
+    }, []);
 };
 
 const toProductGroup = (
