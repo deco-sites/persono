@@ -1,14 +1,23 @@
 import { Picture, Source } from "apps/website/components/Picture.tsx";
 import type { ImageWidget } from "apps/admin/widgets.ts";
 
-export interface About {
+export interface Props {
   title?: string;
   description?: string;
-  desktop: ImageWidget;
-  mobile: ImageWidget;
+
+  image:{
+    desktop: ImageWidget;
+    mobile: ImageWidget;
+  };
 }
 
-function About({ title, description, mobile, desktop }: About) {
+function About({ title, description, image }:Props) {
+
+  const {
+    desktop,
+    mobile,
+  } = image;
+
   return (
     <div class="flex flex-col items-center w-full bg-[#f8f8f8]">
       <div class="flex flex-col py-14 gap-12 w-4/5">
@@ -17,9 +26,9 @@ function About({ title, description, mobile, desktop }: About) {
       </div>
       <Picture>
         <Source
-          media="(max-width: 430px)"
+          media="(max-width: 500px)"
           src={mobile}
-          width={360}
+          width={500}
           height={336}
         />
         <Source
