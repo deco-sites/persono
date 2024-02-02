@@ -105,6 +105,24 @@ export const grid = {
       "stretch": "sm:place-items-stretch",
     },
   },
+  justifyItems: {
+    mobile: {
+      "center": "justify-items-center",
+      "start": "justify-items-start",
+      "end": "justify-items-end",
+      "baseline": "justify-items-baseline",
+      "stretch": "justify-items-stretch",
+      "none": "none",
+    },
+    desktop: {
+      "center": "sm:justify-items-center",
+      "start": "sm:justify-items-start",
+      "end": "sm:justify-items-end",
+      "baseline": "sm:justify-items-baseline",
+      "stretch": "sm:justify-items-stretch",
+      "none": "none",
+    },
+  },
   rowStart: {
     mobile: {
       "1": "row-start-1",
