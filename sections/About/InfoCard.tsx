@@ -4,7 +4,6 @@ import type { ImageWidget } from "apps/admin/widgets.ts";
 export interface About {
   title?: string;
   description?: string;
-
   desktop: ImageWidget;
   mobile: ImageWidget;
 }
@@ -18,7 +17,7 @@ function About({ title, description, mobile, desktop }: About) {
       </div>
       <Picture>
         <Source
-          media="(max-width: 767px)"
+          media="(max-width: 430px)"
           src={mobile}
           width={360}
           height={336}
@@ -26,12 +25,12 @@ function About({ title, description, mobile, desktop }: About) {
         <Source
           media="(min-width: 768px)"
           src={desktop}
-          width={1100}
+          width={1400}
           height={600}
         />
         <img
           src={desktop}
-          class="w-full h-full object-cover"
+          class="h-full object-cover"
         />
       </Picture>
     </div>
