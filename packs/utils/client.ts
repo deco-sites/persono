@@ -2,8 +2,11 @@ import {
   Bag,
   BagItems,
   Config,
+  ProductDetails,
   ShippingSimulation,
   UserInfo,
+  VMDetails,
+  VMDetailsRedirect,
 } from "$store/packs/types.ts";
 export default interface Ammo {
   "GET /api/bag": {
@@ -70,6 +73,22 @@ export default interface Ammo {
   };
   "GET /api/user": {
     response: UserInfo;
+    headers: {
+      "x-ammo-device-id": string;
+      "x-api-key": string;
+      "x-ammo-token": string;
+    };
+  };
+  "GET /api/product/sku/:sku": {
+    response: ProductDetails;
+    headers: {
+      "x-ammo-device-id": string;
+      "x-api-key": string;
+      "x-ammo-token": string;
+    };
+  };
+  "GET /api/product-catalog/resolve-route": {
+    response: VMDetails | VMDetailsRedirect;
     headers: {
       "x-ammo-device-id": string;
       "x-api-key": string;
