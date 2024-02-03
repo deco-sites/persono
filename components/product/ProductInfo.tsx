@@ -23,10 +23,10 @@ interface Props {
      */
     name?: "concat" | "productGroup" | "product";
   };
-  colors: Color[]
+  colors: Color[];
 }
 
-function ProductInfo({ page, layout,colors }: Props) {
+function ProductInfo({ page, layout, colors }: Props) {
   const platform = usePlatform();
   const id = useId();
 
