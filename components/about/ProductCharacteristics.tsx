@@ -11,7 +11,7 @@ export interface Props {
   }>;
 }
 
-export default function Product(
+function Product(
   props: Props,
 ) {
   const {
@@ -72,3 +72,5 @@ export default function Product(
     </>
   );
 }
+
+export default Product;
