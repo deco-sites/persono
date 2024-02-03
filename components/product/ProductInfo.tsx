@@ -11,6 +11,7 @@ import ProductSelector from "./ProductVariantSelector.tsx";
 import Benefits from "../../sections/Product/Benefits.tsx";
 import { useOfferWithoutTaxes } from "deco-sites/persono/sdk/useOfferWithoutTaxes.ts";
 import AddCartButton from "$store/islands/AddToCartButton/CartButton.tsx";
+import { Color } from "deco-sites/persono/loaders/Layouts/Colors.tsx";
 
 interface Props {
   page: ProductDetailsPage | null;
@@ -22,9 +23,10 @@ interface Props {
      */
     name?: "concat" | "productGroup" | "product";
   };
+  colors: Color[]
 }
 
-function ProductInfo({ page, layout }: Props) {
+function ProductInfo({ page, layout,colors }: Props) {
   const platform = usePlatform();
   const id = useId();
 
@@ -63,7 +65,7 @@ function ProductInfo({ page, layout }: Props) {
     listPrice,
   });
 
-  console.log(product.sku);
+  console.log(product.additionalProperty);
 
   return (
     <div class="flex flex-col mt-10 mb-10" id={id}>
