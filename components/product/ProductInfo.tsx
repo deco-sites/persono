@@ -1,24 +1,16 @@
 import { SendEventOnView } from "$store/components/Analytics.tsx";
 import Breadcrumb from "$store/components/ui/Breadcrumb.tsx";
-import AddToCartButtonLinx from "$store/islands/AddToCartButton/linx.tsx";
-import AddToCartButtonShopify from "$store/islands/AddToCartButton/shopify.tsx";
-import AddToCartButtonVNDA from "$store/islands/AddToCartButton/vnda.tsx";
-import AddToCartButtonVTEX from "$store/islands/AddToCartButton/vtex.tsx";
-import AddToCartButtonWake from "$store/islands/AddToCartButton/wake.tsx";
-import AddToCartButtonNuvemshop from "$store/islands/AddToCartButton/nuvemshop.tsx";
 import OutOfStock from "$store/islands/OutOfStock.tsx";
 import ShippingSimulation from "$store/islands/ShippingSimulation.tsx";
-import WishlistButton from "$store/islands/WishlistButton.tsx";
 import { formatPrice } from "$store/sdk/format.ts";
 import { useId } from "$store/sdk/useId.ts";
-import { useOffer } from "$store/sdk/useOffer.ts";
 import { usePlatform } from "$store/sdk/usePlatform.tsx";
 import { ProductDetailsPage } from "apps/commerce/types.ts";
 import { mapProductToAnalyticsItem } from "apps/commerce/utils/productToAnalyticsItem.ts";
 import ProductSelector from "./ProductVariantSelector.tsx";
 import Benefits from "../../sections/Product/Benefits.tsx";
-import Icon from "deco-sites/persono/components/ui/Icon.tsx";
 import { useOfferWithoutTaxes } from "deco-sites/persono/sdk/useOfferWithoutTaxes.ts";
+import AddCartButton from "$store/islands/AddToCartButton/CartButton.tsx";
 
 interface Props {
   page: ProductDetailsPage | null;
@@ -71,6 +63,8 @@ function ProductInfo({ page, layout }: Props) {
     listPrice,
   });
 
+  console.log(product.sku);
+
   return (
     <div class="flex flex-col mt-10 mb-10" id={id}>
       <Breadcrumb
@@ -115,48 +109,10 @@ function ProductInfo({ page, layout }: Props) {
         {availability === "https://schema.org/InStock"
           ? (
             <>
-              {platform === "vtex" && (
-                <>
-                  <AddToCartButtonVTEX
-                    eventParams={{ items: [eventItem] }}
-                    productID={productID}
-                    seller={seller}
-                  />
-                </>
-              )}
-              {platform === "wake" && (
-                <AddToCartButtonWake
-                  eventParams={{ items: [eventItem] }}
-                  productID={productID}
-                />
-              )}
-              {platform === "linx" && (
-                <AddToCartButtonLinx
-                  eventParams={{ items: [eventItem] }}
-                  productID={productID}
-                  productGroupID={productGroupID}
-                />
-              )}
-              {platform === "vnda" && (
-                <AddToCartButtonVNDA
-                  eventParams={{ items: [eventItem] }}
-                  productID={productID}
-                  additionalProperty={additionalProperty}
-                />
-              )}
-              {platform === "shopify" && (
-                <AddToCartButtonShopify
-                  eventParams={{ items: [eventItem] }}
-                  productID={productID}
-                />
-              )}
-              {platform === "nuvemshop" && (
-                <AddToCartButtonNuvemshop
-                  productGroupID={productGroupID}
-                  eventParams={{ items: [eventItem] }}
-                  additionalProperty={additionalProperty}
-                />
-              )}
+              <AddCartButton
+                eventParams={{ items: [eventItem] }}
+                sku={product.sku}
+              />
             </>
           )
           : <OutOfStock productID={productID} />}
@@ -183,92 +139,78 @@ function ProductInfo({ page, layout }: Props) {
       {/* Description card */}
       <div class="mt-4 sm:mt-6">
         {description && (
-          <div class="flex flex-col">
-            <details class="py-5 px-4 first:border-t-2 border-b-2 border-neutral group">
-              <summary class="cursor-pointer flex justify-between items-center text-base">
-                Descrição{" "}
-                <Icon
-                  id="PlusSign"
-                  class="text-primary block group-open:hidden"
-                  width={22}
-                  height={22}
-                  strokeWidth={0.01}
-                  fill="currentColor"
-                />
-                <Icon
-                  id="MinusSign"
-                  class="text-primary hidden group-open:block"
-                  width={22}
-                  height={22}
-                  strokeWidth={0.01}
-                  fill="currentColor"
-                />
-              </summary>
-              <div
-                class="ml-2 mt-2 max-w-sm"
-                dangerouslySetInnerHTML={{ __html: description }}
-              />
-            </details>
-            <details class="py-5 px-4 border-b-2 border-neutral group">
-              <summary class="cursor-pointer flex justify-between items-center text-base">
-                asas{" "}
-                <Icon
-                  id="PlusSign"
-                  class="text-primary block group-open:hidden"
-                  width={22}
-                  height={22}
-                  strokeWidth={0.01}
-                  fill="currentColor"
-                />
-                <Icon
-                  id="MinusSign"
-                  class="text-primary hidden group-open:block"
-                  width={22}
-                  height={22}
-                  strokeWidth={0.01}
-                  fill="currentColor"
-                />
-              </summary>
-              <div
-                class="ml-2 mt-2 max-w-sm"
-                dangerouslySetInnerHTML={{ __html: description }}
-              />
-            </details>
-
-            <details class="py-5 px-4 border-b-2 border-neutral group">
-              <summary class="cursor-pointer flex justify-between items-center text-base">
-                Calcular frete{" "}
-                <Icon
-                  id="PlusSign"
-                  class="text-primary block group-open:hidden"
-                  width={22}
-                  height={22}
-                  strokeWidth={0.01}
-                  fill="currentColor"
-                />
-                <Icon
-                  id="MinusSign"
-                  class="text-primary hidden group-open:block"
-                  width={22}
-                  height={22}
-                  strokeWidth={0.01}
-                  fill="currentColor"
-                />
-              </summary>
-              <div class="mt-5 max-w-md">
-                {platform === "vtex" && (
-                  <ShippingSimulation
-                    items={[
-                      {
-                        id: Number(product.sku),
-                        quantity: 1,
-                        seller: seller,
-                      },
-                    ]}
-                  />
-                )}
+          <div class="flex flex-col divide-y border-y">
+            <div class="collapse collapse-plus ">
+              <input type="checkbox" />
+              <div class="collapse-title text-base after:text-2xl after:text-primary">
+                Descrição
               </div>
-            </details>
+              <div class="collapse-content max-w-lg">
+                <p>{description}</p>
+              </div>
+            </div>
+
+            <div class="collapse collapse-plus ">
+              <input type="checkbox" />
+              <div class="collapse-title text-base after:text-2xl after:text-primary">
+                Especificações
+              </div>
+              <div class="collapse-content max-w-lg">
+                {product.isVariantOf?.hasVariant[0].additionalProperty &&
+                  product?.isVariantOf?.hasVariant[0]?.additionalProperty.map(
+                    (ad) =>
+                      ad.propertyID == "TECNICALSPECIFICATION"
+                        ? (
+                          <p>
+                            {ad.description}:&ensp;{ad.value}
+                          </p>
+                        )
+                        : null,
+                  )}
+              </div>
+            </div>
+
+            <div class="collapse collapse-plus ">
+              <input type="checkbox" />
+              <div class="collapse-title text-base after:text-2xl after:text-primary">
+                O que vai na embalagem?
+              </div>
+              <div class="collapse-content max-w-lg">
+                {product.isVariantOf?.hasVariant[0].additionalProperty &&
+                  product?.isVariantOf?.hasVariant[0]?.additionalProperty.map(
+                    (ad) =>
+                      ad.propertyID == "KITITEM"
+                        ? (
+                          <p>
+                            {ad.value}&ensp;{ad.description}
+                          </p>
+                        )
+                        : null,
+                  )}
+              </div>
+            </div>
+
+            <div class="collapse collapse-plus collapse-open ">
+              <input type="checkbox" />
+              <div class="collapse-title text-base after:text-2xl after:text-primary">
+                Calcular frete
+              </div>
+              <div class="collapse-content max-w-lg">
+                <div class="mt-5 max-w-md">
+                  {platform === "vtex" && (
+                    <ShippingSimulation
+                      items={[
+                        {
+                          id: Number(product.sku),
+                          quantity: 1,
+                          seller: seller,
+                        },
+                      ]}
+                    />
+                  )}
+                </div>
+              </div>
+            </div>
           </div>
         )}
       </div>
