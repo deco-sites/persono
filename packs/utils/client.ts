@@ -97,7 +97,7 @@ export default interface Ammo {
       "x-ammo-token": string;
     };
   };
-  "POST /recommendation": {
+  "POST /api/recommendation": {
     response: Recommendations;
     headers: {
       "x-ammo-device-id": string;
