@@ -1,6 +1,6 @@
 import { AppContext } from "$store/apps/site.ts";
 import { getHeaders } from "$store/packs/utils/headers.ts";
-import type {  Suggestion } from "apps/commerce/types.ts";
+import type { Suggestion } from "apps/commerce/types.ts";
 import { AutoComplete } from "$store/packs/types.ts";
 import { getSuggestionsItems } from "$store/packs/utils/getSuggestionsItems.ts";
 
