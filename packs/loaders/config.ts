@@ -45,7 +45,6 @@ const loader = async (
   const headers = getHeaders(req, apiKey);
 
   const storeConfigs = props.fields.map((item) => item.split("."));
-  console.log(storeConfigs);
   try {
     const response = await ammoc
       ["GET /api/config"](
