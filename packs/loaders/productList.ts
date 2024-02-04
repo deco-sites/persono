@@ -7,101 +7,71 @@ import { typeChecher } from "$store/packs/utils/utils.ts";
 import type { VMConfig } from "$store/packs/utils/transform.ts"; */
 import type { RequestURLParam } from "apps/website/functions/requestToParam.ts";
 
-export interface Props {
-  /**
-   * @title VM
-   * @description Listar produtos presentes nesta VM. É possível usar filtros de categoria, tamanho, marca etc personalizados
-   */
-  vm?: VM;
-  sku?: RequestURLParam;
-}
+export type Props = { props: VMProps | RecommendationsProps | TermProps };
 
-interface VM {
+interface VMProps {
   /**
    * @title Caminho da VM
    * @description Não usar com "/vm/", apenas informar a slug da vm.
    * @example cama
    */
-  path?: string;
+  path: string;
   /**
    * @title Ordernar por
    */
-  sort?: "recomendations" | "discount_desc" | "price_asc";
+  sort: "recomendations" | "discount_desc" | "price_asc";
   /**
-   * @title Quantidade de produtos
+   * @title Quantiddae de produtos
    * @description Quantidade máxima de produtos retornados
    */
-  offset?: number;
+  take: number;
+}
+
+interface RecommendationsProps {
+  /**
+   * @title SKU
+   * @description Caso queira buscar por recomendações dinâmicamente escolha a opção "Get params from request parameters".
+   * @default sku
+   */
+  sku: RequestURLParam;
+}
+
+interface TermProps {
+  /**
+   * @title Termo
+   * @description Termo para busca.
+   */
+  query: string;
+  /**
+   * @title Quantiddae de produtos
+   * @description Quantidade máxima de produtos retornados
+   */
+  limit: number;
 }
 
 /**
- * @title Ammo Varejo - Página de Listagem de Produtos
- * @description Funciona em páginas de categoria em rotas do tipo /vm/$categoria.
+ * @title Ammo Varejo - Vitrines
+ * @description Vitrines multifuncionais que podem ser empregadas de diversas formas no site
  */
 const loader = async (
   _props: Props,
   _req: Request,
   _ctx: AppContext,
 ): Promise<ProductListingPage | null> => {
-  await 0
-  /* const { ammoc, apiKey } = ctx;
-  const { vm } = props;
+  await 0;
+/*   const { ammoc, apiKey } = ctx;
   const url = new URL(req.url);
   const headers = getHeaders(req, apiKey); */
 
 
-  /* try {
-    const response = await ammoc
-      ["GET /api/product-catalog/resolve-route"](
-        {
-          path: formatBaseVmPath(vm!.path),
-          sort: vmProps?.sort,
-        },
-        {
-          headers: headers,
-        },
-      ) as Response;
-    const data = await response.json();
 
-    //TODO: FIX CONFIG CALL
-    const vmConfig = await ctx
-      .invoke["deco-sites/persono"].loaders.config({
-        fields: ["maxInstallments", "minInstallmentValue", "vmItemsPerPage"],
-      }).then((c: VMConfig) => c);
-
-    if (typeChecher<VMDetails>(data as VMDetails, "basePath")) {
-      return toProductListingPage({
-        vmDetails: data as VMDetails,
-        url,
-        vmConfig,
-      });
-    }
-    const redirectPath = data as VMDetailsRedirect;
-    const redirectedResponse = await ammoc
-      ["GET /api/product-catalog/resolve-route"](
-        { path: redirectPath.location, page },
-        {
-          headers: headers,
-        },
-      ) as Response;
-
-    return toProductListingPage({
-      vmDetails: await redirectedResponse.json() as VMDetails,
-      url,
-      vmConfig,
-    });
-  } catch (error) {
-    console.error(error);
-
-    return null;
-  } */
-  return null
+  return null;
 };
 
 /* const formatBaseVmPath = (str: string) => {
   str = str.startsWith("/vm") ? str : "/vm/" + str;
   str = str.endsWith("/") ? str.slice(0, -1) : str;
   return str;
-};
- */
+}; */
+
 export default loader;

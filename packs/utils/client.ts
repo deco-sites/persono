@@ -7,6 +7,7 @@ import {
   UserInfo,
   VMDetails,
   VMDetailsRedirect,
+  Recommendations
 } from "$store/packs/types.ts";
 export default interface Ammo {
   "GET /api/bag": {
@@ -94,5 +95,15 @@ export default interface Ammo {
       "x-api-key": string;
       "x-ammo-token": string;
     };
+  };
+  "POST /recommendation": {
+    response: Recommendations;
+    headers: {
+      "x-ammo-device-id": string;
+      "x-api-key": string;
+      "x-ammo-token"?: string;
+      "Content-Type": "application/x-www-form-urlencoded";
+    };
+    body: URLSearchParams;
   };
 }
