@@ -3,11 +3,11 @@ import Header from "$store/components/ui/SectionHeader.tsx";
 import { Benefits } from "deco-sites/persono/loaders/Layouts/Benefits.tsx";
 
 export interface Props {
-  benefits?: Benefits[]
+  benefits?: Benefits[];
 }
 
 export default function Benefits(props: Props) {
-  console.log(props.benefits)
+  console.log(props.benefits);
 
   const listOfBenefits = props.benefits?.map((benefit) => {
     return (

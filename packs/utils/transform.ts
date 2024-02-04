@@ -335,7 +335,7 @@ const toImage = (
           disambiguatingDescription: i,
         }];
       }
-      return acc
+      return acc;
     }, []);
 };
 
