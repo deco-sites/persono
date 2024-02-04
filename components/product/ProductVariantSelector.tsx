@@ -1,12 +1,14 @@
 import Avatar from "$store/components/ui/Avatar.tsx";
 import { useVariantPossibilities } from "$store/sdk/useVariantPossiblities.ts";
 import type { Product } from "apps/commerce/types.ts";
+import { Color } from "deco-sites/persono/loaders/Layouts/Colors.tsx";
 
 interface Props {
   product: Product;
+  colors: Color[];
 }
 
-function VariantSelector({ product }: Props) {
+function VariantSelector({ product, colors }: Props) {
   const { url, isVariantOf } = product;
   const hasVariant = isVariantOf?.hasVariant ?? [];
   const possibilities = useVariantPossibilities(hasVariant, product);
@@ -21,13 +23,14 @@ function VariantSelector({ product }: Props) {
               <li>
                 <button f-partial={link} f-client-nav>
                   <Avatar
+                    color={colors}
                     name={name}
                     content={value}
                     variant={link === url
                       ? "active"
                       : link
                       ? "default"
-                      : "disabled"}
+                      : "default"}
                   />
                 </button>
               </li>

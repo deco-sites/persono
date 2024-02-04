@@ -8,10 +8,11 @@ import { usePlatform } from "$store/sdk/usePlatform.tsx";
 import { ProductDetailsPage } from "apps/commerce/types.ts";
 import { mapProductToAnalyticsItem } from "apps/commerce/utils/productToAnalyticsItem.ts";
 import ProductSelector from "./ProductVariantSelector.tsx";
-import Benefits from "../../sections/Product/Benefits.tsx";
+import BenefitsComponent from "../../sections/Product/Benefits.tsx";
 import { useOfferWithoutTaxes } from "deco-sites/persono/sdk/useOfferWithoutTaxes.ts";
 import AddCartButton from "$store/islands/AddToCartButton/CartButton.tsx";
 import { Color } from "deco-sites/persono/loaders/Layouts/Colors.tsx";
+import { Benefits } from "../../loaders/Layouts/Benefits.tsx";
 
 interface Props {
   page: ProductDetailsPage | null;
@@ -24,9 +25,10 @@ interface Props {
     name?: "concat" | "productGroup" | "product";
   };
   colors: Color[];
+  benefits: Benefits[];
 }
 
-function ProductInfo({ page, layout, colors }: Props) {
+function ProductInfo({ page, layout, colors, benefits }: Props) {
   const platform = usePlatform();
   const id = useId();
 
@@ -65,8 +67,6 @@ function ProductInfo({ page, layout, colors }: Props) {
     listPrice,
   });
 
-  console.log(product.additionalProperty);
-
   return (
     <div class="flex flex-col mt-10 mb-10" id={id}>
       <Breadcrumb
@@ -104,7 +104,7 @@ function ProductInfo({ page, layout, colors }: Props) {
       </div>
       {/* Sku Selector */}
       <div class="mt-4 sm:mt-6">
-        <ProductSelector product={product} />
+        <ProductSelector colors={colors} product={product} />
       </div>
       {/* Add to Cart and Favorites button */}
       <div class="mt-4 sm:mt-10 flex flex-col gap-2">
@@ -121,22 +121,7 @@ function ProductInfo({ page, layout, colors }: Props) {
       </div>
       {/* Benefities */}
       <div class="mt-12 mb-6">
-        <Benefits
-          layout={[
-            {
-              title: "Suporte médio",
-              description:
-                "Proporciona equilíbrio entre firmeza e maciez, com apoio adequado",
-              icon: { alt: "asas", src: "Cloud" },
-            },
-            {
-              title: "Ideal para quem dorme de barriga para cima",
-              description:
-                "Dá suporte para a coluna cervical, mantendo uma posição natural",
-              icon: { alt: "asas", src: "ArrowUp" },
-            },
-          ]}
-        />
+        <BenefitsComponent layout={benefits} name={name} />
       </div>
       {/* Description card */}
       <div class="mt-4 sm:mt-6">
@@ -161,7 +146,8 @@ function ProductInfo({ page, layout, colors }: Props) {
                 {product.isVariantOf?.hasVariant[0].additionalProperty &&
                   product?.isVariantOf?.hasVariant[0]?.additionalProperty.map(
                     (ad) =>
-                      ad.propertyID == "TECNICALSPECIFICATION"
+                      ad.propertyID == "TECNICALSPECIFICATION" &&
+                        !ad.description?.startsWith("CUSTOM_")
                         ? (
                           <p>
                             {ad.description}:&ensp;{ad.value}

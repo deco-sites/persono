@@ -3,24 +3,22 @@
  * TODO: Figure out a better name for this component.
  */
 
-const colors: Record<string, string[]> = {
-  "azul-clara": ["#87CEFA", "#87CEFA"],
-  "azul": ["#4169E1", "#4169E1"],
-  "azul-marinho": ["#000080", "#000080"],
-  "marinho": ["#000080", "#000080"],
-  "fendi": ["#bea07d", "#bea07d"],
-  "branca": ["#FFFFFF", "#FFFFFF"],
-  "branco": ["#FFFFFF", "#FFFFFF"],
-  "cinza": ["#808080", " #808080"],
-  "cinza-escura": ["#A9A9A9", " #A9A9A9"],
-  "laranja": ["#FFA500", " #FFA500"],
-  "marrom": ["#A52A2A", "#A52A2A"],
-  "preta": ["#161616", " #161616"],
-  "preto": ["#161616", " #161616"],
-  "verde-clara": ["#90EE90", " #90EE90"],
-  "vermelha": ["#FF0000", " #FF0000"],
-  "bege": ["#dac8b3", "#dac8b3"],
-};
+import { Color } from "deco-sites/persono/loaders/Layouts/Colors.tsx";
+
+interface TransformedColors {
+  [key: string]: string[];
+}
+
+function transformColors(inputColors: Color[] | undefined) {
+  const transformedColors: TransformedColors = {};
+
+  inputColors?.forEach((c) => {
+    const key = c.label.toLowerCase().replace(/\s+/g, "-");
+    transformedColors[key] = [c.hex, c.ring];
+  });
+
+  return transformedColors;
+}
 
 const selectedVariants: Record<string, string> = {
   // Color variants - only applied when no color as content is passed
@@ -33,6 +31,7 @@ interface Props {
   variant?: "active" | "disabled" | "default";
   name?: string;
   content: string;
+  color?: Color[];
 }
 
 const variants = {
@@ -42,30 +41,30 @@ const variants = {
   default: "border border-neutral hover:border-primary",
 };
 
-function Avatar({ name, content, variant = "default" }: Props) {
-  console.log({ content, variant });
+function Avatar({ name, content, variant = "default", color }: Props) {
+  const transformedColors = transformColors(color);
   return (
     <div class="placeholder text-xs">
       {name == "size"
         ? (
           <div
             class={`rounded-full py-2 px-4 ${
-              colors[content] ?? selectedVariants[variant]
+              transformedColors[content] ?? selectedVariants[variant]
             } ${variants[variant]}`}
           >
             <span>
-              {colors[content] ? "" : content}
+              {transformedColors[content] ? "" : content}
             </span>
           </div>
         )
         : (
           <div
             class={`rounded-full w-8 h-8 p-2 group relative ${
-              colors[content] ?? selectedVariants[variant]
+              transformedColors[content] ?? selectedVariants[variant]
             } ${variants[variant]}`}
             style={{
-              backgroundColor: colors[content.toLowerCase()]
-                ? colors[content.toLowerCase()][0]
+              backgroundColor: transformedColors[content.toLowerCase()]
+                ? transformedColors[content.toLowerCase()][0]
                 : "#edc",
             }}
           >

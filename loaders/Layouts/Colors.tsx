@@ -1,6 +1,7 @@
 export interface Color {
   label: string;
   hex: string;
+  ring: string;
 }
 
 interface Props {
