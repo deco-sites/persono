@@ -9,16 +9,18 @@ function Product(props: Props) {
   const listOfBenefits = props.benefits?.map((benefit) => {
     return (
       <div
-        class={`flex flex-col gap-3 w-full first:pt-0 last:pb-0 h-full`}
+        class={`flex flex-col md:w-1/2 lg:w-1/2 gap-3 w-full h-full`}
       >
         <div class="flex items-center">
           <img src={benefit.icon} />
         </div>
-        <div class="flex flex-col gap-3">
+        <div class="flex flex-col lg:grid gap-3">
           <div
             class={`antialiased w-full`}
           >
-            <h1 class="text-base leading-7 font-bold">{benefit.label}</h1>
+            <h1 class="text-base leading-7 font-bold">
+              {benefit.label}
+            </h1>
           </div>
           <p class={`text-base leading-5 lg:block`}>
             {benefit.description}
@@ -30,12 +32,14 @@ function Product(props: Props) {
 
   return (
     <>
-      <div class="flex w-full flex-col items-center pt-20 pb-10 gap-14 pr-10 pl-6">
-        <h1 class="text-2xl font-medium">
-          Nossos produtos trazem as características ideais para melhorar seu
-          sono
-        </h1>
-        <div class="flex flex-col w-full gap-10">
+      <div class="flex w-full flex-col pt-20 pb-10 px-6 md:pt-28 md:px-20 gap-14">
+        <div class="w-full">
+          <h1 class="text-2xl lg:text-3xl md:w-8/12 font-medium">
+            Nossos produtos trazem as características ideais para melhorar seu
+            sono
+          </h1>
+        </div>
+        <div class="flex flex-col sm:grid sm:grid-cols-4 w-full sm:w-1/2 sm:justify-center gap-10">
           {listOfBenefits}
         </div>
       </div>
