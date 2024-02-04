@@ -4,7 +4,7 @@ export interface Benefits {
   icon: ImageWidget;
   label: string;
   description: string;
-  productName?: string[]
+  productName?: string[];
 }
 
 interface Props {

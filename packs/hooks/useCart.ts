@@ -48,6 +48,7 @@ const state = {
   removeCoupon: wrap(
     Runtime.create("deco-sites/persono/loaders/actions/cart/removeCoupon.ts"),
   ),
+  simulate: Runtime.create("deco-sites/persono/loaders/shippingSimulation.ts"),
   mapItemsToAnalyticsItems: mapItemsToAnalyticsItems,
 };
 
