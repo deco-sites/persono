@@ -9,12 +9,12 @@ function Product(props: Props) {
   const listOfBenefits = props.benefits?.map((benefit) => {
     return (
       <div
-        class={`flex flex-col md:w-1/2 lg:w-1/2 gap-3 w-full h-full`}
+        class={`flex flex-col gap-3 w-full h-full`}
       >
         <div class="flex items-center">
           <img src={benefit.icon} />
         </div>
-        <div class="flex flex-col lg:grid gap-3">
+        <div class="flex flex-col gap-3">
           <div
             class={`antialiased w-full`}
           >
@@ -22,7 +22,7 @@ function Product(props: Props) {
               {benefit.label}
             </h1>
           </div>
-          <p class={`text-base leading-5 lg:block`}>
+          <p class={`text-base font-medium leading-5 lg:block`}>
             {benefit.description}
           </p>
         </div>
@@ -39,7 +39,7 @@ function Product(props: Props) {
             sono
           </h1>
         </div>
-        <div class="flex flex-col sm:grid sm:grid-cols-4 w-full sm:w-1/2 sm:justify-center gap-10">
+        <div class="flex flex-col sm:grid sm:grid-cols-2 w-full sm:justify-center gap-10 sm:gap-x-8">
           {listOfBenefits}
         </div>
       </div>
