@@ -7,8 +7,6 @@ export interface Props {
 }
 
 export default function Benefits(props: Props) {
-  console.log(props.benefits);
-
   const listOfBenefits = props.benefits?.map((benefit) => {
     return (
       <div
