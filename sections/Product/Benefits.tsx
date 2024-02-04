@@ -1,37 +1,46 @@
-import Icon, {
-  AvailableIcons,
-} from "deco-sites/persono/components/ui/Icon.tsx";
+import { Benefits } from "../../loaders/Layouts/Benefits.tsx";
+import Image from "apps/website/components/Image.tsx";
 
 interface Props {
-  layout: {
-    icon: { src: AvailableIcons; alt: string };
-    title: string;
-    description: string;
-  }[];
+  layout: Benefits[];
+  name: string;
 }
 
-export default function Benefits({ layout }: Props) {
+function containsAnyWord(
+  productsNames: string[] | undefined,
+  name: string
+): boolean {
+  if (!productsNames) return false;
+  for (const product of productsNames) {
+    if (name.toLowerCase().includes(product.toLowerCase())) {
+      return true;
+    }
+  }
+  return false;
+}
+
+export default function Benefits({ layout, name }: Props) {
   return (
-    <div>
+    <div class="max-w-lg">
       <h4 class="text-base">Benefícios para o sono</h4>
       <span class="flex flex-col gap-8 mt-8">
-        {layout.map((l) => (
-          <div class="flex flex-col gap-2">
-            <div class="flex items-center gap-2">
-              <Icon
-                id={l.icon.src}
-                class="text-primary"
-                width={36}
-                height={36}
-                strokeWidth={0.01}
-                fill="currentColor"
-                alt={l.icon.alt}
-              />
-              <p class="text-md font-bold">{l.title}</p>
+        {layout.map((l) =>
+          containsAnyWord(l.productName, name) ? (
+            <div class="flex flex-col gap-2">
+              <div class="flex items-center gap-2">
+                <Image
+                  src={l.icon}
+                  class="text-primary"
+                  width={36}
+                  height={36}
+                  alt={l.label}
+                />
+                <p class="text-md font-bold">{l.label}</p>
+              </div>
+              <p class="text-base">{l.description}</p>
             </div>
-            <p class="text-base">{l.description}</p>
-          </div>
-        ))}
+          ) : null
+        )}
       </span>
     </div>
   );
