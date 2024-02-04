@@ -9,18 +9,18 @@ function Product(props: Props) {
   const listOfBenefits = props.benefits?.map((benefit) => {
     return (
       <div
-        class={`flex sm:flex-row lg:flex-col sm:justify-center gap-4 w-full first:pt-0 last:pb-0 h-full max-lg:py-6 lg:pr-8 lg:pb-0 bg-blue-500`}
+        class={`flex flex-col gap-3 w-full first:pt-0 last:pb-0 h-full`}
       >
         <div class="flex items-center">
           <img src={benefit.icon} />
         </div>
-        <div class="flex flex-col w-[50%] gap-1 lg:gap-2]">
+        <div class="flex flex-col gap-3">
           <div
-            class={`text-base lg:text-xl leading-7 font-bold antialiased text-base-content w-full`}
+            class={`antialiased w-full`}
           >
-            {benefit.label}
+            <h1 class="text-base leading-7 font-bold">{benefit.label}</h1>
           </div>
-          <p class={`text-sm leading-5 text-gray-800 lg:block`}>
+          <p class={`text-base leading-5 lg:block`}>
             {benefit.description}
           </p>
         </div>
@@ -30,9 +30,12 @@ function Product(props: Props) {
 
   return (
     <>
-      <h1>TESTE</h1>
-      <div class="flex w-full container p-6 lg:gap-10 lg:py-10 lg:px-0">
-        <div class="flex max-lg:flex-col sm:justify-center sm:items-center w-full lg:gap-9 p-6 lg:p-10 rounded divide-y lg:divide-y-0">
+      <div class="flex w-full flex-col items-center pt-20 pb-10 gap-14 pr-10 pl-6">
+        <h1 class="text-2xl font-medium">
+          Nossos produtos trazem as características ideais para melhorar seu
+          sono
+        </h1>
+        <div class="flex flex-col w-full gap-10">
           {listOfBenefits}
         </div>
       </div>
