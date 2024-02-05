@@ -4,9 +4,7 @@ import { AmmoProduct } from "$store/packs/types.ts";
 import { getHeaders } from "$store/packs/utils/headers.ts";
 import { toProduct } from "$store/packs/utils/transform.ts";
 import { typeChecher } from "$store/packs/utils/utils.ts";
-import type { PDPConfig } from "$store/packs/utils/transform.ts";
 import type { RequestURLParam } from "apps/website/functions/requestToParam.ts";
-import getConfig from "$store/packs/utils/getConfig.ts";
 import { getSuggestionsItems } from "$store/packs/utils/getSuggestionsItems.ts";
 
 export type Props = { props: VMProps | RecommendationProps | TermProps };
@@ -55,7 +53,7 @@ const loader = async (
   req: Request,
   ctx: AppContext,
 ): Promise<Product[] | null> => {
-  const { ammoc, apiKey } = ctx;
+  const { ammoc, apiKey, config } = ctx;
   const url = new URL(req.url);
   const headers = getHeaders(req, apiKey);
   const { props } = extendedProps;
@@ -76,7 +74,6 @@ const loader = async (
           },
         ) as Response;
       const { productCards } = await res.json();
-      const config: PDPConfig = await getConfig(ctx);
       return productCards.map((p: AmmoProduct) => toProduct(p, url, config));
     }
 
@@ -97,7 +94,6 @@ const loader = async (
       );
 
       const { data } = await res.json();
-      const config: PDPConfig = await getConfig(ctx);
       return data.products.map((p: AmmoProduct) => toProduct(p, url, config));
     }
 
