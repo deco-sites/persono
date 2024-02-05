@@ -86,10 +86,10 @@ const loader = async (
       const res = await ammoc["POST /api/recommendation"](
         {},
         {
-          body: params,
-        },
-        {
           headers: headers,
+          body: {
+            sku,
+          },
         },
       );
 
