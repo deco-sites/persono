@@ -26,9 +26,11 @@ function VariantSelector({ product, colors }: Props) {
                     color={colors}
                     name={name}
                     content={value}
-                    variant={
-                      link === url ? "active" : link ? "default" : "disabled"
-                    }
+                    variant={link === url
+                      ? "active"
+                      : link
+                      ? "default"
+                      : "disabled"}
                   />
                 </button>
               </li>

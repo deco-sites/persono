@@ -52,8 +52,11 @@ function Avatar({ name, content, variant = "default", color }: Props) {
               transformedColors[content] ?? selectedVariants[variant]
             } ${variants[variant]}`}
           >
-            <span>
+            <span class="sm:flex hidden">
               {transformedColors[content] ? "" : content}
+            </span>
+            <span class="sm:hidden flex">
+              {transformedColors[content] ? "" : content.substring(0, 2)}
             </span>
           </div>
         )

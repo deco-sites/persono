@@ -6,13 +6,13 @@ export type Possibilities = Record<string, Record<string, string | undefined>>;
 type NewSpecs = {
   name: string | undefined;
   value: string | undefined;
-  label :string | undefined
+  label: string | undefined;
 };
 
 type Result = {
   name: string | undefined;
   value: string | undefined;
-  url :string | undefined
+  url: string | undefined;
 };
 
 const hash = ({ name, value }: PropertyValue) => `${name}::${value}`;
@@ -30,13 +30,15 @@ export const useVariantPossibilities = (
 
   const sku = selected.url?.split("/")[selected.url?.split("/").length - 1];
   const result: Result[] = [];
-  let newSpecs: NewSpecs[] = [];
+  const newSpecs: NewSpecs[] = [];
   for (const variant of variants) {
     const { url, additionalProperty = [], productID } = variant;
     const isSelected = productID === sku;
     const specs = additionalProperty.filter(({ name }) => !omit.has(name!));
 
-    specs.map((s) => newSpecs.push({ name: s.value, value: s.value, label:s.name }));
+    specs.map((s) =>
+      newSpecs.push({ name: s.value, value: s.value, label: s.name })
+    );
 
     // console.log(newSpecs)
 
@@ -61,17 +63,23 @@ export const useVariantPossibilities = (
         ? possibilities[name][value] || url
         : possibilities[name][value];
 
-        // console.log({name,value})
+      // console.log({name,value})
     }
   }
 
-  let newPoss = []
-
   newSpecs.map((item, idx) => {
-    console.log(item.value, item.label, possibilities[String(item.label)][String(item.value)])
+    console.log(
+      item.value,
+      item.label,
+      possibilities[String(item.label)][String(item.value)],
+    );
     if (idx % 2 != 0) {
-      const url = possibilities[String(item.label)][String(item.value)]
-      result.push({ name: newSpecs[idx - 1].value, value: item.value, url: url });
+      const url = possibilities[String(item.label)][String(item.value)];
+      result.push({
+        name: newSpecs[idx - 1].value,
+        value: item.value,
+        url: url,
+      });
     }
   });
 

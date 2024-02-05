@@ -78,7 +78,7 @@ function Grid({ layout, children }: Props) {
   return (
     <div
       class={clx(
-        "grid",
+        "grid p-4 sm:py-10",
         grid.gap.mobile[layout?.gap?.mobile ?? "4"],
         grid.gap.desktop[layout?.gap?.desktop ?? "8"],
         grid.cols.mobile[layout?.cols?.mobile ?? "none"],

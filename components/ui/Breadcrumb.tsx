@@ -9,7 +9,7 @@ function Breadcrumb({ itemListElement = [], productsQtt }: Props) {
   const items = itemListElement;
 
   return (
-    <div class="breadcrumbs flex items-center gap-2">
+    <div class="breadcrumbs flex  text-sm items-center gap-2">
       <ul>
         {items
           .filter(({ name, item }) => name && item)
