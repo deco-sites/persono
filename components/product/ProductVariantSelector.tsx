@@ -11,7 +11,7 @@ interface Props {
 function VariantSelector({ product, colors }: Props) {
   const { url, isVariantOf } = product;
   const hasVariant = isVariantOf?.hasVariant ?? [];
-  const possibilities = useVariantPossibilities(hasVariant, product);
+  const possibilities = useVariantPossibilities(hasVariant, isVariantOf);
 
   return (
     <ul class="flex flex-col gap-4">
@@ -26,11 +26,9 @@ function VariantSelector({ product, colors }: Props) {
                     color={colors}
                     name={name}
                     content={value}
-                    variant={link === url
-                      ? "active"
-                      : link
-                      ? "default"
-                      : "default"}
+                    variant={
+                      link === url ? "active" : link ? "default" : "disabled"
+                    }
                   />
                 </button>
               </li>
