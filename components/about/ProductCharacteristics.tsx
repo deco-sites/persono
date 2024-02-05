@@ -32,7 +32,7 @@ function Product(props: Props) {
 
   return (
     <>
-      <div class="flex w-full flex-col pt-20 pb-10 px-6 md:pt-28 md:px-20 gap-14">
+      <div class="container flex flex-col pt-20 pb-10 px-6 md:pt-28 md:px-0 gap-14">
         <div class="w-full">
           <h1 class="text-2xl lg:text-3xl md:w-8/12 font-medium">
             Nossos produtos trazem as características ideais para melhorar seu
