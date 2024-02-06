@@ -582,7 +582,7 @@ const toAdditionalProperties = (
     ...tagsProperties(),
   ];
 };
-export function toProductSuggestionItems(
+export function toProductItems(
   productItem: ProductItem,
   config: VMConfig,
 ): Product {

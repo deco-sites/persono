@@ -5,7 +5,7 @@ import { getHeaders } from "$store/packs/utils/headers.ts";
 import { toProduct } from "$store/packs/utils/transform.ts";
 import { typeChecher } from "$store/packs/utils/utils.ts";
 import type { RequestURLParam } from "apps/website/functions/requestToParam.ts";
-import { getSuggestionsItems } from "$store/packs/utils/getSuggestionsItems.ts";
+import { getProductItems } from "$store/packs/utils/getProductItems.ts";
 
 export type Props = { props: VMProps | RecommendationProps | TermProps };
 
@@ -101,7 +101,7 @@ const loader = async (
 
     if (typeChecher<TermProps>(props as TermProps, "query")) {
       const { query } = props as TermProps;
-      const productsPromise = getSuggestionsItems(query, req, ctx);
+      const productsPromise = getProductItems(query, req, ctx);
       const [products] = await Promise.all([productsPromise]);
       return products;
     }
