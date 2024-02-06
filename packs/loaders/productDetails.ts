@@ -3,7 +3,6 @@ import type { ProductDetailsPage } from "apps/commerce/types.ts";
 import { AmmoProduct } from "$store/packs/types.ts";
 import { getHeaders } from "$store/packs/utils/headers.ts";
 import { toProductDetailsPage } from "$store/packs/utils/transform.ts";
-import type { PDPConfig } from "$store/packs/utils/transform.ts";
 import type { RequestURLParam } from "apps/website/functions/requestToParam.ts";
 
 export interface Props {
@@ -19,7 +18,7 @@ const loader = async (
   req: Request,
   ctx: AppContext,
 ): Promise<ProductDetailsPage | null> => {
-  const { ammoc, apiKey } = ctx;
+  const { ammoc, apiKey, config } = ctx;
   const { sku } = props;
   const url = new URL(req.url);
   const headers = getHeaders(req, apiKey);
@@ -35,16 +34,10 @@ const loader = async (
 
     const { data } = await response.json();
 
-    //TODO: FIX CONFIG CALL
-    const pdpConfig = await ctx
-      .invoke["deco-sites/persono"].loaders.config({
-        fields: ["maxInstallments", "minInstallmentValue"],
-      }).then((c: PDPConfig) => c);
-
     return toProductDetailsPage({
       ammoProduct: data as AmmoProduct,
       url,
-      pdpConfig,
+      pdpConfig: config,
     });
   } catch (error) {
     console.error(error);
