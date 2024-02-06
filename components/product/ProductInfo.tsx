@@ -13,9 +13,10 @@ import { useOfferWithoutTaxes } from "deco-sites/persono/sdk/useOfferWithoutTaxe
 import AddCartButton from "$store/islands/AddToCartButton/CartButton.tsx";
 import { Color } from "deco-sites/persono/loaders/Layouts/Colors.tsx";
 import { Benefits } from "../../loaders/Layouts/Benefits.tsx";
+import { Resolved } from "deco/mod.ts";
+import { ShippingSimulation as ShippingSimulationLoader } from "deco-sites/persono/packs/types.ts";
 
 interface Props {
-  page: ProductDetailsPage | null;
   layout: {
     /**
      * @title Product Name
@@ -26,15 +27,21 @@ interface Props {
   };
   colors: Color[];
   benefits: Benefits[];
+  shippingSimulation: Resolved<ShippingSimulationLoader>;
+  page: ProductDetailsPage | null;
 }
 
-function ProductInfo({ page, layout, colors, benefits }: Props) {
+function ProductInfo(
+  { page, layout, colors, benefits, shippingSimulation }: Props,
+) {
   const platform = usePlatform();
   const id = useId();
 
   if (page === null) {
     throw new Error("Missing Product Details Page Info");
   }
+
+  console.log(shippingSimulation);
 
   const { breadcrumbList, product } = page;
   const {
@@ -74,22 +81,18 @@ function ProductInfo({ page, layout, colors, benefits }: Props) {
         productsQtt={breadcrumb.numberOfItems}
       />
       {/* Code and name */}
-      <div class="mt-4 sm:mt-8">
+      <div class="sm:mt-6 mt-4 ">
         <div>
           {gtin && <span class="text-sm text-[#666]">Cod. {gtin}</span>}
         </div>
         <h1>
           <span class="font-medium text-xl capitalize">
-            {layout?.name === "concat"
-              ? `${isVariantOf?.name} ${name}`
-              : layout?.name === "productGroup"
-              ? isVariantOf?.name
-              : name}
+            {name}
           </span>
         </h1>
       </div>
       {/* Prices */}
-      <div class="mt-4 ">
+      <div class="sm:mt-6 mt-4  ">
         <div class="flex flex-row gap-2 items-center">
           {(listPrice ?? 0) > price && (
             <span class="line-through text-[#666] text-xs">
@@ -103,7 +106,7 @@ function ProductInfo({ page, layout, colors, benefits }: Props) {
         <span class="text-sm text-[#666]">{installments}</span>
       </div>
       {/* Sku Selector */}
-      <div class="mt-4 sm:mt-6 ">
+      <div class="sm:mt-6 mt-4  ">
         <ProductSelector colors={colors} product={product} />
       </div>
       {/* Add to Cart and Favorites button */}
@@ -120,11 +123,11 @@ function ProductInfo({ page, layout, colors, benefits }: Props) {
           : <OutOfStock productID={productID} />}
       </div>
       {/* Benefities */}
-      <div class="mt-12 mb-6">
+      <div class="mt-10">
         <BenefitsComponent layout={benefits} name={name} />
       </div>
       {/* Description card */}
-      <div class="mt-4 sm:mt-6">
+      <div class="mt-6 sm:mt-7">
         {description && (
           <div class="flex flex-col divide-y border-y">
             <div class="collapse collapse-plus ">
@@ -184,16 +187,11 @@ function ProductInfo({ page, layout, colors, benefits }: Props) {
                 Calcular frete
               </div>
               <div class="collapse-content max-w-lg">
-                <div class="mt-5 max-w-md">
+                <div class="mt-0 sm:mt-5 max-w-md">
                   {platform === "vtex" && (
                     <ShippingSimulation
-                      items={[
-                        {
-                          id: Number(product.sku),
-                          quantity: 1,
-                          seller: seller,
-                        },
-                      ]}
+                      sku={product.sku}
+                      __resolveType={shippingSimulation.__resolveType}
                     />
                   )}
                 </div>

@@ -1,4 +1,4 @@
-import { Bag, Item } from "$store/packs/types.ts";
+import { Item } from "$store/packs/types.ts";
 import { state as storeState } from "$store/packs/hooks/context.ts";
 import { AnalyticsItem } from "apps/commerce/types.ts";
 import { withManifest } from "deco/clients/withManifest.ts";
@@ -28,7 +28,8 @@ const mapItemsToAnalyticsItems = (
 };
 
 const wrap =
-  <T>(action: (p: T, init?: RequestInit | undefined) => Promise<Bag>) =>
+  // deno-lint-ignore no-explicit-any
+  <T>(action: (p: T, init?: RequestInit | undefined) => Promise<any>) =>
   (p: T) =>
     storeState.enqueue(async (signal) => ({
       cart: await action(p, { signal }),
@@ -48,7 +49,9 @@ const state = {
   removeCoupon: wrap(
     Runtime.create("deco-sites/persono/loaders/actions/cart/removeCoupon.ts"),
   ),
-  simulate: Runtime.create("deco-sites/persono/loaders/shippingSimulation.ts"),
+  simulate: wrap(
+    Runtime.create("deco-sites/persono/loaders/shippingSimulation.ts"),
+  ),
   mapItemsToAnalyticsItems: mapItemsToAnalyticsItems,
 };
 

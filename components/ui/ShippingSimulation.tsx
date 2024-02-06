@@ -1,40 +1,36 @@
+// deno-lint-ignore-file
 import { Signal, useSignal } from "@preact/signals";
 import { useCallback } from "preact/hooks";
 import Button from "$store/components/ui/Button.tsx";
 import { formatPrice } from "$store/sdk/format.ts";
-import { useCart } from "apps/vtex/hooks/useCart.ts";
-import type { SimulationOrderForm, SKU, Sla } from "apps/vtex/utils/types.ts";
+import { useCart } from "$store/packs/hooks/useCart.ts";
+import { ShippingSimulation } from "$store/packs/types.ts";
+import { TargetedEvent } from "https://esm.sh/v128/preact@10.18.1/compat/src/index.js";
+import { invoke } from "deco-sites/persono/runtime.ts";
 
 export interface Props {
-  items: Array<SKU>;
+  sku: string;
+  __resolveType: string;
 }
 
-const formatShippingEstimate = (estimate: string) => {
-  const [, time, type] = estimate.split(/(\d+)/);
-
-  if (type === "bd") return `${time} dias úteis`;
-  if (type === "d") return `${time} dias`;
-  if (type === "h") return `${time} horas`;
-};
-
-function ShippingContent({ simulation }: {
-  simulation: Signal<SimulationOrderForm | null>;
+function ShippingContent({
+  simulation,
+}: {
+  simulation: Signal<ShippingSimulation | null>;
 }) {
-  const { cart } = useCart();
-
-  const methods = simulation.value?.logisticsInfo?.reduce(
-    (initial, { slas }) => [...initial, ...slas],
-    [] as Sla[],
-  ) ?? [];
-
-  const locale = cart.value?.clientPreferencesData.locale || "pt-BR";
-  const currencyCode = cart.value?.storePreferencesData.currencyCode || "BRL";
+  const methods = simulation.value?.shippingOptions.map((s) => {
+    return {
+      cost: s.cost,
+      maxDays: s.maxBusinessDaysUntilDelivery,
+      shippingMethodName: s.shippingMethod.name.split(" ")[1],
+    };
+  });
 
   if (simulation.value == null) {
     return null;
   }
 
-  if (methods.length === 0) {
+  if (!methods || methods.length === 0) {
     return (
       <div class="p-2">
         <span>CEP inválido</span>
@@ -43,23 +39,27 @@ function ShippingContent({ simulation }: {
   }
 
   return (
-    <ul class="flex flex-col gap-4 p-4 bg-base-300 text-base-content  rounded-[4px] w-full">
-      {methods.map((method) => (
-        <li class="flex justify-between text-base-content items-center border-base-200 not-first-child:border-t">
-          <span class="text-button text-center">
-            Entrega {method.name}
-          </span>
-          <span class="text-button">
-            até {formatShippingEstimate(method.shippingEstimate)}
-          </span>
-          <span class="text-base font-semibold text-right">
-            {method.price === 0 ? "Grátis" : (
-              formatPrice(method.price / 100, currencyCode, locale)
-            )}
+    <ul class="flex flex-col bg-base-300 text-base-content rounded-[4px] w-full px-4">
+      {methods.map((method, idx) => (
+        <li>
+          <div class="flex justify-between text-base-content items-center border-base-200 py-4">
+            <span class="text-button text-center text-sm">
+              {method.shippingMethodName}
+            </span>
+            <span class="text-button">até {method.maxDays} dias úteis</span>
+            <span class="text-base font-semibold text-right">
+              {method.cost === 0 ? "Grátis" : formatPrice(method.cost)}
+            </span>
+          </div>
+          <span
+            class={`px-4 h-[2px] bg-white rounded ${
+              idx == 0 ? "flex" : "hidden"
+            }`}
+          >
           </span>
         </li>
       ))}
-      <span class="text-base-content ">
+      <span class="text-sm text-[#666] pb-4">
         Os prazos de entrega começam a contar a partir da confirmação do
         pagamento e podem variar de acordo com a quantidade de produtos na
         sacola.
@@ -68,42 +68,49 @@ function ShippingContent({ simulation }: {
   );
 }
 
-function ShippingSimulation({ items }: Props) {
-  const postalCode = useSignal("");
+function ShippingSimulation({ __resolveType, sku }: Props) {
   const loading = useSignal(false);
-  const simulateResult = useSignal<SimulationOrderForm | null>(null);
+  const simulateResult = useSignal<ShippingSimulation | null>(null);
   const { simulate, cart } = useCart();
 
-  const handleSimulation = useCallback(async () => {
-    if (postalCode.value.length !== 8) {
-      return;
-    }
+  const handleSimulation = useCallback(
+    async (e: TargetedEvent<HTMLFormElement, Event>) => {
+      const input = e.currentTarget[0] as HTMLInputElement;
+      const postalCode = input.value;
 
-    try {
-      loading.value = true;
-      simulateResult.value = await simulate({
-        items: items,
-        postalCode: postalCode.value,
-        country: cart.value?.storePreferencesData.countryCode || "BRA",
-      });
-    } finally {
-      loading.value = false;
-    }
-  }, []);
+      if (postalCode.length !== 8) {
+        return;
+      }
+
+      try {
+        loading.value = true;
+        const invokePayload: any = {
+          key: __resolveType as string,
+          props: { postalCode, sku: sku },
+        };
+        simulateResult.value = (await invoke(
+          invokePayload,
+        )) as ShippingSimulation | null;
+      } finally {
+        loading.value = false;
+      }
+    },
+    [],
+  );
+
+  console.log(simulateResult.value);
 
   return (
     <div class="flex flex-col gap-2">
       <div class="flex flex-col text-[#666]">
-        <span>
-          Informe seu CEP para consultar os prazos de entrega
-        </span>
+        <span>Informe seu CEP para consultar os prazos de entrega</span>
       </div>
 
       <form
         class="join flex gap-2"
         onSubmit={(e) => {
           e.preventDefault();
-          handleSimulation();
+          handleSimulation(e);
         }}
       >
         <input
@@ -111,17 +118,13 @@ function ShippingSimulation({ items }: Props) {
           type="text"
           class="input input-bordered rounded-full "
           placeholder="22291-170"
-          value={postalCode.value}
           maxLength={8}
           size={8}
-          onChange={(e: { currentTarget: { value: string } }) => {
-            postalCode.value = e.currentTarget.value;
-          }}
         />
         <Button
           type="submit"
           loading={loading.value}
-          class=" bg-primary px-5 py-2 text-primary-content"
+          class=" bg-primary px-5 py-2 text-primary-content hover:bg-primary"
         >
           Calcular
         </Button>
