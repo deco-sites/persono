@@ -84,7 +84,6 @@ const loader = async (
       searchParams: [url.searchParams.get("f")],
       sort: url.searchParams.get("sort") ?? undefined,
     };
-  
 
   try {
     const response = await ammoc
