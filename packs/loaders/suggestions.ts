@@ -35,9 +35,7 @@ const loader = async (
     const searchTerms = data.map((s) => ({ term: s.term }));
     const firstTerm = data[0].term;
 
-    const productsPromise = getSuggestionsItems(firstTerm, req, ctx);
-
-    const [products] = await Promise.all([productsPromise]);
+    const products = await getSuggestionsItems(firstTerm, req, ctx);
 
     return {
       searches: searchTerms,

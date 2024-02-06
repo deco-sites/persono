@@ -2,14 +2,13 @@ import { AppContext } from "$store/apps/site.ts";
 import type { Product } from "apps/commerce/types.ts";
 import { toProductSuggestionItems } from "./transform.ts";
 import { ProductItem } from "$store/packs/types.ts";
-import getConfig from "$store/packs/utils/getConfig.ts";
 
 export async function getSuggestionsItems(
   query: string,
   _req: Request,
   ctx: AppContext,
 ): Promise<Product[]> {
-  const { ammoc } = ctx;
+  const { ammoc, config } = ctx;
   const response = await ammoc
     ["GET /api/search/query-vinhedo-sku"](
       { query, "types[0][limit]": 5, "types[0][type]": "product" },
@@ -28,13 +27,9 @@ export async function getSuggestionsItems(
     return [];
   }
 
-  const vmConfig = await getConfig(ctx);
-
-  const productSuggestionPromises = productItems.map((item: ProductItem) =>
-    toProductSuggestionItems(item, vmConfig)
+  const [productSuggestion] = productItems.map((item: ProductItem) =>
+    toProductSuggestionItems(item, config)
   );
-
-  const productSuggestion = await Promise.all(productSuggestionPromises);
 
   return productSuggestion;
 }
