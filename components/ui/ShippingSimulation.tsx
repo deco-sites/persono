@@ -10,7 +10,6 @@ import { invoke } from "deco-sites/persono/runtime.ts";
 
 export interface Props {
   sku: string;
-  __resolveType: string;
 }
 
 function ShippingContent({
@@ -68,7 +67,7 @@ function ShippingContent({
   );
 }
 
-function ShippingSimulation({ __resolveType, sku }: Props) {
+function ShippingSimulation({ sku }: Props) {
   const loading = useSignal(false);
   const simulateResult = useSignal<ShippingSimulation | null>(null);
   const { simulate, cart } = useCart();
@@ -84,13 +83,10 @@ function ShippingSimulation({ __resolveType, sku }: Props) {
 
       try {
         loading.value = true;
-        const invokePayload: any = {
-          key: __resolveType as string,
+        simulateResult.value = (await invoke({
+          key: "deco-sites/persono/loaders/shippingSimulation.ts",
           props: { postalCode, sku: sku },
-        };
-        simulateResult.value = (await invoke(
-          invokePayload,
-        )) as ShippingSimulation | null;
+        })) as ShippingSimulation | null;
       } finally {
         loading.value = false;
       }

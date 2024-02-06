@@ -23,9 +23,7 @@ interface Props {
   page: ProductDetailsPage | null;
 }
 
-function ProductInfo(
-  { page, colors, benefits, shippingSimulation }: Props,
-) {
+function ProductInfo({ page, colors, benefits }: Props) {
   const platform = usePlatform();
   const id = useId();
 
@@ -34,13 +32,7 @@ function ProductInfo(
   }
 
   const { breadcrumbList, product } = page;
-  const {
-    productID,
-    offers,
-    name = "",
-    gtin,
-    isVariantOf,
-  } = product;
+  const { productID, offers, name = "", gtin, isVariantOf } = product;
   const description = product.description || isVariantOf?.description;
   const {
     price = 0,
@@ -73,9 +65,7 @@ function ProductInfo(
           {gtin && <span class="text-sm text-[#666]">Cod. {gtin}</span>}
         </div>
         <h1>
-          <span class="font-medium text-xl capitalize">
-            {name}
-          </span>
+          <span class="font-medium text-xl capitalize">{name}</span>
         </h1>
       </div>
       {/* Prices */}
@@ -176,10 +166,7 @@ function ProductInfo(
               <div class="collapse-content max-w-lg">
                 <div class="mt-0 sm:mt-5 max-w-md">
                   {platform === "vtex" && (
-                    <ShippingSimulation
-                      sku={product.sku}
-                      __resolveType={shippingSimulation.__resolveType}
-                    />
+                    <ShippingSimulation sku={product.sku} />
                   )}
                 </div>
               </div>
