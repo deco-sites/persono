@@ -12,7 +12,7 @@ export type Props = { props: VMProps | RecommendationProps | TermProps };
 interface VMProps {
   /**
    * @title Caminho da VM
-   * @description Não usar com "/vm/", apenas informar a slug da vm.
+   * @description Criar vitrines a partir de uma VM específica. Não usar "/vm/" no início do termo, apenas informar a slug
    * @example cama
    */
   path: string;
@@ -30,7 +30,7 @@ interface VMProps {
 interface RecommendationProps {
   /**
    * @title SKU
-   * @description Caso queira buscar por recomendações dinâmicamente escolha a opção "Get params from request parameters".
+   * @description Criar vitrines de recomendação de produtos a partir de uma SKU específica. Caso queira buscar por recomendações dinâmicamente, escolha a opção "Get params from request parameters" e use o parâmetro "sku".
    * @default sku
    */
   sku: RequestURLParam;
@@ -38,15 +38,17 @@ interface RecommendationProps {
 
 interface TermProps {
   /**
-   * @title Termo
-   * @description Termo para busca.
+   * @title Termo.
+   * @description Criar vitrines a partir de um termo de busca.
+   * @example fronha
    */
   query: string;
 }
 
 /**
  * @title Ammo Varejo - Vitrines
- * @description Vitrines multifuncionais que podem ser empregadas de diversas formas no site
+ * @description Vitrines multifuncionais que podem ser empregadas de diversas formas no site.
+ * 
  */
 const loader = async (
   extendedProps: Props,
