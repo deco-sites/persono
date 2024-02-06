@@ -4,7 +4,6 @@ import Image from "apps/website/components/Image.tsx";
 import { FnCustomContext } from "deco-sites/persono/packs/types.ts";
 import { SectionProps } from "deco/mod.ts";
 import Slider from "deco-sites/persono/components/ui/Slider.tsx";
-import Icon from "deco-sites/persono/components/ui/Icon.tsx";
 import SliderJS from "deco-sites/persono/islands/SliderJS.tsx";
 
 export interface Props {
@@ -36,21 +35,17 @@ export default function GallerySlider(props: SectionProps<typeof loader>) {
   } = props;
   const aspectRatio = `${width} / ${height}`;
 
-  console.log(props.device);
-
   if (props.device == "desktop") {
     return (
       <div id={id} class="flex flex-col self-center ">
         {images.map((img, index) => (
           <Image
-            class="w-full"
-            sizes="(max-width: 640px) 100vw, 40vw"
+            class="w-full max-w-2xl"
             style={{ aspectRatio }}
             src={img.url!}
             alt={img.alternateName}
             width={width}
             height={height}
-            // Preload LCP image for better web vitals
             preload={index === 0}
             loading={index === 0 ? "eager" : "lazy"}
           />
@@ -70,8 +65,7 @@ export default function GallerySlider(props: SectionProps<typeof loader>) {
               class="carousel-item w-full"
             >
               <Image
-                class="w-full rounded"
-                sizes="(max-width: 640px) 100vw, 40vw"
+                class="w-full rounded-md"
                 style={{ aspectRatio }}
                 src={img.url!}
                 alt={img.alternateName}
@@ -91,8 +85,18 @@ export default function GallerySlider(props: SectionProps<typeof loader>) {
         {images.map((img, index) => (
           <li class="carousel-item">
             <Slider.Dot index={index}>
-              <div class="w-3 h-3 bg-neutral active:bg-primary rounded-full">
-              </div>
+              <input
+                type="radio"
+                name={`carousel-${id}`}
+                id={`slide${index}`}
+                class="carousel-radio visually-hidden"
+                checked={index === 0}
+              />
+              <label
+                for={`slide${index}`}
+                class="w-3 h-3 bg-neutral checkbox-primary rounded-full"
+              >
+              </label>
             </Slider.Dot>
           </li>
         ))}

@@ -41,8 +41,6 @@ function ProductInfo(
     throw new Error("Missing Product Details Page Info");
   }
 
-  console.log(shippingSimulation);
-
   const { breadcrumbList, product } = page;
   const {
     productID,

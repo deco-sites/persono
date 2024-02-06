@@ -98,8 +98,6 @@ function ShippingSimulation({ __resolveType, sku }: Props) {
     [],
   );
 
-  console.log(simulateResult.value);
-
   return (
     <div class="flex flex-col gap-2">
       <div class="flex flex-col text-[#666]">
