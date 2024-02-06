@@ -64,7 +64,7 @@ function ProductShelf({
           </Slider.PrevButton>
         </div>
         <div class="hidden relative sm:block z-10 col-start-3 row-start-3">
-          <Slider.NextButton class="justify-center btn btn-circle border border-neutral bg-white z-10 absolute right-[-18px] top-[calc(50%-18px)] hidden sm:flex rounded-full cursor-pointer">
+          <Slider.NextButton class="justify-center btn btn-circle border border-neutral bg-white z-10 absolute right-[-18px] md:right-0 top-[calc(50%-18px)] hidden sm:flex rounded-full cursor-pointer">
             <Icon
               class="text-primary"
               size={20}
