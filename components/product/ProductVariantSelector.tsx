@@ -14,7 +14,7 @@ function VariantSelector({ product, colors }: Props) {
   const hasVariant = isVariantOf?.hasVariant ?? [];
   const possibilities: GroupedData = useVariantPossibilities(
     hasVariant,
-    isVariantOf
+    isVariantOf,
   );
 
   let colorsPossibilities: { name: string; value: string; url: string }[] = [];
@@ -36,7 +36,7 @@ function VariantSelector({ product, colors }: Props) {
       {
         Object.entries(possibilities[name]).map(([_value, link]) => {
           if (link.url == url) {
-            console.log(link.value)
+            console.log(link.value);
           }
         });
       }
@@ -53,9 +53,11 @@ function VariantSelector({ product, colors }: Props) {
                 color={colors}
                 name={cp.name}
                 content={cp.value}
-                variant={
-                  cp.url === url ? "active" : cp ? "default" : "disabled"
-                }
+                variant={cp.url === url
+                  ? "active"
+                  : cp
+                  ? "default"
+                  : "disabled"}
               />
             </button>
           </li>

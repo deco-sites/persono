@@ -98,7 +98,7 @@ export const useVariantPossibilities = (
       }
       return acc;
     },
-    {} as GroupedData
+    {} as GroupedData,
   );
 
   return organizedData;
