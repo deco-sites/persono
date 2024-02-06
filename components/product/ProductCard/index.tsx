@@ -28,30 +28,37 @@ function ProductCard({ product, preload, index, search, itemListName }: Props) {
   const { url, productID, name, image: images, offers } = product;
   const { price = 0, installments, listPrice = 0 } = useOffer(offers);
   const [front] = images ?? [];
-
   const id = `product-card-${productID}`;
 
-  // Necessario atualizar quando as especificações dos produtos retornarem corretamente
-  const newsTitle = "Novidade";
-  const hasNews = false;
+  const searchTopLefTags = (value: string) =>
+    product.additionalProperty?.find(
+      (item) =>
+        item.propertyID === "TAG" &&
+        item.identifier === "TOPLEFT" &&
+        item.value === value
+    )?.valueReference;
+
+  const hasDiscountTag = searchTopLefTags("PROMOTION");
+  const hasNewsTag = searchTopLefTags("LANCAMENTO");
 
   const { hasDiscount, discount, hasMultiplePrices } = useMemo(() => {
     const variantPrices = product.isVariantOf?.hasVariant.map(
-      (item) => item.offers?.offers?.[0]?.price,
+      (item) => item.offers?.offers?.[0]?.price
     );
 
-    const hasMultiplePrices = variantPrices && variantPrices?.length > 1
-      ? variantPrices.some(
-        (price) => price !== Math.min(...(variantPrices as number[])),
-      )
-      : false;
+    const hasMultiplePrices =
+      variantPrices && variantPrices?.length > 1
+        ? variantPrices.some(
+            (price) => price !== Math.min(...(variantPrices as number[]))
+          )
+        : false;
 
     return {
       hasMultiplePrices,
       hasDiscount: listPrice > price,
       discount: Math.floor(((listPrice - price) / listPrice) * 100),
     };
-  }, [listPrice > price]);
+  }, [listPrice, price]);
 
   return useMemo(
     () => (
@@ -84,9 +91,8 @@ function ProductCard({ product, preload, index, search, itemListName }: Props) {
           search={search}
           imageSrc={front.url!}
           discount={discount}
-          hasDiscount={hasDiscount}
-          hasNews={hasNews}
-          newsTitle={newsTitle}
+          hasDiscountTag={hasDiscountTag}
+          hasNewsTag={hasNewsTag}
           imageAlt={front?.alternateName}
           preload={preload}
         />
@@ -103,7 +109,7 @@ function ProductCard({ product, preload, index, search, itemListName }: Props) {
         />
       </a>
     ),
-    [product],
+    [product]
   );
 }
 

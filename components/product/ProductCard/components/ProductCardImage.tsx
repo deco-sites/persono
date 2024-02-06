@@ -1,27 +1,24 @@
 import Image from "apps/website/components/Image.tsx";
 
 interface Props {
-  hasNews: boolean;
-  hasDiscount: boolean;
+  hasNewsTag?: string;
+  hasDiscountTag?: string;
   preload?: boolean;
   discount: number;
   imageAlt?: string;
-  newsTitle: string;
   imageSrc: string;
   search?: boolean;
 }
 
 export const ProductCardImage = ({
-  hasDiscount,
-  hasNews,
-  discount,
+  hasDiscountTag,
+  hasNewsTag,
   preload,
   imageAlt = "",
   imageSrc,
-  newsTitle,
   search,
 }: Props) => {
-  const showHighlightTag = hasNews || hasDiscount;
+  const showHighlightTag = !!hasNewsTag || !!hasDiscountTag;
 
   return (
     <figure class="relative">
@@ -29,10 +26,10 @@ export const ProductCardImage = ({
         {showHighlightTag && (
           <span
             class={`py-1 px-3 flex absolute  rounded-br-xl justify-center items-center text-sm ${
-              hasNews ? "bg-blueNew" : "bg-black"
+              hasNewsTag ? "bg-blueNew" : "bg-black"
             }  text-white`}
           >
-            {hasNews ? { newsTitle } : `${discount}% off`}
+            {hasNewsTag ? hasNewsTag : hasDiscountTag}
           </span>
         )}
 

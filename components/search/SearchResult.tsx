@@ -39,7 +39,7 @@ function Result({
 }: Omit<Props, "page"> & { page: ProductListingPage }) {
   const { products, filters, breadcrumb, pageInfo, sortOptions } = page;
   const perPage = pageInfo.recordPerPage || products.length;
-
+  
   const id = useId();
 
   const zeroIndexedOffsetPage = pageInfo.currentPage;
