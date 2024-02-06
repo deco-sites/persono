@@ -19,6 +19,7 @@ import {
   Detail,
   Photos,
   ProductItem,
+  RelatedFilters,
   Sku,
   Value,
   VMDetails,
@@ -516,6 +517,37 @@ const toAdditionalProperties = (
       valueReference: quantity,
     }));
 
+  const relatedFiltersProperties = (): PropertyValue[] => {
+    const { relatedFilters } = obj as AmmoProduct;
+    if (!relatedFilters) {
+      return [];
+    }
+    return Object.keys(relatedFilters).flatMap((rf) =>
+      relatedFilters[rf as keyof RelatedFilters].map((
+        { link, label },
+      ) => ({
+        "@type": "PropertyValue" as const,
+        propertyID: "RELATEDFILTER",
+        name: "relatedFilter",
+        valueReference: rf,
+        value: link,
+        description: label,
+      }))
+    );
+  };
+
+  const emotionalAttributes = (): PropertyValue[] => {
+    const { emotionalAttributes } = obj as AmmoProduct;
+    return emotionalAttributes?.map(({ id, name, value }) => ({
+      "@type": "PropertyValue" as const,
+      propertyID: "EMOTIONALATTRIBUTE",
+      name: "emotionalAttribute",
+      valueReference: id,
+      value,
+      description: name,
+    })) ?? [];
+  };
+
   const simpleProperties = () =>
     Object.keys(obj!).reduce<PropertyValue[]>(
       (acc, k) => {
@@ -541,17 +573,7 @@ const toAdditionalProperties = (
   return [
     ...simpleProperties(),
     ...typeChecher<AmmoProduct>(obj as AmmoProduct, "id")
-      ? PROPS_AMMO_API.product.simpleArrayProps.flatMap((i) => {
-        const prop = obj[i as keyof T];
-        if (!prop) return [];
-        const propName = prop.toString();
-        return Object.values(prop).map((p) => ({
-          "@type": "PropertyValue" as const,
-          propertyID: propName.toUpperCase(),
-          name: propName,
-          value: p,
-        }));
-      })
+      ? [...relatedFiltersProperties(), ...emotionalAttributes()]
       : [
         colorProperty(),
         ...specificationsProperties(),

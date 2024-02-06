@@ -16,11 +16,11 @@ export interface AmmoProduct {
   bundle?: Bundle;
   active?: boolean;
   description?: string;
-  emotionalAttributes?: string[]; //unknown
+  emotionalAttributes?: EmotionalAttributes[];
   groupKey?: string;
   isActiveBundlePickupInStore?: boolean;
   line?: string;
-  relatedFilters?: string[]; //unknown
+  relatedFilters?: RelatedFilters;
   selectedSku?: string;
   sizeType?: string;
   skus?: Sku[];
@@ -35,6 +35,23 @@ export interface AmmoProduct {
   sku?: string;
   tags?: Tags;
   url?: string;
+}
+
+export interface EmotionalAttributes {
+  id: string;
+  name: string;
+  value: string;
+}
+
+export interface RelatedFilters {
+  color: LinkAndLabel[];
+  size: LinkAndLabel[];
+  category: LinkAndLabel[];
+}
+
+export interface LinkAndLabel {
+  link: string;
+  label: string;
 }
 
 export interface Breadcrumb {
