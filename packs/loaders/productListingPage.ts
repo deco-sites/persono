@@ -1,12 +1,9 @@
 import { AppContext } from "$store/apps/site.ts";
 import type { ProductListingPage } from "apps/commerce/types.ts";
-import paths from "$store/packs/utils/paths.ts";
-import { fetchAPI } from "apps/utils/fetch.ts";
 import { VMDetails, VMDetailsRedirect } from "$store/packs/types.ts";
 import { getHeaders } from "$store/packs/utils/headers.ts";
 import { toProductListingPage } from "$store/packs/utils/transform.ts";
 import { typeChecher } from "$store/packs/utils/utils.ts";
-import type { VMConfig } from "$store/packs/utils/transform.ts";
 
 export interface Props {
   /**
@@ -61,10 +58,9 @@ const loader = async (
   req: Request,
   ctx: AppContext,
 ): Promise<ProductListingPage | null> => {
-  const { publicUrl, apiKey } = ctx;
+  const { ammoc, apiKey, config } = ctx;
   const { vm } = props;
   const url = new URL(req.url);
-  const path = paths(publicUrl);
   const headers = getHeaders(req, apiKey);
   const page = Number(url.searchParams.get("page") ?? 1);
 
@@ -89,54 +85,47 @@ const loader = async (
       sort: url.searchParams.get("sort") ?? undefined,
     };
 
-  const response = await fetchAPI<VMDetails | VMDetailsRedirect>(
-    path.productCatalog.resolveRoute({
-      path: vmProps!.path.join("/"),
-      f: vmProps?.searchParams.join("_") ?? undefined,
-      page,
-      sort: vmProps?.sort,
-    }),
-    {
-      method: "GET",
-      headers,
-    },
-  ).catch(() => undefined);
+  try {
+    const response = await ammoc
+      ["GET /api/product-catalog/resolve-route"](
+        {
+          path: vmProps!.path.join("/"),
+          f: vmProps?.searchParams.join("_") ?? undefined,
+          page,
+          sort: vmProps?.sort,
+        },
+        {
+          headers: headers,
+        },
+      ) as Response;
+    const data = await response.json();
 
-  if (!response) {
+    if (typeChecher<VMDetails>(data as VMDetails, "basePath")) {
+      return toProductListingPage({
+        vmDetails: data as VMDetails,
+        url,
+        vmConfig: config,
+      });
+    }
+    const redirectPath = data as VMDetailsRedirect;
+    const redirectedResponse = await ammoc
+      ["GET /api/product-catalog/resolve-route"](
+        { path: redirectPath.location, page },
+        {
+          headers: headers,
+        },
+      ) as Response;
+
+    return toProductListingPage({
+      vmDetails: await redirectedResponse.json() as VMDetails,
+      url,
+      vmConfig: config,
+    });
+  } catch (error) {
+    console.error(error);
+
     return null;
   }
-
-  const vmConfig = await ctx
-    .invoke["deco-sites/persono"].loaders.config({
-      fields: ["maxInstallments", "minInstallmentValue", "vmItemsPerPage"],
-    }).then((c: VMConfig) => c);
-
-  if (typeChecher<VMDetails>(response as VMDetails, "basePath")) {
-    return toProductListingPage({
-      vmDetails: response as VMDetails,
-      url,
-      vmConfig,
-    });
-  }
-
-  const redirectPath = response as VMDetailsRedirect;
-  const redirectedResponse = await fetchAPI<VMDetails>(
-    path.productCatalog.resolveRoute({
-      path: redirectPath.location,
-      page,
-      sort: vmProps?.sort,
-    }),
-    {
-      method: "GET",
-      headers,
-    },
-  );
-
-  return toProductListingPage({
-    vmDetails: redirectedResponse,
-    url,
-    vmConfig,
-  });
 };
 
 const formatBaseVmPath = (str: string) => {

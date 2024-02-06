@@ -9,6 +9,7 @@ import { Section } from "deco/blocks/section.ts";
 import { rgb24 } from "std/fmt/colors.ts";
 import manifest, { Manifest } from "$store/manifest.gen.ts";
 import { App, AppMiddlewareContext as AMC } from "deco/mod.ts";
+import { Config } from "$store/packs/types.ts";
 
 import Ammo from "$store/packs/utils/client.ts";
 import { fetchSafe } from "$store/packs/utils/fetch.ts";
@@ -30,11 +31,9 @@ export type Props = {
   */
   publicUrl: string;
 
-  imageBaseUrl:string;
-  
-  /**
-  @title Configurações de parcelamento
-  */
+  imageBaseUrl: string;
+
+  config: Partial<Config>;
 } & DefaultProps;
 
 export type Platform =

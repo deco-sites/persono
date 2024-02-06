@@ -5,22 +5,28 @@ import {
   ImageObject,
   ListItem,
   Product,
+  ProductDetailsPage,
   ProductGroup,
   ProductListingPage,
   PropertyValue,
+  UnitPriceSpecification,
 } from "apps/commerce/types.ts";
 
 import {
   AmmoProduct,
   Breadcrumb,
   Config,
+  Detail,
   Photos,
+  ProductItem,
   Sku,
+  Value,
   VMDetails,
 } from "$store/packs/types.ts";
 import { PROPS_AMMO_API, SORT_OPTIONS } from "$store/packs/constants.ts";
 import { typeChecher } from "$store/packs/utils/utils.ts";
 
+export type PDPConfig = Pick<Config, "minInstallmentValue" | "maxInstallments">;
 export type VMConfig = Pick<
   Config,
   "minInstallmentValue" | "maxInstallments" | "vmItemsPerPage"
@@ -32,28 +38,37 @@ interface ProductListingPageProps {
   vmConfig: VMConfig;
 }
 
+interface ProductDetailsPageProps {
+  ammoProduct: AmmoProduct;
+  url: URL;
+  pdpConfig: PDPConfig;
+}
+
 interface SkuAndProduct {
   sku?: Sku;
   ammoProduct: AmmoProduct;
-  vmConfig: VMConfig;
+  productItem?: ProductItem;
+  config: VMConfig | PDPConfig;
 }
 
-interface VariantProps extends Required<SkuAndProduct> {
-  baseUrl: URL;
+interface ReducedFilters {
+  url: Value[];
+  param: string[];
 }
 
 export function toProduct(
   ammoProduct: AmmoProduct,
   baseUrl: URL,
-  vmConfig: VMConfig,
+  config: VMConfig | PDPConfig,
 ): Product {
-  const { skus, selectedSku, title, category } = ammoProduct;
+  const { skus, selectedSku, title, macroCategory, segment, brand } =
+    ammoProduct;
   const workableSku = skus?.find(({ sku }) => sku === selectedSku);
 
   return {
     "@type": "Product",
     productID: ammoProduct.id,
-    name: title,
+    name: title.trim(),
     description: ammoProduct?.description,
     sku: ammoProduct?.sku ?? selectedSku!,
     image: toImage({ sku: workableSku, ammoProduct }),
@@ -67,22 +82,25 @@ export function toProduct(
     ],
     brand: {
       "@type": "Brand",
-      "@id": ammoProduct.brand,
+      "@id": brand,
+      name: brand,
     },
-    category: category ?? ammoProduct.macroCategory,
+    category: `${segment}>${macroCategory}${
+      macroCategory === ammoProduct.category ? "" : `>${ammoProduct.category}`
+    }`,
     inProductGroupWithID: ammoProduct?.groupKey,
     isVariantOf: workableSku
       ? toProductGroup({
         ammoProduct,
         sku: workableSku,
         baseUrl,
-        vmConfig,
+        config,
       })
       : undefined,
     offers: toAggregateOffer({
       ammoProduct,
       sku: workableSku,
-      vmConfig,
+      config,
     }),
   };
 }
@@ -106,11 +124,26 @@ export function toProductListingPage(
   };
 }
 
+export function toProductDetailsPage(
+  { ammoProduct, url, pdpConfig }: ProductDetailsPageProps,
+): ProductDetailsPage {
+  return {
+    "@type": "ProductDetailsPage",
+    breadcrumbList: toBreadcrumbList(url.origin, ammoProduct),
+    product: toProduct(ammoProduct, url, pdpConfig),
+    seo: {
+      title: ammoProduct.title.trim(),
+      description: ammoProduct?.description ?? "",
+      canonical: "",
+    },
+  };
+}
+
 const toBreadcrumbList = (
   origin: string,
-  { breadcrumbs }: VMDetails,
+  { breadcrumbs }: VMDetails | AmmoProduct,
 ): BreadcrumbList => {
-  const itemListElement = toItemListElement(breadcrumbs, origin);
+  const itemListElement = toItemListElement(breadcrumbs!, origin);
   return {
     "@type": "BreadcrumbList",
     itemListElement,
@@ -122,7 +155,7 @@ const toItemListElement = (
   breadcrumbs: Breadcrumb[] | [Breadcrumb[]],
   origin: string,
 ): ListItem[] =>
-  breadcrumbs.flat(1).reduce<ListItem[]>(
+  breadcrumbs?.flat(1).reduce<ListItem[]>(
     (acc, { path, name, position, hasSibling }) => {
       const item = path ? new URL(new URL(path).pathname, origin).href : "";
       const newItem: ListItem = {
@@ -140,39 +173,83 @@ const toItemListElement = (
     [],
   );
 
+const toFilterUrl = (
+  { url, param }: ReducedFilters,
+  newFilter: Value,
+  hasAppliedFilter: boolean,
+  baseUrl: URL,
+) => {
+  const path = url.reduce<string[]>((acc, f) => {
+    if (f.slug === newFilter.slug) {
+      return acc;
+    }
+    return [...acc, f.slug];
+  }, []);
+  const urlParam = param.filter((p) => p !== newFilter.slug);
+
+  if (path.length === url.length && urlParam.length === param.length) {
+    switch (hasAppliedFilter) {
+      case true:
+        urlParam.push(newFilter.slug);
+        break;
+      case false:
+        path.push(newFilter.slug);
+        break;
+    }
+  }
+  const newUrl = new URL(path.join("/"), baseUrl.origin);
+  if (urlParam.length) {
+    newUrl.searchParams.set("f", urlParam.join("_"));
+  }
+  return newUrl;
+};
+
 const toFilters = (
-  { sidebar, appliedFilters, basePath }: VMDetails,
+  vm: VMDetails,
   url: URL,
 ): Filter[] => {
+  const { sidebar, appliedFilters, basePath } = vm;
+  const filters = appliedFilters.reduce<ReducedFilters>(
+    (acc, f) => {
+      if (acc.url.find(({ type }) => type === f.type)) {
+        return {
+          url: acc.url,
+          param: [...acc.param, f.slug],
+        };
+      }
+
+      return {
+        url: [...acc.url, f],
+        param: acc.param,
+      };
+    },
+    { url: [{ slug: basePath, type: "0", value: "base" }], param: [] },
+  );
+
   return sidebar.map((
     { filterType, filterLabel, values },
   ) => {
+    const hasAppliedFilter = !!filters.url.find(({ type }) =>
+      type === filterType
+    );
     return {
       "@type": "FilterToggle",
       label: filterLabel,
       key: filterType,
       quantity: 0,
-      values: values.sort((a, b) => a.value.localeCompare(b.value)).map((v) => {
-        const selected = !!appliedFilters.filter(({ type }) =>
-          type === filterType
-        ).find(({ value }) => value === v.value);
-        const slugs = selected
-          ? appliedFilters.map(({ slug }) => slug).filter((
-            f,
-          ) => f != v.slug)
-          : appliedFilters.map(({ slug }) => slug).concat([v.slug]);
-        return {
-          label: v.value,
-          value: v.value,
-          selected,
-          url: new URL(
-            basePath + "/" +
-              slugs.join("/"),
-            url.origin,
-          ).href,
-          quantity: 0,
-        };
-      }),
+      values: values.sort((a, b) => a.value.localeCompare(b.value))
+        .map((v) => {
+          const selected = !!appliedFilters.filter(({ type }) =>
+            type === filterType
+          ).find(({ value }) => value === v.value);
+          return {
+            label: v.value,
+            value: v.value,
+            selected,
+            url: toFilterUrl(filters, v, hasAppliedFilter, url).href,
+            quantity: 0,
+          };
+        }),
     };
   });
 };
@@ -208,18 +285,24 @@ const toPageInfo = (
 };
 
 const toImage = (
-  { sku, ammoProduct }: Omit<SkuAndProduct, "vmConfig">,
+  { sku, ammoProduct }: Omit<SkuAndProduct, "config">,
 ): ImageObject[] => {
   const { title } = ammoProduct;
   return sku
     ? [
-      ...PROPS_AMMO_API.sku.defaultPhotos.map((i) => ({
-        "@type": "ImageObject" as const,
-        url: sku.photos[i as keyof Photos].toString(),
-        additionalType: "image",
-        alternateName: title,
-        disambiguatingDescription: i,
-      })),
+      ...PROPS_AMMO_API.sku.defaultPhotos.reduce<ImageObject[]>((acc, i) => {
+        const index = i as keyof Photos;
+        if (sku.photos[index]) {
+          return [...acc, {
+            "@type": "ImageObject" as const,
+            url: sku.photos[index].toString(),
+            additionalType: "image",
+            alternateName: title,
+            disambiguatingDescription: i,
+          }];
+        }
+        return acc;
+      }, []),
       ...sku.photos.details.map(({ url }, i) => ({
         "@type": "ImageObject" as const,
         url,
@@ -244,26 +327,34 @@ const toImage = (
         }]
         : [],
     ]
-    : PROPS_AMMO_API.product.defaultPhotos.map((i) => ({
-      "@type": "ImageObject" as const,
-      url: ammoProduct[i as keyof AmmoProduct]?.toString(),
-      alternateName: title,
-      additionalType: "image",
-      disambiguatingDescription: i,
-    }));
+    : PROPS_AMMO_API.product.defaultPhotos.reduce<ImageObject[]>((acc, i) => {
+      const index = i as keyof AmmoProduct;
+      if (ammoProduct[index]) {
+        return [...acc, {
+          "@type": "ImageObject" as const,
+          url: ammoProduct[index]?.toString(),
+          alternateName: title,
+          additionalType: "image",
+          disambiguatingDescription: i,
+        }];
+      }
+      return acc;
+    }, []);
 };
 
 const toProductGroup = (
-  { ammoProduct, sku, baseUrl, vmConfig }: VariantProps,
+  { ammoProduct, sku, baseUrl, config }: SkuAndProduct & {
+    baseUrl: URL;
+  },
 ): ProductGroup => {
   const { title, skus } = ammoProduct;
-  const url = new URL(sku.url, baseUrl.origin).href;
+  const url = new URL(sku?.url ?? "", baseUrl.origin).href;
   return {
     "@type": "ProductGroup" as const,
     productGroupID: ammoProduct.groupKey!,
-    name: title,
+    name: title.trim(),
     url,
-    model: sku.ean,
+    model: sku?.ean ?? "",
     hasVariant: skus!.map((thisSku) => ({
       "@type": "Product" as const,
       category: ammoProduct.category,
@@ -274,19 +365,50 @@ const toProductGroup = (
         ...toAdditionalProperties(thisSku, PROPS_AMMO_API.sku.simpleProps),
       ],
       image: toImage({ sku: thisSku, ammoProduct }),
-      offers: toAggregateOffer({ sku: thisSku, vmConfig }),
+      offers: toAggregateOffer({ sku: thisSku, config }),
     })),
-    additionalProperty: [],
+    additionalProperty: skus!.reduce<PropertyValue[]>(
+      (acc, { color, size }) => {
+        const result = acc;
+        const uniqueValues = new Set(acc.map(({ value }) => value));
+
+        if (!uniqueValues.has(color.name)) {
+          result.push({
+            "@type": "PropertyValue" as const,
+            propertyID: "COLOR",
+            name: "color",
+            value: color.name,
+            unitCode: color.hex,
+            valueReference: "PROPERTY",
+          });
+        }
+        if (!uniqueValues.has(size)) {
+          result.push({
+            "@type": "PropertyValue",
+            propertyID: "SIZE",
+            name: "size",
+            value: size,
+            valueReference: "PROPERTY",
+          });
+        }
+        return result;
+      },
+      [],
+    ),
   };
 };
 
 const toAggregateOffer = (
-  { ammoProduct, sku, vmConfig }: Partial<SkuAndProduct>,
+  { ammoProduct, sku, productItem, config }: Partial<SkuAndProduct>,
 ): AggregateOffer => {
-  const { minInstallmentValue, maxInstallments } = vmConfig!;
-  const highPrice = (ammoProduct?.price?.max ?? sku!.price.from) / 100;
-  const lowPrice = (ammoProduct?.price?.min ?? sku!.price.to) / 100;
-  const available = ammoProduct?.available ?? sku?.available!;
+  const { minInstallmentValue, maxInstallments } = config!;
+  const highPrice =
+    (ammoProduct?.price?.max ?? productItem?.priceFrom ?? sku!.price.from) /
+    100;
+  const lowPrice =
+    (ammoProduct?.price?.min ?? productItem?.priceTo ?? sku!.price.to) / 100;
+  const available = ammoProduct?.available ?? productItem?.available ??
+    sku?.available!;
   const possibleInstallmentsQtd =
     Math.floor(lowPrice / (minInstallmentValue / 100)) ||
     1;
@@ -311,20 +433,35 @@ const toAggregateOffer = (
           : "https://schema.org/OutOfStock",
         inventoryLevel: { value: sku?.stock },
         price: lowPrice ?? highPrice,
-        priceSpecification: installments.map((value, i) => {
-          const [description, billingIncrement] = !i
-            ? ["À vista", lowPrice]
-            : [i + 1 + " vezes sem juros", value];
-          return {
+        seller: ammoProduct?.brand ?? "persono",
+        priceSpecification: [
+          {
+            "@type": "UnitPriceSpecification",
+            priceType: "https://schema.org/ListPrice",
+            price: highPrice,
+          },
+          {
             "@type": "UnitPriceSpecification",
             priceType: "https://schema.org/SalePrice",
-            priceComponentType: "https://schema.org/Installment",
-            description,
-            billingDuration: i + 1,
-            billingIncrement,
             price: lowPrice,
-          };
-        }),
+          },
+          ...installments.map<UnitPriceSpecification>(
+            (value, i) => {
+              const [description, billingIncrement] = !i
+                ? ["À vista", lowPrice]
+                : [i + 1 + " vezes sem juros", value];
+              return {
+                "@type": "UnitPriceSpecification",
+                priceType: "https://schema.org/SalePrice",
+                priceComponentType: "https://schema.org/Installment",
+                description,
+                billingDuration: i + 1,
+                billingIncrement,
+                price: lowPrice,
+              };
+            },
+          ),
+        ],
       },
     ],
   };
@@ -343,9 +480,10 @@ const toAdditionalProperties = (
     return Object.entries(tags).map((v) => ({
       "@type": "PropertyValue" as const,
       propertyID: "TAG",
-      name: v[1].type,
+      name: "tag",
       identifier: v[0].toUpperCase(),
-      value: v[1].value ?? true,
+      value: v[1].type,
+      valueReference: v[1].value,
     }));
   };
 
@@ -355,13 +493,14 @@ const toAdditionalProperties = (
     name: "color",
     value: sku.color.name,
     unitCode: sku.color.hex,
+    valueReference: "SPECIFICATION",
   });
 
   const specificationsProperties = (): PropertyValue[] =>
     sku.specifications.map(({ id, value, label }) => ({
       "@type": "PropertyValue" as const,
-      propertyID: "SPECIFICATION",
-      name: "specification",
+      propertyID: "TECNICALSPECIFICATION",
+      name: "tecnicalSpecification",
       identifier: id,
       value,
       description: label,
@@ -371,9 +510,10 @@ const toAdditionalProperties = (
     sku.kitItems.map(({ name, quantity, dimensions }) => ({
       "@type": "PropertyValue" as const,
       propertyID: "KITITEM",
-      name,
-      value: quantity,
+      name: "kitItem",
+      value: name,
       description: dimensions,
+      valueReference: quantity,
     }));
 
   const simpleProperties = () =>
@@ -390,6 +530,9 @@ const toAdditionalProperties = (
           propertyID: k.toUpperCase(),
           name: k,
           value: obj![k as keyof T]?.toString(),
+          valueReference: typeChecher<AmmoProduct>(obj as AmmoProduct, "id")
+            ? undefined
+            : "SPECIFICATION",
         }];
       },
       [],
@@ -397,7 +540,6 @@ const toAdditionalProperties = (
 
   return [
     ...simpleProperties(),
-    ...tagsProperties(),
     ...typeChecher<AmmoProduct>(obj as AmmoProduct, "id")
       ? PROPS_AMMO_API.product.simpleArrayProps.flatMap((i) => {
         const prop = obj[i as keyof T];
@@ -415,5 +557,73 @@ const toAdditionalProperties = (
         ...specificationsProperties(),
         ...kitItemsProperties(),
       ],
+    ...tagsProperties(),
   ];
+};
+export function toProductSuggestionItems(
+  productItem: ProductItem,
+  config: VMConfig,
+): Product {
+  const product: Product = {
+    "@type": "Product",
+    productID: productItem.productId,
+    name: productItem.title,
+    sku: productItem.sku,
+    description: productItem.description,
+    brand: {
+      "@type": "Brand",
+      "@id": productItem.brand.name,
+    },
+    inProductGroupWithID: productItem.groupKey,
+    offers: toAggregateOffer({
+      productItem,
+      config,
+    }),
+
+    image: toImageItem(productItem),
+    url: productItem.site,
+    category: productItem.macroCategory,
+  };
+
+  return product;
+}
+
+const toImageItem = (
+  productItem: ProductItem,
+): ImageObject[] => {
+  const imageInfo: ImageObject[] = [];
+  const { title } = productItem;
+
+  if (productItem.photo180) {
+    imageInfo.push({
+      "@type": "ImageObject" as const,
+      url: productItem.photo180,
+      additionalType: "image",
+      alternateName: title,
+      disambiguatingDescription: `panoramics`,
+    });
+  }
+  if (productItem.youtubeVideo) {
+    imageInfo.push({
+      "@type": "ImageObject" as const,
+      url: `https://www.youtube.com/watch?v=${productItem.youtubeVideo}`,
+      additionalType: "video",
+      alternateName: title,
+      disambiguatingDescription: `video`,
+    });
+  }
+  if (productItem.photoDetails) {
+    const photoDetailsItems: Detail[] = JSON.parse(productItem.photoDetails);
+    photoDetailsItems.map((detail) => (
+      imageInfo.push({
+        "@type": "ImageObject" as const,
+        url: detail.url,
+        additionalType: "image",
+        alternateName: title,
+        disambiguatingDescription: `detail`,
+      })
+    ));
+  }
+
+  return imageInfo;
 };

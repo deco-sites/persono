@@ -1,9 +1,13 @@
 import {
+  AutoComplete,
   Bag,
   BagItems,
   Config,
+  ProductDetails,
   ShippingSimulation,
   UserInfo,
+  VMDetails,
+  VMDetailsRedirect,
 } from "$store/packs/types.ts";
 export default interface Ammo {
   "GET /api/bag": {
@@ -74,6 +78,42 @@ export default interface Ammo {
       "x-ammo-device-id": string;
       "x-api-key": string;
       "x-ammo-token": string;
+    };
+  };
+  "GET /api/product/sku/:sku": {
+    response: ProductDetails;
+    headers: {
+      "x-ammo-device-id": string;
+      "x-api-key": string;
+      "x-ammo-token": string;
+    };
+  };
+  "GET /api/product-catalog/resolve-route": {
+    response: VMDetails | VMDetailsRedirect;
+    headers: {
+      "x-ammo-device-id": string;
+      "x-api-key": string;
+      "x-ammo-token": string;
+    };
+  };
+  "GET /search/autocomplete": {
+    response: AutoComplete;
+    searchParams: {
+      query: string;
+      "types[]": string;
+    };
+    headers: {
+      "x-ammo-device-id": string;
+      "x-api-key": string;
+      "x-ammo-token": string;
+    };
+  };
+  "GET /api/search/query-vinhedo-sku": {
+    response: UserInfo;
+    searchParams: {
+      query: string;
+      "types[0][limit]": number;
+      "types[0][type]": string;
     };
   };
 }

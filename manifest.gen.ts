@@ -8,11 +8,14 @@ import * as $$$2 from "./loaders/actions/cart/removeCoupon.ts";
 import * as $$$3 from "./loaders/actions/cart/removeItem.ts";
 import * as $$$4 from "./loaders/cart.ts";
 import * as $$$5 from "./loaders/config.ts";
-import * as $$$6 from "./loaders/Layouts/ProductCard.tsx";
-import * as $$$7 from "./loaders/List/Sections.tsx";
-import * as $$$8 from "./loaders/product/productListingPage.ts";
-import * as $$$9 from "./loaders/shippingSimulation.ts";
-import * as $$$10 from "./loaders/userInfo.ts";
+import * as $$$6 from "./loaders/Layouts/Benefits.tsx";
+import * as $$$7 from "./loaders/Layouts/ProductCard.tsx";
+import * as $$$8 from "./loaders/List/Sections.tsx";
+import * as $$$9 from "./loaders/product/productDetails.ts";
+import * as $$$10 from "./loaders/product/productListingPage.ts";
+import * as $$$11 from "./loaders/shippingSimulation.ts";
+import * as $$$12 from "./loaders/suggestions.ts";
+import * as $$$13 from "./loaders/userInfo.ts";
 import * as $$$$$$0 from "./sections/Animation/Animation.tsx";
 import * as $$$$$$1 from "./sections/Category/CategoryBanner.tsx";
 import * as $$$$$$2 from "./sections/Category/CategoryList.tsx";
@@ -59,11 +62,14 @@ const manifest = {
     "deco-sites/persono/loaders/actions/cart/removeItem.ts": $$$3,
     "deco-sites/persono/loaders/cart.ts": $$$4,
     "deco-sites/persono/loaders/config.ts": $$$5,
-    "deco-sites/persono/loaders/Layouts/ProductCard.tsx": $$$6,
-    "deco-sites/persono/loaders/List/Sections.tsx": $$$7,
-    "deco-sites/persono/loaders/product/productListingPage.ts": $$$8,
-    "deco-sites/persono/loaders/shippingSimulation.ts": $$$9,
-    "deco-sites/persono/loaders/userInfo.ts": $$$10,
+    "deco-sites/persono/loaders/Layouts/Benefits.tsx": $$$6,
+    "deco-sites/persono/loaders/Layouts/ProductCard.tsx": $$$7,
+    "deco-sites/persono/loaders/List/Sections.tsx": $$$8,
+    "deco-sites/persono/loaders/product/productDetails.ts": $$$9,
+    "deco-sites/persono/loaders/product/productListingPage.ts": $$$10,
+    "deco-sites/persono/loaders/shippingSimulation.ts": $$$11,
+    "deco-sites/persono/loaders/suggestions.ts": $$$12,
+    "deco-sites/persono/loaders/userInfo.ts": $$$13,
   },
   "sections": {
     "deco-sites/persono/sections/Animation/Animation.tsx": $$$$$$0,
