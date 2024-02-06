@@ -16,7 +16,10 @@ import {
   AmmoProduct,
   Breadcrumb,
   Config,
+  Detail,
   Photos,
+  ProductItem,
+  RelatedFilters,
   Sku,
   Value,
   VMDetails,
@@ -44,6 +47,7 @@ interface ProductDetailsPageProps {
 interface SkuAndProduct {
   sku?: Sku;
   ammoProduct: AmmoProduct;
+  productItem?: ProductItem;
   config: VMConfig | PDPConfig;
 }
 
@@ -339,18 +343,18 @@ const toImage = (
 };
 
 const toProductGroup = (
-  { ammoProduct, sku, baseUrl, config }: Required<SkuAndProduct> & {
+  { ammoProduct, sku, baseUrl, config }: SkuAndProduct & {
     baseUrl: URL;
   },
 ): ProductGroup => {
   const { title, skus } = ammoProduct;
-  const url = new URL(sku.url, baseUrl.origin).href;
+  const url = new URL(sku?.url ?? "", baseUrl.origin).href;
   return {
     "@type": "ProductGroup" as const,
     productGroupID: ammoProduct.groupKey!,
     name: title.trim(),
     url,
-    model: sku.ean,
+    model: sku?.ean ?? "",
     hasVariant: skus!.map((thisSku) => ({
       "@type": "Product" as const,
       category: ammoProduct.category,
@@ -395,12 +399,16 @@ const toProductGroup = (
 };
 
 const toAggregateOffer = (
-  { ammoProduct, sku, config }: Partial<SkuAndProduct>,
+  { ammoProduct, sku, productItem, config }: Partial<SkuAndProduct>,
 ): AggregateOffer => {
   const { minInstallmentValue, maxInstallments } = config!;
-  const highPrice = (ammoProduct?.price?.max ?? sku!.price.from) / 100;
-  const lowPrice = (ammoProduct?.price?.min ?? sku!.price.to) / 100;
-  const available = ammoProduct?.available ?? sku?.available!;
+  const highPrice =
+    (ammoProduct?.price?.max ?? productItem?.priceFrom ?? sku!.price.from) /
+    100;
+  const lowPrice =
+    (ammoProduct?.price?.min ?? productItem?.priceTo ?? sku!.price.to) / 100;
+  const available = ammoProduct?.available ?? productItem?.available ??
+    sku?.available!;
   const possibleInstallmentsQtd =
     Math.floor(lowPrice / (minInstallmentValue / 100)) ||
     1;
@@ -508,6 +516,37 @@ const toAdditionalProperties = (
       valueReference: quantity,
     }));
 
+  const relatedFiltersProperties = (): PropertyValue[] => {
+    const { relatedFilters } = obj as AmmoProduct;
+    if (!relatedFilters) {
+      return [];
+    }
+    return Object.keys(relatedFilters).flatMap((rf) =>
+      relatedFilters[rf as keyof RelatedFilters].map((
+        { link, label },
+      ) => ({
+        "@type": "PropertyValue" as const,
+        propertyID: "RELATEDFILTER",
+        name: "relatedFilter",
+        valueReference: rf,
+        value: link,
+        description: label,
+      }))
+    );
+  };
+
+  const emotionalAttributes = (): PropertyValue[] => {
+    const { emotionalAttributes } = obj as AmmoProduct;
+    return emotionalAttributes?.map(({ id, name, value }) => ({
+      "@type": "PropertyValue" as const,
+      propertyID: "EMOTIONALATTRIBUTE",
+      name: "emotionalAttribute",
+      valueReference: id,
+      value,
+      description: name,
+    })) ?? [];
+  };
+
   const simpleProperties = () =>
     Object.keys(obj!).reduce<PropertyValue[]>(
       (acc, k) => {
@@ -533,17 +572,7 @@ const toAdditionalProperties = (
   return [
     ...simpleProperties(),
     ...typeChecher<AmmoProduct>(obj as AmmoProduct, "id")
-      ? PROPS_AMMO_API.product.simpleArrayProps.flatMap((i) => {
-        const prop = obj[i as keyof T];
-        if (!prop) return [];
-        const propName = prop.toString();
-        return Object.values(prop).map((p) => ({
-          "@type": "PropertyValue" as const,
-          propertyID: propName.toUpperCase(),
-          name: propName,
-          value: p,
-        }));
-      })
+      ? [...relatedFiltersProperties(), ...emotionalAttributes()]
       : [
         colorProperty(),
         ...specificationsProperties(),
@@ -551,4 +580,71 @@ const toAdditionalProperties = (
       ],
     ...tagsProperties(),
   ];
+};
+export function toProductSuggestionItems(
+  productItem: ProductItem,
+  config: VMConfig,
+): Product {
+  const product: Product = {
+    "@type": "Product",
+    productID: productItem.productId,
+    name: productItem.title,
+    sku: productItem.sku,
+    description: productItem.description,
+    brand: {
+      "@type": "Brand",
+      "@id": productItem.brand.name,
+    },
+    inProductGroupWithID: productItem.groupKey,
+    offers: toAggregateOffer({
+      productItem,
+      config,
+    }),
+
+    image: toImageItem(productItem),
+    url: productItem.site,
+    category: productItem.macroCategory,
+  };
+
+  return product;
+}
+
+const toImageItem = (
+  productItem: ProductItem,
+): ImageObject[] => {
+  const imageInfo: ImageObject[] = [];
+  const { title } = productItem;
+
+  if (productItem.photo180) {
+    imageInfo.push({
+      "@type": "ImageObject" as const,
+      url: productItem.photo180,
+      additionalType: "image",
+      alternateName: title,
+      disambiguatingDescription: `panoramics`,
+    });
+  }
+  if (productItem.youtubeVideo) {
+    imageInfo.push({
+      "@type": "ImageObject" as const,
+      url: `https://www.youtube.com/watch?v=${productItem.youtubeVideo}`,
+      additionalType: "video",
+      alternateName: title,
+      disambiguatingDescription: `video`,
+    });
+  }
+  if (productItem.photoDetails) {
+    const photoDetailsItems: Detail[] = JSON.parse(productItem.photoDetails);
+    photoDetailsItems.map((detail) => (
+      imageInfo.push({
+        "@type": "ImageObject" as const,
+        url: detail.url,
+        additionalType: "image",
+        alternateName: title,
+        disambiguatingDescription: `detail`,
+      })
+    ));
+  }
+
+  return imageInfo;
 };

@@ -4,7 +4,6 @@ import { VMDetails, VMDetailsRedirect } from "$store/packs/types.ts";
 import { getHeaders } from "$store/packs/utils/headers.ts";
 import { toProductListingPage } from "$store/packs/utils/transform.ts";
 import { typeChecher } from "$store/packs/utils/utils.ts";
-import type { VMConfig } from "$store/packs/utils/transform.ts";
 
 export interface Props {
   /**
@@ -59,7 +58,7 @@ const loader = async (
   req: Request,
   ctx: AppContext,
 ): Promise<ProductListingPage | null> => {
-  const { ammoc, apiKey } = ctx;
+  const { ammoc, apiKey, config } = ctx;
   const { vm } = props;
   const url = new URL(req.url);
   const headers = getHeaders(req, apiKey);
@@ -101,17 +100,11 @@ const loader = async (
       ) as Response;
     const data = await response.json();
 
-    //TODO: FIX CONFIG CALL
-    const vmConfig = await ctx
-      .invoke["deco-sites/persono"].loaders.config({
-        fields: ["maxInstallments", "minInstallmentValue", "vmItemsPerPage"],
-      }).then((c: VMConfig) => c);
-
     if (typeChecher<VMDetails>(data as VMDetails, "basePath")) {
       return toProductListingPage({
         vmDetails: data as VMDetails,
         url,
-        vmConfig,
+        vmConfig: config,
       });
     }
     const redirectPath = data as VMDetailsRedirect;
@@ -126,7 +119,7 @@ const loader = async (
     return toProductListingPage({
       vmDetails: await redirectedResponse.json() as VMDetails,
       url,
-      vmConfig,
+      vmConfig: config,
     });
   } catch (error) {
     console.error(error);

@@ -1,8 +1,10 @@
 import {
+  AutoComplete,
   Bag,
   BagItems,
   Config,
   ProductDetails,
+  Recommendations,
   ShippingSimulation,
   UserInfo,
   VMDetails,
@@ -93,6 +95,37 @@ export default interface Ammo {
       "x-ammo-device-id": string;
       "x-api-key": string;
       "x-ammo-token": string;
+    };
+  };
+  "POST /api/recommendation": {
+    response: Recommendations;
+    headers: {
+      "x-ammo-device-id": string;
+      "x-api-key": string;
+      "x-ammo-token"?: string;
+      "Content-Type": "application/x-www-form-urlencoded";
+    };
+    body: URLSearchParams;
+
+    "GET /search/autocomplete": {
+      response: AutoComplete;
+      searchParams: {
+        query: string;
+        "types[]": string;
+      };
+      headers: {
+        "x-ammo-device-id": string;
+        "x-api-key": string;
+        "x-ammo-token": string;
+      };
+    };
+    "GET /api/search/query-vinhedo-sku": {
+      response: UserInfo;
+      searchParams: {
+        query: string;
+        "types[0][limit]": number;
+        "types[0][type]": string;
+      };
     };
   };
 }
