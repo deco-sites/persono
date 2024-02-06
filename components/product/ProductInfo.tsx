@@ -17,14 +17,6 @@ import { Resolved } from "deco/mod.ts";
 import { ShippingSimulation as ShippingSimulationLoader } from "deco-sites/persono/packs/types.ts";
 
 interface Props {
-  layout: {
-    /**
-     * @title Product Name
-     * @description How product title will be displayed. Concat to concatenate product and sku names.
-     * @default product
-     */
-    name?: "concat" | "productGroup" | "product";
-  };
   colors: Color[];
   benefits: Benefits[];
   shippingSimulation: Resolved<ShippingSimulationLoader>;
@@ -32,7 +24,7 @@ interface Props {
 }
 
 function ProductInfo(
-  { page, layout, colors, benefits, shippingSimulation }: Props,
+  { page, colors, benefits, shippingSimulation }: Props,
 ) {
   const platform = usePlatform();
   const id = useId();
@@ -48,17 +40,14 @@ function ProductInfo(
     name = "",
     gtin,
     isVariantOf,
-    additionalProperty = [],
   } = product;
   const description = product.description || isVariantOf?.description;
   const {
     price = 0,
     listPrice,
-    seller = "1",
     installments,
     availability,
   } = useOfferWithoutTaxes(offers);
-  const productGroupID = isVariantOf?.productGroupID ?? "";
   const breadcrumb = {
     ...breadcrumbList,
     itemListElement: breadcrumbList?.itemListElement.slice(0, -1),
