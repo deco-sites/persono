@@ -27,11 +27,9 @@ export async function getSuggestionsItems(
     return [];
   }
 
-  const productSuggestionPromises = productItems.map((item: ProductItem) =>
+  const [productSuggestion] = productItems.map((item: ProductItem) =>
     toProductSuggestionItems(item, config)
   );
-
-  const productSuggestion = await Promise.all(productSuggestionPromises);
 
   return productSuggestion;
 }
