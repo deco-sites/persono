@@ -28,18 +28,7 @@ function VariantSelector({ product, colors }: Props) {
         Object.entries(possibilities[name]).map(([_value, link]) => {
           if (link.url == url) {
             colorsPossibilities = possibilities[name];
-          }
-        });
-      }
-    });
-  }
-
-  {
-    Object.keys(possibilities).map((name) => {
-      {
-        Object.entries(possibilities[name]).map(([_value, link]) => {
-          if (link.url == url) {
-            color = link.value;
+             color = link.value;
           }
         });
       }
