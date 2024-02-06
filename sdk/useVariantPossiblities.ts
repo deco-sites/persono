@@ -15,6 +15,14 @@ type Result = {
   url: string | undefined;
 };
 
+export interface GroupedData {
+  [key: string]: Array<{
+    name: string;
+    value: string;
+    url: string;
+  }>;
+}
+
 const hash = ({ name, value }: PropertyValue) => `${name}::${value}`;
 
 const omit = new Set(["tecnicalSpecification", "kitItem", "tag"]);
@@ -22,25 +30,25 @@ const omit = new Set(["tecnicalSpecification", "kitItem", "tag"]);
 export const useVariantPossibilities = (
   variants: ProductLeaf[],
   selected: ProductGroup | undefined,
-): Possibilities => {
+): GroupedData => {
   const possibilities: Possibilities = {};
-  if (!selected) return possibilities;
+  const groupedData: GroupedData = {};
+  if (!selected) return groupedData;
 
   const selectedSpecs = new Set(selected.additionalProperty?.map(hash));
 
   const sku = selected.url?.split("/")[selected.url?.split("/").length - 1];
   const result: Result[] = [];
   const newSpecs: NewSpecs[] = [];
+  const urlArr: string[] = [];
   for (const variant of variants) {
     const { url, additionalProperty = [], productID } = variant;
-    const isSelected = productID === sku;
+    const _isSelected = productID === sku;
     const specs = additionalProperty.filter(({ name }) => !omit.has(name!));
 
     specs.map((s) =>
       newSpecs.push({ name: s.value, value: s.value, label: s.name })
     );
-
-    // console.log(newSpecs)
 
     for (let it = 0; it < specs.length; it++) {
       const name = specs[it].name!;
@@ -52,39 +60,46 @@ export const useVariantPossibilities = (
         possibilities[name] = {};
       }
 
-      // console.log({name,value})
       // First row is always selectable
-      const isSelectable = it === 0 ||
+      const _isSelectable = it === 0 ||
         specs.every((s) => s.name === name || selectedSpecs.has(hash(s)));
 
-      possibilities[name][value] = isSelected
-        ? url
-        : isSelectable
-        ? possibilities[name][value] || url
-        : possibilities[name][value];
+      possibilities[name][value] = url;
 
-      // console.log({name,value})
+      if (url && !urlArr.includes(url)) {
+        urlArr.push(url);
+      }
     }
   }
 
   newSpecs.map((item, idx) => {
-    console.log(
-      item.value,
-      item.label,
-      possibilities[String(item.label)][String(item.value)],
-    );
     if (idx % 2 != 0) {
-      const url = possibilities[String(item.label)][String(item.value)];
       result.push({
         name: newSpecs[idx - 1].value,
         value: item.value,
-        url: url,
+        url: "url",
       });
     }
   });
 
-  // console.log(possibilities);
-  // console.log(newSpecs);
+  const updatedResult = result.map((obj, index) => {
+    return { ...obj, url: urlArr[index] };
+  });
 
-  return possibilities;
+  const organizedData: GroupedData = updatedResult.reduce(
+    (acc, obj) => {
+      const key = obj.name;
+      const value = obj.value;
+      if (key !== undefined && value !== undefined) {
+        if (!acc[key]) {
+          acc[key] = [];
+        }
+        acc[key].push({ name: key, value, url: obj.url });
+      }
+      return acc;
+    },
+    {} as GroupedData
+  );
+
+  return organizedData;
 };
