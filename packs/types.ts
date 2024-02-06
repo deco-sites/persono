@@ -16,11 +16,11 @@ export interface AmmoProduct {
   bundle?: Bundle;
   active?: boolean;
   description?: string;
-  emotionalAttributes?: string[]; //unknown
+  emotionalAttributes?: EmotionalAttributes[];
   groupKey?: string;
   isActiveBundlePickupInStore?: boolean;
   line?: string;
-  relatedFilters?: string[]; //unknown
+  relatedFilters?: RelatedFilters;
   selectedSku?: string;
   sizeType?: string;
   skus?: Sku[];
@@ -35,6 +35,23 @@ export interface AmmoProduct {
   sku?: string;
   tags?: Tags;
   url?: string;
+}
+
+export interface EmotionalAttributes {
+  id: string;
+  name: string;
+  value: string;
+}
+
+export interface RelatedFilters {
+  color: LinkAndLabel[];
+  size: LinkAndLabel[];
+  category: LinkAndLabel[];
+}
+
+export interface LinkAndLabel {
+  link: string;
+  label: string;
 }
 
 export interface Breadcrumb {
@@ -1082,4 +1099,155 @@ export type FnCustomContext = SiteProps & DefaultFnContext;
 export interface InstallmentConfig {
   maxInstallments: number;
   minInstallmentValue: number;
+}
+export interface VinhedoSku {
+  type: string;
+  label: string;
+  total: number;
+  productItems: ProductItem[];
+  weddingItems: string[];
+  productCards: ProductCard[];
+}
+
+export interface ProductItem {
+  bundle: string;
+  ERPTitle: string;
+  active: boolean;
+  available: boolean;
+  brand: BrandItem;
+  rawCategory: string;
+  collection: string;
+  color: string;
+  description: string;
+  details: string;
+  ean: string;
+  group: string;
+  groupKey: string;
+  hasRequiredData: boolean;
+  height: number;
+  hex: string;
+  isBundle: boolean;
+  isBlackFridayPromoItem: boolean;
+  isNewRelease: boolean;
+  keywords: string;
+  kitItems: KitItem[];
+  length: number;
+  lineName: string;
+  macroCategory: string;
+  rawMacroCategory: string;
+  stock: number;
+  occasion: string;
+  origin: string;
+  dataOwner: string;
+  priceOwner: string;
+  outlet: boolean;
+  photo180: string;
+  photoBannerBG: string;
+  photoBannerFG: string;
+  photoDetails: string;
+  photoSemiEnvironment: string;
+  photoStill: string;
+  priceFrom: number;
+  priceTo: number;
+  productId: string;
+  profile: string;
+  season: string;
+  segment: string;
+  rawSegment: string;
+  site: string;
+  sku: string;
+  technicalFile: string;
+  title: string;
+  touch: string;
+  unitOfMeasurement: string;
+  virtual: boolean;
+  weight: number;
+  grossWeight: number;
+  width: number;
+  youtubeVideo: string;
+  isActivePickupInStore: boolean;
+  template: string;
+  cashback: string;
+  isOutlisted: boolean;
+  customTagValue: string;
+  customTagColor: string;
+  attributes: Attributes;
+  bedSize: string;
+  stocks: Stock[];
+}
+
+export interface BrandItem {
+  id: number;
+  initials: string;
+  name: string;
+  shortName: string;
+  description: string;
+  logo: string;
+  group: string;
+  site: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string;
+}
+
+export interface KitItem {
+  name: string;
+  quantity: string;
+  dimensions: string;
+}
+
+export interface Attributes {
+  baseColor: string;
+  brandName: string;
+  category: string;
+  gender: string;
+  curtainLength: string;
+  curtainLuminosity: string;
+  curtainSize: string;
+  curtainType: string;
+  isPromotion: boolean;
+  line: string;
+  size: string;
+  sizeType: string;
+  fabric: string;
+  finishing: string;
+  composition: string;
+  threads: string;
+}
+
+export interface Stock {
+  distributorId: string;
+  stock: number;
+}
+
+export interface ProductCard {
+  id: string;
+  url: string;
+  title: string;
+  sku: string;
+  size: string;
+  brand: string;
+  segment: string;
+  macroCategory: string;
+  category: string;
+  image: string;
+  hoverImage: string;
+  price: Price;
+  cashback: string;
+  tags: Tags;
+  available: boolean;
+}
+
+export interface Price {
+  min: number;
+  max: number;
+  type: number;
+}
+
+export interface AutoComplete {
+  data: Term[];
+}
+
+export interface Term {
+  term: string;
 }
