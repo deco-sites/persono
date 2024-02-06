@@ -117,5 +117,4 @@ const formatBaseVmPath = (str: string) => {
   str = str.endsWith("/") ? str.slice(0, -1) : str;
   return str;
 };
-
 export default loader;
