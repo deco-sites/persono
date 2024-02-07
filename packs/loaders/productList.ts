@@ -48,7 +48,6 @@ interface TermProps {
 /**
  * @title Ammo Varejo - Vitrines
  * @description Vitrines multifuncionais que podem ser empregadas de diversas formas no site.
- * 
  */
 const loader = async (
   extendedProps: Props,

@@ -1,7 +1,7 @@
 import { ImageWidget } from "apps/admin/widgets.ts";
 
 export interface Benefits {
-  icon: ImageWidget;
+  Icon: ImageWidget;
   label: string;
   description: string;
 }

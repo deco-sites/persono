@@ -12,7 +12,7 @@ function Product(props: Props) {
         class={`flex flex-col gap-3 w-full h-full`}
       >
         <div class="flex items-center">
-          <img src={benefit.icon} />
+          <img src={benefit.Icon} />
         </div>
         <div class="flex flex-col gap-3">
           <div
