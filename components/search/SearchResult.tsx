@@ -7,6 +7,8 @@ import { useOffer } from "$store/sdk/useOffer.ts";
 import type { ProductListingPage } from "apps/commerce/types.ts";
 import { mapProductToAnalyticsItem } from "apps/commerce/utils/productToAnalyticsItem.ts";
 import ProductGallery, { Columns } from "../product/ProductGallery.tsx";
+import Image from "apps/website/components/Image.tsx";
+import { Logo } from "deco-sites/persono/components/ui/Logo.tsx";
 
 export interface Layout {
   /**
@@ -39,6 +41,9 @@ function Result({
 }: Omit<Props, "page"> & { page: ProductListingPage }) {
   const { products, filters, breadcrumb, pageInfo, sortOptions } = page;
   const perPage = pageInfo.recordPerPage || products.length;
+  const productCategory = products.map((p) => p.category)[0]?.split(">")[0];
+
+  console.log(productCategory)
 
   const id = useId();
 
@@ -47,7 +52,13 @@ function Result({
 
   return (
     <>
-      <div class="container px-4 sm:py-10">
+      <div class="h-48 w-full bg-base-300 flex items-center justify-between overflow-hidden mb-14">
+        <h2 class="pl-20 text-[3.5rem] text-black">{productCategory}</h2>
+        <div class="pr-14 w-96">
+          <Logo onlySymbol />
+        </div>
+      </div>
+      <div class="px-20">
         <SearchControls
           sortOptions={sortOptions}
           filters={filters}
@@ -61,7 +72,7 @@ function Result({
               <Filters filters={filters} />
             </aside>
           )}
-          <div class="flex-grow" id={id}>
+          <div class="flex-grow mt-6" id={id}>
             <ProductGallery
               products={products}
               offset={offset}
