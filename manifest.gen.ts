@@ -71,9 +71,10 @@ const manifest = {
     "deco-sites/persono/loaders/product/productDetails.ts": $$$9,
     "deco-sites/persono/loaders/product/productList.ts": $$$10,
     "deco-sites/persono/loaders/product/productListingPage.ts": $$$11,
-    "deco-sites/persono/loaders/shippingSimulation.ts": $$$12,
-    "deco-sites/persono/loaders/suggestions.ts": $$$13,
-    "deco-sites/persono/loaders/userInfo.ts": $$$14,
+    "deco-sites/persono/loaders/product/productSearchPage.ts": $$$12,
+    "deco-sites/persono/loaders/shippingSimulation.ts": $$$13,
+    "deco-sites/persono/loaders/suggestions.ts": $$$14,
+    "deco-sites/persono/loaders/userInfo.ts": $$$15,
   },
   "sections": {
     "deco-sites/persono/sections/About/InfoCard.tsx": $$$$$$0,
