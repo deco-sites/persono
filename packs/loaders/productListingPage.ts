@@ -58,7 +58,7 @@ const loader = async (
   req: Request,
   ctx: AppContext,
 ): Promise<ProductListingPage | null> => {
-  const { ammoc, apiKey, config } = ctx;
+  const { ammoc, apiKey, config, imageBaseUrl } = ctx;
   const { vm } = props;
   const url = new URL(req.url);
   const headers = getHeaders(req, apiKey);
@@ -105,6 +105,7 @@ const loader = async (
         vmDetails: data as VMDetails,
         url,
         vmConfig: config,
+        imageBaseUrl,
       });
     }
     const redirectPath = data as VMDetailsRedirect;
@@ -120,6 +121,7 @@ const loader = async (
       vmDetails: await redirectedResponse.json() as VMDetails,
       url,
       vmConfig: config,
+      imageBaseUrl,
     });
   } catch (error) {
     console.error(error);

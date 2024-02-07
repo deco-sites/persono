@@ -18,7 +18,7 @@ const loader = async (
   req: Request,
   ctx: AppContext,
 ): Promise<ProductDetailsPage | null> => {
-  const { ammoc, apiKey, config } = ctx;
+  const { ammoc, apiKey, config, imageBaseUrl } = ctx;
   const { sku } = props;
   const url = new URL(req.url);
   const headers = getHeaders(req, apiKey);
@@ -38,6 +38,7 @@ const loader = async (
       ammoProduct: data as AmmoProduct,
       url,
       pdpConfig: config,
+      imageBaseUrl,
     });
   } catch (error) {
     console.error(error);

@@ -107,7 +107,8 @@ export const BannerActionLayout = ({ action }: { action: ActionProps }) => {
           dangerouslySetInnerHTML={{
             __html: action.title ?? "",
           }}
-        ></span>
+        >
+        </span>
       )}
       {action?.subTitle && (
         <span
@@ -115,7 +116,8 @@ export const BannerActionLayout = ({ action }: { action: ActionProps }) => {
           dangerouslySetInnerHTML={{
             __html: action.subTitle ?? "",
           }}
-        ></span>
+        >
+        </span>
       )}
       {action?.label && (
         <button class="btn w-full max-w-[117px] md:max-w-[396px] text-blueNew bg-white h-9 rounded-xl">
