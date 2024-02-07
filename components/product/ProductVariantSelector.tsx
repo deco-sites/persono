@@ -17,7 +17,7 @@ function VariantSelector({ product, colors }: Props) {
   const hasVariant = isVariantOf?.hasVariant ?? [];
   const possibilities: GroupedData = useVariantPossibilities(
     hasVariant,
-    isVariantOf
+    isVariantOf,
   );
 
   let colorsPossibilities: Possibilities[] = [];
@@ -63,9 +63,11 @@ function VariantSelector({ product, colors }: Props) {
                   <AvatarSize
                     name={cp.name}
                     content={cp.name}
-                    variant={
-                      cp.url === url ? "active" : cp ? "default" : "disabled"
-                    }
+                    variant={cp.url === url
+                      ? "active"
+                      : cp
+                      ? "default"
+                      : "disabled"}
                   />
                 </button>
               </li>
@@ -83,9 +85,11 @@ function VariantSelector({ product, colors }: Props) {
                 color={colors}
                 name={cp.name}
                 content={cp.value}
-                variant={
-                  cp.url === url ? "active" : cp ? "default" : "disabled"
-                }
+                variant={cp.url === url
+                  ? "active"
+                  : cp
+                  ? "default"
+                  : "disabled"}
               />
             </button>
           ))}
