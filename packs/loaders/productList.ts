@@ -75,7 +75,9 @@ const loader = async (
           },
         ) as Response;
       const { productCards } = await res.json();
-      return productCards.map((p: AmmoProduct) => toProduct(p, url, config, imageBaseUrl));
+      return productCards.map((p: AmmoProduct) =>
+        toProduct(p, url, config, imageBaseUrl)
+      );
     }
 
     if (
@@ -95,7 +97,9 @@ const loader = async (
       );
 
       const { data } = await res.json();
-      return data.products.map((p: AmmoProduct) => toProduct(p, url, config, imageBaseUrl));
+      return data.products.map((p: AmmoProduct) =>
+        toProduct(p, url, config, imageBaseUrl)
+      );
     }
 
     if (typeChecher<TermProps>(props as TermProps, "query")) {
