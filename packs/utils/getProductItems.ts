@@ -10,7 +10,7 @@ export async function getProductItems(
   limit?: number,
   offset?: number,
 ): Promise<Product[]> {
-  const { ammoc, config, imageBaseUrl} = ctx;
+  const { ammoc, config, imageBaseUrl } = ctx;
   const response = await ammoc
     ["GET /api/search/query-vinhedo-sku"](
       {
