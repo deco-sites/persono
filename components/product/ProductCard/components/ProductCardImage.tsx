@@ -1,11 +1,15 @@
 import Image from "apps/website/components/Image.tsx";
-import { TagColor } from "deco-sites/persono/components/product/ProductCard/index.tsx";
+import {
+  DefaultTags,
+  TagColor,
+} from "deco-sites/persono/components/product/ProductCard/index.tsx";
+import { useMemo } from "preact/compat";
 
 export interface HighlightTagProps {
   customTagColor?: TagColor;
   hasCustomTag?: { color: string; label: string };
-  hasNewsTag?: string;
-  hasDiscountTag?: string;
+  hasNewsTag?: DefaultTags;
+  hasDiscountTag?: DefaultTags;
 }
 
 interface Props extends HighlightTagProps {
@@ -60,32 +64,54 @@ export const HighlightTag = ({
   hasNewsTag,
   hasDiscountTag,
 }: HighlightTagProps) => {
-  const {
-    backgroundColor: customTagBackGround = "",
-    textColor: customTagTextColor = "",
-  } = customTagColor?.[hasCustomTag?.color ?? ""] ?? {};
+  // News tag
+  const { label: newsTagLabel, colors: newsTagColors } = hasNewsTag ?? {};
 
-  const label = hasNewsTag
-    ? hasNewsTag
-    : !!hasCustomTag
-    ? hasCustomTag.label
-    : hasDiscountTag;
+  // Discount tag
+  const { label: discountTagLabel, colors: discountTagColors } =
+    hasDiscountTag ?? {};
 
-  const styleProps = !!hasNewsTag
-    ? {}
-    : {
-        backgroundColor: customTagBackGround,
-        color: customTagTextColor,
+  // Custom tag
+  const { color: custonTagColorIdentifier, label: customTagLabel } =
+    hasCustomTag ?? {};
+
+  const customTagColors = customTagColor?.[custonTagColorIdentifier ?? ""];
+
+  const taglabel = newsTagLabel ?? customTagLabel ?? discountTagLabel;
+
+  const tagStyleColorSettings = useMemo(() => {
+    if (newsTagColors && newsTagLabel) {
+      return {
+        backgroundColor: newsTagColors.backgroundColor,
+        color: newsTagColors.textColor,
       };
+    }
+
+    if (customTagColors && customTagLabel) {
+      return {
+        backgroundColor: customTagColors.backgroundColor,
+        color: customTagColors.textColor,
+      };
+    }
+
+    if (discountTagColors && discountTagLabel) {
+      return {
+        backgroundColor: discountTagColors.backgroundColor,
+        color: discountTagColors.textColor,
+      };
+    }
+  }, []);
+
+  if (!taglabel || !tagStyleColorSettings) {
+    return null;
+  }
 
   return (
     <span
-      style={styleProps}
-      className={`py-1 px-3 flex absolute rounded-br-xl justify-center items-center text-sm ${
-        hasNewsTag ? "bg-blueNew" : !!hasCustomTag ? "" : "bg-black"
-      } ${!!hasCustomTag ? "" : "text-white"}`}
+      style={tagStyleColorSettings}
+      class="py-1 px-3 flex absolute rounded-br-xl justify-center items-center text-sm "
     >
-      {label}
+      {taglabel}
     </span>
   );
 };

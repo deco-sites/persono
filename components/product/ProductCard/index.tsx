@@ -9,6 +9,7 @@ import { generateColorObject } from "deco-sites/persono/components/product/Produ
 
 export interface Layout {
   customTagColors?: CustomTagColor[];
+  defaultTags?: DefaultTagsColors;
 }
 
 export interface ColorConfig {
@@ -26,6 +27,18 @@ export type TagColor = Record<string, ColorConfig>;
 export interface CustomTagColor extends ColorConfig {
   /** @title Identifier */
   label: string;
+}
+
+interface DefaultTagsColors {
+  /** @title Tag de desconto*/
+  discountTag: ColorConfig;
+  /** @title Tag de Lançamento*/
+  newsTag: ColorConfig;
+}
+
+export interface DefaultTags {
+  label?: string;
+  colors?: ColorConfig;
 }
 
 interface Props {
@@ -56,7 +69,7 @@ function ProductCard({
   itemListName,
   layout,
 }: Props) {
-  const { customTagColors } = layout ?? {};
+  const { customTagColors, defaultTags } = layout ?? {};
   const { url, productID, name, image: images, offers } = product;
   const { price = 0, installments, listPrice = 0 } = useOffer(offers);
   const [front] = images ?? [];
@@ -93,8 +106,14 @@ function ProductCard({
 
   const { hasDiscountTag, hasNewsTag } = useMemo(() => {
     return {
-      hasDiscountTag: tagsCapture("PROMOTION", "TOPLEFT")?.valueReference,
-      hasNewsTag: tagsCapture("LANCAMENTO", "TOPLEFT")?.valueReference,
+      hasDiscountTag: {
+        label: tagsCapture("PROMOTION", "TOPLEFT")?.valueReference,
+        colors: defaultTags?.discountTag,
+      },
+      hasNewsTag: {
+        label: tagsCapture("LANCAMENTO", "TOPLEFT")?.valueReference,
+        colors: defaultTags?.discountTag,
+      },
     };
   }, []);
 
