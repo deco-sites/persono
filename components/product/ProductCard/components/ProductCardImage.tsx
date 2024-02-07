@@ -109,7 +109,7 @@ export const HighlightTag = ({
   return (
     <span
       style={tagStyleColorSettings}
-      class="py-1 px-3 flex absolute rounded-br-xl justify-center items-center text-sm "
+      class="py-1 px-3 flex absolute rounded-br-2xl justify-center items-center text-sm "
     >
       {taglabel}
     </span>
