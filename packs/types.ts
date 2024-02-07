@@ -112,11 +112,13 @@ export interface Stock {
 export interface Tags {
   bottom?: TagProps;
   topLeft?: TagProps;
+  custom?: TagProps
 }
 
 export interface TagProps {
   type: string;
   value?: string;
+  color?: string
 }
 
 export interface PriceList {
