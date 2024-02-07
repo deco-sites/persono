@@ -1,7 +1,8 @@
 import Image from "apps/website/components/Image.tsx";
+import { TagColor } from "deco-sites/persono/components/product/ProductCard/index.tsx";
 
 export interface HighlightTagProps {
-  customTagColor?: Record<string, string>;
+  customTagColor?: TagColor;
   hasCustomTag?: { color: string; label: string };
   hasNewsTag?: string;
   hasDiscountTag?: string;
@@ -59,22 +60,26 @@ export const HighlightTag = ({
   hasNewsTag,
   hasDiscountTag,
 }: HighlightTagProps) => {
-  const customTagBackGround =
-  customTagColor?.[hasCustomTag?.color ?? ""] ?? "";
-  const customTagNotIsBlack = hasCustomTag && hasCustomTag.color !== "Black";
+  const {
+    backGround: customTagBackGround = "",
+    text: customTagTextColor = "",
+  } = customTagColor?.[hasCustomTag?.color ?? ""] ?? {};
 
-  const label = hasNewsTag
-    ? hasNewsTag
+  const label = !!hasNewsTag
+    ? !!hasNewsTag
     : hasCustomTag
-    ? hasCustomTag.label
+    ? !!hasCustomTag.label
     : hasDiscountTag;
 
   return (
     <span
-      style={{ backgroundColor: customTagBackGround }}
+      style={{
+        backgroundColor: customTagBackGround,
+        color: customTagTextColor,
+      }}
       className={`py-1 px-3 flex absolute rounded-br-xl justify-center items-center text-sm ${
         hasNewsTag ? "bg-blueNew" : hasCustomTag ? "" : "bg-black"
-      } ${customTagNotIsBlack ? "text-black" : "text-white"}`}
+      } ${!!hasCustomTag ? "" : "text-white"}`}
     >
       {label}
     </span>

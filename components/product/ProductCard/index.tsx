@@ -11,10 +11,20 @@ export interface Layout {
   customTagColors?: CustomTagColor[];
 }
 
+export type TagColor = Record<string, CustomTagColor["color"]>;
+
 export interface CustomTagColor {
-  title: string;
-  /** @format color */
-  color: string;
+  /** @title Identifier */
+  label: string;
+  color: {
+    /**
+     * @title BackGround Color
+     * @format color
+     */
+    backGround: string;
+    /** @format color */
+    text: string;
+  };
 }
 
 interface Props {
@@ -51,45 +61,6 @@ function ProductCard({
   const [front] = images ?? [];
   const id = `product-card-${productID}`;
 
-  const searchTopLefTags = (value: string, identifier: string) =>
-    product.additionalProperty?.find(
-      (item) =>
-        item.propertyID === "TAG" &&
-        item.identifier === identifier &&
-        item.value === value
-    );
-
-  const hasDiscountTag = searchTopLefTags(
-    "PROMOTION",
-    "TOPLEFT"
-  )?.valueReference;
-  const hasNewsTag = searchTopLefTags("LANCAMENTO", "TOPLEFT")?.valueReference;
-
-  const teste = searchTopLefTags("CUSTOM", "CUSTOM");
-
-  const hasCustomTagTeste = useMemo(() => {
-    const { description = "", valueReference = "" } =
-      searchTopLefTags("CUSTOM", "CUSTOM") ?? {};
-
-    return { color: description, label: valueReference };
-  }, []);
-
-  //Esta parte vira do  do produto
-  const hasCustomTag = {
-    color: "Regular",
-    label: "Controle térmico",
-  };
-
-  const customTagColor = generateColorObject(customTagColors);
-
-  console.log("@@@ hasCustomTagTeste: ", hasCustomTagTeste);
-
-  const customTagColorsMock = {
-    Black: "#000000",
-    Regular: "#FFC758",
-    Darker: "#FF9645",
-  };
-
   const { hasDiscount, hasMultiplePrices } = useMemo(() => {
     const variantPrices = product.isVariantOf?.hasVariant.map(
       (item) => item.offers?.offers?.[0]?.price
@@ -108,6 +79,27 @@ function ProductCard({
       discount: Math.floor(((listPrice - price) / listPrice) * 100),
     };
   }, [listPrice, price]);
+
+  const searchTags = (value: string, identifier: string) =>
+    product.additionalProperty?.find(
+      (item) =>
+        item.propertyID === "TAG" &&
+        item.identifier === identifier &&
+        item.value === value
+    );
+
+  const hasDiscountTag = searchTags("PROMOTION", "TOPLEFT")?.valueReference;
+
+  const hasNewsTag = searchTags("LANCAMENTO", "TOPLEFT")?.valueReference;
+
+  const hasCustomTag = useMemo(() => {
+    const { description = "", valueReference = "" } =
+      searchTags("CUSTOM", "CUSTOM") ?? {};
+
+    return { color: description, label: valueReference };
+  }, []);
+
+  const customTagColor = generateColorObject(customTagColors);
 
   return useMemo(
     () => (

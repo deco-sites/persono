@@ -1,4 +1,4 @@
-import { CustomTagColor } from "deco-sites/persono/components/product/ProductCard/index.tsx";
+import { CustomTagColor, TagColor } from "deco-sites/persono/components/product/ProductCard/index.tsx";
 
 
 export const generateColorObject = (customTagColors?: CustomTagColor[]) => {
@@ -7,10 +7,10 @@ export const generateColorObject = (customTagColors?: CustomTagColor[]) => {
     return {}
     }
 
-    const colorObject: Record<string, string> = {};
+    const colorObject: TagColor = {};
 
     customTagColors?.forEach((item) => {
-      colorObject[item.title] = item.color;
+      colorObject[item.label] = {backGround:item.color.backGround,text:item.color.text};
     });
 
     return colorObject;
