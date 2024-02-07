@@ -54,7 +54,7 @@ const loader = async (
   req: Request,
   ctx: AppContext,
 ): Promise<Product[] | null> => {
-  const { ammoc, apiKey, config } = ctx;
+  const { ammoc, apiKey, config, imageBaseUrl } = ctx;
   const url = new URL(req.url);
   const headers = getHeaders(req, apiKey);
   const { props } = extendedProps;
@@ -75,7 +75,7 @@ const loader = async (
           },
         ) as Response;
       const { productCards } = await res.json();
-      return productCards.map((p: AmmoProduct) => toProduct(p, url, config));
+      return productCards.map((p: AmmoProduct) => toProduct(p, url, config, imageBaseUrl));
     }
 
     if (
@@ -95,7 +95,7 @@ const loader = async (
       );
 
       const { data } = await res.json();
-      return data.products.map((p: AmmoProduct) => toProduct(p, url, config));
+      return data.products.map((p: AmmoProduct) => toProduct(p, url, config, imageBaseUrl));
     }
 
     if (typeChecher<TermProps>(props as TermProps, "query")) {

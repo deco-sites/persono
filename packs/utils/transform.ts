@@ -37,12 +37,14 @@ interface ProductListingPageProps {
   vmDetails: VMDetails;
   url: URL;
   vmConfig: VMConfig;
+  imageBaseUrl: string;
 }
 
 interface ProductDetailsPageProps {
   ammoProduct: AmmoProduct;
   url: URL;
   pdpConfig: PDPConfig;
+  imageBaseUrl: string;
 }
 
 interface SkuAndProduct {
@@ -50,6 +52,7 @@ interface SkuAndProduct {
   ammoProduct: AmmoProduct;
   productItem?: ProductItem;
   config: VMConfig | PDPConfig;
+  imageBaseUrl?: string;
 }
 
 interface ReducedFilters {
@@ -61,6 +64,7 @@ export function toProduct(
   ammoProduct: AmmoProduct,
   baseUrl: URL,
   config: VMConfig | PDPConfig,
+  imageBaseUrl: string,
 ): Product {
   const { skus, selectedSku, title, macroCategory, segment, brand } =
     ammoProduct;
@@ -72,7 +76,7 @@ export function toProduct(
     name: title.trim(),
     description: ammoProduct?.description,
     sku: ammoProduct?.sku ?? selectedSku!,
-    image: toImage({ sku: workableSku, ammoProduct }),
+    image: toImage({ sku: workableSku, ammoProduct, imageBaseUrl }),
     gtin: workableSku?.ean,
     url: new URL(workableSku?.url ?? ammoProduct.url!, baseUrl.origin).href,
     additionalProperty: [
@@ -96,6 +100,7 @@ export function toProduct(
         sku: workableSku,
         baseUrl,
         config,
+        imageBaseUrl,
       })
       : undefined,
     offers: toAggregateOffer({
@@ -107,7 +112,7 @@ export function toProduct(
 }
 
 export function toProductListingPage(
-  { vmDetails, url, vmConfig }: ProductListingPageProps,
+  { vmDetails, url, vmConfig, imageBaseUrl }: ProductListingPageProps,
 ): ProductListingPage {
   const { productCards, meta } = vmDetails;
   return {
@@ -120,18 +125,20 @@ export function toProductListingPage(
     },
     pageInfo: toPageInfo(url, vmConfig, vmDetails),
     filters: toFilters(vmDetails, url),
-    products: productCards.map((p) => toProduct(p, url, vmConfig)),
+    products: productCards.map((p) =>
+      toProduct(p, url, vmConfig, imageBaseUrl)
+    ),
     sortOptions: SORT_OPTIONS,
   };
 }
 
 export function toProductDetailsPage(
-  { ammoProduct, url, pdpConfig }: ProductDetailsPageProps,
+  { ammoProduct, url, pdpConfig, imageBaseUrl }: ProductDetailsPageProps,
 ): ProductDetailsPage {
   return {
     "@type": "ProductDetailsPage",
     breadcrumbList: toBreadcrumbList(url.origin, ammoProduct),
-    product: toProduct(ammoProduct, url, pdpConfig),
+    product: toProduct(ammoProduct, url, pdpConfig, imageBaseUrl),
     seo: {
       title: ammoProduct.title.trim(),
       description: ammoProduct?.description ?? "",
@@ -286,7 +293,7 @@ const toPageInfo = (
 };
 
 const toImage = (
-  { sku, ammoProduct }: Omit<SkuAndProduct, "config">,
+  { sku, ammoProduct, imageBaseUrl }: Omit<SkuAndProduct, "config">,
 ): ImageObject[] => {
   const { title } = ammoProduct;
   return sku
@@ -296,7 +303,7 @@ const toImage = (
         if (sku.photos[index]) {
           return [...acc, {
             "@type": "ImageObject" as const,
-            url: sku.photos[index].toString(),
+            url: `${imageBaseUrl}${sku.photos[index].toString()}`,
             additionalType: "image",
             alternateName: title,
             disambiguatingDescription: i,
@@ -306,14 +313,14 @@ const toImage = (
       }, []),
       ...sku.photos.details.map(({ url }, i) => ({
         "@type": "ImageObject" as const,
-        url,
+        url: `${imageBaseUrl}${url}`,
         additionalType: "image",
         alternateName: title,
         disambiguatingDescription: `detail-${i}`,
       })),
       ...sku.photos.panoramics.map((v, i) => ({
         "@type": "ImageObject" as const,
-        url: v,
+        url: `${imageBaseUrl}${v}`,
         additionalType: "image",
         alternateName: title,
         disambiguatingDescription: `panoramics-${i}`,
@@ -333,7 +340,7 @@ const toImage = (
       if (ammoProduct[index]) {
         return [...acc, {
           "@type": "ImageObject" as const,
-          url: ammoProduct[index]?.toString(),
+          url: `${imageBaseUrl}${ammoProduct[index]?.toString()}`,
           alternateName: title,
           additionalType: "image",
           disambiguatingDescription: i,
@@ -344,7 +351,7 @@ const toImage = (
 };
 
 const toProductGroup = (
-  { ammoProduct, sku, baseUrl, config }: SkuAndProduct & {
+  { ammoProduct, sku, baseUrl, config, imageBaseUrl }: SkuAndProduct & {
     baseUrl: URL;
   },
 ): ProductGroup => {
@@ -365,7 +372,7 @@ const toProductGroup = (
       additionalProperty: [
         ...toAdditionalProperties(thisSku, PROPS_AMMO_API.sku.simpleProps),
       ],
-      image: toImage({ sku: thisSku, ammoProduct }),
+      image: toImage({ sku: thisSku, ammoProduct, imageBaseUrl }),
       offers: toAggregateOffer({ sku: thisSku, config }),
     })),
     additionalProperty: skus!.reduce<PropertyValue[]>(
