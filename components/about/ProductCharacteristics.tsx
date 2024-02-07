@@ -4,9 +4,13 @@ export interface Props {
 }
 
 function Product(props: Props) {
-  console.log(props.benefits);
+  props.benefits!.filter((current) => {
+    return current.showInHome;
+  });
 
-  const listOfBenefits = props.benefits?.map((benefit) => {
+  const listOfBenefits = props.benefits?.filter((current) => {
+    return current.showInHome;
+  }).map((benefit) => {
     return (
       <div
         class={`flex flex-col gap-3 w-full h-full`}
@@ -16,14 +20,14 @@ function Product(props: Props) {
         </div>
         <div class="flex flex-col gap-3">
           <div
-            class={`antialiased w-full`}
+            class={`w-full`}
           >
-            <h1 class="text-base leading-7 font-bold">
+            <h3 class="text-base leading-7 font-bold">
               {benefit.label}
-            </h1>
+            </h3>
           </div>
           <p class={`text-base font-medium leading-5 lg:block`}>
-            {benefit.description}
+            {benefit.descriptionHome || benefit.description}
           </p>
         </div>
       </div>
@@ -34,10 +38,10 @@ function Product(props: Props) {
     <>
       <div class="container flex flex-col pt-20 pb-10 px-6 md:pt-28 md:px-0 gap-14">
         <div class="w-full">
-          <h1 class="text-2xl lg:text-3xl md:w-8/12 font-medium">
+          <h2 class="text-2xl lg:text-3xl md:w-8/12 font-medium">
             Nossos produtos trazem as características ideais para melhorar seu
             sono
-          </h1>
+          </h2>
         </div>
         <div class="flex flex-col sm:grid sm:grid-cols-2 w-full sm:justify-center gap-10 sm:gap-x-8">
           {listOfBenefits}
