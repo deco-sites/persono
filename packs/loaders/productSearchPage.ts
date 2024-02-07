@@ -6,7 +6,7 @@ export interface Props {
   query: string;
   page: number;
   limit: number;
-  forcePagination: boolean;
+  forcePagination?: boolean;
 }
 
 const paginateResult = (products: Product[], page: number, offset: number) => {
@@ -18,7 +18,7 @@ const paginateResult = (products: Product[], page: number, offset: number) => {
 
 const searchArgsOf = (props: Props, url: URL) => {
   const limit = props.limit ?? 12;
-  const query = props.query ?? url.searchParams.get("query") ?? "";
+  const query = props.query || url.searchParams.get("query") || "";
   const page = props.page ??
     url.searchParams.get("page") ?? 0;
   const offset = page * limit;
@@ -64,7 +64,6 @@ const loader = async (
     if (hasPreviousPage) {
       previousPage.set("page", (page - 1).toString());
     }
-
     return {
       "@type": "ProductListingPage",
       breadcrumb: {

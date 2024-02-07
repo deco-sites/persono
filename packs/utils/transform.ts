@@ -585,6 +585,7 @@ const toAdditionalProperties = (
 export function toProductItems(
   productItem: ProductItem,
   config: VMConfig,
+  imageBaseUrl: string,
 ): Product {
   const product: Product = {
     "@type": "Product",
@@ -602,7 +603,7 @@ export function toProductItems(
       config,
     }),
 
-    image: toImageItem(productItem),
+    image: toImageItem(productItem, imageBaseUrl),
     url: productItem.site,
     category: productItem.macroCategory,
   };
@@ -612,17 +613,36 @@ export function toProductItems(
 
 const toImageItem = (
   productItem: ProductItem,
+  imageBaseUrl: string,
 ): ImageObject[] => {
   const imageInfo: ImageObject[] = [];
   const { title } = productItem;
 
+  if (productItem.photoSemiEnvironment) {
+    imageInfo.push({
+      "@type": "ImageObject" as const,
+      url: `${imageBaseUrl}${productItem.photoSemiEnvironment}`,
+      additionalType: "image",
+      alternateName: title,
+      disambiguatingDescription: `photoSemiEnvironment`,
+    });
+  }
   if (productItem.photo180) {
     imageInfo.push({
       "@type": "ImageObject" as const,
-      url: productItem.photo180,
+      url: `${imageBaseUrl}${productItem.photo180}`,
       additionalType: "image",
       alternateName: title,
       disambiguatingDescription: `panoramics`,
+    });
+  }
+  if (productItem.photoStill) {
+    imageInfo.push({
+      "@type": "ImageObject" as const,
+      url: `${imageBaseUrl}${productItem.photoStill}`,
+      additionalType: "image",
+      alternateName: title,
+      disambiguatingDescription: `still`,
     });
   }
   if (productItem.youtubeVideo) {
@@ -639,13 +659,12 @@ const toImageItem = (
     photoDetailsItems.map((detail) => (
       imageInfo.push({
         "@type": "ImageObject" as const,
-        url: detail.url,
+        url: `${imageBaseUrl}${detail.url}`,
         additionalType: "image",
         alternateName: title,
         disambiguatingDescription: `detail`,
       })
     ));
   }
-
   return imageInfo;
 };
