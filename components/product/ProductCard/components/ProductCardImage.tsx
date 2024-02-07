@@ -1,41 +1,47 @@
 import Image from "apps/website/components/Image.tsx";
+import {
+  DefaultTags,
+  TagColor,
+} from "deco-sites/persono/components/product/ProductCard/index.tsx";
+import { useMemo } from "preact/compat";
 
-interface Props {
-  hasNews: boolean;
-  hasDiscount: boolean;
+export interface HighlightTagProps {
+  customTagColor?: TagColor;
+  hasCustomTag?: { color: string; label: string };
+  hasNewsTag?: DefaultTags;
+  hasDiscountTag?: DefaultTags;
+}
+
+interface Props extends HighlightTagProps {
   preload?: boolean;
-  discount: number;
   imageAlt?: string;
-  newsTitle: string;
   imageSrc: string;
   search?: boolean;
 }
 
 export const ProductCardImage = ({
-  hasDiscount,
-  hasNews,
-  discount,
+  hasDiscountTag,
+  hasNewsTag,
   preload,
   imageAlt = "",
   imageSrc,
-  newsTitle,
   search,
+  customTagColor,
+  hasCustomTag,
 }: Props) => {
-  const showHighlightTag = hasNews || hasDiscount;
+  const showHighlightTag = !!hasNewsTag || !!hasDiscountTag || !!hasCustomTag;
+
+  const highlightTagProps = {
+    customTagColor,
+    hasCustomTag,
+    hasNewsTag,
+    hasDiscountTag,
+  };
 
   return (
     <figure class="relative">
       <div class="w-full">
-        {showHighlightTag && (
-          <span
-            class={`py-1 px-3 flex absolute  rounded-br-xl justify-center items-center text-sm ${
-              hasNews ? "bg-blueNew" : "bg-black"
-            }  text-white`}
-          >
-            {hasNews ? { newsTitle } : `${discount}% off`}
-          </span>
-        )}
-
+        {showHighlightTag && <HighlightTag {...highlightTagProps} />}
         <Image
           src={imageSrc}
           alt={imageAlt}
@@ -49,5 +55,63 @@ export const ProductCardImage = ({
         />
       </div>
     </figure>
+  );
+};
+
+export const HighlightTag = ({
+  customTagColor,
+  hasCustomTag,
+  hasNewsTag,
+  hasDiscountTag,
+}: HighlightTagProps) => {
+  // News tag
+  const { label: newsTagLabel, colors: newsTagColors } = hasNewsTag ?? {};
+
+  // Discount tag
+  const { label: discountTagLabel, colors: discountTagColors } =
+    hasDiscountTag ?? {};
+
+  // Custom tag
+  const { color: custonTagColorIdentifier, label: customTagLabel } =
+    hasCustomTag ?? {};
+
+  const customTagColors = customTagColor?.[custonTagColorIdentifier ?? ""];
+
+  const taglabel = newsTagLabel ?? customTagLabel ?? discountTagLabel;
+
+  const tagStyleColorSettings = useMemo(() => {
+    if (newsTagColors && newsTagLabel) {
+      return {
+        backgroundColor: newsTagColors.backgroundColor,
+        color: newsTagColors.textColor,
+      };
+    }
+
+    if (customTagColors && customTagLabel) {
+      return {
+        backgroundColor: customTagColors.backgroundColor,
+        color: customTagColors.textColor,
+      };
+    }
+
+    if (discountTagColors && discountTagLabel) {
+      return {
+        backgroundColor: discountTagColors.backgroundColor,
+        color: discountTagColors.textColor,
+      };
+    }
+  }, []);
+
+  if (!taglabel || !tagStyleColorSettings) {
+    return null;
+  }
+
+  return (
+    <span
+      style={tagStyleColorSettings}
+      class="py-1 px-3 flex absolute rounded-br-2xl justify-center items-center text-sm "
+    >
+      {taglabel}
+    </span>
   );
 };
