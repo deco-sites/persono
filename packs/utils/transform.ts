@@ -485,6 +485,7 @@ const toAdditionalProperties = (
       identifier: v[0].toUpperCase(),
       value: v[1].type,
       valueReference: v[1].value,
+      description: v[1].color,
     }));
   };
 
