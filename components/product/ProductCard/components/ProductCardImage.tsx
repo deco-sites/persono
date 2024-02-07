@@ -61,24 +61,28 @@ export const HighlightTag = ({
   hasDiscountTag,
 }: HighlightTagProps) => {
   const {
-    backGround: customTagBackGround = "",
-    text: customTagTextColor = "",
+    backgroundColor: customTagBackGround = "",
+    textColor: customTagTextColor = "",
   } = customTagColor?.[hasCustomTag?.color ?? ""] ?? {};
 
-  const label = !!hasNewsTag
-    ? !!hasNewsTag
-    : hasCustomTag
-    ? !!hasCustomTag.label
+  const label = hasNewsTag
+    ? hasNewsTag
+    : !!hasCustomTag
+    ? hasCustomTag.label
     : hasDiscountTag;
+
+  const styleProps = !!hasNewsTag
+    ? {}
+    : {
+        backgroundColor: customTagBackGround,
+        color: customTagTextColor,
+      };
 
   return (
     <span
-      style={{
-        backgroundColor: customTagBackGround,
-        color: customTagTextColor,
-      }}
+      style={styleProps}
       className={`py-1 px-3 flex absolute rounded-br-xl justify-center items-center text-sm ${
-        hasNewsTag ? "bg-blueNew" : hasCustomTag ? "" : "bg-black"
+        hasNewsTag ? "bg-blueNew" : !!hasCustomTag ? "" : "bg-black"
       } ${!!hasCustomTag ? "" : "text-white"}`}
     >
       {label}

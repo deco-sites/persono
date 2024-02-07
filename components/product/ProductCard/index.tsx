@@ -11,20 +11,21 @@ export interface Layout {
   customTagColors?: CustomTagColor[];
 }
 
-export type TagColor = Record<string, CustomTagColor["color"]>;
+export interface ColorConfig {
+  /**
+   * @title Background Color
+   * @format color
+   */
+  backgroundColor: string;
+  /** @format color */
+  textColor: string;
+}
 
-export interface CustomTagColor {
+export type TagColor = Record<string, ColorConfig>;
+
+export interface CustomTagColor extends ColorConfig {
   /** @title Identifier */
   label: string;
-  color: {
-    /**
-     * @title BackGround Color
-     * @format color
-     */
-    backGround: string;
-    /** @format color */
-    text: string;
-  };
 }
 
 interface Props {
@@ -67,20 +68,22 @@ function ProductCard({
     );
 
     const hasMultiplePrices =
-      variantPrices && variantPrices?.length > 1
-        ? variantPrices.some(
-            (price) => price !== Math.min(...(variantPrices as number[]))
-          )
-        : false;
+      variantPrices &&
+      variantPrices?.length > 1 &&
+      variantPrices.some(
+        (price) => price !== Math.min(...(variantPrices as number[]))
+      );
+
+    const discount = Math.floor(((listPrice - price) / listPrice) * 100);
 
     return {
       hasMultiplePrices,
       hasDiscount: listPrice > price,
-      discount: Math.floor(((listPrice - price) / listPrice) * 100),
+      discount,
     };
   }, [listPrice, price]);
 
-  const searchTags = (value: string, identifier: string) =>
+  const tagsCapture = (value: string, identifier: string) =>
     product.additionalProperty?.find(
       (item) =>
         item.propertyID === "TAG" &&
@@ -88,15 +91,20 @@ function ProductCard({
         item.value === value
     );
 
-  const hasDiscountTag = searchTags("PROMOTION", "TOPLEFT")?.valueReference;
-
-  const hasNewsTag = searchTags("LANCAMENTO", "TOPLEFT")?.valueReference;
+  const { hasDiscountTag, hasNewsTag } = useMemo(() => {
+    return {
+      hasDiscountTag: tagsCapture("PROMOTION", "TOPLEFT")?.valueReference,
+      hasNewsTag: tagsCapture("LANCAMENTO", "TOPLEFT")?.valueReference,
+    };
+  }, []);
 
   const hasCustomTag = useMemo(() => {
-    const { description = "", valueReference = "" } =
-      searchTags("CUSTOM", "CUSTOM") ?? {};
+    const { description, valueReference } =
+      tagsCapture("CUSTOM", "CUSTOM") ?? {};
 
-    return { color: description, label: valueReference };
+    if (description && valueReference) {
+      return { color: description, label: valueReference };
+    }
   }, []);
 
   const customTagColor = generateColorObject(customTagColors);

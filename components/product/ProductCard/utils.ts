@@ -10,7 +10,8 @@ export const generateColorObject = (customTagColors?: CustomTagColor[]) => {
     const colorObject: TagColor = {};
 
     customTagColors?.forEach((item) => {
-      colorObject[item.label] = {backGround:item.color.backGround,text:item.color.text};
+      
+      colorObject[item.label] = {backgroundColor:item.backgroundColor,textColor:item.textColor};
     });
 
     return colorObject;
