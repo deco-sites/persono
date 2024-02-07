@@ -10,16 +10,18 @@ interface Props {
   colors: Color[];
 }
 
+type Possibilities = { name: string; value: string; url: string };
+
 function VariantSelector({ product, colors }: Props) {
   const { url, isVariantOf } = product;
   const hasVariant = isVariantOf?.hasVariant ?? [];
   const possibilities: GroupedData = useVariantPossibilities(
     hasVariant,
-    isVariantOf,
+    isVariantOf
   );
 
-  let colorsPossibilities: { name: string; value: string; url: string }[] = [];
-  const sizePossibilities: { name: string; value: string; url: string }[] = [];
+  let colorsPossibilities: Possibilities[] = [];
+  const sizePossibilities: Possibilities[] = [];
   let color = "";
 
   {
@@ -28,7 +30,7 @@ function VariantSelector({ product, colors }: Props) {
         Object.entries(possibilities[name]).map(([_value, link]) => {
           if (link.url == url) {
             colorsPossibilities = possibilities[name];
-             color = link.value;
+            color = link.value;
           }
         });
       }
@@ -45,6 +47,10 @@ function VariantSelector({ product, colors }: Props) {
     });
   }
 
+  const matchingColorsPossibilities = colorsPossibilities.filter((cp) =>
+    colors.some((color) => color.label.toLowerCase() === cp.value.toLowerCase())
+  );
+
   return (
     <div class="flex flex-col gap-4">
       <ul class="flex flex-col gap-2">
@@ -57,11 +63,9 @@ function VariantSelector({ product, colors }: Props) {
                   <AvatarSize
                     name={cp.name}
                     content={cp.name}
-                    variant={cp.url === url
-                      ? "active"
-                      : cp
-                      ? "default"
-                      : "disabled"}
+                    variant={
+                      cp.url === url ? "active" : cp ? "default" : "disabled"
+                    }
                   />
                 </button>
               </li>
@@ -73,23 +77,17 @@ function VariantSelector({ product, colors }: Props) {
       <ul class="flex flex-col gap-2">
         <p class="text-sm">Cor: {color}</p>
         <div class="flex gap-3">
-          {colorsPossibilities.map((cp) => (
-            <ul class="flex flex-row gap-2">
-              <li>
-                <button f-partial={cp.url} f-client-nav>
-                  <AvatarColor
-                    color={colors}
-                    name={cp.name}
-                    content={cp.value}
-                    variant={cp.url === url
-                      ? "active"
-                      : cp
-                      ? "default"
-                      : "disabled"}
-                  />
-                </button>
-              </li>
-            </ul>
+          {matchingColorsPossibilities.map((cp) => (
+            <button f-partial={cp.url} f-client-nav>
+              <AvatarColor
+                color={colors}
+                name={cp.name}
+                content={cp.value}
+                variant={
+                  cp.url === url ? "active" : cp ? "default" : "disabled"
+                }
+              />
+            </button>
           ))}
         </div>
       </ul>

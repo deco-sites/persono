@@ -25,23 +25,21 @@ interface Props {
 const variants = {
   active:
     "ring ring-1 ring-offset-base-100 ring-offset-2 ring-black ring-inset",
-  disabled:
-    `relative after:absolute after:left-0 after:top-1/2 after:h-[1px] after:bg-red-800 after:w-full after:block after:-rotate-45 after:content-[""]`,
+  disabled: `relative after:absolute after:left-0 after:top-1/2 after:h-[1px] after:bg-red-800 after:w-full after:block after:-rotate-45 after:content-[""]`,
   default: "border border-neutral hover:border-primary",
 };
 
-function AvatarColor({ name, content, variant = "default", color }: Props) {
+function AvatarColor({ content, variant = "default", color }: Props) {
   const transformedColors = transformColors(color);
+
   return (
-    <div class="placeholder text-xs">
+    <div class={`placeholder text-xs ${!transformedColors[content.toLowerCase()] ? "hidden" : ""}`}>
       <div
-        class={`rounded-full w-8 h-8 p-2 group relative ${
-          transformedColors[content]
-        } ${variants[variant]}`}
+        class={`rounded-full w-8 h-8 p-2 group relative ${variants[variant]}`}
         style={{
           backgroundColor: transformedColors[content.toLowerCase()]
             ? transformedColors[content.toLowerCase()][0]
-            : "#edc",
+            : "#000",
         }}
       >
         <span class="rounded shadow border top-9 -right-3 absolute px-2 py-1 text-base-content bg-white hidden group-hover:flex">
