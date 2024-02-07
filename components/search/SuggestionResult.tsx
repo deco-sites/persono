@@ -1,7 +1,9 @@
 import { Product, Search } from "apps/commerce/types.ts";
 import Icon from "deco-sites/persono/components/ui/Icon.tsx";
 import Slider from "deco-sites/persono/components/ui/Slider.tsx";
-import ProductCard from "deco-sites/persono/components/product/ProductCard/index.tsx";
+import ProductCard, {
+  Layout as CardLayout,
+} from "deco-sites/persono/components/product/ProductCard/index.tsx";
 
 interface SuggestionResultProps {
   showNotFound: boolean;
@@ -10,14 +12,15 @@ interface SuggestionResultProps {
   searches:
     | Search[]
     | {
-      href: string;
-      term: string;
-    }[];
+        href: string;
+        term: string;
+      }[];
   productsTitle: string;
   products: Product[];
   generalLink: string;
   itemListName?: string;
   action: string;
+  cardLayout?: CardLayout;
 }
 
 export function SuggestionResult({
@@ -30,6 +33,7 @@ export function SuggestionResult({
   action,
   generalLink,
   itemListName,
+  cardLayout,
 }: SuggestionResultProps) {
   if (showNotFound) {
     return (
@@ -68,9 +72,9 @@ export function SuggestionResult({
                   dangerouslySetInnerHTML={{
                     __html: showDefaultValue
                       ? term.replace(
-                        new RegExp(`/${term}/g`),
-                        `<strong>${term}</strong`,
-                      )
+                          new RegExp(`/${term}/g`),
+                          `<strong>${term}</strong`
+                        )
                       : term,
                   }}
                 />
@@ -96,6 +100,7 @@ export function SuggestionResult({
               class="carousel-item first:pl-4 sm:first:pl-0 last:pr-6 sm:last:pr-0 w-[43%] lg:w-[calc(25%-8px)] xl:w-[calc(20%-30px)]   "
             >
               <ProductCard
+                layout={cardLayout}
                 itemListName={itemListName}
                 search
                 product={product}

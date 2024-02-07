@@ -7,6 +7,7 @@ import { useOffer } from "$store/sdk/useOffer.ts";
 import type { ProductListingPage } from "apps/commerce/types.ts";
 import { mapProductToAnalyticsItem } from "apps/commerce/utils/productToAnalyticsItem.ts";
 import ProductGallery, { Columns } from "../product/ProductGallery.tsx";
+import { Layout as CardLayout } from "deco-sites/persono/components/product/ProductCard/index.tsx";
 
 export interface Layout {
   /**
@@ -17,6 +18,8 @@ export interface Layout {
    * @description Number of products per line on grid
    */
   columns?: Columns;
+
+  cardLayout?: CardLayout;
 }
 
 export interface Props {
@@ -39,7 +42,7 @@ function Result({
 }: Omit<Props, "page"> & { page: ProductListingPage }) {
   const { products, filters, breadcrumb, pageInfo, sortOptions } = page;
   const perPage = pageInfo.recordPerPage || products.length;
-  
+
   const id = useId();
 
   const zeroIndexedOffsetPage = pageInfo.currentPage;
@@ -63,6 +66,7 @@ function Result({
           )}
           <div class="flex-grow" id={id}>
             <ProductGallery
+              cardLayout={layout?.cardLayout}
               products={products}
               offset={offset}
               layout={{ columns: layout?.columns }}

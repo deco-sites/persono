@@ -3,7 +3,9 @@ import Slider from "$store/components/ui/Slider.tsx";
 import SliderJS from "$store/islands/SliderJS.tsx";
 import { useId } from "$store/sdk/useId.ts";
 import type { Product } from "apps/commerce/types.ts";
-import ProductCard from "deco-sites/persono/components/product/ProductCard/index.tsx";
+import ProductCard, {
+  Layout as CardLayout,
+} from "deco-sites/persono/components/product/ProductCard/index.tsx";
 import Header from "$store/components/ui/SectionHeader.tsx";
 
 import { SectionProps } from "deco/mod.ts";
@@ -16,6 +18,7 @@ export interface Props {
   /** @description used for analytics event */
 
   itemListName?: string;
+  cardLayout?: CardLayout;
 }
 
 function ProductShelf({
@@ -23,6 +26,7 @@ function ProductShelf({
   title,
   device,
   itemListName,
+  cardLayout,
 }: SectionProps<typeof loader>) {
   const id = useId();
 
@@ -45,6 +49,7 @@ function ProductShelf({
               class="carousel-item pl-6 sm:pl-0 last:pr-6 sm:last:pr-0 lg:w-[calc(25%-30px)] sm:w-[calc(33.3%-30px)] w-2/3"
             >
               <ProductCard
+                layout={cardLayout}
                 itemListName={itemListName}
                 product={product}
                 index={index}

@@ -5,6 +5,17 @@ import { useMemo } from "preact/compat";
 import { ProductCardImage } from "./components/ProductCardImage.tsx";
 import { SendEventOnClick } from "deco-sites/persono/components/Analytics.tsx";
 import { mapProductToAnalyticsItem } from "apps/commerce/utils/productToAnalyticsItem.ts";
+import { generateColorObject } from "deco-sites/persono/components/product/ProductCard/utils.ts";
+
+export interface Layout {
+  customTagColors?: CustomTagColor[];
+}
+
+export interface CustomTagColor {
+  title: string;
+  /** @format color */
+  color: string;
+}
 
 interface Props {
   product: Product;
@@ -17,6 +28,8 @@ interface Props {
   search?: boolean;
 
   itemListName?: string;
+
+  layout?: Layout;
 }
 
 const relative = (url: string) => {
@@ -24,24 +37,60 @@ const relative = (url: string) => {
   return `${link.pathname}${link.search}`;
 };
 
-function ProductCard({ product, preload, index, search, itemListName }: Props) {
+function ProductCard({
+  product,
+  preload,
+  index,
+  search,
+  itemListName,
+  layout,
+}: Props) {
+  const { customTagColors } = layout ?? {};
   const { url, productID, name, image: images, offers } = product;
   const { price = 0, installments, listPrice = 0 } = useOffer(offers);
   const [front] = images ?? [];
   const id = `product-card-${productID}`;
 
-  const searchTopLefTags = (value: string) =>
+  const searchTopLefTags = (value: string, identifier: string) =>
     product.additionalProperty?.find(
       (item) =>
         item.propertyID === "TAG" &&
-        item.identifier === "TOPLEFT" &&
+        item.identifier === identifier &&
         item.value === value
-    )?.valueReference;
+    );
 
-  const hasDiscountTag = searchTopLefTags("PROMOTION");
-  const hasNewsTag = searchTopLefTags("LANCAMENTO");
+  const hasDiscountTag = searchTopLefTags(
+    "PROMOTION",
+    "TOPLEFT"
+  )?.valueReference;
+  const hasNewsTag = searchTopLefTags("LANCAMENTO", "TOPLEFT")?.valueReference;
 
-  const { hasDiscount, discount, hasMultiplePrices } = useMemo(() => {
+  const teste = searchTopLefTags("CUSTOM", "CUSTOM");
+
+  const hasCustomTagTeste = useMemo(() => {
+    const { description = "", valueReference = "" } =
+      searchTopLefTags("CUSTOM", "CUSTOM") ?? {};
+
+    return { color: description, label: valueReference };
+  }, []);
+
+  //Esta parte vira do  do produto
+  const hasCustomTag = {
+    color: "Regular",
+    label: "Controle térmico",
+  };
+
+  const customTagColor = generateColorObject(customTagColors);
+
+  console.log("@@@ hasCustomTagTeste: ", hasCustomTagTeste);
+
+  const customTagColorsMock = {
+    Black: "#000000",
+    Regular: "#FFC758",
+    Darker: "#FF9645",
+  };
+
+  const { hasDiscount, hasMultiplePrices } = useMemo(() => {
     const variantPrices = product.isVariantOf?.hasVariant.map(
       (item) => item.offers?.offers?.[0]?.price
     );
@@ -88,9 +137,10 @@ function ProductCard({ product, preload, index, search, itemListName }: Props) {
           }}
         />
         <ProductCardImage
+          customTagColor={customTagColor}
+          hasCustomTag={hasCustomTag}
           search={search}
           imageSrc={front.url!}
-          discount={discount}
           hasDiscountTag={hasDiscountTag}
           hasNewsTag={hasNewsTag}
           imageAlt={front?.alternateName}
