@@ -43,7 +43,7 @@ function Result({
   const perPage = pageInfo.recordPerPage || products.length;
   const productCategory = products.map((p) => p.category)[0]?.split(">")[0];
 
-  console.log(productCategory)
+  console.log(productCategory);
 
   const id = useId();
 
