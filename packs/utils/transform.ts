@@ -25,7 +25,7 @@ import {
   VMDetails,
 } from "$store/packs/types.ts";
 import { PROPS_AMMO_API, SORT_OPTIONS } from "$store/packs/constants.ts";
-import { typeChecher } from "$store/packs/utils/utils.ts";
+import { getImageUrl, typeChecker } from "$store/packs/utils/utils.ts";
 export type PDPConfig = Pick<Config, "minInstallmentValue" | "maxInstallments">;
 export type VMConfig = Pick<
   Config,
@@ -302,7 +302,7 @@ const toImage = (
         if (sku.photos[index]) {
           return [...acc, {
             "@type": "ImageObject" as const,
-            url: `${imageBaseUrl}${sku.photos[index].toString()}`,
+            url: getImageUrl(imageBaseUrl, sku.photos[index].toString()),
             additionalType: "image",
             alternateName: title,
             disambiguatingDescription: i,
@@ -312,14 +312,14 @@ const toImage = (
       }, []),
       ...sku.photos.details.map(({ url }, i) => ({
         "@type": "ImageObject" as const,
-        url: `${imageBaseUrl}${url}`,
+        url: getImageUrl(imageBaseUrl, url),
         additionalType: "image",
         alternateName: title,
         disambiguatingDescription: `detail-${i}`,
       })),
       ...sku.photos.panoramics.map((v, i) => ({
         "@type": "ImageObject" as const,
-        url: `${imageBaseUrl}${v}`,
+        url: getImageUrl(imageBaseUrl, v),
         additionalType: "image",
         alternateName: title,
         disambiguatingDescription: `panoramics-${i}`,
@@ -339,7 +339,7 @@ const toImage = (
       if (ammoProduct[index]) {
         return [...acc, {
           "@type": "ImageObject" as const,
-          url: `${imageBaseUrl}${ammoProduct[index]?.toString()}`,
+          url: getImageUrl(imageBaseUrl, ammoProduct[index]?.toString()),
           alternateName: title,
           additionalType: "image",
           disambiguatingDescription: i,
@@ -569,7 +569,7 @@ const toAdditionalProperties = (
           propertyID: k.toUpperCase(),
           name: k,
           value: obj![k as keyof T]?.toString(),
-          valueReference: typeChecher<AmmoProduct>(obj as AmmoProduct, "id")
+          valueReference: typeChecker<AmmoProduct>(obj as AmmoProduct, "id")
             ? undefined
             : "SPECIFICATION",
         }];
@@ -579,7 +579,7 @@ const toAdditionalProperties = (
 
   return [
     ...simpleProperties(),
-    ...typeChecher<AmmoProduct>(obj as AmmoProduct, "id")
+    ...typeChecker<AmmoProduct>(obj as AmmoProduct, "id")
       ? [...relatedFiltersProperties(), ...emotionalAttributes()]
       : [
         colorProperty(),
@@ -628,7 +628,7 @@ const toImageItem = (
   if (productItem.photoSemiEnvironment) {
     imageInfo.push({
       "@type": "ImageObject" as const,
-      url: `${imageBaseUrl}${productItem.photoSemiEnvironment}`,
+      url: getImageUrl(imageBaseUrl, productItem.photoSemiEnvironment),
       additionalType: "image",
       alternateName: title,
       disambiguatingDescription: `photoSemiEnvironment`,
@@ -637,7 +637,7 @@ const toImageItem = (
   if (productItem.photo180) {
     imageInfo.push({
       "@type": "ImageObject" as const,
-      url: `${imageBaseUrl}${productItem.photo180}`,
+      url: getImageUrl(imageBaseUrl, productItem.photo180),
       additionalType: "image",
       alternateName: title,
       disambiguatingDescription: `panoramics`,
@@ -646,7 +646,7 @@ const toImageItem = (
   if (productItem.photoStill) {
     imageInfo.push({
       "@type": "ImageObject" as const,
-      url: `${imageBaseUrl}${productItem.photoStill}`,
+      url: getImageUrl(imageBaseUrl, productItem.photoStill),
       additionalType: "image",
       alternateName: title,
       disambiguatingDescription: `still`,
@@ -666,7 +666,7 @@ const toImageItem = (
     photoDetailsItems.map((detail) => (
       imageInfo.push({
         "@type": "ImageObject" as const,
-        url: `${imageBaseUrl}${detail.url}`,
+        url: getImageUrl(imageBaseUrl, detail.url),
         additionalType: "image",
         alternateName: title,
         disambiguatingDescription: `detail`,
