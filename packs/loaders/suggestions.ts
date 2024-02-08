@@ -2,10 +2,11 @@ import { AppContext } from "$store/apps/site.ts";
 import { getHeaders } from "$store/packs/utils/headers.ts";
 import type { Suggestion } from "apps/commerce/types.ts";
 import { AutoComplete } from "$store/packs/types.ts";
-import { getSuggestionsItems } from "$store/packs/utils/getSuggestionsItems.ts";
+import { getProductItems } from "../utils/getProductItems.ts";
 
 export interface Props {
   query: string;
+  count: number;
 }
 const loader = async (
   props: Props,
@@ -15,7 +16,7 @@ const loader = async (
   const { ammoc, apiKey } = ctx;
 
   const headers = getHeaders(req, apiKey);
-  const { query } = props;
+  const { query, count } = props;
 
   try {
     const response = await ammoc
@@ -35,11 +36,10 @@ const loader = async (
     const searchTerms = data.map((s) => ({ term: s.term }));
     const firstTerm = data[0].term;
 
-    const products = await getSuggestionsItems(firstTerm, req, ctx);
-
+    const products = await getProductItems(firstTerm, req, ctx, count, 0);
     return {
       searches: searchTerms,
-      products,
+      products: products.slice(0, count),
     };
   } catch {
     return null;

@@ -3,7 +3,7 @@ import type { ProductListingPage } from "apps/commerce/types.ts";
 import { VMDetails, VMDetailsRedirect } from "$store/packs/types.ts";
 import { getHeaders } from "$store/packs/utils/headers.ts";
 import { toProductListingPage } from "$store/packs/utils/transform.ts";
-import { typeChecher } from "$store/packs/utils/utils.ts";
+import { typeChecker } from "$store/packs/utils/utils.ts";
 
 export interface Props {
   /**
@@ -58,7 +58,7 @@ const loader = async (
   req: Request,
   ctx: AppContext,
 ): Promise<ProductListingPage | null> => {
-  const { ammoc, apiKey, config } = ctx;
+  const { ammoc, apiKey, config, imageBaseUrl } = ctx;
   const { vm } = props;
   const url = new URL(req.url);
   const headers = getHeaders(req, apiKey);
@@ -100,11 +100,12 @@ const loader = async (
       ) as Response;
     const data = await response.json();
 
-    if (typeChecher<VMDetails>(data as VMDetails, "basePath")) {
+    if (typeChecker<VMDetails>(data as VMDetails, "basePath")) {
       return toProductListingPage({
         vmDetails: data as VMDetails,
         url,
         vmConfig: config,
+        imageBaseUrl,
       });
     }
     const redirectPath = data as VMDetailsRedirect;
@@ -120,6 +121,7 @@ const loader = async (
       vmDetails: await redirectedResponse.json() as VMDetails,
       url,
       vmConfig: config,
+      imageBaseUrl,
     });
   } catch (error) {
     console.error(error);

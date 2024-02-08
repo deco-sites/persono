@@ -3,9 +3,9 @@ import type { Product } from "apps/commerce/types.ts";
 import { AmmoProduct } from "$store/packs/types.ts";
 import { getHeaders } from "$store/packs/utils/headers.ts";
 import { toProduct } from "$store/packs/utils/transform.ts";
-import { typeChecher } from "$store/packs/utils/utils.ts";
+import { typeChecker } from "$store/packs/utils/utils.ts";
 import type { RequestURLParam } from "apps/website/functions/requestToParam.ts";
-import { getSuggestionsItems } from "$store/packs/utils/getSuggestionsItems.ts";
+import { getProductItems } from "$store/packs/utils/getProductItems.ts";
 
 export type Props = { props: VMProps | RecommendationProps | TermProps };
 
@@ -54,13 +54,13 @@ const loader = async (
   req: Request,
   ctx: AppContext,
 ): Promise<Product[] | null> => {
-  const { ammoc, apiKey, config } = ctx;
+  const { ammoc, apiKey, config, imageBaseUrl } = ctx;
   const url = new URL(req.url);
   const headers = getHeaders(req, apiKey);
   const { props } = extendedProps;
 
   try {
-    if (typeChecher<VMProps>(props as VMProps, "path")) {
+    if (typeChecker<VMProps>(props as VMProps, "path")) {
       const { path, sort, take } = props as VMProps;
       const res = await ammoc
         ["GET /api/product-catalog/resolve-route"](
@@ -75,11 +75,13 @@ const loader = async (
           },
         ) as Response;
       const { productCards } = await res.json();
-      return productCards.map((p: AmmoProduct) => toProduct(p, url, config));
+      return productCards.map((p: AmmoProduct) =>
+        toProduct(p, url, config, imageBaseUrl)
+      );
     }
 
     if (
-      typeChecher<RecommendationProps>(props as RecommendationProps, "sku")
+      typeChecker<RecommendationProps>(props as RecommendationProps, "sku")
     ) {
       const { sku } = props as RecommendationProps;
       const params = new URLSearchParams();
@@ -95,12 +97,14 @@ const loader = async (
       );
 
       const { data } = await res.json();
-      return data.products.map((p: AmmoProduct) => toProduct(p, url, config));
+      return data.products.map((p: AmmoProduct) =>
+        toProduct(p, url, config, imageBaseUrl)
+      );
     }
 
-    if (typeChecher<TermProps>(props as TermProps, "query")) {
+    if (typeChecker<TermProps>(props as TermProps, "query")) {
       const { query } = props as TermProps;
-      const productsPromise = getSuggestionsItems(query, req, ctx);
+      const productsPromise = getProductItems(query, req, ctx);
       const [products] = await Promise.all([productsPromise]);
       return products;
     }
