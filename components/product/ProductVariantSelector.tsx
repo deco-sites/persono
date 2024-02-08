@@ -4,49 +4,48 @@ import { useVariantPossibilities } from "$store/sdk/useVariantPossiblities.ts";
 import type { Product } from "apps/commerce/types.ts";
 import { Color } from "deco-sites/persono/loaders/Layouts/Colors.tsx";
 import type { GroupedData } from "$store/sdk/useVariantPossiblities.ts";
+import { Size } from "deco-sites/persono/loaders/Layouts/Size.tsx";
 
 interface Props {
   product: Product;
   colors: Color[];
+  sizes: Size[];
 }
 
 type Possibilities = { name: string; value: string; url: string };
 
-function VariantSelector({ product, colors }: Props) {
+function VariantSelector({ product, colors, sizes }: Props) {
   const { url, isVariantOf } = product;
   const hasVariant = isVariantOf?.hasVariant ?? [];
   const possibilities: GroupedData = useVariantPossibilities(
     hasVariant,
-    isVariantOf,
+    isVariantOf
   );
 
   let colorsPossibilities: Possibilities[] = [];
   const sizePossibilities: Possibilities[] = [];
   let color = "";
 
-  {
-    Object.keys(possibilities).map((name) => {
-      {
-        Object.entries(possibilities[name]).map(([_value, link]) => {
-          if (link.url == url) {
-            colorsPossibilities = possibilities[name];
-            color = link.value;
-          }
-        });
-      }
-    });
-  }
+  // Find matching color and set colorsPossibilities and color
+  Object.keys(possibilities).forEach((name) => {
+    const link = Object.values(possibilities[name]).find(
+      (link) => link.url === url
+    );
+    if (link) {
+      colorsPossibilities = possibilities[name];
+      color = link.value;
+    }
+  });
 
-  {
-    Object.keys(possibilities).map((name) => {
-      Object.entries(possibilities[name]).map(([_value, link]) => {
-        if (color == link.value) {
-          sizePossibilities.push(link);
-        }
-      });
-    });
-  }
+  // Find size possibilities based on the matched color
+  Object.keys(possibilities).forEach((name) => {
+    const links = Object.values(possibilities[name]).filter(
+      (link) => color === link.value
+    );
+    sizePossibilities.push(...links);
+  });
 
+  // Filter matching colors based on colors array
   const matchingColorsPossibilities = colorsPossibilities.filter((cp) =>
     colors.some((color) => color.label.toLowerCase() === cp.value.toLowerCase())
   );
@@ -61,13 +60,11 @@ function VariantSelector({ product, colors }: Props) {
               <li>
                 <button f-partial={cp.url} f-client-nav>
                   <AvatarSize
-                    name={cp.name}
+                    sizes={sizes}
                     content={cp.name}
-                    variant={cp.url === url
-                      ? "active"
-                      : cp
-                      ? "default"
-                      : "disabled"}
+                    variant={
+                      cp.url === url ? "active" : cp ? "default" : "disabled"
+                    }
                   />
                 </button>
               </li>
@@ -85,11 +82,9 @@ function VariantSelector({ product, colors }: Props) {
                 color={colors}
                 name={cp.name}
                 content={cp.value}
-                variant={cp.url === url
-                  ? "active"
-                  : cp
-                  ? "default"
-                  : "disabled"}
+                variant={
+                  cp.url === url ? "active" : cp ? "default" : "disabled"
+                }
               />
             </button>
           ))}

@@ -1,8 +1,8 @@
 import { Color } from "deco-sites/persono/loaders/Layouts/Colors.tsx";
 
-interface TransformedColors {
+type TransformedColors = {
   [key: string]: string[];
-}
+};
 
 function transformColors(inputColors: Color[] | undefined) {
   const transformedColors: TransformedColors = {};
@@ -24,9 +24,8 @@ interface Props {
 
 const variants = {
   active:
-    "ring ring-1 ring-offset-base-100 ring-offset-2 ring-black ring-inset",
-  disabled:
-    `relative after:absolute after:left-0 after:top-1/2 after:h-[1px] after:bg-red-800 after:w-full after:block after:-rotate-45 after:content-[""]`,
+    "ring ring-2 ring-offset-black ring-offset-1 ring-base-100 ring-inset ",
+  disabled: `relative after:absolute after:left-0 after:top-1/2 after:h-[1px] after:bg-red-800 after:w-full after:block after:-rotate-45 after:content-[""]`,
   default: "border border-neutral hover:border-primary",
 };
 

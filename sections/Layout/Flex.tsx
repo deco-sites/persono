@@ -7,9 +7,9 @@ interface Props {
   layout?: {
     gap?: {
       /** @default 4 */
-      mobile?: "1" | "2" | "4" | "8" | "12" | "16";
+      mobile?: "1" | "2" | "4" | "8" | "10" | "12" | "16";
       /** @default 8 */
-      desktop?: "1" | "2" | "4" | "8" | "12" | "16";
+      desktop?: "1" | "2" | "4" | "8"  | "10" | "12" | "16";
     };
     direction?: {
       /** @default col */

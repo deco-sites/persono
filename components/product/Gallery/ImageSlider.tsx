@@ -30,19 +30,21 @@ export default function GallerySlider(props: SectionProps<typeof loader>) {
   }
 
   const {
-    page: { product: { image: images = [] } },
+    page: {
+      product: { image: images = [] },
+    },
     layout: { width, height },
   } = props;
   const aspectRatio = `${width} / ${height}`;
 
   if (props.device == "desktop") {
     return (
-      <div id={id} class="flex flex-col self-center ">
+      <div id={id} class="flex flex-col self-center w-[53vw] sm:pl-20 sm:mt-10">
         {images.map((img, index) => (
           <Image
-            class="w-full max-w-2xl"
-            style={{ aspectRatio }}
-            src={img.url!}
+            class="w-full"
+            style={{ aspectRatio: "1 / 1 " }}
+            src={"https://images-prod.mmartan.com.br/1536x1536/png/products/photos/still/mm21tjdca1060_1536px-1684423165235.png"}
             alt={img.alternateName}
             width={width}
             height={height}
@@ -55,19 +57,16 @@ export default function GallerySlider(props: SectionProps<typeof loader>) {
   }
 
   return (
-    <div id={id} class="flex flex-col-reverse">
+    <div id={id} class="flex flex-col-reverse w-full">
       {/* Image Slider */}
-      <div class="relative order-1 sm:order-2">
-        <Slider class="carousel carousel-center gap-6 w-[90vw] sm:w-[40vw]">
+      <div class="relative order-1 sm:order-2 p-4">
+        <Slider class="carousel carousel-center gap-6 sm:w-[40vw]">
           {images.map((img, index) => (
-            <Slider.Item
-              index={index}
-              class="carousel-item w-full"
-            >
+            <Slider.Item index={index} class="carousel-item w-full">
               <Image
                 class="w-full rounded-md"
                 style={{ aspectRatio }}
-                src={img.url!}
+                src={"https://images-prod.mmartan.com.br/1536x1536/png/products/photos/still/mm21tjdca1060_1536px-1684423165235.png"}
                 alt={img.alternateName}
                 width={width}
                 height={height}

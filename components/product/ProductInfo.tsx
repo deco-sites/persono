@@ -12,18 +12,20 @@ import BenefitsComponent from "../../sections/Product/Benefits.tsx";
 import { useOfferWithoutTaxes } from "deco-sites/persono/sdk/useOfferWithoutTaxes.ts";
 import AddCartButton from "$store/islands/AddToCartButton/CartButton.tsx";
 import { Color } from "deco-sites/persono/loaders/Layouts/Colors.tsx";
+import { Size } from "deco-sites/persono/loaders/Layouts/Size.tsx";
 import { Benefits } from "../../loaders/Layouts/Benefits.tsx";
 import { Resolved } from "deco/mod.ts";
 import { ShippingSimulation as ShippingSimulationLoader } from "deco-sites/persono/packs/types.ts";
 
 interface Props {
   colors: Color[];
+  sizes: Size[];
   benefits: Benefits[];
   shippingSimulation: Resolved<ShippingSimulationLoader>;
   page: ProductDetailsPage | null;
 }
 
-function ProductInfo({ page, colors, benefits }: Props) {
+function ProductInfo({ page, colors, sizes, benefits }: Props) {
   const platform = usePlatform();
   const id = useId();
 
@@ -53,8 +55,12 @@ function ProductInfo({ page, colors, benefits }: Props) {
     listPrice,
   });
 
+  const productBenefits = product.isVariantOf?.hasVariant[0].additionalProperty?.filter((p) => {
+    if (p.identifier?.startsWith("CUSTOM")) return p.value;
+  });
+
   return (
-    <div class="flex flex-col" id={id}>
+    <div class="flex flex-col sm:w-[43vw] sm:mt-10 sm:pr-20 px-4" id={id}>
       <Breadcrumb
         itemListElement={breadcrumb.itemListElement}
         productsQtt={breadcrumb.numberOfItems}
@@ -84,24 +90,28 @@ function ProductInfo({ page, colors, benefits }: Props) {
       </div>
       {/* Sku Selector */}
       <div class="sm:mt-6 mt-4  ">
-        <ProductSelector colors={colors} product={product} />
+        <ProductSelector colors={colors} sizes={sizes} product={product} />
       </div>
       {/* Add to Cart and Favorites button */}
       <div class="mt-4 sm:mt-10 flex flex-col gap-2">
-        {availability === "https://schema.org/InStock"
-          ? (
-            <>
-              <AddCartButton
-                eventParams={{ items: [eventItem] }}
-                sku={product.sku}
-              />
-            </>
-          )
-          : <OutOfStock productID={productID} />}
+        {availability === "https://schema.org/InStock" ? (
+          <>
+            <AddCartButton
+              eventParams={{ items: [eventItem] }}
+              sku={product.sku}
+            />
+          </>
+        ) : (
+          <OutOfStock productID={productID} />
+        )}
       </div>
       {/* Benefities */}
       <div class="mt-10">
-        <BenefitsComponent layout={benefits} name={name} />
+        <BenefitsComponent
+          productBenefits={productBenefits}
+          adminBenefits={benefits}
+          name={name}
+        />
       </div>
       {/* Description card */}
       <div class="mt-6 sm:mt-7">
@@ -109,7 +119,7 @@ function ProductInfo({ page, colors, benefits }: Props) {
           <div class="flex flex-col divide-y border-y">
             <div class="collapse collapse-plus ">
               <input type="checkbox" />
-              <div class="collapse-title text-base after:text-2xl after:text-primary">
+              <div class="flex items-center collapse-title text-base after:text-2xl after:text-primary">
                 Descrição
               </div>
               <div class="collapse-content max-w-lg">
@@ -119,7 +129,7 @@ function ProductInfo({ page, colors, benefits }: Props) {
 
             <div class="collapse collapse-plus ">
               <input type="checkbox" />
-              <div class="collapse-title text-base after:text-2xl after:text-primary">
+              <div class="flex items-center collapse-title text-base after:text-2xl after:text-primary">
                 Especificações
               </div>
               <div class="collapse-content max-w-lg">
@@ -127,44 +137,40 @@ function ProductInfo({ page, colors, benefits }: Props) {
                   product?.isVariantOf?.hasVariant[0]?.additionalProperty.map(
                     (ad) =>
                       ad.propertyID == "TECNICALSPECIFICATION" &&
-                        !ad.description?.startsWith("CUSTOM_")
-                        ? (
-                          <p>
-                            {ad.description}:&ensp;{ad.value}
-                          </p>
-                        )
-                        : null,
+                      !ad.description?.startsWith("CUSTOM_") ? (
+                        <p>
+                          {ad.description}:&ensp;{ad.value}
+                        </p>
+                      ) : null
                   )}
               </div>
             </div>
 
             <div class="collapse collapse-plus ">
               <input type="checkbox" />
-              <div class="collapse-title text-base after:text-2xl after:text-primary">
+              <div class="flex items-center collapse-title text-base after:text-2xl after:text-primary">
                 O que vai na embalagem?
               </div>
               <div class="collapse-content max-w-lg">
                 {product.isVariantOf?.hasVariant[0].additionalProperty &&
                   product?.isVariantOf?.hasVariant[0]?.additionalProperty.map(
                     (ad) =>
-                      ad.propertyID == "KITITEM"
-                        ? (
-                          <p>
-                            {ad.value}&ensp;{ad.description}
-                          </p>
-                        )
-                        : null,
+                      ad.propertyID == "KITITEM" ? (
+                        <p>
+                          {ad.value}&ensp;{ad.description}
+                        </p>
+                      ) : null
                   )}
               </div>
             </div>
 
             <div class="collapse collapse-plus collapse-open ">
               <input type="checkbox" />
-              <div class="collapse-title text-base after:text-2xl after:text-primary">
+              <div class="flex items-center collapse-title text-base after:text-2xl after:text-primary">
                 Calcular frete
               </div>
               <div class="collapse-content max-w-lg">
-                <div class="mt-0 sm:mt-5 max-w-md">
+                <div class="max-w-md">
                   {platform === "vtex" && (
                     <ShippingSimulation sku={product.sku} />
                   )}
