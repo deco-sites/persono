@@ -3,7 +3,7 @@ import type { ProductListingPage } from "apps/commerce/types.ts";
 import { VMDetails, VMDetailsRedirect } from "$store/packs/types.ts";
 import { getHeaders } from "$store/packs/utils/headers.ts";
 import { toProductListingPage } from "$store/packs/utils/transform.ts";
-import { typeChecher } from "$store/packs/utils/utils.ts";
+import { typeChecker } from "$store/packs/utils/utils.ts";
 
 export interface Props {
   /**
@@ -100,7 +100,7 @@ const loader = async (
       ) as Response;
     const data = await response.json();
 
-    if (typeChecher<VMDetails>(data as VMDetails, "basePath")) {
+    if (typeChecker<VMDetails>(data as VMDetails, "basePath")) {
       return toProductListingPage({
         vmDetails: data as VMDetails,
         url,
