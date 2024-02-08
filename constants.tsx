@@ -269,11 +269,11 @@ export const flex = {
   container: {
     mobile: {
       "container": "container",
-      "none": "none"
+      "none": "none",
     },
     desktop: {
       "container": "container",
-      "none": "none"
+      "none": "none",
     },
   },
 };
