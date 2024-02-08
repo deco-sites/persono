@@ -14,7 +14,7 @@ export const getImageUrl = (imageBaseUrl?: string, path?: string) => {
           return `${imageBaseUrl}${extension}${path}`;
         case "jpg":
         case "jpeg":
-          return `${imageBaseUrl}avif${path}`;
+          return `${imageBaseUrl}webp${path}`;
         default:
           return `${imageBaseUrl}png${path}`;
       }
