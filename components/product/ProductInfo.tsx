@@ -61,7 +61,7 @@ function ProductInfo({ page, colors, sizes, benefits }: Props) {
     });
 
   return (
-    <div class="flex flex-col sm:w-[43vw] sm:mt-10 sm:pr-20 px-4" id={id}>
+    <div class="flex flex-col w-full sm:mt-10 " id={id}>
       <Breadcrumb
         itemListElement={breadcrumb.itemListElement}
         productsQtt={breadcrumb.numberOfItems}
@@ -111,7 +111,6 @@ function ProductInfo({ page, colors, sizes, benefits }: Props) {
         <BenefitsComponent
           productBenefits={productBenefits}
           adminBenefits={benefits}
-          name={name}
         />
       </div>
       {/* Description card */}

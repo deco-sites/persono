@@ -9,11 +9,6 @@ import SliderJS from "deco-sites/persono/islands/SliderJS.tsx";
 export interface Props {
   /** @title Integration */
   page: ProductDetailsPage | null;
-
-  layout: {
-    width: number;
-    height: number;
-  };
 }
 
 /**
@@ -33,21 +28,20 @@ export default function GallerySlider(props: SectionProps<typeof loader>) {
     page: {
       product: { image: images = [] },
     },
-    layout: { width, height },
   } = props;
-  const aspectRatio = `${width} / ${height}`;
+  const aspectRatio = `1/1`;
 
   if (props.device == "desktop") {
     return (
-      <div id={id} class="flex flex-col self-center w-[53vw] sm:pl-20 sm:mt-10">
+      <div id={id} class="flex flex-col self-center sm:mt-10 w-full">
         {images.map((img, index) => (
           <Image
-            class="w-full"
-            style={{ aspectRatio: "1 / 1 " }}
-            src={"https://images-prod.mmartan.com.br/1536x1536/png/products/photos/still/mm21tjdca1060_1536px-1684423165235.png"}
+            class="w-[50rem]"
+            style={{ aspectRatio }}
+            src={img.url!}
             alt={img.alternateName}
-            width={width}
-            height={height}
+            width={678}
+            height={678}
             preload={index === 0}
             loading={index === 0 ? "eager" : "lazy"}
           />
@@ -66,10 +60,10 @@ export default function GallerySlider(props: SectionProps<typeof loader>) {
               <Image
                 class="w-full rounded-md"
                 style={{ aspectRatio }}
-                src={"https://images-prod.mmartan.com.br/1536x1536/png/products/photos/still/mm21tjdca1060_1536px-1684423165235.png"}
+                src={img.url!}
                 alt={img.alternateName}
-                width={width}
-                height={height}
+                width={678}
+                height={678}
                 // Preload LCP image for better web vitals
                 preload={index === 0}
                 loading={index === 0 ? "eager" : "lazy"}
