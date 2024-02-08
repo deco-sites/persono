@@ -29,20 +29,20 @@ function About({ title, description, image }: Props) {
       </div>
       <Picture>
         <Source
-          media="(max-width: 600px)"
+          media="(max-width: 767px)"
           src={mobile}
-          width={600}
+          width={774}
           height={336}
         />
         <Source
           media="(min-width: 768px)"
           src={desktop}
-          width={1400}
+          width={2400}
           height={600}
         />
         <img
           src={desktop}
-          class="h-full object-cover"
+          class="h-full w-full object-cover"
         />
       </Picture>
     </div>
