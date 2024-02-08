@@ -4,20 +4,37 @@ import Image from "apps/website/components/Image.tsx";
 
 interface Props {
   adminBenefits: Benefits[];
-  name: string;
   productBenefits: PropertyValue[] | undefined;
 }
 
 export default function Benefits({
   productBenefits,
   adminBenefits,
-  name,
 }: Props) {
+  if (!productBenefits) {
+    return null;
+  }
+
+  const filteredAdminBenefits: Benefits[] = [];
+
+  productBenefits.map((productBenefit) => {
+    const { value } = productBenefit;
+    const adminBenefit = adminBenefits.map((adminBenefit) => {
+      if (adminBenefit.customAttribute == value?.toLocaleLowerCase()) {
+        filteredAdminBenefits.push(adminBenefit);
+      }
+    });
+
+    return {
+      adminBenefit,
+    };
+  });
+
   return (
     <div class={`max-w-lg`}>
       <h4 class="text-base">Benefícios para o sono</h4>
       <span class="flex flex-col gap-8 mt-8">
-        {adminBenefits.slice(0, 3).map((l) => (
+        {filteredAdminBenefits.slice(0, 3).map((l) => (
           <div class="flex flex-col gap-2">
             <div class="flex items-center gap-2">
               <Image
