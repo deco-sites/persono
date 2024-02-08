@@ -266,6 +266,16 @@ export const flex = {
       "wrap-reverse": "flex-wrap-reverse",
     },
   },
+  container: {
+    mobile: {
+      "container": "container",
+      "none": "none"
+    },
+    desktop: {
+      "container": "container",
+      "none": "none"
+    },
+  },
 };
 
 export const imageSizeToUrl = "1536x1536";

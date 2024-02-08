@@ -29,13 +29,20 @@ interface Props {
       /** @default wrap */
       desktop?: "wrap" | "nowrap" | "wrap-reverse";
     };
+    container?: {
+      /** @default container */
+      mobile?: "container" | "none";
+      /** @default container */
+      desktop?: "container" | "none";
+    };
   };
 }
 
 function Flex({ layout, children }: Props) {
-  const items = !context.isDeploy && !children?.length
-    ? new Array(4).fill(0).map(() => <ItemPreview />)
-    : children;
+  const items =
+    !context.isDeploy && !children?.length
+      ? new Array(4).fill(0).map(() => <ItemPreview />)
+      : children;
 
   return (
     <div
@@ -49,6 +56,7 @@ function Flex({ layout, children }: Props) {
         flex.justify.desktop[layout?.justify?.desktop ?? "center"],
         flex.wrap.mobile[layout?.wrap?.mobile ?? "wrap"],
         flex.wrap.desktop[layout?.wrap?.desktop ?? "wrap"],
+        flex.container.desktop[layout?.container?.desktop ?? "none"]
       )}
     >
       {items}
