@@ -1,4 +1,6 @@
 import { SendEventOnView } from "$store/components/Analytics.tsx";
+import { redirect, type SectionProps } from "deco/mod.ts";
+import { FnContext } from "deco/types.ts";
 import Filters from "$store/components/search/Filters.tsx";
 import Icon from "$store/components/ui/Icon.tsx";
 import SearchControls from "$store/islands/SearchControls.tsx";
@@ -121,12 +123,34 @@ function Result({
   );
 }
 
-function SearchResult({ page, ...props }: Props) {
+function SearchResult({ page, ...props }: SectionProps<typeof loader>) {
   if (!page) {
     return <NotFound />;
   }
 
   return <Result {...props} page={page} />;
 }
+
+export const loader = (props: Props, req: Request) => {
+  const { page } = props;
+  const url = new URL(req.url);
+
+  if (!page) {
+    url.pathname = "/not-found";
+    redirect(url.toString());
+  }
+
+  if (!page?.products.length) {
+    const currentTerm = page?.breadcrumb.itemListElement[1].name;
+
+    url.pathname = `/not-found`;
+    url.search = `term=${currentTerm}`;
+    redirect(url.toString());
+  }
+
+  return {
+    ...props,
+  };
+};
 
 export default SearchResult;
