@@ -3,8 +3,6 @@
  * TODO: Figure out a better name for this component.
  */
 
-import { Size } from "deco-sites/persono/loaders/Layouts/Size.tsx";
-
 const selectedVariants: Record<string, string> = {
   // Color variants - only applied when no color as content is passed
   active: "bg-black text-base-100",
@@ -14,7 +12,6 @@ const selectedVariants: Record<string, string> = {
 
 interface Props {
   variant?: "active" | "disabled" | "default";
-  sizes: Size[];
   content: string;
 }
 

@@ -45,22 +45,50 @@ function VariantSelector({ product, colors, sizes }: Props) {
     sizePossibilities.push(...links);
   });
 
+  // Sort array based in admin sizes
+  const sortedSizeArray = sizePossibilities.sort((a, b) => {
+    const indexA = sizes.findIndex((size) => size.size === a.name);
+    const indexB = sizes.findIndex((size) => size.size === b.name);
+
+    // Move os tamanhos não encontrados (índice -1) para o final
+    if (indexA === -1 && indexB !== -1) {
+      return 1; // Coloca b no final
+    } else if (indexB === -1 && indexA !== -1) {
+      return -1; // Coloca a no final
+    }
+
+    return indexA - indexB;
+  });
+
   // Filter matching colors based on colors array
   const matchingColorsPossibilities = colorsPossibilities.filter((cp) =>
     colors.some((color) => color.label.toLowerCase() === cp.value.toLowerCase())
   );
+
+  // colors in alphabet order
+  matchingColorsPossibilities.sort((a, b) => {
+    const labelA = a.value.toLowerCase();
+    const labelB = b.value.toLowerCase();
+
+    if (labelA < labelB) {
+      return -1;
+    }
+    if (labelA > labelB) {
+      return 1;
+    }
+    return 0;
+  });
 
   return (
     <div class="flex flex-col gap-4">
       <ul class="flex flex-col gap-2">
         <p class="text-sm">Tamanho</p>
         <div class="flex gap-3">
-          {sizePossibilities.map((cp) => (
+          {sortedSizeArray.map((cp) => (
             <ul class="flex flex-row gap-3">
               <li>
                 <button f-partial={cp.url} f-client-nav>
                   <AvatarSize
-                    sizes={sizes}
                     content={cp.name}
                     variant={cp.url === url
                       ? "active"
