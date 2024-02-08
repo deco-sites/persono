@@ -4,10 +4,6 @@ export interface Props {
 }
 
 function Product(props: Props) {
-  props.benefits!.filter((current) => {
-    return current.showInHome;
-  });
-
   const listOfBenefits = props.benefits?.filter((current) => {
     return current.showInHome;
   }).map((benefit) => {
