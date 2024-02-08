@@ -20,7 +20,8 @@ interface Props {
 
 const variants = {
   active: "",
-  disabled: `relative after:absolute after:left-0 after:top-1/2 after:h-[1px] after:bg-red-800 after:w-full after:block after:-rotate-45 after:content-[""]`,
+  disabled:
+    `relative after:absolute after:left-0 after:top-1/2 after:h-[1px] after:bg-red-800 after:w-full after:block after:-rotate-45 after:content-[""]`,
   default: "border border-neutral hover:border-primary",
 };
 
@@ -28,7 +29,9 @@ function AvatarSize({ content, variant = "default" }: Props) {
   return (
     <div class="placeholder text-xs">
       <div
-        class={`rounded-full py-2 px-4 ${selectedVariants[variant]} ${variants[variant]}`}
+        class={`rounded-full py-2 px-4 ${selectedVariants[variant]} ${
+          variants[variant]
+        }`}
       >
         <span class="sm:flex hidden">{content}</span>
         <span class="sm:hidden flex">{content.substring(0, 2)}</span>

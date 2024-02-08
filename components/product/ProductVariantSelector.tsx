@@ -19,7 +19,7 @@ function VariantSelector({ product, colors, sizes }: Props) {
   const hasVariant = isVariantOf?.hasVariant ?? [];
   const possibilities: GroupedData = useVariantPossibilities(
     hasVariant,
-    isVariantOf
+    isVariantOf,
   );
 
   let colorsPossibilities: Possibilities[] = [];
@@ -29,7 +29,7 @@ function VariantSelector({ product, colors, sizes }: Props) {
   // Find matching color and set colorsPossibilities and color
   Object.keys(possibilities).forEach((name) => {
     const link = Object.values(possibilities[name]).find(
-      (link) => link.url === url
+      (link) => link.url === url,
     );
     if (link) {
       colorsPossibilities = possibilities[name];
@@ -40,7 +40,7 @@ function VariantSelector({ product, colors, sizes }: Props) {
   // Find size possibilities based on the matched color
   Object.keys(possibilities).forEach((name) => {
     const links = Object.values(possibilities[name]).filter(
-      (link) => color === link.value
+      (link) => color === link.value,
     );
     sizePossibilities.push(...links);
   });
@@ -62,9 +62,11 @@ function VariantSelector({ product, colors, sizes }: Props) {
                   <AvatarSize
                     sizes={sizes}
                     content={cp.name}
-                    variant={
-                      cp.url === url ? "active" : cp ? "default" : "disabled"
-                    }
+                    variant={cp.url === url
+                      ? "active"
+                      : cp
+                      ? "default"
+                      : "disabled"}
                   />
                 </button>
               </li>
@@ -82,9 +84,11 @@ function VariantSelector({ product, colors, sizes }: Props) {
                 color={colors}
                 name={cp.name}
                 content={cp.value}
-                variant={
-                  cp.url === url ? "active" : cp ? "default" : "disabled"
-                }
+                variant={cp.url === url
+                  ? "active"
+                  : cp
+                  ? "default"
+                  : "disabled"}
               />
             </button>
           ))}

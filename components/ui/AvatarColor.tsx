@@ -25,7 +25,8 @@ interface Props {
 const variants = {
   active:
     "ring ring-2 ring-offset-black ring-offset-1 ring-base-100 ring-inset ",
-  disabled: `relative after:absolute after:left-0 after:top-1/2 after:h-[1px] after:bg-red-800 after:w-full after:block after:-rotate-45 after:content-[""]`,
+  disabled:
+    `relative after:absolute after:left-0 after:top-1/2 after:h-[1px] after:bg-red-800 after:w-full after:block after:-rotate-45 after:content-[""]`,
   default: "border border-neutral hover:border-primary",
 };
 

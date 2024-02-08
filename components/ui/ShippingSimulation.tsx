@@ -97,7 +97,9 @@ function ShippingSimulation({ sku }: Props) {
   return (
     <div class="flex flex-col gap-2">
       <div class="flex flex-col text-[#666]">
-        <span class="text-base">Informe seu CEP para consultar os prazos de entrega</span>
+        <span class="text-base">
+          Informe seu CEP para consultar os prazos de entrega
+        </span>
       </div>
 
       <form
