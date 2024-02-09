@@ -5,6 +5,7 @@ import type { Product } from "apps/commerce/types.ts";
 import { Color } from "deco-sites/persono/loaders/Layouts/Colors.tsx";
 import type { GroupedData } from "$store/sdk/useVariantPossiblities.ts";
 import { Size } from "deco-sites/persono/loaders/Layouts/Size.tsx";
+import { SizesGuideModal } from "deco-sites/persono/components/product/SizesGuideModal.tsx";
 
 interface Props {
   product: Product;
@@ -21,6 +22,8 @@ function VariantSelector({ product, colors, sizes }: Props) {
     hasVariant,
     isVariantOf,
   );
+
+  console.log(product.isVariantOf);
 
   let colorsPossibilities: Possibilities[] = [];
   const sizePossibilities: Possibilities[] = [];
@@ -100,6 +103,14 @@ function VariantSelector({ product, colors, sizes }: Props) {
               </li>
             </ul>
           ))}
+
+          <label
+            for="my_modal_6"
+            class="btn underline btn-link p-0 text-black text-sm"
+          >
+            Guia de tamanhos
+          </label>
+          <SizesGuideModal segment={product.category?.split(">")[0]} />
         </div>
       </ul>
 
