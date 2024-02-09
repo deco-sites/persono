@@ -24,9 +24,7 @@ function Instagram(props: Props) {
     },
     list = [
       {
-        tag: "10% off",
-        image:
-          "https://ik.imagekit.io/decocx/tr:w-680,h-680/https:/ozksgdmyrqcxcwhnbepg.supabase.co/storage/v1/object/public/assets/239/fdcb3c8f-d629-485e-bf70-8060bd8a9f65",
+        image: "",
       },
     ],
   } = props;
@@ -34,11 +32,11 @@ function Instagram(props: Props) {
   return (
     <div
       id={id}
-      class="container py-[60px] max-sm:px-6 flex flex-col gap-10"
+      class="container py-10 max-sm:px-6 flex flex-col gap-10"
     >
       <Header title={header.title} />
-      <div class="relative">
-        <Slider class="flex carousel carousel-start gap-6 lg:gap-14">
+      <div>
+        <Slider class="flex carousel carousel-start gap-6 lg:gap-10">
           {list.map((
             { image },
             index,
@@ -47,13 +45,13 @@ function Instagram(props: Props) {
               index={index}
               class="flex flex-col gap-12 carousel-item lg:w-[calc(25%-42px)] sm:w-[calc(33.3%-13px)] w-2/3"
             >
-              <figure class="relative">
+              <figure>
                 <Picture>
                   <Source
                     media="(max-width: 767px)"
                     src={image}
                     width={220}
-                    height={268}
+                    height={260}
                   />
                   <Source
                     media="(min-width: 768px)"
@@ -66,10 +64,9 @@ function Instagram(props: Props) {
                     width={220}
                     height={268}
                     loading="lazy"
-                    class="w-full"
+                    class="w-full rounded-[40px]"
                   />
                 </Picture>
-                <div class="absolute left-0 bottom-0 w-full h-full bg-gradient-to-b from-transparent via-transparent to-black bg-opacity-10" />
               </figure>
             </Slider.Item>
           ))}
