@@ -47,30 +47,30 @@ function Instagram(props: Props) {
               index={index}
               class="flex flex-col gap-12 carousel-item lg:w-[calc(25%-42px)] sm:w-[calc(33.3%-13px)] w-2/3"
             >
-                <figure class="relative">
-                  <Picture>
-                    <Source
-                      media="(max-width: 767px)"
-                      src={image}
-                      width={220}
-                      height={268}
-                    />
-                    <Source
-                      media="(min-width: 768px)"
-                      src={image}
-                      width={280}
-                      height={268}
-                    />
-                    <img
-                      src={image}
-                      width={220}
-                      height={268}
-                      loading="lazy"
-                      class="w-full"
-                    />
-                  </Picture>
-                  <div class="absolute left-0 bottom-0 w-full h-full bg-gradient-to-b from-transparent via-transparent to-black bg-opacity-10" />
-                </figure>
+              <figure class="relative">
+                <Picture>
+                  <Source
+                    media="(max-width: 767px)"
+                    src={image}
+                    width={220}
+                    height={268}
+                  />
+                  <Source
+                    media="(min-width: 768px)"
+                    src={image}
+                    width={280}
+                    height={268}
+                  />
+                  <img
+                    src={image}
+                    width={220}
+                    height={268}
+                    loading="lazy"
+                    class="w-full"
+                  />
+                </Picture>
+                <div class="absolute left-0 bottom-0 w-full h-full bg-gradient-to-b from-transparent via-transparent to-black bg-opacity-10" />
+              </figure>
             </Slider.Item>
           ))}
         </Slider>
