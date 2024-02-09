@@ -1,7 +1,7 @@
 import { formatPrice } from "deco-sites/persono/sdk/format.ts";
 
 interface Props {
-  hasMultiplePrices: boolean;
+  hasMultiplePrices?: boolean;
   hasDiscount: boolean;
   productName: string;
   listPrice: number;
@@ -34,17 +34,19 @@ export const PriceAndName = ({
             search ? "flex-row gap-2" : "flex-col gap-0"
           } justify-start`}
         >
-          {(hasMultiplePrices || hasDiscount) && (
-            <p
-              class={`text-gray-600 font-normal text-xs ${
-                !hasMultiplePrices && hasDiscount ? "line-through" : ""
-              }`}
-            >
-              {hasMultiplePrices
-                ? "a partir de"
-                : formatPrice(listPrice, priceCurrency)}
-            </p>
-          )}
+          <div class="h-5">
+            {(hasMultiplePrices || hasDiscount) && (
+              <p
+                class={`text-gray-600 font-normal text-xs ${
+                  !hasMultiplePrices && hasDiscount ? "line-through" : ""
+                }`}
+              >
+                {hasMultiplePrices
+                  ? "a partir de"
+                  : formatPrice(listPrice, priceCurrency)}
+              </p>
+            )}
+          </div>
           <span class="text-black text-base font-medium ">
             {formatPrice(price, priceCurrency)}
           </span>

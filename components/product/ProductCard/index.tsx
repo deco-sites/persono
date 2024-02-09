@@ -5,6 +5,41 @@ import { useMemo } from "preact/compat";
 import { ProductCardImage } from "./components/ProductCardImage.tsx";
 import { SendEventOnClick } from "deco-sites/persono/components/Analytics.tsx";
 import { mapProductToAnalyticsItem } from "apps/commerce/utils/productToAnalyticsItem.ts";
+import { generateColorObject } from "deco-sites/persono/components/product/ProductCard/utils.ts";
+
+export interface Layout {
+  customTagColors?: CustomTagColor[];
+  defaultTags?: DefaultTagsColors;
+}
+
+export interface ColorConfig {
+  /**
+   * @title Background Color
+   * @format color
+   */
+  backgroundColor: string;
+  /** @format color */
+  textColor: string;
+}
+
+export type TagColor = Record<string, ColorConfig>;
+
+export interface CustomTagColor extends ColorConfig {
+  /** @title Identifier */
+  label: string;
+}
+
+interface DefaultTagsColors {
+  /** @title Tag de desconto*/
+  discountTag: ColorConfig;
+  /** @title Tag de Lançamento*/
+  newsTag: ColorConfig;
+}
+
+export interface DefaultTags {
+  label?: string;
+  colors?: ColorConfig;
+}
 
 interface Props {
   product: Product;
@@ -17,6 +52,8 @@ interface Props {
   search?: boolean;
 
   itemListName?: string;
+
+  layout?: Layout;
 }
 
 const relative = (url: string) => {
@@ -24,34 +61,71 @@ const relative = (url: string) => {
   return `${link.pathname}${link.search}`;
 };
 
-function ProductCard({ product, preload, index, search, itemListName }: Props) {
+function ProductCard({
+  product,
+  preload,
+  index,
+  search,
+  itemListName,
+  layout,
+}: Props) {
+  const { customTagColors, defaultTags } = layout ?? {};
   const { url, productID, name, image: images, offers } = product;
   const { price = 0, installments, listPrice = 0 } = useOffer(offers);
   const [front] = images ?? [];
-
   const id = `product-card-${productID}`;
 
-  // Necessario atualizar quando as especificações dos produtos retornarem corretamente
-  const newsTitle = "Novidade";
-  const hasNews = false;
-
-  const { hasDiscount, discount, hasMultiplePrices } = useMemo(() => {
+  const { hasDiscount, hasMultiplePrices } = useMemo(() => {
     const variantPrices = product.isVariantOf?.hasVariant.map(
       (item) => item.offers?.offers?.[0]?.price,
     );
 
-    const hasMultiplePrices = variantPrices && variantPrices?.length > 1
-      ? variantPrices.some(
+    const hasMultiplePrices = variantPrices &&
+      variantPrices?.length > 1 &&
+      variantPrices.some(
         (price) => price !== Math.min(...(variantPrices as number[])),
-      )
-      : false;
+      );
+
+    const discount = Math.floor(((listPrice - price) / listPrice) * 100);
 
     return {
       hasMultiplePrices,
       hasDiscount: listPrice > price,
-      discount: Math.floor(((listPrice - price) / listPrice) * 100),
+      discount,
     };
-  }, [listPrice > price]);
+  }, [listPrice, price]);
+
+  const tagsCapture = (value: string, identifier: string) =>
+    product.additionalProperty?.find(
+      (item) =>
+        item.propertyID === "TAG" &&
+        item.identifier === identifier &&
+        item.value === value,
+    );
+
+  const { hasDiscountTag, hasNewsTag } = useMemo(() => {
+    return {
+      hasDiscountTag: {
+        label: tagsCapture("PROMOTION", "TOPLEFT")?.valueReference,
+        colors: defaultTags?.discountTag,
+      },
+      hasNewsTag: {
+        label: tagsCapture("LANCAMENTO", "TOPLEFT")?.valueReference,
+        colors: defaultTags?.discountTag,
+      },
+    };
+  }, []);
+
+  const hasCustomTag = useMemo(() => {
+    const { description, valueReference } = tagsCapture("CUSTOM", "CUSTOM") ??
+      {};
+
+    if (description && valueReference) {
+      return { color: description, label: valueReference };
+    }
+  }, []);
+
+  const customTagColor = generateColorObject(customTagColors);
 
   return useMemo(
     () => (
@@ -80,13 +154,14 @@ function ProductCard({ product, preload, index, search, itemListName }: Props) {
             },
           }}
         />
+
         <ProductCardImage
+          customTagColor={customTagColor}
+          hasCustomTag={hasCustomTag}
           search={search}
           imageSrc={front.url!}
-          discount={discount}
-          hasDiscount={hasDiscount}
-          hasNews={hasNews}
-          newsTitle={newsTitle}
+          hasDiscountTag={hasDiscountTag}
+          hasNewsTag={hasNewsTag}
           imageAlt={front?.alternateName}
           preload={preload}
         />
