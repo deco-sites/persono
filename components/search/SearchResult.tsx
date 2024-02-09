@@ -10,7 +10,6 @@ import ProductGallery, { Columns } from "../product/ProductGallery.tsx";
 import { Logo } from "deco-sites/persono/components/ui/Logo.tsx";
 import { Layout as CardLayout } from "deco-sites/persono/components/product/ProductCard/index.tsx";
 
-
 export interface Layout {
   /**
    * @description Use drawer for mobile like behavior on desktop. Aside for rendering the filters alongside the products
