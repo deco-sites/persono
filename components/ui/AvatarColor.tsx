@@ -26,7 +26,8 @@ interface Props {
 const variants = {
   active:
     "ring ring-2 ring-offset-black ring-offset-1 ring-base-100 ring-inset ",
-  disabled: `relative after:absolute after:left-0 after:top-1/2 after:h-[1px] after:bg-red-800 after:w-full after:block after:-rotate-45 after:content-[""]`,
+  disabled:
+    `relative after:absolute after:left-0 after:top-1/2 after:h-[1px] after:bg-red-800 after:w-full after:block after:-rotate-45 after:content-[""]`,
   default: "border border-neutral hover:border-primary",
 };
 
@@ -42,7 +43,9 @@ function AvatarColor({ content, variant = "default", color }: Props) {
       }`}
     >
       <div
-        class={`rounded-full w-8 h-8 p-2 group relative bg-cover bg-center ${variants[variant]}`}
+        class={`rounded-full w-8 h-8 p-2 group relative bg-cover bg-center ${
+          variants[variant]
+        }`}
         style={{
           backgroundColor: transformedColors[content.toLowerCase()]
             ? transformedColors[content.toLowerCase()][0]
