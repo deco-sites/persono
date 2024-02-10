@@ -3,7 +3,6 @@ import { Signal, useSignal } from "@preact/signals";
 import { useCallback } from "preact/hooks";
 import Button from "$store/components/ui/Button.tsx";
 import { formatPrice } from "$store/sdk/format.ts";
-import { useCart } from "$store/packs/hooks/useCart.ts";
 import { ShippingSimulation } from "$store/packs/types.ts";
 import { TargetedEvent } from "https://esm.sh/v128/preact@10.18.1/compat/src/index.js";
 import { invoke } from "deco-sites/persono/runtime.ts";
@@ -54,8 +53,7 @@ function ShippingContent({
             class={`px-4 h-[2px] bg-white rounded ${
               idx == 0 ? "flex" : "hidden"
             }`}
-          >
-          </span>
+          ></span>
         </li>
       ))}
       <span class="text-sm text-[#666] pb-4">
@@ -67,10 +65,18 @@ function ShippingContent({
   );
 }
 
+function Error() {
+  return (
+    <div class="py-2 text-red-600">
+      <span>CEP inválido</span>
+    </div>
+  );
+}
+
 function ShippingSimulation({ sku }: Props) {
   const loading = useSignal(false);
+  const error = useSignal(false);
   const simulateResult = useSignal<ShippingSimulation | null>(null);
-  const { simulate, cart } = useCart();
 
   const handleSimulation = useCallback(
     async (e: TargetedEvent<HTMLFormElement, Event>) => {
@@ -87,11 +93,14 @@ function ShippingSimulation({ sku }: Props) {
           key: "deco-sites/persono/loaders/shippingSimulation.ts",
           props: { postalCode, sku: sku },
         })) as ShippingSimulation | null;
+        error.value = false;
+      } catch (e) {
+        error.value = true;
       } finally {
         loading.value = false;
       }
     },
-    [],
+    []
   );
 
   return (
@@ -134,7 +143,11 @@ function ShippingSimulation({ sku }: Props) {
       </a>
       <div>
         <div>
-          <ShippingContent simulation={simulateResult} />
+          {error.value ? (
+            <Error />
+          ) : (
+            <ShippingContent simulation={simulateResult} />
+          )}
         </div>
       </div>
     </div>

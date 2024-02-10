@@ -20,10 +20,8 @@ function VariantSelector({ product, colors, sizes }: Props) {
   const hasVariant = isVariantOf?.hasVariant ?? [];
   const possibilities: GroupedData = useVariantPossibilities(
     hasVariant,
-    isVariantOf,
+    isVariantOf
   );
-
-  console.log(product.isVariantOf);
 
   let colorsPossibilities: Possibilities[] = [];
   const sizePossibilities: Possibilities[] = [];
@@ -32,10 +30,10 @@ function VariantSelector({ product, colors, sizes }: Props) {
   // Find matching color and set colorsPossibilities and color
   Object.keys(possibilities).forEach((name) => {
     const link = Object.values(possibilities[name]).find(
-      (link) => link.url === url,
+      (link) => link.url === url
     );
     if (link) {
-      colorsPossibilities = possibilities[name];
+      colorsPossibilities = possibilities[name]
       color = link.value;
     }
   });
@@ -43,7 +41,7 @@ function VariantSelector({ product, colors, sizes }: Props) {
   // Find size possibilities based on the matched color
   Object.keys(possibilities).forEach((name) => {
     const links = Object.values(possibilities[name]).filter(
-      (link) => color === link.value,
+      (link) => color === link.value
     );
     sizePossibilities.push(...links);
   });
@@ -65,7 +63,11 @@ function VariantSelector({ product, colors, sizes }: Props) {
 
   // Filter matching colors based on colors array
   const matchingColorsPossibilities = colorsPossibilities.filter((cp) =>
-    colors.some((color) => color.label.toLowerCase() === cp.value.toLowerCase())
+    colors.map((color) =>
+      color.label.toLowerCase() === cp.value.toLowerCase()
+        ? color
+        : { label: "", hex: "", ring: "", img: "" }
+    )
   );
 
   // colors in alphabet order
@@ -93,11 +95,9 @@ function VariantSelector({ product, colors, sizes }: Props) {
                 <button f-partial={cp.url} f-client-nav>
                   <AvatarSize
                     content={cp.name}
-                    variant={cp.url === url
-                      ? "active"
-                      : cp
-                      ? "default"
-                      : "disabled"}
+                    variant={
+                      cp.url === url ? "active" : cp ? "default" : "disabled"
+                    }
                   />
                 </button>
               </li>
@@ -106,7 +106,7 @@ function VariantSelector({ product, colors, sizes }: Props) {
 
           <label
             for="my_modal_6"
-            class="btn underline btn-link p-0 text-black text-sm"
+            class="btn underline btn-link p-0 text-black text-sm font-normal"
           >
             Guia de tamanhos
           </label>
@@ -123,11 +123,9 @@ function VariantSelector({ product, colors, sizes }: Props) {
                 color={colors}
                 name={cp.name}
                 content={cp.value}
-                variant={cp.url === url
-                  ? "active"
-                  : cp
-                  ? "default"
-                  : "disabled"}
+                variant={
+                  cp.url === url ? "active" : cp.value ? "default" : "disabled"
+                }
               />
             </button>
           ))}

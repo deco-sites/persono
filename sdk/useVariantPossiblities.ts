@@ -1,4 +1,4 @@
-import type { ProductLeaf, PropertyValue } from "apps/commerce/types.ts";
+import type { ProductLeaf } from "apps/commerce/types.ts";
 import { ProductGroup } from "apps/commerce/types.ts";
 
 export type Possibilities = Record<string, Record<string, string | undefined>>;
@@ -23,8 +23,6 @@ export interface GroupedData {
   }>;
 }
 
-const hash = ({ name, value }: PropertyValue) => `${name}::${value}`;
-
 const omit = new Set(["tecnicalSpecification", "kitItem", "tag"]);
 
 export const useVariantPossibilities = (
@@ -35,56 +33,41 @@ export const useVariantPossibilities = (
   const groupedData: GroupedData = {};
   if (!selected) return groupedData;
 
-  const selectedSpecs = new Set(selected.additionalProperty?.map(hash));
-
-  const sku = selected.url?.split("/")[selected.url?.split("/").length - 1];
   const result: Result[] = [];
   const newSpecs: NewSpecs[] = [];
-  const urlArr: string[] = [];
+  const urlSet: Set<string> = new Set();
+
   for (const variant of variants) {
-    const { url, additionalProperty = [], productID } = variant;
-    const _isSelected = productID === sku;
+    const { url, additionalProperty = [] } = variant;
     const specs = additionalProperty.filter(({ name }) => !omit.has(name!));
 
-    specs.map((s) =>
-      newSpecs.push({ name: s.value, value: s.value, label: s.name })
+    specs.map(({ name, value }) =>
+      newSpecs.push({ name, value, label: name })
     );
 
-    for (let it = 0; it < specs.length; it++) {
-      const name = specs[it].name!;
-      const value = specs[it].value!;
-
+    for (const { name, value } of specs) {
+      if(!name || !value) continue;
       if (omit.has(name)) continue;
 
       if (!possibilities[name]) {
         possibilities[name] = {};
       }
 
-      // First row is always selectable
-      const _isSelectable = it === 0 ||
-        specs.every((s) => s.name === name || selectedSpecs.has(hash(s)));
-
       possibilities[name][value] = url;
-
-      if (url && !urlArr.includes(url)) {
-        urlArr.push(url);
-      }
+      urlSet.add(url ?? "");
     }
   }
 
-  newSpecs.map((item, idx) => {
-    if (idx % 2 != 0) {
-      result.push({
-        name: newSpecs[idx - 1].value,
-        value: item.value,
-        url: "url",
-      });
-    }
-  });
+  for (let idx = 1; idx < newSpecs.length; idx += 2) {
+    result.push({
+      name: newSpecs[idx - 1].value,
+      value: newSpecs[idx].value,
+      url: "url",
+    });
+  }
 
-  const updatedResult = result.map((obj, index) => {
-    return { ...obj, url: urlArr[index] };
-  });
+  const urlArr = Array.from(urlSet);
+  const updatedResult = result.map((obj, index) => ({ ...obj, url: urlArr[index] }));
 
   const organizedData: GroupedData = updatedResult.reduce(
     (acc, obj) => {

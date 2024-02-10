@@ -30,8 +30,7 @@ function AvatarSize({ content, variant = "default" }: Props) {
           variants[variant]
         }`}
       >
-        <span class="sm:flex hidden">{content}</span>
-        <span class="sm:hidden flex">{content.substring(0, 2)}</span>
+        <span>{content}</span>
       </div>
     </div>
   );

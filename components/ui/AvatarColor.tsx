@@ -34,12 +34,12 @@ const variants = {
 function AvatarColor({ content, variant = "default", color }: Props) {
   const transformedColors = transformColors(color);
 
-  console.log();
+  console.log(transformedColors[content.toLowerCase()]);
 
   return (
     <div
       class={`placeholder text-xs ${
-        !transformedColors[content.toLowerCase()] ? "hidden" : ""
+        !transformedColors[content.toLowerCase()] ? "" : ""
       }`}
     >
       <div
@@ -49,9 +49,9 @@ function AvatarColor({ content, variant = "default", color }: Props) {
         style={{
           backgroundColor: transformedColors[content.toLowerCase()]
             ? transformedColors[content.toLowerCase()][0]
-            : "#000",
+            : "#fff",
           backgroundImage:
-            transformedColors[content.toLowerCase()][2].length > 2
+          transformedColors[content.toLowerCase()] && transformedColors[content.toLowerCase()][2].length > 2
               ? `url("${transformedColors[content.toLowerCase()][2]}")`
               : null,
         }}

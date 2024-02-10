@@ -42,7 +42,7 @@ export default function GallerySlider(props: SectionProps<typeof loader>) {
             alt={img.alternateName}
             width={678}
             height={678}
-            preload={index === 0}
+            preload={index === 0 ? true : false}
             loading={index === 0 ? "eager" : "lazy"}
           />
         ))}
@@ -82,13 +82,14 @@ export default function GallerySlider(props: SectionProps<typeof loader>) {
                 type="radio"
                 name={`carousel-${id}`}
                 id={`slide${index}`}
-                class="carousel-radio visually-hidden"
+                class="carousel-radio hidden visually-hidden"
                 checked={index === 0}
               />
               <label
                 for={`slide${index}`}
-                class="w-3 h-3 bg-neutral checkbox-primary rounded-full"
+                class="w-3 h-3 bg-neutral checkbox-primary rounded-full "
               >
+                <span class="w-2 h-2 bg-neutral checkbox-primary checked:bg-primary active:bg-primary rounded-full block"></span>
               </label>
             </Slider.Dot>
           </li>

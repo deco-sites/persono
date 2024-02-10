@@ -55,13 +55,13 @@ function ProductInfo({ page, colors, sizes, benefits }: Props) {
     listPrice,
   });
 
-  const productBenefits = product.isVariantOf?.hasVariant[0].additionalProperty
-    ?.filter((p) => {
+  const productBenefits =
+    product.isVariantOf?.hasVariant[0].additionalProperty?.filter((p) => {
       if (p.identifier?.startsWith("CUSTOM")) return p.value;
     });
 
   return (
-    <div class="flex flex-col w-full sm:mt-10 " id={id}>
+    <div class="flex flex-col w-full sm:mt-10 px-4 sm:px-0" id={id}>
       <Breadcrumb
         itemListElement={breadcrumb.itemListElement}
         productsQtt={breadcrumb.numberOfItems}
@@ -72,7 +72,7 @@ function ProductInfo({ page, colors, sizes, benefits }: Props) {
           {gtin && <span class="text-sm text-[#666]">Cod. {gtin}</span>}
         </div>
         <h1>
-          <span class="font-medium text-xl capitalize">{name}</span>
+          <span class="font-medium text-xl sm:text-2xl capitalize">{name}</span>
         </h1>
       </div>
       {/* Prices */}
@@ -94,17 +94,17 @@ function ProductInfo({ page, colors, sizes, benefits }: Props) {
         <ProductSelector colors={colors} sizes={sizes} product={product} />
       </div>
       {/* Add to Cart and Favorites button */}
-      <div class="mt-4 sm:mt-10 flex flex-col gap-2">
-        {availability === "https://schema.org/InStock"
-          ? (
-            <>
-              <AddCartButton
-                eventParams={{ items: [eventItem] }}
-                sku={product.sku}
-              />
-            </>
-          )
-          : <OutOfStock productID={productID} />}
+      <div class="mt-6 sm:mt-10 flex flex-col">
+        {availability === "https://schema.org/InStock" ? (
+          <>
+            <AddCartButton
+              eventParams={{ items: [eventItem] }}
+              sku={product.sku}
+            />
+          </>
+        ) : (
+          <OutOfStock productID={productID} />
+        )}
       </div>
       {/* Benefities */}
       <div class="mt-10">
@@ -116,8 +116,8 @@ function ProductInfo({ page, colors, sizes, benefits }: Props) {
       {/* Description card */}
       <div class="mt-6 sm:mt-7">
         {description && (
-          <div class="flex flex-col divide-y border-y">
-            <div class="collapse collapse-plus ">
+          <div class="flex flex-col divide-y border-t">
+            <div class="collapse collapse-plus items-start">
               <input type="checkbox" />
               <div class="flex items-center collapse-title text-base after:text-2xl after:text-primary">
                 Descrição
@@ -127,48 +127,44 @@ function ProductInfo({ page, colors, sizes, benefits }: Props) {
               </div>
             </div>
 
-            <div class="collapse collapse-plus ">
+            <div class="collapse collapse-plus items-start">
               <input type="checkbox" />
               <div class="flex items-center collapse-title text-base after:text-2xl after:text-primary">
                 Especificações
               </div>
-              <div class="collapse-content max-w-lg">
+              <div class="collapse-content max-w-lg flex flex-col gap-2">
                 {product.isVariantOf?.hasVariant[0].additionalProperty &&
                   product?.isVariantOf?.hasVariant[0]?.additionalProperty.map(
                     (ad) =>
                       ad.propertyID == "TECNICALSPECIFICATION" &&
-                        !ad.description?.startsWith("CUSTOM_")
-                        ? (
-                          <p>
-                            {ad.description}:&ensp;{ad.value}
-                          </p>
-                        )
-                        : null,
+                      !ad.description?.startsWith("CUSTOM_") ? (
+                        <p>
+                          {ad.description}:&ensp;{ad.value}
+                        </p>
+                      ) : null
                   )}
               </div>
             </div>
 
-            <div class="collapse collapse-plus ">
+            <div class="collapse collapse-plus items-start">
               <input type="checkbox" />
               <div class="flex items-center collapse-title text-base after:text-2xl after:text-primary">
                 O que vai na embalagem?
               </div>
-              <div class="collapse-content max-w-lg">
+              <div class="collapse-content max-w-lg flex flex-col gap-2">
                 {product.isVariantOf?.hasVariant[0].additionalProperty &&
                   product?.isVariantOf?.hasVariant[0]?.additionalProperty.map(
                     (ad) =>
-                      ad.propertyID == "KITITEM"
-                        ? (
-                          <p>
-                            {ad.value}&ensp;{ad.description}
-                          </p>
-                        )
-                        : null,
+                      ad.propertyID == "KITITEM" ? (
+                        <p>
+                          {ad.value}&ensp;{ad.description}
+                        </p>
+                      ) : null
                   )}
               </div>
             </div>
 
-            <div class="collapse collapse-plus collapse-open ">
+            <div class="collapse collapse-plus items-start">
               <input type="checkbox" />
               <div class="flex items-center collapse-title text-base after:text-2xl after:text-primary">
                 Calcular frete
