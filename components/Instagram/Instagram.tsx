@@ -5,15 +5,16 @@ import { useId } from "$store/sdk/useId.ts";
 import type { ImageWidget } from "apps/admin/widgets.ts";
 import { Picture, Source } from "apps/website/components/Picture.tsx";
 
-export interface Posts {
-  image: ImageWidget;
+export interface Post {
+  mobile: ImageWidget;
+  desktop: ImageWidget;
 }
 
 export interface Props {
   header?: {
     title?: string;
   };
-  list?: Posts[];
+  list?: Post[];
 }
 
 function Instagram(props: Props) {
@@ -24,7 +25,8 @@ function Instagram(props: Props) {
     },
     list = [
       {
-        image: "",
+        mobile: "",
+        desktop: "",
       },
     ],
   } = props;
@@ -32,39 +34,37 @@ function Instagram(props: Props) {
   return (
     <div
       id={id}
-      class="container py-10 max-sm:px-6 flex flex-col gap-10"
+      class="container max-sm:px-6 flex flex-col gap-10"
     >
       <Header title={header.title} />
       <div>
         <Slider class="flex carousel carousel-start gap-6 lg:gap-10">
           {list.map((
-            { image },
+            { mobile, desktop },
             index,
           ) => (
             <Slider.Item
               index={index}
-              class="flex flex-col gap-12 carousel-item lg:w-[calc(25%-42px)] sm:w-[calc(33.3%-13px)] w-2/3"
+              class="flex flex-col gap-12 carousel-item w-2/3 lg:w-[calc(25%-40px)] sm:w-[calc(33.3%-13px)]"
             >
               <figure>
                 <Picture>
                   <Source
-                    media="(max-width: 767px)"
-                    src={image}
+                    media="(max-width: 768px)"
+                    src={mobile}
                     width={220}
-                    height={260}
+                    height={268}
                   />
                   <Source
                     media="(min-width: 768px)"
-                    src={image}
+                    src={desktop}
                     width={280}
-                    height={268}
+                    height={350}
                   />
                   <img
-                    src={image}
-                    width={220}
-                    height={268}
+                    src={desktop}
                     loading="lazy"
-                    class="w-full rounded-[40px]"
+                    class="w-full h-auto object cover rounded-[40px]"
                   />
                 </Picture>
               </figure>
