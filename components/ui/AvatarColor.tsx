@@ -50,10 +50,10 @@ function AvatarColor({ content, variant = "default", color }: Props) {
           backgroundColor: transformedColors[content.toLowerCase()]
             ? transformedColors[content.toLowerCase()][0]
             : "#fff",
-          backgroundImage:
-          transformedColors[content.toLowerCase()] && transformedColors[content.toLowerCase()][2].length > 2
-              ? `url("${transformedColors[content.toLowerCase()][2]}")`
-              : null,
+          backgroundImage: transformedColors[content.toLowerCase()] &&
+              transformedColors[content.toLowerCase()][2].length > 2
+            ? `url("${transformedColors[content.toLowerCase()][2]}")`
+            : null,
         }}
       >
         <span class="rounded shadow border top-9 -right-3 absolute px-2 py-1 text-base-content bg-white hidden group-hover:flex">

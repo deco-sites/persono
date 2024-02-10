@@ -41,12 +41,10 @@ export const useVariantPossibilities = (
     const { url, additionalProperty = [] } = variant;
     const specs = additionalProperty.filter(({ name }) => !omit.has(name!));
 
-    specs.map(({ name, value }) =>
-      newSpecs.push({ name, value, label: name })
-    );
+    specs.map(({ name, value }) => newSpecs.push({ name, value, label: name }));
 
     for (const { name, value } of specs) {
-      if(!name || !value) continue;
+      if (!name || !value) continue;
       if (omit.has(name)) continue;
 
       if (!possibilities[name]) {
@@ -67,7 +65,10 @@ export const useVariantPossibilities = (
   }
 
   const urlArr = Array.from(urlSet);
-  const updatedResult = result.map((obj, index) => ({ ...obj, url: urlArr[index] }));
+  const updatedResult = result.map((obj, index) => ({
+    ...obj,
+    url: urlArr[index],
+  }));
 
   const organizedData: GroupedData = updatedResult.reduce(
     (acc, obj) => {

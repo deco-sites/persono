@@ -53,7 +53,8 @@ function ShippingContent({
             class={`px-4 h-[2px] bg-white rounded ${
               idx == 0 ? "flex" : "hidden"
             }`}
-          ></span>
+          >
+          </span>
         </li>
       ))}
       <span class="text-sm text-[#666] pb-4">
@@ -100,7 +101,7 @@ function ShippingSimulation({ sku }: Props) {
         loading.value = false;
       }
     },
-    []
+    [],
   );
 
   return (
@@ -143,11 +144,9 @@ function ShippingSimulation({ sku }: Props) {
       </a>
       <div>
         <div>
-          {error.value ? (
-            <Error />
-          ) : (
-            <ShippingContent simulation={simulateResult} />
-          )}
+          {error.value
+            ? <Error />
+            : <ShippingContent simulation={simulateResult} />}
         </div>
       </div>
     </div>

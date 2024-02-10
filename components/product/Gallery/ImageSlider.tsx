@@ -89,7 +89,8 @@ export default function GallerySlider(props: SectionProps<typeof loader>) {
                 for={`slide${index}`}
                 class="w-3 h-3 bg-neutral checkbox-primary rounded-full "
               >
-                <span class="w-2 h-2 bg-neutral checkbox-primary checked:bg-primary active:bg-primary rounded-full block"></span>
+                <span class="w-2 h-2 bg-neutral checkbox-primary checked:bg-primary active:bg-primary rounded-full block">
+                </span>
               </label>
             </Slider.Dot>
           </li>
