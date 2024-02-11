@@ -73,7 +73,7 @@ function NotFound({
     : notFoundPageTitle;
 
   return (
-    <div class=" w-full flex flex-col items-center justify-center py-20 gap-1 m-4">
+    <div class=" w-full flex flex-col items-center justify-center py-20 gap-1 px-3 ">
       <Icon id="MagnifyingGlassFound" height={49} width={49} />
       <span class="font-medium text-center text-2xl mt-4 text-black">
         {currentTitle}
