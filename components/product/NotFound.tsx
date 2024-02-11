@@ -15,7 +15,7 @@ interface SubtitleProps {
 interface Props extends SubtitleProps {
   /**
    * @description Adicione $term para no local que o termo buscado devera ser inserido. ex: Nenhum resultado encontrado para "$term".
-   * */
+   */
   notFoundProductTitle: string;
 
   notFoundPageTitle: string;
@@ -45,9 +45,7 @@ export const Subtitle = ({
 
   return (
     <>
-      {isMobile ? (
-        subtitleText
-      ) : (
+      {isMobile ? subtitleText : (
         <a
           href="/"
           class="btn no-animation text-md font-bold text-white bg-primary mt-6"

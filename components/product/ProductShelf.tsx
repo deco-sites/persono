@@ -47,19 +47,21 @@ function ProductShelf({
 
   return (
     <div class="w-full container">
-      {arrowsvVisibleTop && currentTitle ? (
-        <HeaderWithArrows
-          title={isMobile ? mobileTitle : desktopTitle}
-          device={device}
-        />
-      ) : (
-        currentTitle && (
-          <Header
+      {arrowsvVisibleTop && currentTitle
+        ? (
+          <HeaderWithArrows
             title={isMobile ? mobileTitle : desktopTitle}
-            alignment={isMobile ? "left" : "center"}
+            device={device}
           />
         )
-      )}
+        : (
+          currentTitle && (
+            <Header
+              title={isMobile ? mobileTitle : desktopTitle}
+              alignment={isMobile ? "left" : "center"}
+            />
+          )
+        )}
 
       <div id={id} class="container grid grid-cols-[48px_1fr_48px] pb-28">
         <Slider class="carousel carousel-start sm:carousel-end  md:gap-8 justify-between col-span-full row-start-2 row-end-5">
@@ -79,7 +81,7 @@ function ProductShelf({
         </Slider>
 
         <div class="hidden relative sm:block z-10 col-start-1 row-start-3">
-          <Slider.PrevButton class="justify-center btn btn-circle border border-neutral bg-white z-10 absolute left-[-18px] top-[calc(50%-18px)] hidden sm:flex rounded-full cursor-pointer">
+          <Slider.PrevButton class="justify-center btn btn-circle border disabled:border-neutral border-neutral disabled:bg-white bg-white z-10 absolute left-[-18px] top-[calc(50%-18px)] hidden sm:flex rounded-full cursor-pointer">
             <Icon
               class="text-primary"
               size={20}
@@ -89,7 +91,7 @@ function ProductShelf({
           </Slider.PrevButton>
         </div>
         <div class="hidden relative sm:block z-10 col-start-3 row-start-3">
-          <Slider.NextButton class="justify-center btn btn-circle border border-neutral bg-white z-10 absolute right-[-18px] top-[calc(50%-18px)] hidden sm:flex rounded-full cursor-pointer">
+          <Slider.NextButton class="justify-center btn btn-circle disabled:border-neutral border-neutral disabled:bg-white bg-white z-10 absolute right-[-18px] top-[calc(50%-18px)] hidden sm:flex rounded-full cursor-pointer">
             <Icon
               class="text-primary"
               size={20}
@@ -99,7 +101,7 @@ function ProductShelf({
           </Slider.NextButton>
         </div>
 
-        <SliderJS rootId={id} />
+        <SliderJS rootId={id} disabledArrowColor="#666666" />
       </div>
     </div>
   );
@@ -122,7 +124,7 @@ const HeaderWithArrows = ({
 }) => {
   return (
     <div class="w-full flex justify-around items-center ">
-      <Slider.PrevButton class="justify-center btn btn-circle border border-neutral bg-white rounded-full cursor-pointer">
+      <Slider.PrevButton class="justify-center btn btn-circle border disabled:border-neutral border-neutral disabled:bg-white bg-white rounded-full cursor-pointer">
         <Icon class="text-primary" size={20} id="ChevronLeft" strokeWidth={2} />
       </Slider.PrevButton>
 
@@ -131,7 +133,7 @@ const HeaderWithArrows = ({
         alignment={device === "mobile" ? "left" : "center"}
       />
 
-      <Slider.NextButton class="justify-center btn btn-circle border border-neutral bg-white rounded-full cursor-pointer">
+      <Slider.NextButton class="justify-center go btn btn-circle border disabled:border-neutral border-neutral disabled:bg-white bg-white rounded-full cursor-pointer">
         <Icon
           class="text-primary"
           size={20}

@@ -134,16 +134,14 @@ function SearchResult({ page, ...props }: SectionProps<typeof loader>) {
 export const loader = (props: Props, req: Request) => {
   const { page } = props;
   const url = new URL(req.url);
+  url.pathname = "/not-found";
 
   if (!page) {
-    url.pathname = "/not-found";
     redirect(url.toString());
   }
 
   if (!page?.products.length) {
-    const currentTerm = page?.breadcrumb.itemListElement[1].name;
-
-    url.pathname = `/not-found`;
+    const currentTerm = page?.breadcrumb.itemListElement?.pop()?.name;
     url.search = `term=${currentTerm}`;
     redirect(url.toString());
   }

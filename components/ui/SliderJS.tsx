@@ -5,6 +5,7 @@ export interface Props {
   scroll?: "smooth" | "auto";
   interval?: number;
   infinite?: boolean;
+  disabledArrowColor?: string;
 }
 
 const ATTRIBUTES = {
@@ -46,7 +47,13 @@ const isHTMLElement = (x: Element): x is HTMLElement =>
   // deno-lint-ignore no-explicit-any
   typeof (x as any).offsetLeft === "number";
 
-const setup = ({ rootId, scroll, interval, infinite }: Props) => {
+const setup = ({
+  rootId,
+  scroll,
+  interval,
+  infinite,
+  disabledArrowColor,
+}: Props) => {
   const root = document.getElementById(rootId);
   const slider = root?.querySelector(`[${ATTRIBUTES["data-slider"]}]`);
   const items = root?.querySelectorAll(`[${ATTRIBUTES["data-slider-item"]}]`);
@@ -71,10 +78,7 @@ const setup = ({ rootId, scroll, interval, infinite }: Props) => {
       const item = items.item(index);
       const rect = item.getBoundingClientRect();
 
-      const ratio = intersectionX(
-        rect,
-        sliderRect,
-      ) / rect.width;
+      const ratio = intersectionX(rect, sliderRect) / rect.width;
 
       if (ratio > THRESHOLD) {
         indices.push(index);
@@ -142,15 +146,36 @@ const setup = ({ rootId, scroll, interval, infinite }: Props) => {
           if (index === 0) {
             if (item.isIntersecting) {
               prev?.setAttribute("disabled", "");
+              if (disabledArrowColor) {
+                prev?.querySelectorAll("*").forEach((child) => {
+                  child.setAttribute("color", disabledArrowColor);
+                });
+              }
             } else {
               prev?.removeAttribute("disabled");
+              if (disabledArrowColor) {
+                prev?.querySelectorAll("*").forEach((child) => {
+                  child.removeAttribute("color");
+                });
+              }
             }
           }
           if (index === items.length - 1) {
             if (item.isIntersecting) {
               next?.setAttribute("disabled", "");
+              if (disabledArrowColor) {
+                next?.querySelectorAll("*").forEach((child) => {
+                  child.setAttribute("color", disabledArrowColor);
+                });
+              }
             } else {
               next?.removeAttribute("disabled");
+
+              if (disabledArrowColor) {
+                next?.querySelectorAll("*").forEach((child) => {
+                  child.removeAttribute("color");
+                });
+              }
             }
           }
         }
@@ -189,13 +214,12 @@ function Slider({
   scroll = "smooth",
   interval,
   infinite = false,
+  disabledArrowColor,
 }: Props) {
-  useEffect(() => setup({ rootId, scroll, interval, infinite }), [
-    rootId,
-    scroll,
-    interval,
-    infinite,
-  ]);
+  useEffect(
+    () => setup({ rootId, scroll, interval, infinite, disabledArrowColor }),
+    [rootId, scroll, interval, infinite],
+  );
 
   return <div data-slider-controller-js />;
 }
