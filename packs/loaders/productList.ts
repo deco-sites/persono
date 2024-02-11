@@ -3,7 +3,7 @@ import type { Product } from "apps/commerce/types.ts";
 import { AmmoProduct } from "$store/packs/types.ts";
 import { getHeaders } from "$store/packs/utils/headers.ts";
 import { toProduct } from "$store/packs/utils/transform.ts";
-import { typeChecher } from "$store/packs/utils/utils.ts";
+import { typeChecker } from "$store/packs/utils/utils.ts";
 import type { RequestURLParam } from "apps/website/functions/requestToParam.ts";
 import { getProductItems } from "$store/packs/utils/getProductItems.ts";
 
@@ -60,7 +60,7 @@ const loader = async (
   const { props } = extendedProps;
 
   try {
-    if (typeChecher<VMProps>(props as VMProps, "path")) {
+    if (typeChecker<VMProps>(props as VMProps, "path")) {
       const { path, sort, take } = props as VMProps;
       const res = await ammoc
         ["GET /api/product-catalog/resolve-route"](
@@ -81,7 +81,7 @@ const loader = async (
     }
 
     if (
-      typeChecher<RecommendationProps>(props as RecommendationProps, "sku")
+      typeChecker<RecommendationProps>(props as RecommendationProps, "sku")
     ) {
       const { sku } = props as RecommendationProps;
       const params = new URLSearchParams();
@@ -102,7 +102,7 @@ const loader = async (
       );
     }
 
-    if (typeChecher<TermProps>(props as TermProps, "query")) {
+    if (typeChecker<TermProps>(props as TermProps, "query")) {
       const { query } = props as TermProps;
       const productsPromise = getProductItems(query, req, ctx);
       const [products] = await Promise.all([productsPromise]);
