@@ -34,6 +34,8 @@ function ProductShelf({
   hasNotFoundPage,
 }: SectionProps<typeof loader>) {
   const id = useId();
+  const prevButtonId = useId();
+  const nextButtonId = useId();
 
   const arrowsvVisibleTop = hasNotFoundPage && device === "mobile";
 
@@ -50,7 +52,8 @@ function ProductShelf({
       {arrowsvVisibleTop && currentTitle ? (
         <HeaderWithArrows
           title={isMobile ? mobileTitle : desktopTitle}
-          device={device}
+          prevButtonId={prevButtonId}
+          nextButtonId={nextButtonId}
         />
       ) : (
         currentTitle && (
@@ -79,7 +82,10 @@ function ProductShelf({
         </Slider>
 
         <div class="hidden relative sm:block z-10 col-start-1 row-start-3">
-          <Slider.PrevButton class="justify-center btn btn-circle border disabled:border-neutral border-neutral disabled:bg-white bg-white z-10 absolute left-[-18px] top-[calc(50%-18px)] hidden sm:flex rounded-full cursor-pointer">
+          <Slider.PrevButton
+            id={prevButtonId}
+            class="justify-center btn btn-circle border disabled:border-neutral border-neutral disabled:bg-white bg-white z-10 absolute left-[-18px] top-[calc(50%-18px)] hidden sm:flex rounded-full cursor-pointer"
+          >
             <Icon
               class="text-primary"
               size={20}
@@ -89,7 +95,10 @@ function ProductShelf({
           </Slider.PrevButton>
         </div>
         <div class="hidden relative sm:block z-10 col-start-3 row-start-3">
-          <Slider.NextButton class="justify-center btn btn-circle disabled:border-neutral border-neutral disabled:bg-white bg-white z-10 absolute right-[-18px] top-[calc(50%-18px)] hidden sm:flex rounded-full cursor-pointer">
+          <Slider.NextButton
+            id={nextButtonId}
+            class="justify-center btn btn-circle disabled:border-neutral border-neutral disabled:bg-white bg-white z-10 absolute right-[-18px] top-[calc(50%-18px)] hidden sm:flex rounded-full cursor-pointer"
+          >
             <Icon
               class="text-primary"
               size={20}
@@ -99,7 +108,12 @@ function ProductShelf({
           </Slider.NextButton>
         </div>
 
-        <SliderJS rootId={id} disabledArrowColor="#666666" />
+        <SliderJS
+          rootId={id}
+          prevButtonId={prevButtonId}
+          nextButtonId={nextButtonId}
+          disabledArrowColor="#666666"
+        />
       </div>
     </div>
   );
@@ -115,20 +129,28 @@ export const loader = (props: Props, _req: Request, ctx: FnCustomContext) => {
 
 const HeaderWithArrows = ({
   title,
-  device,
+  prevButtonId,
+  nextButtonId,
 }: {
   title?: string;
-  device: Device;
+  prevButtonId: string;
+  nextButtonId: string;
 }) => {
   return (
     <div class="w-full flex justify-around items-center ">
-      <Slider.PrevButton class="justify-center btn btn-circle border disabled:border-neutral border-neutral disabled:bg-white bg-white rounded-full cursor-pointer">
+      <Slider.PrevButton
+        id={prevButtonId}
+        class="justify-center btn btn-circle border disabled:border-neutral border-neutral disabled:bg-white bg-white rounded-full cursor-pointer"
+      >
         <Icon class="text-primary" size={20} id="ChevronLeft" strokeWidth={2} />
       </Slider.PrevButton>
 
       <Header title={title} alignment="center" />
 
-      <Slider.NextButton class="justify-center go btn btn-circle border disabled:border-neutral border-neutral disabled:bg-white bg-white rounded-full cursor-pointer">
+      <Slider.NextButton
+        id={nextButtonId}
+        class="justify-center go btn btn-circle border disabled:border-neutral border-neutral disabled:bg-white bg-white rounded-full cursor-pointer"
+      >
         <Icon
           class="text-primary"
           size={20}

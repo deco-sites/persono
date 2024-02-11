@@ -6,6 +6,8 @@ export interface Props {
   interval?: number;
   infinite?: boolean;
   disabledArrowColor?: string;
+  nextButtonId?: string;
+  prevButtonId?: string;
 }
 
 const ATTRIBUTES = {
@@ -53,18 +55,24 @@ const setup = ({
   interval,
   infinite,
   disabledArrowColor,
+  nextButtonId,
+  prevButtonId,
 }: Props) => {
   const root = document.getElementById(rootId);
   const slider = root?.querySelector(`[${ATTRIBUTES["data-slider"]}]`);
   const items = root?.querySelectorAll(`[${ATTRIBUTES["data-slider-item"]}]`);
-  const prev = root?.querySelector(`[${ATTRIBUTES['data-slide="prev"']}]`);
-  const next = root?.querySelector(`[${ATTRIBUTES['data-slide="next"']}]`);
+  const prev = prevButtonId
+    ? document?.getElementById(prevButtonId)
+    : root?.querySelector(`[${ATTRIBUTES['data-slide="prev"']}]`);
+  const next = nextButtonId
+    ? document?.getElementById(nextButtonId)
+    : root?.querySelector(`[${ATTRIBUTES['data-slide="next"']}]`);
   const dots = root?.querySelectorAll(`[${ATTRIBUTES["data-dot"]}]`);
 
   if (!root || !slider || !items || items.length === 0) {
     console.warn(
       "Missing necessary slider attributes. It will not work as intended. Necessary elements:",
-      { root, slider, items, rootId },
+      { root, slider, items, rootId }
     );
 
     return;
@@ -93,7 +101,7 @@ const setup = ({
 
     if (!isHTMLElement(item)) {
       console.warn(
-        `Element at index ${index} is not an html element. Skipping carousel`,
+        `Element at index ${index} is not an html element. Skipping carousel`
       );
 
       return;
@@ -115,7 +123,7 @@ const setup = ({
     const pageIndex = Math.floor(indices[indices.length - 1] / itemsPerPage);
 
     goToItem(
-      isShowingFirst ? items.length - 1 : (pageIndex - 1) * itemsPerPage,
+      isShowingFirst ? items.length - 1 : (pageIndex - 1) * itemsPerPage
     );
   };
 
@@ -180,7 +188,7 @@ const setup = ({
           }
         }
       }),
-    { threshold: THRESHOLD, root: slider },
+    { threshold: THRESHOLD, root: slider }
   );
 
   items.forEach((item) => observer.observe(item));
@@ -215,10 +223,21 @@ function Slider({
   interval,
   infinite = false,
   disabledArrowColor,
+  nextButtonId,
+  prevButtonId,
 }: Props) {
   useEffect(
-    () => setup({ rootId, scroll, interval, infinite, disabledArrowColor }),
-    [rootId, scroll, interval, infinite],
+    () =>
+      setup({
+        rootId,
+        scroll,
+        interval,
+        infinite,
+        disabledArrowColor,
+        nextButtonId,
+        prevButtonId,
+      }),
+    [rootId, scroll, interval, infinite]
   );
 
   return <div data-slider-controller-js />;
