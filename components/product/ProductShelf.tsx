@@ -36,11 +36,8 @@ function ProductShelf({
   const id = useId();
   const prevButtonId = useId();
   const nextButtonId = useId();
-
   const arrowsvVisibleTop = hasNotFoundPage && device === "mobile";
-
   const isMobile = device === "mobile";
-
   const currentTitle = isMobile ? mobileTitle : desktopTitle;
 
   if (!products || products.length === 0) {
@@ -49,20 +46,22 @@ function ProductShelf({
 
   return (
     <div class="w-full container">
-      {arrowsvVisibleTop && currentTitle ? (
-        <HeaderWithArrows
-          title={isMobile ? mobileTitle : desktopTitle}
-          prevButtonId={prevButtonId}
-          nextButtonId={nextButtonId}
-        />
-      ) : (
-        currentTitle && (
-          <Header
+      {arrowsvVisibleTop && currentTitle
+        ? (
+          <HeaderWithArrows
             title={isMobile ? mobileTitle : desktopTitle}
-            alignment={isMobile ? "left" : "center"}
+            prevButtonId={prevButtonId}
+            nextButtonId={nextButtonId}
           />
         )
-      )}
+        : (
+          currentTitle && (
+            <Header
+              title={isMobile ? mobileTitle : desktopTitle}
+              alignment={isMobile ? "left" : "center"}
+            />
+          )
+        )}
 
       <div id={id} class="container grid grid-cols-[48px_1fr_48px] pb-28">
         <Slider class="carousel carousel-start sm:carousel-end  md:gap-8 justify-between col-span-full row-start-2 row-end-5">
