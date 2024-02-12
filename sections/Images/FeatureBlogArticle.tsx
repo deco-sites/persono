@@ -1,14 +1,12 @@
 import { Picture, Source } from "apps/website/components/Picture.tsx";
+import Icon from "$store/components/ui/Icon.tsx";
 import type { ImageWidget } from "apps/admin/widgets.ts";
 
 export interface Props {
   image: {
     mobile: ImageWidget;
     desktop?: ImageWidget;
-    altText: string;
   };
-
-  pins: Pin[];
 
   text?: string;
   title?: string;
@@ -18,34 +16,20 @@ export interface Props {
   };
 }
 
-export interface Pin {
-  mobile: {
-    x: number;
-    y: number;
-  };
-  desktop?: {
-    x: number;
-    y: number;
-  };
-  link: string;
-  label: string;
-}
-
 const DEFAULT_PROPS: Props = {
   link: {
     href: "#",
     text: "Ver agora",
   },
-  pins: [],
+
   image: {
     mobile:
       "https://ozksgdmyrqcxcwhnbepg.supabase.co/storage/v1/object/public/assets/239/cac2dc1c-48ac-4274-ad42-4016b0bbe947",
-    altText: "Fashion",
   },
 };
 
 export default function FeatureBlogArticle(props: Props) {
-  const { link, text, title, image, pins } = { ...DEFAULT_PROPS, ...props };
+  const { link, text, title, image } = { ...DEFAULT_PROPS, ...props };
 
   return (
     <div class="container">
@@ -67,42 +51,26 @@ export default function FeatureBlogArticle(props: Props) {
             <img
               class="w-full object-cover"
               sizes="(max-width: 640px) 100vw, 30vw"
-              src={image?.mobile}
-              alt={image?.altText}
+              src={image?.desktop}
+              alt={image?.mobile}
               decoding="async"
               loading="lazy"
             />
           </Picture>
-          {pins.map(({ mobile, desktop, link, label }) => (
-            <>
-              <a
-                href={link}
-                class="absolute w-min btn btn-accent rounded-full hover:rounded text-accent no-animation md:scale-[30%] hover:text-accent-content hover:scale-125 sm:hidden"
-                style={{
-                  left: `${mobile.x}%`,
-                  top: `${mobile.y}%`,
-                }}
-              >
-                <span>{label}</span>
-              </a>
-              <a
-                href={link}
-                class="absolute w-min btn btn-accent rounded-full hover:rounded text-accent no-animation md:scale-[30%] hover:text-accent-content hover:scale-125 hidden sm:inline-flex"
-                style={{
-                  left: `${desktop?.x ?? mobile.x}%`,
-                  top: `${desktop?.y ?? mobile.y}%`,
-                }}
-              >
-                <span>{label}</span>
-              </a>
-            </>
-          ))}
         </figure>
         <div class="card-body">
           <h2 class="card-title">{title}</h2>
           <p>{text}</p>
           <div class="card-actions justify-end">
-            <a class="btn btn-primary" href={link?.href}>{link?.text}</a>
+            <a class="btn" href={link?.href}>
+              {link?.text}
+              <Icon
+                class="text-black"
+                size={20}
+                id="ArrowRight"
+                strokeWidth={2}
+              />
+            </a>
           </div>
         </div>
       </div>
