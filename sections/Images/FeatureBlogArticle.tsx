@@ -45,8 +45,8 @@ export default function FeatureBlogArticle(props: Props) {
             <Source
               media="(min-width: 768px)"
               src={image?.desktop ? image?.desktop : image?.mobile}
-              width={625}
-              height={443}
+              width={1100}
+              height={600}
             />
             <img
               class="rounded-[40px]"
