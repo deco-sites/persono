@@ -33,7 +33,7 @@ export default function FeatureBlogArticle(props: Props) {
 
   return (
     <div class="container px-6">
-      <div class="card lg:card-side lg:w-auto rounded grid grid-cols-1 lg:grid-cols-[50%_30%] gap-8 pt-10 lg:pt-[120px]">
+      <div class="card lg:card-side lg:w-auto rounded grid grid-cols-1 lg:grid-cols-[50%_30%] gap-8 pt-10 pb-12 lg:pt-[120px]">
         <figure class="relative object-cover">
           <Picture>
             <Source
@@ -58,7 +58,7 @@ export default function FeatureBlogArticle(props: Props) {
             />
           </Picture>
         </figure>
-        <div class="card-body px-0 gap-5">
+        <div class="flex flex-col pt-7 gap-5">
           <h2 class="card-title text-2xl lg:text-[40px]">{title}</h2>
           <p>{text}</p>
           <div class="card-actions pt-5">
