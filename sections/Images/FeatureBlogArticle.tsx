@@ -62,7 +62,7 @@ export default function FeatureBlogArticle(props: Props) {
           <h2 class="card-title">{title}</h2>
           <p>{text}</p>
           <div class="card-actions justify-end">
-            <a class="btn" href={link?.href}>
+            <a class="btn bg-transparent" href={link?.href}>
               {link?.text}
               <Icon
                 class="text-black"
