@@ -66,7 +66,7 @@ function VariantSizeSelector({ url, possibilities, sizes }: Props) {
                     variant={cp.url === url
                       ? "active"
                       : cp
-                      ? "disabled"
+                      ? "default"
                       : "disabled"}
                   />
                 </button>
