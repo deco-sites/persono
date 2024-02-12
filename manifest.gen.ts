@@ -32,8 +32,8 @@ import * as $$$$$$10 from "./sections/Gallery.tsx";
 import * as $$$$$$11 from "./sections/Header/Header.tsx";
 import * as $$$$$$12 from "./sections/Images/BannerGrid.tsx";
 import * as $$$$$$13 from "./sections/Images/Carousel.tsx";
-import * as $$$$$$14 from "./sections/Images/ImageGallery.tsx";
-import * as $$$$$$15 from "./sections/Images/ShoppableBanner.tsx";
+import * as $$$$$$14 from "./sections/Images/FeatureBlogArticle.tsx";
+import * as $$$$$$15 from "./sections/Images/ImageGallery.tsx";
 import * as $$$$$$16 from "./sections/Instagram/Instagram.tsx";
 import * as $$$$$$17 from "./sections/Layout/Container.tsx";
 import * as $$$$$$18 from "./sections/Layout/Flex.tsx";
@@ -93,8 +93,8 @@ const manifest = {
     "deco-sites/persono/sections/Header/Header.tsx": $$$$$$11,
     "deco-sites/persono/sections/Images/BannerGrid.tsx": $$$$$$12,
     "deco-sites/persono/sections/Images/Carousel.tsx": $$$$$$13,
-    "deco-sites/persono/sections/Images/ImageGallery.tsx": $$$$$$14,
-    "deco-sites/persono/sections/Images/ShoppableBanner.tsx": $$$$$$15,
+    "deco-sites/persono/sections/Images/FeatureBlogArticle.tsx": $$$$$$14,
+    "deco-sites/persono/sections/Images/ImageGallery.tsx": $$$$$$15,
     "deco-sites/persono/sections/Instagram/Instagram.tsx": $$$$$$16,
     "deco-sites/persono/sections/Layout/Container.tsx": $$$$$$17,
     "deco-sites/persono/sections/Layout/Flex.tsx": $$$$$$18,
