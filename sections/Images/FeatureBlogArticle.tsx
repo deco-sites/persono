@@ -32,24 +32,24 @@ export default function FeatureBlogArticle(props: Props) {
   const { link, text, title, image } = { ...DEFAULT_PROPS, ...props };
 
   return (
-    <div class="container">
+    <div class="container px-6">
       <div class="card lg:card-side rounded grid grid-cols-1 lg:grid-cols-[70%_30%]">
-        <figure class="relative">
+        <figure class="relative pt-10">
           <Picture>
             <Source
               media="(max-width: 767px)"
               src={image?.mobile}
-              width={150}
-              height={150}
+              width={634}
+              height={346}
             />
             <Source
               media="(min-width: 768px)"
               src={image?.desktop ? image?.desktop : image?.mobile}
-              width={384}
-              height={227}
+              width={920}
+              height={502}
             />
             <img
-              class="w-full object-cover"
+              class="rounded-[40px]"
               sizes="(max-width: 640px) 100vw, 30vw"
               src={image?.desktop}
               alt={image?.mobile}
@@ -58,11 +58,14 @@ export default function FeatureBlogArticle(props: Props) {
             />
           </Picture>
         </figure>
-        <div class="card-body">
-          <h2 class="card-title">{title}</h2>
+        <div class="card-body sm:px-0">
+          <h2 class="card-title text-2xl">{title}</h2>
           <p>{text}</p>
-          <div class="card-actions justify-end">
-            <a class="btn bg-transparent" href={link?.href}>
+          <div class="card-actions">
+            <a
+              class="btn bg-transparent shadow-inherit border-none"
+              href={link?.href}
+            >
               {link?.text}
               <Icon
                 class="text-black"
