@@ -44,7 +44,7 @@ const DEFAULT_PROPS: Props = {
   },
 };
 
-export default function ShoppableBanner(props: Props) {
+export default function FeatureBlogArticle(props: Props) {
   const { link, text, title, image, pins } = { ...DEFAULT_PROPS, ...props };
 
   return (
