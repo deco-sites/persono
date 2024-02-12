@@ -33,7 +33,7 @@ export default function FeatureBlogArticle(props: Props) {
 
   return (
     <div class="container px-6">
-      <div class="card lg:card-side lg:w-auto rounded grid grid-cols-1 lg:grid-cols-[50%_30%] gap-8 pt-10 pb-12 lg:pt-[120px]">
+      <div class="card lg:card-side lg:w-auto rounded grid grid-cols-1 lg:grid-cols-[50%_50%] gap-8 pt-10 pb-12 lg:pb-24 lg:pt-[120px]">
         <figure class="relative object-cover">
           <Picture>
             <Source
