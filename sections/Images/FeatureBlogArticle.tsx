@@ -33,8 +33,8 @@ export default function FeatureBlogArticle(props: Props) {
 
   return (
     <div class="container px-6">
-      <div class="card lg:card-side rounded grid grid-cols-1 lg:grid-cols-[70%_30%]">
-        <figure class="relative pt-10">
+      <div class="card lg:card-side lg:w-auto rounded grid grid-cols-1 lg:grid-cols-[50%_30%] gap-8 pt-10 lg:pt-[120px]">
+        <figure class="relative object-cover">
           <Picture>
             <Source
               media="(max-width: 767px)"
@@ -45,8 +45,8 @@ export default function FeatureBlogArticle(props: Props) {
             <Source
               media="(min-width: 768px)"
               src={image?.desktop ? image?.desktop : image?.mobile}
-              width={920}
-              height={502}
+              width={625}
+              height={443}
             />
             <img
               class="rounded-[40px]"
@@ -58,12 +58,12 @@ export default function FeatureBlogArticle(props: Props) {
             />
           </Picture>
         </figure>
-        <div class="card-body sm:px-0">
-          <h2 class="card-title text-2xl">{title}</h2>
+        <div class="card-body px-0 gap-5">
+          <h2 class="card-title text-2xl lg:text-[40px]">{title}</h2>
           <p>{text}</p>
-          <div class="card-actions">
+          <div class="card-actions pt-5">
             <a
-              class="btn bg-transparent shadow-inherit border-none"
+              class="flex not-italic font-bold gap-2 h-9 justify-center items-center"
               href={link?.href}
             >
               {link?.text}
