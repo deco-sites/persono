@@ -18,7 +18,7 @@ function VariantSizeSelector({ url, possibilities, sizes }: Props) {
   // Find matching color and set colorsPossibilities and color
   Object.keys(possibilities).forEach((name) => {
     const link = Object.values(possibilities[name]).find(
-      (link) => link.url === url
+      (link) => link.url === url,
     );
     if (link) {
       color = link.value;
@@ -28,7 +28,7 @@ function VariantSizeSelector({ url, possibilities, sizes }: Props) {
   // Find size possibilities based on the matched color
   Object.keys(possibilities).forEach((name) => {
     const links = Object.values(possibilities[name]).filter(
-      (link) => color === link.value
+      (link) => color === link.value,
     );
     sizePossibilities.push(...links);
   });
@@ -56,12 +56,18 @@ function VariantSizeSelector({ url, possibilities, sizes }: Props) {
           {sortedSizeArray.map((cp) => (
             <ul class="flex flex-row gap-3">
               <li>
-                <button disabled={cp.value ? false : true} f-partial={cp.url} f-client-nav>
+                <button
+                  disabled={cp.value ? false : true}
+                  f-partial={cp.url}
+                  f-client-nav
+                >
                   <AvatarSize
                     content={cp.name}
-                    variant={
-                      cp.url === url ? "active" : cp ? "disabled" : "disabled"
-                    }
+                    variant={cp.url === url
+                      ? "active"
+                      : cp
+                      ? "disabled"
+                      : "disabled"}
                   />
                 </button>
               </li>

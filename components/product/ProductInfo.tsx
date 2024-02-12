@@ -7,7 +7,8 @@ import { useId } from "$store/sdk/useId.ts";
 import { usePlatform } from "$store/sdk/usePlatform.tsx";
 import { ProductDetailsPage } from "apps/commerce/types.ts";
 import { mapProductToAnalyticsItem } from "apps/commerce/utils/productToAnalyticsItem.ts";
-import ProductSelector from "./ProductVariantSelector.tsx";
+import ProductSizeSelector from "./ProductSizeVariantSelector.tsx";
+import ProductColorSelector from "./ProductColorVariantSelector.tsx";
 import BenefitsComponent from "../../sections/Product/Benefits.tsx";
 import { useOfferWithoutTaxes } from "deco-sites/persono/sdk/useOfferWithoutTaxes.ts";
 import AddCartButton from "$store/islands/AddToCartButton/CartButton.tsx";
@@ -15,6 +16,8 @@ import { Color } from "deco-sites/persono/loaders/Layouts/Colors.tsx";
 import { Size } from "deco-sites/persono/loaders/Layouts/Size.tsx";
 import { Benefits } from "../../loaders/Layouts/Benefits.tsx";
 import { Resolved } from "deco/mod.ts";
+import type { GroupedData } from "$store/sdk/useVariantPossiblities.ts";
+import { useVariantPossibilities } from "$store/sdk/useVariantPossiblities.ts";
 import { ShippingSimulation as ShippingSimulationLoader } from "deco-sites/persono/packs/types.ts";
 
 interface Props {
@@ -34,7 +37,7 @@ function ProductInfo({ page, colors, sizes, benefits }: Props) {
   }
 
   const { breadcrumbList, product } = page;
-  const { productID, offers, name = "", gtin, isVariantOf } = product;
+  const { productID, offers, name = "", gtin, isVariantOf, url } = product;
   const description = product.description || isVariantOf?.description;
   const {
     price = 0,
@@ -59,6 +62,12 @@ function ProductInfo({ page, colors, sizes, benefits }: Props) {
     ?.filter((p) => {
       if (p.identifier?.startsWith("CUSTOM")) return p.value;
     });
+
+  const hasVariant = isVariantOf?.hasVariant ?? [];
+  const possibilities: GroupedData = useVariantPossibilities(
+    hasVariant,
+    isVariantOf,
+  );
 
   return (
     <div class="flex flex-col w-full sm:mt-10 px-4 sm:px-0" id={id}>
@@ -90,11 +99,24 @@ function ProductInfo({ page, colors, sizes, benefits }: Props) {
         <span class="text-sm text-[#666]">{installments}</span>
       </div>
       {/* Sku Selector */}
-      <div class="sm:mt-6 mt-4  ">
-        <ProductSelector colors={colors} sizes={sizes} product={product} />
+      <div class="sm:mt-6 mt-4 flex flex-col gap-4 ">
+        <ProductSizeSelector
+          sizes={sizes}
+          url={url}
+          possibilities={possibilities}
+        />
+        <ProductColorSelector
+          colors={colors}
+          url={url}
+          possibilities={possibilities}
+        />
       </div>
       {/* Add to Cart and Favorites button */}
-      <div class="mt-6 sm:mt-10 flex flex-col">
+      <div
+        class={`mt-6 sm:mt-10 ${
+          productBenefits?.length == 0 ? "mb-5" : "mb-10"
+        } flex flex-col`}
+      >
         {availability === "https://schema.org/InStock"
           ? (
             <>
@@ -107,7 +129,7 @@ function ProductInfo({ page, colors, sizes, benefits }: Props) {
           : <OutOfStock productID={productID} />}
       </div>
       {/* Benefities */}
-      <div class="mt-10">
+      <div class={`${productBenefits?.length == 0 ? "hidden" : ""}`}>
         <BenefitsComponent
           productBenefits={productBenefits}
           adminBenefits={benefits}

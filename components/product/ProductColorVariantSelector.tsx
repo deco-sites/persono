@@ -17,7 +17,7 @@ function VariantColorSelector({ url, possibilities, colors }: Props) {
   // Find matching color and set colorsPossibilities and color
   Object.keys(possibilities).forEach((name) => {
     const link = Object.values(possibilities[name]).find(
-      (link) => link.url === url
+      (link) => link.url === url,
     );
     if (link) {
       colorsPossibilities = possibilities[name];
@@ -54,14 +54,20 @@ function VariantColorSelector({ url, possibilities, colors }: Props) {
         <p class="text-sm">Cor: {color}</p>
         <div class="flex gap-3">
           {matchingColorsPossibilities.map((cp) => (
-            <button disabled={cp.value ? false : true} f-partial={cp.url} f-client-nav>
+            <button
+              disabled={cp.value ? false : true}
+              f-partial={cp.url}
+              f-client-nav
+            >
               <AvatarColor
                 color={colors}
                 name={cp.name}
                 content={cp.value}
-                variant={
-                  cp.url === url ? "active" : cp.value ? "default" : "disabled"
-                }
+                variant={cp.url === url
+                  ? "active"
+                  : cp.value
+                  ? "default"
+                  : "disabled"}
               />
             </button>
           ))}
