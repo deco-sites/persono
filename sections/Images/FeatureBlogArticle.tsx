@@ -32,7 +32,7 @@ export default function FeatureBlogArticle(props: Props) {
   const { link, text, title, image } = { ...DEFAULT_PROPS, ...props };
 
   return (
-    <div class="container px-6">
+    <div class="container px-6 md:px-0">
       <div class="card lg:card-side lg:w-auto rounded grid grid-cols-1 lg:grid-cols-[50%_50%] gap-8 pt-10 pb-12 lg:pb-24 lg:pt-[120px]">
         <figure class="relative object-cover">
           <Picture>
