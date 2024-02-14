@@ -1,6 +1,7 @@
 import Header from "$store/components/ui/SectionHeader.tsx";
 import Slider from "$store/components/ui/Slider.tsx";
 import SliderJS from "$store/islands/SliderJS.tsx";
+import Icon from "$store/components/ui/Icon.tsx";
 import { useId } from "$store/sdk/useId.ts";
 import type { ImageWidget } from "apps/admin/widgets.ts";
 import { Picture, Source } from "apps/website/components/Picture.tsx";
@@ -39,7 +40,15 @@ function Instagram(props: Props) {
       class="container max-sm:px-6 py-10 flex flex-col gap-10"
     >
       <Header title={header.title} />
-      <div>
+      <div class="relative">
+        <Slider.PrevButton class="justify-center btn btn-circle border border-neutral bg-white z-10 absolute left-[-18px] top-[calc(50%-18px)] hidden sm:flex rounded-full cursor-pointer">
+          <Icon
+            class="text-primary"
+            size={20}
+            id="ChevronLeft"
+            strokeWidth={2}
+          />
+        </Slider.PrevButton>
         <Slider class="flex carousel carousel-start gap-6 lg:gap-0 lg:justify-between">
           {list.map((
             { mobile, desktop },
@@ -73,6 +82,14 @@ function Instagram(props: Props) {
             </Slider.Item>
           ))}
         </Slider>
+        <Slider.NextButton class="justify-center btn btn-circle border border-neutral bg-white z-10 absolute right-[-18px] top-[calc(50%-18px)] hidden sm:flex rounded-full cursor-pointer">
+          <Icon
+            class="text-primary"
+            size={20}
+            id="ChevronRight"
+            strokeWidth={2}
+          />
+        </Slider.NextButton>
       </div>
       <SliderJS rootId={id} />
     </div>
