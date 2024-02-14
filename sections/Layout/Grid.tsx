@@ -61,6 +61,12 @@ interface Props {
       /** @default center */
       desktop?: "center" | "start" | "end" | "baseline" | "stretch";
     };
+    justifyItems?: {
+      /** @default stretch */
+      mobile?: "center" | "start" | "end" | "baseline" | "stretch" | "none";
+      /** @default stretch */
+      desktop?: "center" | "start" | "end" | "baseline" | "stretch" | "none";
+    };
   };
 }
 
@@ -72,7 +78,7 @@ function Grid({ layout, children }: Props) {
   return (
     <div
       class={clx(
-        "grid",
+        "grid p-4 sm:py-10",
         grid.gap.mobile[layout?.gap?.mobile ?? "4"],
         grid.gap.desktop[layout?.gap?.desktop ?? "8"],
         grid.cols.mobile[layout?.cols?.mobile ?? "none"],
@@ -83,6 +89,8 @@ function Grid({ layout, children }: Props) {
         grid.flow.desktop[layout?.flow?.desktop ?? "row"],
         grid.placeItems.mobile[layout?.placeItems?.mobile ?? "center"],
         grid.placeItems.desktop[layout?.placeItems?.desktop ?? "center"],
+        grid.justifyItems.mobile[layout?.justifyItems?.mobile ?? "none"],
+        grid.justifyItems.desktop[layout?.justifyItems?.desktop ?? "none"],
       )}
     >
       {items}
