@@ -197,7 +197,7 @@ function ProductInfo({ page, colors, sizes, benefits }: Props) {
               </div>
               <div class="collapse-content max-w-lg pr-0">
                 <div class="max-w-lg">
-                    <ShippingSimulation sku={product.sku} />
+                  <ShippingSimulation sku={product.sku} />
                 </div>
               </div>
             </div>

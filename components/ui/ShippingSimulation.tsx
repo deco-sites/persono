@@ -53,7 +53,8 @@ function ShippingContent({
             class={`px-4 h-[2px] bg-white rounded ${
               idx == 0 ? "flex" : "hidden"
             }`}
-          ></span>
+          >
+          </span>
         </li>
       ))}
       <span class="text-sm text-[#666] pb-4">
@@ -82,7 +83,7 @@ function ShippingSimulation({ sku }: Props) {
   const handleSimulation = useCallback(
     async (e: TargetedEvent<HTMLFormElement, Event>) => {
       const input = e.currentTarget[0] as HTMLInputElement;
-      const postalCode = input.value.replace('-','');
+      const postalCode = input.value.replace("-", "");
       if (postalCode.length !== 8) {
         return;
       }
@@ -100,15 +101,15 @@ function ShippingSimulation({ sku }: Props) {
         loading.value = false;
       }
     },
-    []
+    [],
   );
 
   function formatarInput(value: string) {
     const valorDigitos = value.replace(/\D/g, "");
 
     if (valorDigitos.length > 5) {
-      const cepFormatado =
-        valorDigitos.substring(0, 5) + "-" + valorDigitos.substring(5);
+      const cepFormatado = valorDigitos.substring(0, 5) + "-" +
+        valorDigitos.substring(5);
       cep.value = cepFormatado;
     } else {
       cep.value = valorDigitos;
@@ -157,11 +158,9 @@ function ShippingSimulation({ sku }: Props) {
       </a>
       <div>
         <div>
-          {error.value ? (
-            <Error />
-          ) : (
-            <ShippingContent simulation={simulateResult} />
-          )}
+          {error.value
+            ? <Error />
+            : <ShippingContent simulation={simulateResult} />}
         </div>
       </div>
     </div>
