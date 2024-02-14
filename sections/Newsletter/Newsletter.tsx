@@ -51,7 +51,6 @@ export default function Newsletter(props: Props) {
       description={description}
       alignment={layout?.content?.alignment === "Left" ? "left" : "center"}
       colorReverse={isReverse}
-      fontSize={layout?.headerFontSize}
     />
   );
 

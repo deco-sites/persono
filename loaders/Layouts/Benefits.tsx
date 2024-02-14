@@ -4,6 +4,7 @@ export interface Benefits {
   icon: ImageWidget;
   label: string;
   description: string;
+  customAttribute: string;
 }
 
 interface Props {

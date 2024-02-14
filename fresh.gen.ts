@@ -4,12 +4,7 @@
 
 import * as $_app from "./routes/_app.tsx";
 import * as $live_invoke_middleware from "./routes/live/invoke/_middleware.tsx";
-import * as $AddToCartButton_linx from "./islands/AddToCartButton/linx.tsx";
-import * as $AddToCartButton_nuvemshop from "./islands/AddToCartButton/nuvemshop.tsx";
-import * as $AddToCartButton_shopify from "./islands/AddToCartButton/shopify.tsx";
-import * as $AddToCartButton_vnda from "./islands/AddToCartButton/vnda.tsx";
-import * as $AddToCartButton_vtex from "./islands/AddToCartButton/vtex.tsx";
-import * as $AddToCartButton_wake from "./islands/AddToCartButton/wake.tsx";
+import * as $AddToCartButton_CartButton from "./islands/AddToCartButton/CartButton.tsx";
 import * as $Header_Buttons from "./islands/Header/Buttons.tsx";
 import * as $Header_Drawers from "./islands/Header/Drawers.tsx";
 import * as $Header_Searchbar from "./islands/Header/Searchbar.tsx";
@@ -28,12 +23,7 @@ const manifest = {
     "./routes/live/invoke/_middleware.tsx": $live_invoke_middleware,
   },
   islands: {
-    "./islands/AddToCartButton/linx.tsx": $AddToCartButton_linx,
-    "./islands/AddToCartButton/nuvemshop.tsx": $AddToCartButton_nuvemshop,
-    "./islands/AddToCartButton/shopify.tsx": $AddToCartButton_shopify,
-    "./islands/AddToCartButton/vnda.tsx": $AddToCartButton_vnda,
-    "./islands/AddToCartButton/vtex.tsx": $AddToCartButton_vtex,
-    "./islands/AddToCartButton/wake.tsx": $AddToCartButton_wake,
+    "./islands/AddToCartButton/CartButton.tsx": $AddToCartButton_CartButton,
     "./islands/Header/Buttons.tsx": $Header_Buttons,
     "./islands/Header/Drawers.tsx": $Header_Drawers,
     "./islands/Header/Searchbar.tsx": $Header_Searchbar,
