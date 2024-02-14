@@ -195,11 +195,9 @@ function ProductInfo({ page, colors, sizes, benefits }: Props) {
               <div class="flex items-center collapse-title text-base after:text-2xl after:text-primary">
                 Calcular frete
               </div>
-              <div class="collapse-content max-w-lg">
-                <div class="max-w-md">
-                  {platform === "vtex" && (
+              <div class="collapse-content max-w-lg pr-0">
+                <div class="max-w-lg">
                     <ShippingSimulation sku={product.sku} />
-                  )}
                 </div>
               </div>
             </div>

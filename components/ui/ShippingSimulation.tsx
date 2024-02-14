@@ -37,7 +37,7 @@ function ShippingContent({
   }
 
   return (
-    <ul class="flex flex-col bg-base-300 text-base-content rounded-[4px] w-full px-4">
+    <ul class="flex flex-col bg-base-300 text-base-content rounded-[4px] w-full px-4 mt-2">
       {methods.map((method, idx) => (
         <li>
           <div class="flex justify-between text-base-content items-center border-base-200 py-4">
@@ -45,7 +45,7 @@ function ShippingContent({
               {method.shippingMethodName}
             </span>
             <span class="text-button">até {method.maxDays} dias úteis</span>
-            <span class="text-base font-semibold text-right">
+            <span class="text-base text-right">
               {method.cost === 0 ? "Grátis" : formatPrice(method.cost)}
             </span>
           </div>
@@ -53,8 +53,7 @@ function ShippingContent({
             class={`px-4 h-[2px] bg-white rounded ${
               idx == 0 ? "flex" : "hidden"
             }`}
-          >
-          </span>
+          ></span>
         </li>
       ))}
       <span class="text-sm text-[#666] pb-4">
@@ -77,13 +76,13 @@ function Error() {
 function ShippingSimulation({ sku }: Props) {
   const loading = useSignal(false);
   const error = useSignal(false);
+  const cep = useSignal("");
   const simulateResult = useSignal<ShippingSimulation | null>(null);
 
   const handleSimulation = useCallback(
     async (e: TargetedEvent<HTMLFormElement, Event>) => {
       const input = e.currentTarget[0] as HTMLInputElement;
-      const postalCode = input.value;
-
+      const postalCode = input.value.replace('-','');
       if (postalCode.length !== 8) {
         return;
       }
@@ -101,8 +100,20 @@ function ShippingSimulation({ sku }: Props) {
         loading.value = false;
       }
     },
-    [],
+    []
   );
+
+  function formatarInput(value: string) {
+    const valorDigitos = value.replace(/\D/g, "");
+
+    if (valorDigitos.length > 5) {
+      const cepFormatado =
+        valorDigitos.substring(0, 5) + "-" + valorDigitos.substring(5);
+      cep.value = cepFormatado;
+    } else {
+      cep.value = valorDigitos;
+    }
+  }
 
   return (
     <div class="flex flex-col gap-2">
@@ -124,8 +135,10 @@ function ShippingSimulation({ sku }: Props) {
           type="text"
           class="input input-bordered rounded-full w-32"
           placeholder="22291-170"
-          maxLength={8}
-          size={8}
+          maxLength={9}
+          value={cep}
+          onInput={(e) => formatarInput(e.currentTarget.value)}
+          size={9}
         />
         <Button
           type="submit"
@@ -144,9 +157,11 @@ function ShippingSimulation({ sku }: Props) {
       </a>
       <div>
         <div>
-          {error.value
-            ? <Error />
-            : <ShippingContent simulation={simulateResult} />}
+          {error.value ? (
+            <Error />
+          ) : (
+            <ShippingContent simulation={simulateResult} />
+          )}
         </div>
       </div>
     </div>
