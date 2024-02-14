@@ -8,6 +8,7 @@ import { Picture, Source } from "apps/website/components/Picture.tsx";
 export interface Post {
   mobile: ImageWidget;
   desktop: ImageWidget;
+  href?: string;
 }
 
 export interface Props {
@@ -27,6 +28,7 @@ function Instagram(props: Props) {
       {
         mobile: "",
         desktop: "",
+        href: "",
       },
     ],
   } = props;
