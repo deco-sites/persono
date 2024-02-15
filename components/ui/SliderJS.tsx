@@ -5,7 +5,6 @@ export interface Props {
   scroll?: "smooth" | "auto";
   interval?: number;
   infinite?: boolean;
-  disabledArrowColor?: string;
   nextButtonId?: string;
   prevButtonId?: string;
 }
@@ -54,7 +53,6 @@ const setup = ({
   scroll,
   interval,
   infinite,
-  disabledArrowColor,
   nextButtonId,
   prevButtonId,
 }: Props) => {
@@ -72,7 +70,7 @@ const setup = ({
   if (!root || !slider || !items || items.length === 0) {
     console.warn(
       "Missing necessary slider attributes. It will not work as intended. Necessary elements:",
-      { root, slider, items, rootId },
+      { root, slider, items, rootId }
     );
 
     return;
@@ -101,7 +99,7 @@ const setup = ({
 
     if (!isHTMLElement(item)) {
       console.warn(
-        `Element at index ${index} is not an html element. Skipping carousel`,
+        `Element at index ${index} is not an html element. Skipping carousel`
       );
 
       return;
@@ -123,7 +121,7 @@ const setup = ({
     const pageIndex = Math.floor(indices[indices.length - 1] / itemsPerPage);
 
     goToItem(
-      isShowingFirst ? items.length - 1 : (pageIndex - 1) * itemsPerPage,
+      isShowingFirst ? items.length - 1 : (pageIndex - 1) * itemsPerPage
     );
   };
 
@@ -154,41 +152,20 @@ const setup = ({
           if (index === 0) {
             if (item.isIntersecting) {
               prev?.setAttribute("disabled", "");
-              if (disabledArrowColor) {
-                prev?.querySelectorAll("*").forEach((child) => {
-                  child.setAttribute("color", disabledArrowColor);
-                });
-              }
             } else {
               prev?.removeAttribute("disabled");
-              if (disabledArrowColor) {
-                prev?.querySelectorAll("*").forEach((child) => {
-                  child.removeAttribute("color");
-                });
-              }
             }
           }
           if (index === items.length - 1) {
             if (item.isIntersecting) {
               next?.setAttribute("disabled", "");
-              if (disabledArrowColor) {
-                next?.querySelectorAll("*").forEach((child) => {
-                  child.setAttribute("color", disabledArrowColor);
-                });
-              }
             } else {
               next?.removeAttribute("disabled");
-
-              if (disabledArrowColor) {
-                next?.querySelectorAll("*").forEach((child) => {
-                  child.removeAttribute("color");
-                });
-              }
             }
           }
         }
       }),
-    { threshold: THRESHOLD, root: slider },
+    { threshold: THRESHOLD, root: slider }
   );
 
   items.forEach((item) => observer.observe(item));
@@ -222,7 +199,6 @@ function Slider({
   scroll = "smooth",
   interval,
   infinite = false,
-  disabledArrowColor,
   nextButtonId,
   prevButtonId,
 }: Props) {
@@ -233,11 +209,10 @@ function Slider({
         scroll,
         interval,
         infinite,
-        disabledArrowColor,
         nextButtonId,
         prevButtonId,
       }),
-    [rootId, scroll, interval, infinite],
+    [rootId, scroll, interval, infinite]
   );
 
   return <div data-slider-controller-js />;

@@ -1,74 +1,44 @@
-/**
- * Rendered when a not found is returned by any of the loaders run on this page
- */
-
-import { type SectionProps } from "deco/mod.ts";
 import Icon from "deco-sites/persono/components/ui/Icon.tsx";
-import { FnContext } from "deco/types.ts";
+import type { Section } from "deco/blocks/section.ts";
+interface TextConfigProps {
+  productSettings?: {
+    title: string;
+    subtitle: string;
+  };
 
-interface SubtitleProps {
-  notFoundProductSubtitle: string;
-  notFoundPageSubtitle: string;
-  notFoundPageButtonText: string;
+  pageSettings?: {
+    title: string;
+    subtitle: string;
+    redirectButtonText: string;
+  };
 }
 
-interface Props extends SubtitleProps {
+export interface EditableProps {
   /**
-   * @description Adicione $term para no local que o termo buscado devera ser inserido. ex: Nenhum resultado encontrado para "$term".
+   * @description Add $q in the title of the product settings to the place where the search term should be inserted. ex: No results found for "$q"."
    */
-  notFoundProductTitle: string;
-
-  notFoundPageTitle: string;
+  textConfig?: TextConfigProps;
+  children?: Section;
 }
 
-interface SubtitleComponent extends SubtitleProps {
-  isMobile: boolean;
-  notFoundTerm: string | null;
+interface Props {
+  notFoundSettings?: EditableProps;
+  queryTerm: string | null;
+  device: string;
 }
 
-export const Subtitle = ({
-  isMobile,
-  notFoundPageButtonText,
-  notFoundPageSubtitle,
-  notFoundProductSubtitle,
-  notFoundTerm,
-}: SubtitleComponent) => {
-  const subtitleText = (
-    <span class="font-normal text-base text-center text-black">
-      {notFoundTerm ? notFoundProductSubtitle : notFoundPageSubtitle}
-    </span>
-  );
+export const NotFound = ({ queryTerm, device, notFoundSettings }: Props) => {
+  const { children, textConfig } = notFoundSettings ?? {};
+  const { pageSettings, productSettings } = textConfig ?? {};
+  const isMobile = device !== "desktop";
 
-  if (notFoundTerm) {
-    return subtitleText;
-  }
+  const currentTitle = queryTerm
+    ? productSettings?.title.replaceAll("$q", queryTerm)
+    : pageSettings?.title;
 
-  return (
-    <>
-      {isMobile ? subtitleText : (
-        <a
-          href="/"
-          class="btn no-animation text-md font-bold text-white bg-primary mt-6"
-        >
-          {notFoundPageButtonText}
-        </a>
-      )}
-    </>
-  );
-};
-
-function NotFound({
-  notFoundPageTitle,
-  notFoundProductSubtitle,
-  notFoundProductTitle,
-  notFoundPageButtonText,
-  notFoundTerm,
-  notFoundPageSubtitle,
-  isMobile,
-}: SectionProps<typeof loader>) {
-  const currentTitle = notFoundTerm
-    ? notFoundProductTitle.replaceAll("$term", notFoundTerm)
-    : notFoundPageTitle;
+  const currentSubtitle = queryTerm
+    ? productSettings?.subtitle
+    : pageSettings?.subtitle;
 
   return (
     <div class=" w-full flex flex-col items-center justify-center py-20 gap-1 px-3 ">
@@ -76,27 +46,20 @@ function NotFound({
       <span class="font-medium text-center text-2xl mt-4 text-black">
         {currentTitle}
       </span>
-      <Subtitle
-        isMobile={isMobile}
-        notFoundTerm={notFoundTerm}
-        notFoundPageButtonText={notFoundPageButtonText}
-        notFoundPageSubtitle={notFoundPageSubtitle}
-        notFoundProductSubtitle={notFoundProductSubtitle}
-      />
+      {isMobile || queryTerm ? (
+        <span class="font-normal text-base text-center text-black mb-24">
+          {currentSubtitle}
+        </span>
+      ) : (
+        <a
+          href="/"
+          class="btn no-animation text-md font-bold text-white bg-primary mt-6 mb-24"
+        >
+          {pageSettings?.redirectButtonText}
+        </a>
+      )}
+
+      {children && <children.Component {...children.props} />}
     </div>
   );
-}
-
-export const loader = (props: Props, req: Request, ctx: FnContext) => {
-  const url = new URL(req.url);
-  const notFoundTerm = url.searchParams.get("term");
-  const isMobile = ctx.device === "mobile";
-
-  return {
-    notFoundTerm,
-    isMobile,
-    ...props,
-  };
 };
-
-export default NotFound;

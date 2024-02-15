@@ -1,5 +1,5 @@
 import { SendEventOnView } from "$store/components/Analytics.tsx";
-import { redirect, type SectionProps } from "deco/mod.ts";
+import { type SectionProps } from "deco/mod.ts";
 import { FnContext } from "deco/types.ts";
 import Filters from "$store/components/search/Filters.tsx";
 import Icon from "$store/components/ui/Icon.tsx";
@@ -10,6 +10,11 @@ import type { ProductListingPage } from "apps/commerce/types.ts";
 import { mapProductToAnalyticsItem } from "apps/commerce/utils/productToAnalyticsItem.ts";
 import ProductGallery, { Columns } from "../product/ProductGallery.tsx";
 import { Layout as CardLayout } from "deco-sites/persono/components/product/ProductCard/index.tsx";
+
+import {
+  type EditableProps as NotFoundEditableProps,
+  NotFound,
+} from "deco-sites/persono/components/product/NotFound.tsx";
 
 export interface Layout {
   /**
@@ -28,14 +33,7 @@ export interface Props {
   /** @title Integration */
   page: ProductListingPage | null;
   layout?: Layout;
-}
-
-function NotFound() {
-  return (
-    <div class="w-full flex justify-center items-center py-10">
-      <span>Not Found!</span>
-    </div>
-  );
+  notFoundSettings?: NotFoundEditableProps;
 }
 
 function Result({
@@ -124,29 +122,36 @@ function Result({
 }
 
 function SearchResult({ page, ...props }: SectionProps<typeof loader>) {
-  if (!page) {
-    return <NotFound />;
+  const { device, queryTerm, notFoundSettings } = props;
+
+  const notHasProducts = !page?.products?.length;
+
+  if (!page || notHasProducts) {
+    return (
+      <NotFound
+        notFoundSettings={notFoundSettings}
+        device={device}
+        queryTerm={queryTerm}
+      />
+    );
   }
 
   return <Result {...props} page={page} />;
 }
 
-export const loader = (props: Props, req: Request) => {
+export const loader = (props: Props, req: Request, ctx: FnContext) => {
   const { page } = props;
+
   const url = new URL(req.url);
-  url.pathname = "/not-found";
+  const queryTerm = url.searchParams.get("q");
 
   if (!page) {
-    redirect(url.toString());
-  }
-
-  if (!page?.products.length) {
-    const currentTerm = page?.breadcrumb.itemListElement?.pop()?.name;
-    url.search = `term=${currentTerm}`;
-    redirect(url.toString());
+    ctx.response.status = 404;
   }
 
   return {
+    queryTerm,
+    device: ctx.device,
     ...props,
   };
 };
