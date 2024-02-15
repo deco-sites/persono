@@ -64,7 +64,7 @@ export default function FeatureBlogArticle(props: Props) {
           <p>{text}</p>
           <div class="card-actions pt-5">
             <a
-              class="flex text-black not-italic font-bold gap-2 h-9 justify-center items-center"
+              class="flex text-black not-italic font-medium gap-2 h-9 justify-center items-center"
               href={link?.href}
             >
               {link?.text}
