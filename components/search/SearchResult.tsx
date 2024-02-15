@@ -47,7 +47,7 @@ function Result({
     .map((p) => p.category)[0]
     ?.split(">")[0];
   const tabsQtt = Math.floor(
-    (pageInfo.recordPerPage || products.length) / perPage
+    (pageInfo.recordPerPage || products.length) / perPage,
   );
 
   if (perPage % (pageInfo.recordPerPage || products.length) !== 0) {
@@ -111,9 +111,9 @@ function Result({
             </a>
             {Array.from({ length: tabsQtt }, (_, index) => (
               <a
-              aria-label={`${index} page link`}
-              rel={`${index+1}`}
-              href={`?page=${index+1}`}
+                aria-label={`${index} page link`}
+                rel={`${index + 1}`}
+                href={`?page=${index + 1}`}
                 class={`flex justify-center items-center w-8 h-8 font-bold ${
                   pageInfo.currentPage == index
                     ? "bg-primary text-base-100 rounded-full"

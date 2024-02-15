@@ -17,7 +17,6 @@ export type Props =
 function SearchControls(
   { filters, breadcrumb, displayFilter, sortOptions, productsQtt }: Props,
 ) {
-
   const open = useSignal(false);
 
   return (
@@ -45,7 +44,10 @@ function SearchControls(
     >
       <div class="flex flex-col justify-between mb-4 p-4 sm:mb-0 sm:p-0 sm:gap-4 sm:flex-row sm:border-b sm:border-base-300">
         <div class="flex flex-row items-center sm:p-0">
-          <Breadcrumb productsQtt={productsQtt} itemListElement={breadcrumb?.itemListElement} />
+          <Breadcrumb
+            productsQtt={productsQtt}
+            itemListElement={breadcrumb?.itemListElement}
+          />
         </div>
 
         <div class="flex flex-row items-center justify-between border-b border-base-200 sm:gap-4 sm:border-none">
