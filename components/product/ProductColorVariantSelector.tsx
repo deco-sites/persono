@@ -58,7 +58,7 @@ function VariantColorSelector({
     <div class="flex flex-col gap-4">
       <ul class="flex flex-col gap-2">
         <p class="text-sm">Cor: {color}</p>
-        <div class="flex gap-3">
+        <div class="flex flex-wrap gap-3">
           {matchingColorsPossibilities.map((cp) => (
             <button
               disabled={productsNotAvailable.includes(cp.sku) ? true : false}

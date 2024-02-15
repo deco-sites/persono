@@ -59,7 +59,7 @@ function VariantSizeSelector({
       <ul class="flex flex-col gap-2">
         <p class="text-sm">Tamanho</p>
         <div class="sm:flex-row flex flex-col gap-2">
-          <div class="flex gap-3">
+          <div class="flex flex-wrap gap-3">
             {sortedSizeArray.map((cp) => (
               <ul class="flex flex-row gap-3">
                 <li>
