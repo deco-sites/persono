@@ -45,7 +45,10 @@ export type AvailableIcons =
   | "PlusSign"
   | "MinusSign"
   | "Zoom"
-  | "MagnifyingGlassFound";
+  | "MagnifyingGlassFound"
+  | "ArrowUp"
+  | "Cloud"
+  | "Zoom";
 
 interface Props extends JSX.SVGAttributes<SVGSVGElement> {
   /**
