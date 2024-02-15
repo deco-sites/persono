@@ -10,9 +10,14 @@ interface Props {
   productsNotAvailable: string[];
 }
 
-type Possibilities = { name: string; value: string; url: string, sku:string };
+type Possibilities = { name: string; value: string; url: string; sku: string };
 
-function VariantSizeSelector({productsNotAvailable, url, possibilities, sizes }: Props) {
+function VariantSizeSelector({
+  productsNotAvailable,
+  url,
+  possibilities,
+  sizes,
+}: Props) {
   const sizePossibilities: Possibilities[] = [];
   let color = "";
 
@@ -53,33 +58,37 @@ function VariantSizeSelector({productsNotAvailable, url, possibilities, sizes }:
     <div class="flex flex-col gap-4">
       <ul class="flex flex-col gap-2">
         <p class="text-sm">Tamanho</p>
-        <div class="flex gap-3">
-          {sortedSizeArray.map((cp) => (
-            <ul class="flex flex-row gap-3">
-              <li>
-                <button
-                  disabled={productsNotAvailable.includes(cp.sku) ? true:false}
-                  f-partial={cp.url}
-                  f-client-nav
-                >
-                  <AvatarSize
-                    content={cp.name}
-                    variant={
-                      cp.url === url
-                        ? "active"
-                        : productsNotAvailable.includes(cp.sku)
-                        ? "disabled"
-                        : "default"
+        <div class="sm:flex-row flex flex-col gap-2">
+          <div class="flex gap-3">
+            {sortedSizeArray.map((cp) => (
+              <ul class="flex flex-row gap-3">
+                <li>
+                  <button
+                    disabled={
+                      productsNotAvailable.includes(cp.sku) ? true : false
                     }
-                  />
-                </button>
-              </li>
-            </ul>
-          ))}
+                    f-partial={cp.url}
+                    f-client-nav
+                  >
+                    <AvatarSize
+                      content={cp.name}
+                      variant={
+                        cp.url === url
+                          ? "active"
+                          : productsNotAvailable.includes(cp.sku)
+                          ? "disabled"
+                          : "default"
+                      }
+                    />
+                  </button>
+                </li>
+              </ul>
+            ))}
+          </div>
 
           <label
             for="my_modal_6"
-            class="btn underline btn-link p-0 text-black text-sm font-normal"
+            class="btn justify-start underline btn-link p-0 text-black text-sm font-normal"
           >
             Guia de tamanhos
           </label>

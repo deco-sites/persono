@@ -56,28 +56,25 @@ function ProductInfo({ page, colors, sizes, benefits }: Props) {
     listPrice,
   });
 
-  const productBenefits =
-    product.isVariantOf?.hasVariant[0].additionalProperty?.filter((p) => {
+  const productBenefits = product.isVariantOf?.hasVariant[0].additionalProperty
+    ?.filter((p) => {
       if (p.identifier?.startsWith("CUSTOM")) return p.value;
     });
 
   const hasVariant = isVariantOf?.hasVariant ?? [];
   const possibilities: GroupedData = useVariantPossibilities(
     hasVariant,
-    isVariantOf
+    isVariantOf,
   );
 
   const skus: string[] = [""];
   const productsNotAvailable: string[] = [""];
-
 
   hasVariant.map((p) => {
     if (p.offers?.offers[0].availability === "https://schema.org/OutOfStock") {
       productsNotAvailable.push(p.sku);
     }
   });
-
-  console.log(productsNotAvailable);
 
   return (
     <div class="flex flex-col w-full sm:mt-10 px-4 sm:px-0" id={id}>
@@ -129,16 +126,16 @@ function ProductInfo({ page, colors, sizes, benefits }: Props) {
           productBenefits?.length == 0 ? "mb-5" : "mb-10"
         } flex flex-col`}
       >
-        {availability === "https://schema.org/InStock" ? (
-          <>
-            <AddCartButton
-              eventParams={{ items: [eventItem] }}
-              sku={product.sku}
-            />
-          </>
-        ) : (
-          <OutOfStock productID={productID} />
-        )}
+        {availability === "https://schema.org/InStock"
+          ? (
+            <>
+              <AddCartButton
+                eventParams={{ items: [eventItem] }}
+                sku={product.sku}
+              />
+            </>
+          )
+          : <OutOfStock productID={productID} />}
       </div>
       {/* Benefities */}
       <div class={`${productBenefits?.length == 0 ? "hidden" : ""}`}>
@@ -171,11 +168,13 @@ function ProductInfo({ page, colors, sizes, benefits }: Props) {
                   product?.isVariantOf?.hasVariant[0]?.additionalProperty.map(
                     (ad) =>
                       ad.propertyID == "TECNICALSPECIFICATION" &&
-                      !ad.description?.startsWith("CUSTOM_") ? (
-                        <p>
-                          {ad.description}:&ensp;{ad.value}
-                        </p>
-                      ) : null
+                        !ad.description?.startsWith("CUSTOM_")
+                        ? (
+                          <p>
+                            {ad.description}:&ensp;{ad.value}
+                          </p>
+                        )
+                        : null,
                   )}
               </div>
             </div>
@@ -189,11 +188,13 @@ function ProductInfo({ page, colors, sizes, benefits }: Props) {
                 {product.isVariantOf?.hasVariant[0].additionalProperty &&
                   product?.isVariantOf?.hasVariant[0]?.additionalProperty.map(
                     (ad) =>
-                      ad.propertyID == "KITITEM" ? (
-                        <p>
-                          {ad.value}&ensp;{ad.description}
-                        </p>
-                      ) : null
+                      ad.propertyID == "KITITEM"
+                        ? (
+                          <p>
+                            {ad.value}&ensp;{ad.description}
+                          </p>
+                        )
+                        : null,
                   )}
               </div>
             </div>
