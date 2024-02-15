@@ -42,26 +42,23 @@ function Result({
   layout,
 }: Omit<Props, "page"> & { page: ProductListingPage }) {
   const { products, filters, breadcrumb, pageInfo, sortOptions } = page;
-  const perPage = 12;
+  const perPage = products.length;
   const productBannerCategory = products
     .map((p) => p.category)[0]
     ?.split(">")[0];
-  const tabsQtt = Math.floor(
-    (pageInfo.recordPerPage || products.length) / perPage,
-  );
+  if (!pageInfo.records){
+    return <div></div>
+  }
+  let tabsQtt = Math.floor(pageInfo.records / perPage);
 
-  if (perPage % (pageInfo.recordPerPage || products.length) !== 0) {
-    tabsQtt + 1;
+  if (pageInfo.records % perPage !== 0) {
+    tabsQtt = tabsQtt + 1;
   }
 
   const id = useId();
 
   const offset = pageInfo.currentPage * perPage;
-
-  console.log(pageInfo.nextPage);
-  console.log(offset);
-  console.log(tabsQtt);
-
+  
   return (
     <>
       <div class="h-48 w-full bg-base-300 flex items-center justify-between overflow-hidden mb-14">
@@ -103,11 +100,7 @@ function Result({
               href={pageInfo.previousPage ?? "#"}
               class="flex items-center justify-center w-8 h-8 border rounded-full text-primary"
             >
-              <Icon
-                id="ChevronLeft"
-                size={16}
-                strokeWidth={2}
-              />
+              <Icon id="ChevronLeft" size={16} strokeWidth={2} />
             </a>
             {Array.from({ length: tabsQtt }, (_, index) => (
               <a
@@ -129,11 +122,7 @@ function Result({
               href={pageInfo.nextPage ?? "#"}
               class="flex items-center justify-center w-8 h-8 border rounded-full text-primary"
             >
-              <Icon
-                id="ChevronRight"
-                size={18}
-                strokeWidth={2}
-              />
+              <Icon id="ChevronRight" size={18} strokeWidth={2} />
             </a>
           </div>
         </div>
