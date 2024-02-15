@@ -20,6 +20,7 @@ export interface GroupedData {
     name: string;
     value: string;
     url: string;
+    sku: string;
   }>;
 }
 
@@ -74,11 +75,13 @@ export const useVariantPossibilities = (
     (acc, obj) => {
       const key = obj.name;
       const value = obj.value;
+      const urlLength = obj.url.split("/").length;
+      const sku = obj.url.split("/")[urlLength - 1];
       if (key !== undefined && value !== undefined) {
         if (!acc[key]) {
           acc[key] = [];
         }
-        acc[key].push({ name: key, value, url: obj.url });
+        acc[key].push({ name: key, value, url: obj.url, sku: sku });
       }
       return acc;
     },

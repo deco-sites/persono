@@ -6,18 +6,24 @@ interface Props {
   possibilities: GroupedData;
   colors: Color[];
   url: string | undefined;
+  productsNotAvailable: string[];
 }
 
-type Possibilities = { name: string; value: string; url: string };
+type Possibilities = { name: string; value: string; url: string; sku: string };
 
-function VariantColorSelector({ url, possibilities, colors }: Props) {
+function VariantColorSelector({
+  productsNotAvailable,
+  url,
+  possibilities,
+  colors,
+}: Props) {
   let colorsPossibilities: Possibilities[] = [];
   let color = "";
 
   // Find matching color and set colorsPossibilities and color
   Object.keys(possibilities).forEach((name) => {
     const link = Object.values(possibilities[name]).find(
-      (link) => link.url === url,
+      (link) => link.url === url
     );
     if (link) {
       colorsPossibilities = possibilities[name];
@@ -55,7 +61,7 @@ function VariantColorSelector({ url, possibilities, colors }: Props) {
         <div class="flex gap-3">
           {matchingColorsPossibilities.map((cp) => (
             <button
-              disabled={cp.value ? false : true}
+              disabled={productsNotAvailable.includes(cp.sku) ? true : false}
               f-partial={cp.url}
               f-client-nav
             >
@@ -63,11 +69,13 @@ function VariantColorSelector({ url, possibilities, colors }: Props) {
                 color={colors}
                 name={cp.name}
                 content={cp.value}
-                variant={cp.url === url
-                  ? "active"
-                  : cp.value
-                  ? "default"
-                  : "disabled"}
+                variant={
+                  cp.url === url
+                    ? "active"
+                    : productsNotAvailable.includes(cp.sku)
+                    ? "disabled"
+                    : "default"
+                }
               />
             </button>
           ))}
