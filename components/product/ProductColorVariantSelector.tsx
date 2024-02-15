@@ -6,11 +6,17 @@ interface Props {
   possibilities: GroupedData;
   colors: Color[];
   url: string | undefined;
+  productsNotAvailable: string[];
 }
 
-type Possibilities = { name: string; value: string; url: string };
+type Possibilities = { name: string; value: string; url: string; sku: string };
 
-function VariantColorSelector({ url, possibilities, colors }: Props) {
+function VariantColorSelector({
+  productsNotAvailable,
+  url,
+  possibilities,
+  colors,
+}: Props) {
   let colorsPossibilities: Possibilities[] = [];
   let color = "";
 
@@ -52,10 +58,10 @@ function VariantColorSelector({ url, possibilities, colors }: Props) {
     <div class="flex flex-col gap-4">
       <ul class="flex flex-col gap-2">
         <p class="text-sm">Cor: {color}</p>
-        <div class="flex gap-3">
+        <div class="flex flex-wrap gap-3">
           {matchingColorsPossibilities.map((cp) => (
             <button
-              disabled={cp.value ? false : true}
+              disabled={productsNotAvailable.includes(cp.sku) ? true : false}
               f-partial={cp.url}
               f-client-nav
             >
@@ -65,9 +71,9 @@ function VariantColorSelector({ url, possibilities, colors }: Props) {
                 content={cp.value}
                 variant={cp.url === url
                   ? "active"
-                  : cp.value
-                  ? "default"
-                  : "disabled"}
+                  : productsNotAvailable.includes(cp.sku)
+                  ? "disabled"
+                  : "default"}
               />
             </button>
           ))}
