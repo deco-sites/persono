@@ -9,6 +9,7 @@ import {
   UserInfo,
   VMDetails,
   VMDetailsRedirect,
+  SkuSubscribeData
 } from "$store/packs/types.ts";
 export default interface Ammo {
   "GET /api/bag": {
@@ -126,6 +127,15 @@ export default interface Ammo {
         "types[0][limit]": number;
         "types[0][type]": string;
       };
+    };
+    "POST /api/sku-availability-subscription": {
+      response: SkuSubscribeData;
+      headers: {
+        "x-ammo-device-id": string;
+        "x-api-key": string;
+        "x-ammo-token": string;
+      };
+      body: URLSearchParams;
     };
   };
 }
