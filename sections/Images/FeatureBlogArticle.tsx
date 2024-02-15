@@ -6,6 +6,7 @@ export interface Props {
   image: {
     mobile: ImageWidget;
     desktop?: ImageWidget;
+    alt?: string;
   };
 
   text?: string;
@@ -45,14 +46,14 @@ export default function FeatureBlogArticle(props: Props) {
             <Source
               media="(min-width: 768px)"
               src={image?.desktop ? image?.desktop : image?.mobile}
-              width={1100}
+              width={768}
               height={600}
             />
             <img
               class="rounded-[40px]"
               sizes="(max-width: 640px) 100vw, 30vw"
               src={image?.desktop}
-              alt={image?.mobile}
+              alt={image?.alt}
               decoding="async"
               loading="lazy"
             />
@@ -63,12 +64,11 @@ export default function FeatureBlogArticle(props: Props) {
           <p>{text}</p>
           <div class="card-actions pt-5">
             <a
-              class="flex not-italic font-bold gap-2 h-9 justify-center items-center"
+              class="flex text-black not-italic font-bold gap-2 h-9 justify-center items-center"
               href={link?.href}
             >
               {link?.text}
               <Icon
-                class="text-black"
                 size={20}
                 id="ArrowRight"
                 strokeWidth={2}
