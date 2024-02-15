@@ -42,26 +42,37 @@ function Result({
   layout,
 }: Omit<Props, "page"> & { page: ProductListingPage }) {
   const { products, filters, breadcrumb, pageInfo, sortOptions } = page;
-  const perPage = pageInfo.recordPerPage || products.length;
-  const productCategory = products.map((p) => p.category)[0]?.split(">")[0];
+  const perPage = 12;
+  const productBannerCategory = products
+    .map((p) => p.category)[0]
+    ?.split(">")[0];
+  const tabsQtt = Math.floor(
+    (pageInfo.recordPerPage || products.length) / perPage
+  );
 
-  console.log(productCategory);
+  if (perPage % (pageInfo.recordPerPage || products.length) !== 0) {
+    tabsQtt + 1;
+  }
 
   const id = useId();
 
-  const zeroIndexedOffsetPage = pageInfo.currentPage;
-  const offset = zeroIndexedOffsetPage * perPage;
+  const offset = pageInfo.currentPage * perPage;
+
+  console.log(pageInfo.nextPage);
+  console.log(offset);
+  console.log(tabsQtt);
 
   return (
     <>
       <div class="h-48 w-full bg-base-300 flex items-center justify-between overflow-hidden mb-14">
-        <h2 class="pl-20 text-[3.5rem] text-black">{productCategory}</h2>
+        <h2 class="pl-20 text-[3.5rem] text-black">{productBannerCategory}</h2>
         <div class="pr-14 w-96">
           <Logo onlySymbol />
         </div>
       </div>
       <div class="px-20">
         <SearchControls
+          productsQtt={products.length}
           sortOptions={sortOptions}
           filters={filters}
           breadcrumb={breadcrumb}
@@ -85,25 +96,44 @@ function Result({
         </div>
 
         <div class="flex justify-center my-4">
-          <div class="join">
+          <div class="join text-sm flex items-center gap-1">
             <a
               aria-label="previous page link"
               rel="prev"
               href={pageInfo.previousPage ?? "#"}
-              class="btn btn-ghost join-item"
+              class="flex items-center justify-center w-8 h-8 border rounded-full text-primary"
             >
-              <Icon id="ChevronLeft" size={24} strokeWidth={2} />
+              <Icon
+                id="ChevronLeft"
+                size={16}
+                strokeWidth={2}
+              />
             </a>
-            <span class="btn btn-ghost join-item">
-              Page {zeroIndexedOffsetPage + 1}
-            </span>
+            {Array.from({ length: tabsQtt }, (_, index) => (
+              <a
+              aria-label={`${index} page link`}
+              rel={`${index+1}`}
+              href={`?page=${index+1}`}
+                class={`flex justify-center items-center w-8 h-8 font-bold ${
+                  pageInfo.currentPage == index
+                    ? "bg-primary text-base-100 rounded-full"
+                    : "text-primary"
+                }`}
+              >
+                {index + 1}
+              </a>
+            ))}
             <a
               aria-label="next page link"
               rel="next"
               href={pageInfo.nextPage ?? "#"}
-              class="btn btn-ghost join-item"
+              class="flex items-center justify-center w-8 h-8 border rounded-full text-primary"
             >
-              <Icon id="ChevronRight" size={24} strokeWidth={2} />
+              <Icon
+                id="ChevronRight"
+                size={18}
+                strokeWidth={2}
+              />
             </a>
           </div>
         </div>

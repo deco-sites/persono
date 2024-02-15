@@ -35,7 +35,7 @@ function ProductGallery({ products, layout, offset, cardLayout }: Props) {
 
   return (
     <div class={`grid ${mobile} gap-2 items-center ${desktop} sm:gap-10`}>
-      {products?.map((product, index) => (
+      {products?.slice(offset, offset + 12).map((product, index) => (
         <ProductCard
           layout={cardLayout}
           product={product}
