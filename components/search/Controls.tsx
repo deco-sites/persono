@@ -46,7 +46,7 @@ function SearchControls(
         <div class="flex flex-row items-center sm:p-0">
           <Breadcrumb
             productsQtt={productsQtt}
-            itemListElement={breadcrumb?.itemListElement.slice(0,3)}
+            itemListElement={breadcrumb?.itemListElement.slice(0, 3)}
           />
         </div>
 
