@@ -46,8 +46,8 @@ function Result({
   const productBannerCategory = products
     .map((p) => p.category)[0]
     ?.split(">")[0];
-  if (!pageInfo.records){
-    return <div></div>
+  if (!pageInfo.records) {
+    return <div></div>;
   }
   let tabsQtt = Math.floor(pageInfo.records / perPage);
 
@@ -58,7 +58,7 @@ function Result({
   const id = useId();
 
   const offset = pageInfo.currentPage * perPage;
-  
+
   return (
     <>
       <div class="h-48 w-full bg-base-300 flex items-center justify-between overflow-hidden mb-14">
