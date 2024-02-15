@@ -4,7 +4,10 @@ import Icon from "$store/components/ui/Icon.tsx";
 import SearchControls from "$store/islands/SearchControls.tsx";
 import { useId } from "$store/sdk/useId.ts";
 import { useOffer } from "$store/sdk/useOffer.ts";
-import type { ProductListingPage } from "apps/commerce/types.ts";
+import type {
+  FilterToggleValue,
+  ProductListingPage,
+} from "apps/commerce/types.ts";
 import { mapProductToAnalyticsItem } from "apps/commerce/utils/productToAnalyticsItem.ts";
 import ProductGallery, { Columns } from "../product/ProductGallery.tsx";
 import { Logo } from "deco-sites/persono/components/ui/Logo.tsx";
@@ -59,6 +62,16 @@ function Result({
 
   const offset = pageInfo.currentPage * perPage;
 
+  const appliedFilters: FilterToggleValue[] = [];
+
+  filters.map((f) => {
+    (f.values as FilterToggleValue[]).map((v) => {
+      if (v.selected == true) {
+        appliedFilters.push(v);
+      }
+    }) as unknown as FilterToggleValue[];
+  });
+
   return (
     <>
       <div class="h-48 w-full bg-base-300 flex items-center justify-between overflow-hidden mb-14">
@@ -75,8 +88,21 @@ function Result({
           breadcrumb={breadcrumb}
           displayFilter={layout?.variant === "drawer"}
         />
+        <div class="flex text-sm gap-3 my-4">
+          {appliedFilters.map((af) => (
+            <span
+              style={{ minWidth: "86px" }}
+              class="py-1 gap-3 bg-black opacity-80 rounded-full px-3 flex justify-between items-center text-white"
+            >
+              {af.label}
+              <a href={af.url} rel="nofollow">
+                <Icon id="XMark" size={16} strokeWidth={2}></Icon>
+              </a>
+            </span>
+          ))}
+        </div>
 
-        <div class="flex flex-row">
+        <div class="flex flex-row mt-2">
           {layout?.variant === "aside" && filters.length > 0 && (
             <aside class="hidden sm:block w-min min-w-[250px]">
               <Filters filters={filters} />
