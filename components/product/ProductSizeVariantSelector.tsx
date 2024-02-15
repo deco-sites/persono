@@ -24,7 +24,7 @@ function VariantSizeSelector({
   // Find matching color and set colorsPossibilities and color
   Object.keys(possibilities).forEach((name) => {
     const link = Object.values(possibilities[name]).find(
-      (link) => link.url === url
+      (link) => link.url === url,
     );
     if (link) {
       color = link.value;
@@ -34,7 +34,7 @@ function VariantSizeSelector({
   // Find size possibilities based on the matched color
   Object.keys(possibilities).forEach((name) => {
     const links = Object.values(possibilities[name]).filter(
-      (link) => color === link.value
+      (link) => color === link.value,
     );
     sizePossibilities.push(...links);
   });
@@ -64,21 +64,19 @@ function VariantSizeSelector({
               <ul class="flex flex-row gap-3">
                 <li>
                   <button
-                    disabled={
-                      productsNotAvailable.includes(cp.sku) ? true : false
-                    }
+                    disabled={productsNotAvailable.includes(cp.sku)
+                      ? true
+                      : false}
                     f-partial={cp.url}
                     f-client-nav
                   >
                     <AvatarSize
                       content={cp.name}
-                      variant={
-                        cp.url === url
-                          ? "active"
-                          : productsNotAvailable.includes(cp.sku)
-                          ? "disabled"
-                          : "default"
-                      }
+                      variant={cp.url === url
+                        ? "active"
+                        : productsNotAvailable.includes(cp.sku)
+                        ? "disabled"
+                        : "default"}
                     />
                   </button>
                 </li>
