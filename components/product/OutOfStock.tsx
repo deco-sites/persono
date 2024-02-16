@@ -4,10 +4,10 @@ import type { Product } from "apps/commerce/types.ts";
 import type { JSX } from "preact";
 
 export interface Props {
-  productID: Product["productID"];
+  sku: Product["sku"];
 }
 
-function Notify({ productID }: Props) {
+function Notify({ sku }: Props) {
   const loading = useSignal(false);
 
   const handleSubmit: JSX.GenericEventHandler<HTMLFormElement> = async (e) => {
@@ -16,12 +16,16 @@ function Notify({ productID }: Props) {
     try {
       loading.value = true;
 
-      const name = (e.currentTarget.elements.namedItem("name") as RadioNodeList)
-        ?.value;
-      const email =
-        (e.currentTarget.elements.namedItem("email") as RadioNodeList)?.value;
+      const email = (
+        e.currentTarget.elements.namedItem("email") as RadioNodeList
+      )?.value;
 
-      await invoke.vtex.actions.notifyme({ skuId: productID, name, email });
+      await invoke["deco-sites/persono"].loaders.avaliabilitySubscription({
+        email,
+        sku,
+      });
+    } catch (err) {
+      console.log(err);
     } finally {
       loading.value = false;
     }
@@ -32,10 +36,11 @@ function Notify({ productID }: Props) {
       <span class="text-base">Este produto está indisponivel no momento</span>
       <span class="text-sm">Avise-me quando estiver disponivel</span>
 
-      <input placeholder="Nome" class="input input-bordered" name="name" />
       <input placeholder="Email" class="input input-bordered" name="email" />
 
-      <button class="btn disabled:loading" disabled={loading}>Enviar</button>
+      <button class="btn disabled:loading" disabled={loading}>
+        Enviar
+      </button>
     </form>
   );
 }
