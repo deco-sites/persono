@@ -3,14 +3,16 @@ import { sendEvent } from "$store/sdk/analytics.tsx";
 import { useUI } from "$store/sdk/useUI.ts";
 import { AddToCartParams } from "apps/commerce/types.ts";
 import { useState } from "preact/hooks";
+import { useCart } from "deco-sites/persono/packs/hooks/useCart.ts";
 
 export interface Props {
   /** @description: sku name */
   eventParams: AddToCartParams;
-  onAddItem: () => Promise<void>;
+  sku: string;
 }
 
-const useAddToCart = ({ eventParams, onAddItem }: Props) => {
+export default function AddToCartButton(props: Props) {
+  const { addItems } = useCart();
   const [loading, setLoading] = useState(false);
   const { displayCart } = useUI();
 
@@ -21,11 +23,13 @@ const useAddToCart = ({ eventParams, onAddItem }: Props) => {
     try {
       setLoading(true);
 
-      await onAddItem();
+      await addItems({
+        bagItems: [{ amount: 1, sku: props.sku }],
+      });
 
       sendEvent({
         name: "add_to_cart",
-        params: eventParams,
+        params: props.eventParams,
       });
 
       displayCart.value = true;
@@ -34,14 +38,10 @@ const useAddToCart = ({ eventParams, onAddItem }: Props) => {
     }
   };
 
-  return { onClick, loading, "data-deco": "add-to-cart" };
-};
-
-export default function AddToCartButton(props: Props) {
-  const btnProps = useAddToCart(props);
+  const btnProps = { onClick, loading, "data-deco": "add-to-cart" };
 
   return (
-    <Button {...btnProps} class="btn-primary">
+    <Button {...btnProps} class="btn-primary h-12 btn-circle">
       Adicionar à Sacola
     </Button>
   );

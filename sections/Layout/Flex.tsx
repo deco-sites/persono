@@ -7,9 +7,9 @@ interface Props {
   layout?: {
     gap?: {
       /** @default 4 */
-      mobile?: "1" | "2" | "4" | "8" | "12" | "16";
+      mobile?: "1" | "2" | "4" | "8" | "10" | "12" | "16";
       /** @default 8 */
-      desktop?: "1" | "2" | "4" | "8" | "12" | "16";
+      desktop?: "1" | "2" | "4" | "8" | "10" | "12" | "16";
     };
     direction?: {
       /** @default col */
@@ -28,6 +28,12 @@ interface Props {
       mobile?: "wrap" | "nowrap" | "wrap-reverse";
       /** @default wrap */
       desktop?: "wrap" | "nowrap" | "wrap-reverse";
+    };
+    container?: {
+      /** @default container */
+      mobile?: "container" | "none";
+      /** @default container */
+      desktop?: "container" | "none";
     };
   };
 }
@@ -49,6 +55,7 @@ function Flex({ layout, children }: Props) {
         flex.justify.desktop[layout?.justify?.desktop ?? "center"],
         flex.wrap.mobile[layout?.wrap?.mobile ?? "wrap"],
         flex.wrap.desktop[layout?.wrap?.desktop ?? "wrap"],
+        flex.container.desktop[layout?.container?.desktop ?? "none"],
       )}
     >
       {items}
