@@ -9,6 +9,7 @@ export const grid = {
       "2": "gap-2",
       "4": "gap-4",
       "8": "gap-8",
+      "10": "sm:gap-10",
       "12": "gap-12",
       "16": "gap-16",
     },
@@ -17,6 +18,7 @@ export const grid = {
       "2": "sm:gap-2",
       "4": "sm:gap-4",
       "8": "sm:gap-8",
+      "10": "sm:gap-10",
       "12": "sm:gap-12",
       "16": "sm:gap-16",
     },
@@ -103,6 +105,24 @@ export const grid = {
       "end": "sm:place-items-end",
       "baseline": "sm:place-items-baseline",
       "stretch": "sm:place-items-stretch",
+    },
+  },
+  justifyItems: {
+    mobile: {
+      "center": "justify-items-center",
+      "start": "justify-items-start",
+      "end": "justify-items-end",
+      "baseline": "justify-items-baseline",
+      "stretch": "justify-items-stretch",
+      "none": "none",
+    },
+    desktop: {
+      "center": "sm:justify-items-center",
+      "start": "sm:justify-items-start",
+      "end": "sm:justify-items-end",
+      "baseline": "sm:justify-items-baseline",
+      "stretch": "sm:justify-items-stretch",
+      "none": "none",
     },
   },
   rowStart: {
@@ -198,6 +218,7 @@ export const flex = {
       "2": "gap-2",
       "4": "gap-4",
       "8": "gap-8",
+      "10": "gap-10",
       "12": "gap-12",
       "16": "gap-16",
     },
@@ -206,6 +227,7 @@ export const flex = {
       "2": "sm:gap-2",
       "4": "sm:gap-4",
       "8": "sm:gap-8",
+      "10": "sm:gap-10",
       "12": "sm:gap-12",
       "16": "sm:gap-16",
     },
@@ -242,6 +264,16 @@ export const flex = {
       "wrap": "sm:flex-wrap",
       "nowrap": "sm:flex-nowrap",
       "wrap-reverse": "flex-wrap-reverse",
+    },
+  },
+  container: {
+    mobile: {
+      "container": "container",
+      "none": "none",
+    },
+    desktop: {
+      "container": "container",
+      "none": "none",
     },
   },
 };
