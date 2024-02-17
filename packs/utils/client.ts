@@ -3,13 +3,14 @@ import {
   Bag,
   BagItems,
   Config,
+  NewsletterData,
   ProductDetails,
   Recommendations,
   ShippingSimulation,
+  SkuSubscribeData,
   UserInfo,
   VMDetails,
   VMDetailsRedirect,
-  SkuSubscribeData
 } from "$store/packs/types.ts";
 export default interface Ammo {
   "GET /api/bag": {
@@ -130,6 +131,15 @@ export default interface Ammo {
     };
     "POST /api/sku-availability-subscription": {
       response: SkuSubscribeData;
+      headers: {
+        "x-ammo-device-id": string;
+        "x-api-key": string;
+        "x-ammo-token": string;
+      };
+      body: URLSearchParams;
+    };
+    "POST /api/newsletters": {
+      response: NewsletterData;
       headers: {
         "x-ammo-device-id": string;
         "x-api-key": string;
