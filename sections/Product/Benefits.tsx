@@ -1,6 +1,7 @@
 import { PropertyValue } from "apps/commerce/types.ts";
 import { Benefits } from "../../loaders/Layouts/Benefits.tsx";
 import Image from "apps/website/components/Image.tsx";
+import Icon from "$store/components/ui/Icon.tsx";
 
 interface Props {
   adminBenefits: Benefits[];
@@ -38,7 +39,7 @@ export default function Benefits({
           <div class="flex flex-col gap-2">
             <div class="flex items-center gap-2">
               <Image
-                src={l.icon}
+                src={l.Icon}
                 class="text-primary"
                 width={36}
                 height={36}
