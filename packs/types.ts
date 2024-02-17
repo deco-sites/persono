@@ -1267,3 +1267,13 @@ export interface SkuSubscribeData {
   updatedAt: string;
   createdAt: string;
 }
+
+export interface Newsleter {
+  data: NewsletterData;
+}
+
+export interface NewsletterData {
+  id: string;
+  email: string;
+  newsletterCouponCode: string;
+}
