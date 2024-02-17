@@ -50,7 +50,7 @@ function Result({
     .map((p) => p.category)[0]
     ?.split(">")[0];
   if (!pageInfo.records) {
-    return <NotFound/>;
+    return <NotFound />;
   }
   let tabsQtt = Math.floor(pageInfo.records / perPage);
 

@@ -35,7 +35,7 @@ const portugueseMappings = {
 function Sort({ sortOptions }: Props) {
   const sort = useSort();
 
-  console.log(sort)
+  console.log(sort);
 
   return (
     <select
@@ -51,8 +51,7 @@ function Sort({ sortOptions }: Props) {
       {sortOptions
         .map(({ value, label }) => ({
           value,
-          label:
-            portugueseMappings[label as keyof typeof portugueseMappings] ??
+          label: portugueseMappings[label as keyof typeof portugueseMappings] ??
             label,
         }))
         .filter(({ label }) => label)

@@ -7,13 +7,15 @@ import Breadcrumb from "$store/components/ui/Breadcrumb.tsx";
 import { useSignal } from "@preact/signals";
 import type { ProductListingPage } from "apps/commerce/types.ts";
 
-export type Props = Pick<
-  ProductListingPage,
-  "filters" | "breadcrumb" | "sortOptions"
-> & {
-  displayFilter?: boolean;
-  productsQtt?: number;
-};
+export type Props =
+  & Pick<
+    ProductListingPage,
+    "filters" | "breadcrumb" | "sortOptions"
+  >
+  & {
+    displayFilter?: boolean;
+    productsQtt?: number;
+  };
 
 function SearchControls({
   filters,
