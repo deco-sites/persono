@@ -56,15 +56,15 @@ function ProductInfo({ page, colors, sizes, benefits }: Props) {
     listPrice,
   });
 
-  const productBenefits =
-    product.isVariantOf?.hasVariant[0].additionalProperty?.filter((p) => {
+  const productBenefits = product.isVariantOf?.hasVariant[0].additionalProperty
+    ?.filter((p) => {
       if (p.identifier?.startsWith("CUSTOM")) return p.value;
     });
 
   const hasVariant = isVariantOf?.hasVariant ?? [];
   const possibilities: GroupedData = useVariantPossibilities(
     hasVariant,
-    isVariantOf
+    isVariantOf,
   );
 
   const skus: string[] = [""];
@@ -126,16 +126,16 @@ function ProductInfo({ page, colors, sizes, benefits }: Props) {
           productBenefits?.length == 0 ? "mb-5" : "mb-10"
         } flex flex-col`}
       >
-        {availability === "https://schema.org/InStock" ? (
-          <>
-            <AddCartButton
-              eventParams={{ items: [eventItem] }}
-              sku={product.sku}
-            />
-          </>
-        ) : (
-          <OutOfStock sku={sku} />
-        )}
+        {availability === "https://schema.org/InStock"
+          ? (
+            <>
+              <AddCartButton
+                eventParams={{ items: [eventItem] }}
+                sku={product.sku}
+              />
+            </>
+          )
+          : <OutOfStock sku={sku} />}
       </div>
       {/* Benefities */}
       <div class={`${productBenefits?.length == 0 ? "hidden" : ""}`}>
@@ -168,11 +168,13 @@ function ProductInfo({ page, colors, sizes, benefits }: Props) {
                   product?.isVariantOf?.hasVariant[0]?.additionalProperty.map(
                     (ad) =>
                       ad.propertyID == "TECNICALSPECIFICATION" &&
-                      !ad.description?.startsWith("CUSTOM_") ? (
-                        <p>
-                          {ad.description}:&ensp;{ad.value}
-                        </p>
-                      ) : null
+                        !ad.description?.startsWith("CUSTOM_")
+                        ? (
+                          <p>
+                            {ad.description}:&ensp;{ad.value}
+                          </p>
+                        )
+                        : null,
                   )}
               </div>
             </div>
@@ -186,11 +188,13 @@ function ProductInfo({ page, colors, sizes, benefits }: Props) {
                 {product.isVariantOf?.hasVariant[0].additionalProperty &&
                   product?.isVariantOf?.hasVariant[0]?.additionalProperty.map(
                     (ad) =>
-                      ad.propertyID == "KITITEM" ? (
-                        <p>
-                          {ad.value}&ensp;{ad.description}
-                        </p>
-                      ) : null
+                      ad.propertyID == "KITITEM"
+                        ? (
+                          <p>
+                            {ad.value}&ensp;{ad.description}
+                          </p>
+                        )
+                        : null,
                   )}
               </div>
             </div>

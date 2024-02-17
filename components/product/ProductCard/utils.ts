@@ -19,4 +19,3 @@ export const generateColorObject = (customTagColors?: CustomTagColor[]) => {
 
   return colorObject;
 };
-
