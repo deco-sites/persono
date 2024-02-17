@@ -7,23 +7,28 @@ import Breadcrumb from "$store/components/ui/Breadcrumb.tsx";
 import { useSignal } from "@preact/signals";
 import type { ProductListingPage } from "apps/commerce/types.ts";
 
-export type Props =
-  & Pick<ProductListingPage, "filters" | "breadcrumb" | "sortOptions">
-  & {
-    displayFilter?: boolean;
-    productsQtt?: number;
-  };
+export type Props = Pick<
+  ProductListingPage,
+  "filters" | "breadcrumb" | "sortOptions"
+> & {
+  displayFilter?: boolean;
+  productsQtt?: number;
+};
 
-function SearchControls(
-  { filters, breadcrumb, displayFilter, sortOptions, productsQtt }: Props,
-) {
+function SearchControls({
+  filters,
+  breadcrumb,
+  displayFilter,
+  sortOptions,
+  productsQtt,
+}: Props) {
   const open = useSignal(false);
 
   return (
     <Drawer
       loading="lazy"
       open={open.value}
-      onClose={() => open.value = false}
+      onClose={() => (open.value = false)}
       aside={
         <>
           <div class="bg-base-100 flex flex-col h-full divide-y overflow-y-hidden">
@@ -31,7 +36,10 @@ function SearchControls(
               <h1 class="px-4 py-3">
                 <span class="font-medium text-2xl">Filtrar</span>
               </h1>
-              <Button class="btn btn-ghost" onClick={() => open.value = false}>
+              <Button
+                class="btn btn-ghost"
+                onClick={() => (open.value = false)}
+              >
                 <Icon id="XMark" size={24} strokeWidth={2} />
               </Button>
             </div>
@@ -52,7 +60,9 @@ function SearchControls(
 
         <div class="flex flex-row items-center justify-between border-b border-base-200 sm:gap-4 sm:border-none">
           <Button
-            class={displayFilter ? "btn-ghost" : "btn-ghost sm:hidden"}
+            class={` text-sm ${
+              displayFilter ? "btn-ghost" : "btn-ghost sm:hidden"
+            }`}
             onClick={() => {
               open.value = true;
             }}

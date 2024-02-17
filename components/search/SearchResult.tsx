@@ -50,7 +50,7 @@ function Result({
     .map((p) => p.category)[0]
     ?.split(">")[0];
   if (!pageInfo.records) {
-    return <div></div>;
+    return <NotFound/>;
   }
   let tabsQtt = Math.floor(pageInfo.records / perPage);
 
@@ -88,7 +88,7 @@ function Result({
           breadcrumb={breadcrumb}
           displayFilter={layout?.variant === "drawer"}
         />
-        <div class="flex text-sm gap-3 my-4">
+        <div class="flex text-sm gap-3 mt-4 mb-9">
           {appliedFilters.map((af) => (
             <span
               style={{ minWidth: "86px" }}
@@ -102,13 +102,13 @@ function Result({
           ))}
         </div>
 
-        <div class="flex flex-row mt-2">
+        <div class="flex flex-row">
           {layout?.variant === "aside" && filters.length > 0 && (
             <aside class="hidden sm:block w-min min-w-[250px]">
               <Filters filters={filters} />
             </aside>
           )}
-          <div class="flex-grow mt-6" id={id}>
+          <div class="flex-grow" id={id}>
             <ProductGallery
               cardLayout={layout?.cardLayout}
               products={products}
@@ -124,7 +124,7 @@ function Result({
               aria-label="previous page link"
               rel="prev"
               href={pageInfo.previousPage ?? "#"}
-              class="flex items-center justify-center w-8 h-8 border rounded-full text-primary"
+              class="flex items-center hover:text-red-500 justify-center w-8 h-8 border rounded-full text-primary"
             >
               <Icon id="ChevronLeft" size={16} strokeWidth={2} />
             </a>
