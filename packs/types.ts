@@ -1253,3 +1253,17 @@ export interface AutoComplete {
 export interface Term {
   term: string;
 }
+
+export interface SkuSubscribe {
+  data: SkuSubscribeData;
+}
+
+export interface SkuSubscribeData {
+  id: string;
+  sku: string;
+  email: string;
+  group: string;
+  site: string;
+  updatedAt: string;
+  createdAt: string;
+}

@@ -84,8 +84,6 @@ const loader = async (
       typeChecker<RecommendationProps>(props as RecommendationProps, "sku")
     ) {
       const { sku } = props as RecommendationProps;
-      const params = new URLSearchParams();
-      params.set("sku", sku);
       const res = await ammoc["POST /api/recommendation"](
         {},
         {
