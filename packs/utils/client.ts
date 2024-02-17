@@ -6,10 +6,10 @@ import {
   ProductDetails,
   Recommendations,
   ShippingSimulation,
+  SkuSubscribeData,
   UserInfo,
   VMDetails,
   VMDetailsRedirect,
-  SkuSubscribeData
 } from "$store/packs/types.ts";
 export default interface Ammo {
   "GET /api/bag": {

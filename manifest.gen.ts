@@ -6,18 +6,21 @@ import * as $$$0 from "./loaders/actions/cart/addCoupon.ts";
 import * as $$$1 from "./loaders/actions/cart/addItem.ts";
 import * as $$$2 from "./loaders/actions/cart/removeCoupon.ts";
 import * as $$$3 from "./loaders/actions/cart/removeItem.ts";
-import * as $$$4 from "./loaders/cart.ts";
-import * as $$$5 from "./loaders/config.ts";
-import * as $$$6 from "./loaders/Layouts/Benefits.tsx";
-import * as $$$7 from "./loaders/Layouts/ProductCard.tsx";
-import * as $$$8 from "./loaders/List/Sections.tsx";
-import * as $$$9 from "./loaders/product/productDetails.ts";
-import * as $$$10 from "./loaders/product/productList.ts";
-import * as $$$11 from "./loaders/product/productListingPage.ts";
-import * as $$$12 from "./loaders/product/productSearchPage.ts";
-import * as $$$13 from "./loaders/shippingSimulation.ts";
-import * as $$$14 from "./loaders/suggestions.ts";
-import * as $$$15 from "./loaders/userInfo.ts";
+import * as $$$4 from "./loaders/avaliabilitySubscription.ts";
+import * as $$$5 from "./loaders/cart.ts";
+import * as $$$6 from "./loaders/config.ts";
+import * as $$$7 from "./loaders/Layouts/Benefits.tsx";
+import * as $$$8 from "./loaders/Layouts/Colors.tsx";
+import * as $$$9 from "./loaders/Layouts/ProductCard.tsx";
+import * as $$$10 from "./loaders/Layouts/Size.tsx";
+import * as $$$11 from "./loaders/List/Sections.tsx";
+import * as $$$12 from "./loaders/product/productDetails.ts";
+import * as $$$13 from "./loaders/product/productList.ts";
+import * as $$$14 from "./loaders/product/productListingPage.ts";
+import * as $$$15 from "./loaders/product/productSearchPage.ts";
+import * as $$$16 from "./loaders/shippingSimulation.ts";
+import * as $$$17 from "./loaders/suggestions.ts";
+import * as $$$18 from "./loaders/userInfo.ts";
 import * as $$$$$$0 from "./sections/About/InfoCard.tsx";
 import * as $$$$$$1 from "./sections/About/ProductCharacteristics.tsx";
 import * as $$$$$$2 from "./sections/Animation/Animation.tsx";
@@ -43,18 +46,19 @@ import * as $$$$$$21 from "./sections/Links/Shortcuts.tsx";
 import * as $$$$$$22 from "./sections/Miscellaneous/CampaignTimer.tsx";
 import * as $$$$$$23 from "./sections/Miscellaneous/CookieConsent.tsx";
 import * as $$$$$$24 from "./sections/Newsletter/Newsletter.tsx";
-import * as $$$$$$25 from "./sections/Product/ImageGalleryFrontBack.tsx";
-import * as $$$$$$26 from "./sections/Product/ImageGallerySlider.tsx";
-import * as $$$$$$27 from "./sections/Product/NotFound.tsx";
-import * as $$$$$$28 from "./sections/Product/NotFoundChallenge.tsx";
-import * as $$$$$$29 from "./sections/Product/ProductInfo.tsx";
-import * as $$$$$$30 from "./sections/Product/ProductShelf.tsx";
-import * as $$$$$$31 from "./sections/Product/ProductShelfTabbed.tsx";
-import * as $$$$$$32 from "./sections/Product/SearchResult.tsx";
-import * as $$$$$$33 from "./sections/Product/Wishlist.tsx";
-import * as $$$$$$34 from "./sections/Social/InstagramPosts.tsx";
-import * as $$$$$$35 from "./sections/Social/WhatsApp.tsx";
-import * as $$$$$$36 from "./sections/Theme/Theme.tsx";
+import * as $$$$$$25 from "./sections/Product/Benefits.tsx";
+import * as $$$$$$26 from "./sections/Product/ImageGalleryFrontBack.tsx";
+import * as $$$$$$27 from "./sections/Product/ImageGallerySlider.tsx";
+import * as $$$$$$28 from "./sections/Product/NotFound.tsx";
+import * as $$$$$$29 from "./sections/Product/NotFoundChallenge.tsx";
+import * as $$$$$$30 from "./sections/Product/ProductInfo.tsx";
+import * as $$$$$$31 from "./sections/Product/ProductShelf.tsx";
+import * as $$$$$$32 from "./sections/Product/ProductShelfTabbed.tsx";
+import * as $$$$$$33 from "./sections/Product/SearchResult.tsx";
+import * as $$$$$$34 from "./sections/Product/Wishlist.tsx";
+import * as $$$$$$35 from "./sections/Social/InstagramPosts.tsx";
+import * as $$$$$$36 from "./sections/Social/WhatsApp.tsx";
+import * as $$$$$$37 from "./sections/Theme/Theme.tsx";
 import * as $$$$$$$$$$$0 from "./apps/decohub.ts";
 import * as $$$$$$$$$$$1 from "./apps/site.ts";
 
@@ -106,18 +110,19 @@ const manifest = {
     "deco-sites/persono/sections/Miscellaneous/CampaignTimer.tsx": $$$$$$22,
     "deco-sites/persono/sections/Miscellaneous/CookieConsent.tsx": $$$$$$23,
     "deco-sites/persono/sections/Newsletter/Newsletter.tsx": $$$$$$24,
-    "deco-sites/persono/sections/Product/ImageGalleryFrontBack.tsx": $$$$$$25,
-    "deco-sites/persono/sections/Product/ImageGallerySlider.tsx": $$$$$$26,
-    "deco-sites/persono/sections/Product/NotFound.tsx": $$$$$$27,
-    "deco-sites/persono/sections/Product/NotFoundChallenge.tsx": $$$$$$28,
-    "deco-sites/persono/sections/Product/ProductInfo.tsx": $$$$$$29,
-    "deco-sites/persono/sections/Product/ProductShelf.tsx": $$$$$$30,
-    "deco-sites/persono/sections/Product/ProductShelfTabbed.tsx": $$$$$$31,
-    "deco-sites/persono/sections/Product/SearchResult.tsx": $$$$$$32,
-    "deco-sites/persono/sections/Product/Wishlist.tsx": $$$$$$33,
-    "deco-sites/persono/sections/Social/InstagramPosts.tsx": $$$$$$34,
-    "deco-sites/persono/sections/Social/WhatsApp.tsx": $$$$$$35,
-    "deco-sites/persono/sections/Theme/Theme.tsx": $$$$$$36,
+    "deco-sites/persono/sections/Product/Benefits.tsx": $$$$$$25,
+    "deco-sites/persono/sections/Product/ImageGalleryFrontBack.tsx": $$$$$$26,
+    "deco-sites/persono/sections/Product/ImageGallerySlider.tsx": $$$$$$27,
+    "deco-sites/persono/sections/Product/NotFound.tsx": $$$$$$28,
+    "deco-sites/persono/sections/Product/NotFoundChallenge.tsx": $$$$$$29,
+    "deco-sites/persono/sections/Product/ProductInfo.tsx": $$$$$$30,
+    "deco-sites/persono/sections/Product/ProductShelf.tsx": $$$$$$31,
+    "deco-sites/persono/sections/Product/ProductShelfTabbed.tsx": $$$$$$32,
+    "deco-sites/persono/sections/Product/SearchResult.tsx": $$$$$$33,
+    "deco-sites/persono/sections/Product/Wishlist.tsx": $$$$$$34,
+    "deco-sites/persono/sections/Social/InstagramPosts.tsx": $$$$$$35,
+    "deco-sites/persono/sections/Social/WhatsApp.tsx": $$$$$$36,
+    "deco-sites/persono/sections/Theme/Theme.tsx": $$$$$$37,
   },
   "apps": {
     "deco-sites/persono/apps/decohub.ts": $$$$$$$$$$$0,
