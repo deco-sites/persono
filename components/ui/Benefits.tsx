@@ -1,5 +1,6 @@
 import Header from "$store/components/ui/SectionHeader.tsx";
 import { Benefits } from "deco-sites/persono/loaders/Layouts/Benefits.tsx";
+import Icon from "$store/components/ui/Icon.tsx";
 
 export interface Props {
   benefits?: Benefits[];
