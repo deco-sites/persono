@@ -42,7 +42,7 @@ function ProductShelf({
       />
 
       <div id={id} class="container grid grid-cols-[48px_1fr_48px] pb-28">
-        <Slider class="carousel carousel-start sm:carousel-end  md:gap-8 justify-between col-span-full row-start-2 row-end-5">
+        <Slider class="carousel carousel-start sm:carousel-end pt-10 md:gap-8 justify-between col-span-full row-start-2 row-end-5">
           {products?.map((product, index) => (
             <Slider.Item
               index={index}
