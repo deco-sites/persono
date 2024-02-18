@@ -21,8 +21,6 @@ export interface Props {
 
 function Instagram(props: Props) {
   const id = useId();
-  const renderbutton = [0, 1, 2, 3, 4];
-
   const {
     header = {
       title: "",
@@ -43,17 +41,14 @@ function Instagram(props: Props) {
     >
       <Header title={header.title} />
       <div class="relative">
-        {renderbutton.length > 4 &&
-          (
-            <Slider.PrevButton class="justify-center btn btn-circle border border-neutral bg-white z-10 absolute left-[-18px] top-[calc(50%-18px)] hidden sm:flex rounded-full cursor-pointer">
-              <Icon
-                class="text-primary"
-                size={20}
-                id="ChevronLeft"
-                strokeWidth={2}
-              />
-            </Slider.PrevButton>
-          )}
+        <Slider.PrevButton class="disabled:hidden justify-center btn btn-circle border border-neutral bg-white z-10 absolute left-[-18px] top-[calc(50%-18px)] hidden sm:flex rounded-full cursor-pointer">
+          <Icon
+            class="text-primary"
+            size={20}
+            id="ChevronLeft"
+            strokeWidth={2}
+          />
+        </Slider.PrevButton>
         <Slider class="flex carousel carousel-start gap-6 lg:gap-0 lg:justify-between">
           {list.map((
             { mobile, desktop },
@@ -87,7 +82,7 @@ function Instagram(props: Props) {
             </Slider.Item>
           ))}
         </Slider>
-        <Slider.NextButton class="justify-center btn btn-circle border border-neutral bg-white z-10 absolute right-[-18px] top-[calc(50%-18px)] hidden sm:flex rounded-full cursor-pointer">
+        <Slider.NextButton class="disabled:hidden justify-center btn btn-circle border border-neutral bg-white z-10 absolute right-[-18px] top-[calc(50%-18px)] hidden sm:flex rounded-full cursor-pointer">
           <Icon
             class="text-primary"
             size={20}
