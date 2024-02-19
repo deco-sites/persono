@@ -6,10 +6,14 @@ import Icon from "$store/components/ui/Icon.tsx";
 import SearchControls from "$store/islands/SearchControls.tsx";
 import { useId } from "$store/sdk/useId.ts";
 import { useOffer } from "$store/sdk/useOffer.ts";
-import type { ProductListingPage } from "apps/commerce/types.ts";
+import type {
+  FilterToggleValue,
+  ProductListingPage,
+} from "apps/commerce/types.ts";
 import { mapProductToAnalyticsItem } from "apps/commerce/utils/productToAnalyticsItem.ts";
 import ProductGallery, { Columns } from "../product/ProductGallery.tsx";
 import { Layout as CardLayout } from "deco-sites/persono/components/product/ProductCard/index.tsx";
+import { Color } from "deco-sites/persono/loaders/Layouts/Colors.tsx";
 
 import {
   type EditableProps as NotFoundEditableProps,
@@ -30,6 +34,7 @@ export interface Layout {
 }
 
 export interface Props {
+  colors: Color[];
   /** @title Integration */
   page: ProductListingPage | null;
   layout?: Layout;
@@ -39,29 +44,73 @@ export interface Props {
 function Result({
   page,
   layout,
+  colors,
 }: Omit<Props, "page"> & { page: ProductListingPage }) {
   const { products, filters, breadcrumb, pageInfo, sortOptions } = page;
   const perPage = pageInfo.recordPerPage || products.length;
+  const nextPageWithoutNumber = pageInfo.nextPage?.slice(0, -1);
+  const previousPageWithoutNumber = pageInfo.previousPage?.slice(0, -1);
+
+  if (!pageInfo.records) {
+    return <NotFound />;
+  }
 
   const id = useId();
 
   const zeroIndexedOffsetPage = pageInfo.currentPage;
   const offset = zeroIndexedOffsetPage * perPage;
 
+  let tabsQtt = Math.floor(pageInfo.records / perPage);
+
+  if (pageInfo.records % perPage !== 0) {
+    tabsQtt = tabsQtt + 1;
+  }
+
+  const appliedFilters: FilterToggleValue[] = [];
+
+  filters.map((f) => {
+    (f.values as FilterToggleValue[]).map((v) => {
+      if (v.selected == true) {
+        appliedFilters.push(v);
+      }
+    }) as unknown as FilterToggleValue[];
+  });
+
   return (
     <>
-      <div class="container px-4 sm:py-10">
+      <div class="sm:px-20 px-4">
         <SearchControls
+          colors={colors}
+          productsQtt={products.length}
           sortOptions={sortOptions}
           filters={filters}
           breadcrumb={breadcrumb}
           displayFilter={layout?.variant === "drawer"}
         />
+        <div
+          class={`${
+            appliedFilters.length == 0
+              ? "mb-6"
+              : "flex text-sm gap-3 mb-4 sm:mt-4 sm:mb-9"
+          }`}
+        >
+          {appliedFilters.map((af) => (
+            <span
+              style={{ minWidth: "86px" }}
+              class="py-1 gap-3 bg-black opacity-80 rounded-full px-3 flex flex-wrap justify-between items-center text-white"
+            >
+              {af.label}
+              <a href={af.url} rel="nofollow">
+                <Icon id="XMark" size={16} strokeWidth={2}></Icon>
+              </a>
+            </span>
+          ))}
+        </div>
 
         <div class="flex flex-row">
           {layout?.variant === "aside" && filters.length > 0 && (
             <aside class="hidden sm:block w-min min-w-[250px]">
-              <Filters filters={filters} />
+              <Filters colors={colors} filters={filters} />
             </aside>
           )}
           <div class="flex-grow" id={id}>
@@ -74,26 +123,44 @@ function Result({
           </div>
         </div>
 
-        <div class="flex justify-center my-4">
-          <div class="join">
+        <div class="flex justify-center mb-6 mt-12">
+          <div class="join text-sm flex items-center gap-1">
             <a
               aria-label="previous page link"
               rel="prev"
               href={pageInfo.previousPage ?? "#"}
-              class="btn btn-ghost join-item"
+              class="flex items-center hover:text-red-500 justify-center w-8 h-8 border rounded-full text-primary"
             >
-              <Icon id="ChevronLeft" size={24} strokeWidth={2} />
+              <Icon id="ChevronLeft" size={16} strokeWidth={2} />
             </a>
-            <span class="btn btn-ghost join-item">
-              Page {zeroIndexedOffsetPage + 1}
-            </span>
+            {Array.from({ length: tabsQtt }, (_, index) => {
+              const pageNumber = index + 1;
+              return (
+                <a
+                  aria-label={`${index} page link`}
+                  rel={`${pageNumber}`}
+                  href={nextPageWithoutNumber
+                    ? nextPageWithoutNumber + pageNumber
+                    : previousPageWithoutNumber
+                    ? previousPageWithoutNumber + pageNumber
+                    : ""}
+                  class={`flex justify-center items-center w-8 h-8 font-bold ${
+                    pageInfo.currentPage == index
+                      ? "bg-primary text-base-100 rounded-full"
+                      : "text-primary"
+                  }`}
+                >
+                  {pageNumber}
+                </a>
+              );
+            })}
             <a
               aria-label="next page link"
               rel="next"
               href={pageInfo.nextPage ?? "#"}
-              class="btn btn-ghost join-item"
+              class="flex items-center justify-center w-8 h-8 border rounded-full text-primary"
             >
-              <Icon id="ChevronRight" size={24} strokeWidth={2} />
+              <Icon id="ChevronRight" size={18} strokeWidth={2} />
             </a>
           </div>
         </div>
