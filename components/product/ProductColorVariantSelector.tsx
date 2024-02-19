@@ -67,7 +67,6 @@ function VariantColorSelector({
             >
               <AvatarColor
                 color={colors}
-                name={cp.name}
                 content={cp.value}
                 variant={cp.url === url
                   ? "active"

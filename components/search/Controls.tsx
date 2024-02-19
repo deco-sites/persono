@@ -1,11 +1,12 @@
 import Button from "$store/components/ui/Button.tsx";
 import Icon from "$store/components/ui/Icon.tsx";
 import Filters from "$store/components/search/Filters.tsx";
-import Sort from "$store/components/search/Sort.tsx";
+import Sort from "$store/islands/Sort.tsx";
 import Drawer from "$store/components/ui/Drawer.tsx";
 import Breadcrumb from "$store/components/ui/Breadcrumb.tsx";
 import { useSignal } from "@preact/signals";
 import type { ProductListingPage } from "apps/commerce/types.ts";
+import { Color } from "deco-sites/persono/loaders/Layouts/Colors.tsx";
 
 export type Props =
   & Pick<
@@ -15,6 +16,7 @@ export type Props =
   & {
     displayFilter?: boolean;
     productsQtt?: number;
+    colors: Color[];
   };
 
 function SearchControls({
@@ -23,36 +25,38 @@ function SearchControls({
   displayFilter,
   sortOptions,
   productsQtt,
+  colors,
 }: Props) {
   const open = useSignal(false);
 
   return (
     <Drawer
       loading="lazy"
+      class="drawer-end"
       open={open.value}
       onClose={() => (open.value = false)}
       aside={
         <>
-          <div class="bg-base-100 flex flex-col h-full divide-y overflow-y-hidden">
+          <div class="bg-base-100 flex flex-col h-full divide-y overflow-y-hidden w-[35rem]">
             <div class="flex justify-between items-center">
               <h1 class="px-4 py-3">
-                <span class="font-medium text-2xl">Filtrar</span>
+                <span class="font-medium text-xl leading-6">Filtrar</span>
               </h1>
               <Button
-                class="btn btn-ghost"
+                class="btn-ghost mr-5"
                 onClick={() => (open.value = false)}
               >
-                <Icon id="XMark" size={24} strokeWidth={2} />
+                <Icon id="XMark" size={20} strokeWidth={2} />
               </Button>
             </div>
             <div class="flex-grow overflow-auto">
-              <Filters filters={filters} />
+              <Filters colors={colors} filters={filters} />
             </div>
           </div>
         </>
       }
     >
-      <div class="flex flex-col justify-between mb-4 p-4 sm:mb-0 sm:p-0 sm:gap-4 sm:flex-row sm:border-b sm:border-base-300">
+      <div class="flex flex-col justify-between py-4 sm:mb-0 sm:p-0 sm:gap-4 sm:flex-row sm:border-b sm:border-base-300">
         <div class="flex flex-row items-center sm:p-0">
           <Breadcrumb
             productsQtt={productsQtt}
@@ -60,9 +64,9 @@ function SearchControls({
           />
         </div>
 
-        <div class="flex flex-row items-center justify-between border-b border-base-200 sm:gap-4 sm:border-none">
+        <div class="flex flex-row items-center justify-between border-b border-base-300 sm:gap-4 sm:border-none">
           <Button
-            class={` text-sm ${
+            class={`px-0 text-sm ${
               displayFilter ? "btn-ghost" : "btn-ghost sm:hidden"
             }`}
             onClick={() => {
