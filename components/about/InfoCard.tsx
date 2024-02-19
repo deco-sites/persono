@@ -37,8 +37,8 @@ function About({ title, description, image }: Props) {
         <Source
           media="(min-width: 768px)"
           src={desktop}
-          width={1400}
-          height={600}
+          width={1440}
+          height={408}
         />
         <img
           src={desktop}

@@ -35,7 +35,7 @@ function ProductInfo({ page, colors, sizes, benefits }: Props) {
   }
 
   const { breadcrumbList, product } = page;
-  const { productID, offers, name = "", gtin, isVariantOf, url } = product;
+  const { offers, name = "", gtin, isVariantOf, url, sku } = product;
   const description = product.description || isVariantOf?.description;
   const {
     price = 0,
@@ -135,7 +135,7 @@ function ProductInfo({ page, colors, sizes, benefits }: Props) {
               />
             </>
           )
-          : <OutOfStock productID={productID} />}
+          : <OutOfStock sku={sku} />}
       </div>
       {/* Benefities */}
       <div class={`${productBenefits?.length == 0 ? "hidden" : ""}`}>
