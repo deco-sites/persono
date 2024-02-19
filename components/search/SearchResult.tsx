@@ -10,8 +10,8 @@ import type {
 } from "apps/commerce/types.ts";
 import { mapProductToAnalyticsItem } from "apps/commerce/utils/productToAnalyticsItem.ts";
 import ProductGallery, { Columns } from "../product/ProductGallery.tsx";
-import { Logo } from "deco-sites/persono/components/ui/Logo.tsx";
 import { Layout as CardLayout } from "deco-sites/persono/components/product/ProductCard/index.tsx";
+import { Color } from "deco-sites/persono/loaders/Layouts/Colors.tsx";
 
 export interface Layout {
   /**
@@ -27,6 +27,7 @@ export interface Layout {
 }
 
 export interface Props {
+  colors: Color[];
   /** @title Integration */
   page: ProductListingPage | null;
   layout?: Layout;
@@ -43,24 +44,27 @@ function NotFound() {
 function Result({
   page,
   layout,
+  colors,
 }: Omit<Props, "page"> & { page: ProductListingPage }) {
   const { products, filters, breadcrumb, pageInfo, sortOptions } = page;
-  const perPage = products.length;
-  const productBannerCategory = products
-    .map((p) => p.category)[0]
-    ?.split(">")[0];
+  const perPage = pageInfo.recordPerPage || products.length;
+  const nextPageWithoutNumber = pageInfo.nextPage?.slice(0, -1);
+  const previousPageWithoutNumber = pageInfo.previousPage?.slice(0, -1);
+
   if (!pageInfo.records) {
     return <NotFound />;
   }
+
+  const id = useId();
+
+  const zeroIndexedOffsetPage = pageInfo.currentPage;
+  const offset = zeroIndexedOffsetPage * perPage;
+
   let tabsQtt = Math.floor(pageInfo.records / perPage);
 
   if (pageInfo.records % perPage !== 0) {
     tabsQtt = tabsQtt + 1;
   }
-
-  const id = useId();
-
-  const offset = pageInfo.currentPage * perPage;
 
   const appliedFilters: FilterToggleValue[] = [];
 
@@ -74,25 +78,26 @@ function Result({
 
   return (
     <>
-      <div class="h-48 w-full bg-base-300 flex items-center justify-between overflow-hidden mb-14">
-        <h2 class="pl-20 text-[3.5rem] text-black">{productBannerCategory}</h2>
-        <div class="pr-14 w-96">
-          <Logo onlySymbol />
-        </div>
-      </div>
-      <div class="px-20">
+      <div class="sm:px-20 px-4">
         <SearchControls
+          colors={colors}
           productsQtt={products.length}
           sortOptions={sortOptions}
           filters={filters}
           breadcrumb={breadcrumb}
           displayFilter={layout?.variant === "drawer"}
         />
-        <div class="flex text-sm gap-3 mt-4 mb-9">
+        <div
+          class={`${
+            appliedFilters.length == 0
+              ? "mb-6"
+              : "flex text-sm gap-3 mb-4 sm:mt-4 sm:mb-9"
+          }`}
+        >
           {appliedFilters.map((af) => (
             <span
               style={{ minWidth: "86px" }}
-              class="py-1 gap-3 bg-black opacity-80 rounded-full px-3 flex justify-between items-center text-white"
+              class="py-1 gap-3 bg-black opacity-80 rounded-full px-3 flex flex-wrap justify-between items-center text-white"
             >
               {af.label}
               <a href={af.url} rel="nofollow">
@@ -105,7 +110,7 @@ function Result({
         <div class="flex flex-row">
           {layout?.variant === "aside" && filters.length > 0 && (
             <aside class="hidden sm:block w-min min-w-[250px]">
-              <Filters filters={filters} />
+              <Filters colors={colors} filters={filters} />
             </aside>
           )}
           <div class="flex-grow" id={id}>
@@ -118,7 +123,7 @@ function Result({
           </div>
         </div>
 
-        <div class="flex justify-center my-4">
+        <div class="flex justify-center mb-6 mt-12">
           <div class="join text-sm flex items-center gap-1">
             <a
               aria-label="previous page link"
@@ -128,20 +133,27 @@ function Result({
             >
               <Icon id="ChevronLeft" size={16} strokeWidth={2} />
             </a>
-            {Array.from({ length: tabsQtt }, (_, index) => (
-              <a
-                aria-label={`${index} page link`}
-                rel={`${index + 1}`}
-                href={`?page=${index + 1}`}
-                class={`flex justify-center items-center w-8 h-8 font-bold ${
-                  pageInfo.currentPage == index
-                    ? "bg-primary text-base-100 rounded-full"
-                    : "text-primary"
-                }`}
-              >
-                {index + 1}
-              </a>
-            ))}
+            {Array.from({ length: tabsQtt }, (_, index) => {
+              const pageNumber = index + 1;
+              return (
+                <a
+                  aria-label={`${index} page link`}
+                  rel={`${pageNumber}`}
+                  href={nextPageWithoutNumber
+                    ? nextPageWithoutNumber + pageNumber
+                    : previousPageWithoutNumber
+                    ? previousPageWithoutNumber + pageNumber
+                    : ""}
+                  class={`flex justify-center items-center w-8 h-8 font-bold ${
+                    pageInfo.currentPage == index
+                      ? "bg-primary text-base-100 rounded-full"
+                      : "text-primary"
+                  }`}
+                >
+                  {pageNumber}
+                </a>
+              );
+            })}
             <a
               aria-label="next page link"
               rel="next"
