@@ -37,7 +37,7 @@ function SearchControls({
       onClose={() => (open.value = false)}
       aside={
         <>
-          <div class="bg-base-100 flex flex-col h-full divide-y overflow-y-hidden w-[35rem]">
+          <div class="bg-base-100 flex flex-col h-full divide-y overflow-y-hidden w-full sm:w-[35rem]">
             <div class="flex justify-between items-center">
               <h1 class="px-4 py-3">
                 <span class="font-medium text-xl leading-6">Filtrar</span>
