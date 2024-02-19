@@ -29,6 +29,11 @@ interface VM {
    * @title Ordernar por
    */
   sort?: "recomendations" | "discount_desc" | "price_asc";
+  /**
+   * @title Quantidade de produtos
+   * @description Quantidade máxima de produtos retornados
+   */
+  take?: number;
 }
 
 interface Filters {
@@ -93,6 +98,7 @@ const loader = async (
           f: vmProps?.searchParams.join("_") ?? undefined,
           page,
           sort: vmProps?.sort,
+          take: vm?.take,
         },
         {
           headers: headers,
@@ -104,14 +110,17 @@ const loader = async (
       return toProductListingPage({
         vmDetails: data as VMDetails,
         url,
-        vmConfig: config,
+        vmConfig: {
+          ...config,
+          vmItemsPerPage: vm?.take ?? config.vmItemsPerPage,
+        },
         imageBaseUrl,
       });
     }
     const redirectPath = data as VMDetailsRedirect;
     const redirectedResponse = await ammoc
       ["GET /api/product-catalog/resolve-route"](
-        { path: redirectPath.location, page },
+        { path: redirectPath.location, page, take: vm?.take },
         {
           headers: headers,
         },
@@ -120,7 +129,10 @@ const loader = async (
     return toProductListingPage({
       vmDetails: await redirectedResponse.json() as VMDetails,
       url,
-      vmConfig: config,
+      vmConfig: {
+        ...config,
+        vmItemsPerPage: vm?.take ?? config.vmItemsPerPage,
+      },
       imageBaseUrl,
     });
   } catch (error) {
