@@ -114,7 +114,7 @@ function Filters({ filters, colors }: Props) {
     <ul class="relative flex flex-col gap-6 p-4">
       <li class="flex flex-col gap-4 mb-20">
         {sortedFilters.filter(isToggle).map((filter) => (
-          <li class="flex flex-col gap-4" >
+          <li class="flex flex-col gap-4">
             <span>{filter.label}</span>
             <FilterValues colors={colors} {...filter} />
           </li>
