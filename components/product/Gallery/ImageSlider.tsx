@@ -67,6 +67,8 @@ export default function GallerySlider(props: SectionProps<typeof loader>) {
                 // Preload LCP image for better web vitals
                 preload={index === 0}
                 loading={index === 0 ? "eager" : "lazy"}
+                id={`slide${index}`}
+                name={`slide${id}`}
               />
             </Slider.Item>
           ))}
@@ -77,22 +79,12 @@ export default function GallerySlider(props: SectionProps<typeof loader>) {
       <ul class="carousel carousel-center gap-2 items-center flex justify-center my-5">
         {images.map((img, index) => (
           <li class="carousel-item">
-            <Slider.Dot index={index}>
-              <input
-                type="radio"
-                name={`carousel-${id}`}
-                id={`slide${index}`}
-                class="carousel-radio hidden visually-hidden"
-                checked={index === 0}
-              />
-              <label
-                for={`slide${index}`}
-                class="w-3 h-3 bg-neutral checkbox-primary rounded-full "
-              >
-                <span class="w-2 h-2 bg-neutral checkbox-primary checked:bg-primary active:bg-primary rounded-full block">
-                </span>
-              </label>
-            </Slider.Dot>
+            <button
+              data-dot={index}
+              aria-label={`go to slider item ${index}`}
+              class="w-2 h-2 checked:bg-primary active:bg-primary rounded-full block disabled:bg-primary bg-neutral "
+            >
+            </button>
           </li>
         ))}
       </ul>

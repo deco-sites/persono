@@ -4,7 +4,6 @@ import OutOfStock from "$store/islands/OutOfStock.tsx";
 import ShippingSimulation from "$store/islands/ShippingSimulation.tsx";
 import { formatPrice } from "$store/sdk/format.ts";
 import { useId } from "$store/sdk/useId.ts";
-import { usePlatform } from "$store/sdk/usePlatform.tsx";
 import { ProductDetailsPage } from "apps/commerce/types.ts";
 import { mapProductToAnalyticsItem } from "apps/commerce/utils/productToAnalyticsItem.ts";
 import ProductSizeSelector from "./ProductSizeVariantSelector.tsx";
@@ -29,7 +28,6 @@ interface Props {
 }
 
 function ProductInfo({ page, colors, sizes, benefits }: Props) {
-  const platform = usePlatform();
   const id = useId();
 
   if (page === null) {
@@ -37,7 +35,7 @@ function ProductInfo({ page, colors, sizes, benefits }: Props) {
   }
 
   const { breadcrumbList, product } = page;
-  const { productID, offers, name = "", gtin, isVariantOf, url } = product;
+  const { offers, name = "", gtin, isVariantOf, url, sku } = product;
   const description = product.description || isVariantOf?.description;
   const {
     price = 0,
@@ -68,6 +66,15 @@ function ProductInfo({ page, colors, sizes, benefits }: Props) {
     hasVariant,
     isVariantOf,
   );
+
+  const skus: string[] = [""];
+  const productsNotAvailable: string[] = [""];
+
+  hasVariant.map((p) => {
+    if (p.offers?.offers[0].availability === "https://schema.org/OutOfStock") {
+      productsNotAvailable.push(p.sku);
+    }
+  });
 
   return (
     <div class="flex flex-col w-full sm:mt-10 px-4 sm:px-0" id={id}>
@@ -103,11 +110,13 @@ function ProductInfo({ page, colors, sizes, benefits }: Props) {
         <ProductSizeSelector
           sizes={sizes}
           url={url}
+          productsNotAvailable={productsNotAvailable}
           possibilities={possibilities}
         />
         <ProductColorSelector
           colors={colors}
           url={url}
+          productsNotAvailable={productsNotAvailable}
           possibilities={possibilities}
         />
       </div>
@@ -126,7 +135,7 @@ function ProductInfo({ page, colors, sizes, benefits }: Props) {
               />
             </>
           )
-          : <OutOfStock productID={productID} />}
+          : <OutOfStock sku={sku} />}
       </div>
       {/* Benefities */}
       <div class={`${productBenefits?.length == 0 ? "hidden" : ""}`}>
