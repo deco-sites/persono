@@ -1,6 +1,9 @@
 import type { ComponentChildren, JSX } from "preact";
 
-function Dot({ index, children }: {
+function Dot({
+  index,
+  children,
+}: {
   index: number;
   children: ComponentChildren;
 }) {
