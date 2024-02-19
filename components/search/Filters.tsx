@@ -112,12 +112,14 @@ function Filters({ filters, colors }: Props) {
 
   return (
     <ul class="relative flex flex-col gap-6 p-4">
-      {sortedFilters.filter(isToggle).map((filter) => (
-        <li class="flex flex-col gap-4">
-          <span>{filter.label}</span>
-          <FilterValues colors={colors} {...filter} />
-        </li>
-      ))}
+      <li class="flex flex-col gap-4 mb-20">
+        {sortedFilters.filter(isToggle).map((filter) => (
+          <li class="flex flex-col gap-4" >
+            <span>{filter.label}</span>
+            <FilterValues colors={colors} {...filter} />
+          </li>
+        ))}
+      </li>
       <div class="flex fixed left-0 bottom-0 w-full px-4 py-2 bg-base-100 justify-between items-center border-t">
         <Button class="btn rounded-full bg-primary w-full text-base-100">
           Aplicar Filtros
