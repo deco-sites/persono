@@ -4,6 +4,7 @@ import type { ImageWidget } from "apps/admin/widgets.ts";
 import { Logo } from "deco-sites/persono/components/ui/Logo.tsx";
 import { ProductListingPage } from "apps/commerce/types.ts";
 import NotFound from "deco-sites/persono/sections/Product/NotFound.tsx";
+import { FnCustomContext } from "deco-sites/persono/packs/types.ts";
 
 /**
  * @titleBy matcher
@@ -43,16 +44,27 @@ export interface Props {
 }
 
 function Banner(props: SectionProps<ReturnType<typeof loader>>) {
-  const { banner, productBannerCategory, bannerDefault } = props;
+  const { banner, productBannerCategory, bannerDefault, device } = props;
 
   if (!banner) {
-    return (
+    return device == "desktop" ? (
       <div
-        style={{ backgroundImage: `url(${bannerDefault?.image.desktop})` }}
-        class="bg-cover h-28 sm:h-48 w-full bg-base-300 flex items-center justify-between overflow-hidden mb-0 sm:mb-14"
+        style={{
+          backgroundImage: `url(${bannerDefault?.image.desktop})`,
+        }}
+        class="h-48 w-full bg-cover bg-base-300 flex items-center justify-between overflow-hidden mb-0 sm:mb-14"
       >
-        <h2 class="sm:pl-20 pl-6 sm:text-[3.5rem] text-2xl sm:font-normal font-medium text-black">
-          {productBannerCategory ?? "Persono"}
+        <h2 class="pl-20 text-[3.5rem] text-black">{productBannerCategory}</h2>
+      </div>
+    ) : (
+      <div
+        style={{
+          backgroundImage: `url(${bannerDefault?.image.mobile})`,
+        }}
+        class="h-28 w-full bg-cover bg-base-300 flex items-center justify-between overflow-hidden mb-0 sm:mb-14"
+      >
+        <h2 class="pl-6 text-2xl font-medium text-black">
+          {productBannerCategory}
         </h2>
       </div>
     );
@@ -60,20 +72,34 @@ function Banner(props: SectionProps<ReturnType<typeof loader>>) {
 
   const { title, image } = banner;
 
-  return (
+  return device == "desktop" ? (
     <div
-      style={{ backgroundImage: `url(${banner?.image.desktop})` }}
-      class="h-48 w-full bg-base-300 flex items-center justify-between overflow-hidden mb-0 sm:mb-14"
+      style={{
+        backgroundImage: `url(${image.desktop ?? bannerDefault.image.desktop})`,
+      }}
+      class="h-48 w-full bg-cover bg-base-300 flex items-center justify-between overflow-hidden mb-0 sm:mb-14"
     >
       <h2 class="pl-20 text-[3.5rem] text-black">
+        {title ?? productBannerCategory}
+      </h2>
+    </div>
+  ) : (
+    <div
+      style={{
+        backgroundImage: `url(${image.mobile ?? bannerDefault.image.mobile})`,
+      }}
+      class="h-28 w-full bg-cover bg-base-300 flex items-center justify-between overflow-hidden mb-0 sm:mb-14"
+    >
+      <h2 class="pl-6 text-2xl font-medium text-black">
         {title ?? productBannerCategory}
       </h2>
     </div>
   );
 }
 
-export const loader = (props: Props, req: Request) => {
+export const loader = (props: Props, req: Request, ctx: FnCustomContext) => {
   const { banners, page, bannerDefault } = props;
+  const device = ctx.device;
 
   if (!page) {
     return {};
@@ -87,7 +113,12 @@ export const loader = (props: Props, req: Request) => {
     new URLPattern({ pathname: matcher }).test(req.url)
   );
 
-  return { banner, productBannerCategory, bannerDefault };
+  return {
+    banner,
+    productBannerCategory,
+    bannerDefault,
+    device: device || "desktop",
+  };
 };
 
 export default Banner;
