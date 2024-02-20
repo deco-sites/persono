@@ -1,4 +1,6 @@
 import { SendEventOnView } from "$store/components/Analytics.tsx";
+import { type SectionProps } from "deco/mod.ts";
+import { FnContext } from "deco/types.ts";
 import Filters from "$store/components/search/Filters.tsx";
 import Icon from "$store/components/ui/Icon.tsx";
 import SearchControls from "$store/islands/SearchControls.tsx";
@@ -12,6 +14,12 @@ import { mapProductToAnalyticsItem } from "apps/commerce/utils/productToAnalytic
 import ProductGallery, { Columns } from "../product/ProductGallery.tsx";
 import { Layout as CardLayout } from "deco-sites/persono/components/product/ProductCard/index.tsx";
 import { Color } from "deco-sites/persono/loaders/Layouts/Colors.tsx";
+
+import {
+  type EditableProps as NotFoundEditableProps,
+  NotFound,
+} from "deco-sites/persono/components/product/NotFound.tsx";
+import { Device } from "deco/utils/device.ts";
 
 export interface Layout {
   /**
@@ -31,27 +39,32 @@ export interface Props {
   /** @title Integration */
   page: ProductListingPage | null;
   layout?: Layout;
-}
-
-function NotFound() {
-  return (
-    <div class="w-full flex justify-center items-center py-10">
-      <span>Not Found!</span>
-    </div>
-  );
+  notFoundSettings?: NotFoundEditableProps;
 }
 
 function Result({
   page,
   layout,
   colors,
-}: Omit<Props, "page"> & { page: ProductListingPage }) {
+  notFoundSettings,
+  device,
+  queryTerm,
+}: Omit<Props, "page"> & { page: ProductListingPage } & {
+  queryTerm: string | null;
+  device: Device;
+}) {
   const { products, filters, breadcrumb, pageInfo, sortOptions } = page;
   const perPage = pageInfo.recordPerPage || products.length;
   const pageRegex = /page=(\d+)/;
 
   if (!pageInfo.records) {
-    return <NotFound />;
+    return (
+      <NotFound
+        notFoundSettings={notFoundSettings}
+        device={device}
+        queryTerm={queryTerm}
+      />
+    );
   }
 
   const id = useId();
@@ -137,11 +150,13 @@ function Result({
                 <a
                   aria-label={`1 page link`}
                   rel={`1`}
-                  href={pageInfo.nextPage
-                    ? pageInfo.nextPage.replace(pageRegex, `page=1`)
-                    : pageInfo.previousPage
-                    ? pageInfo.previousPage.replace(pageRegex, `page=1`)
-                    : ""}
+                  href={
+                    pageInfo.nextPage
+                      ? pageInfo.nextPage.replace(pageRegex, `page=1`)
+                      : pageInfo.previousPage
+                      ? pageInfo.previousPage.replace(pageRegex, `page=1`)
+                      : ""
+                  }
                   className={`flex justify-center items-center w-8 h-8 font-bold ${
                     pageInfo.currentPage === 1
                       ? "bg-primary text-base-100 rounded-full"
@@ -159,32 +174,32 @@ function Result({
 
                 const shouldDisplay = pageNumber >= inicio && pageNumber <= fim;
 
-                return shouldDisplay
-                  ? (
-                    <a
-                      aria-label={`${index} page link`}
-                      rel={`${pageNumber}`}
-                      href={pageInfo.nextPage
+                return shouldDisplay ? (
+                  <a
+                    aria-label={`${index} page link`}
+                    rel={`${pageNumber}`}
+                    href={
+                      pageInfo.nextPage
                         ? pageInfo.nextPage.replace(
-                          pageRegex,
-                          `page=${pageNumber}`,
-                        )
+                            pageRegex,
+                            `page=${pageNumber}`
+                          )
                         : pageInfo.previousPage
                         ? pageInfo.previousPage.replace(
-                          pageRegex,
-                          `page=${pageNumber}`,
-                        )
-                        : ""}
-                      className={`flex justify-center items-center w-8 h-8 font-bold ${
-                        pageInfo.currentPage === index
-                          ? "bg-primary text-base-100 rounded-full"
-                          : "text-primary"
-                      }`}
-                    >
-                      {pageNumber}
-                    </a>
-                  )
-                  : null;
+                            pageRegex,
+                            `page=${pageNumber}`
+                          )
+                        : ""
+                    }
+                    className={`flex justify-center items-center w-8 h-8 font-bold ${
+                      pageInfo.currentPage === index
+                        ? "bg-primary text-base-100 rounded-full"
+                        : "text-primary"
+                    }`}
+                  >
+                    {pageNumber}
+                  </a>
+                ) : null;
               })}
             </div>
 
@@ -195,17 +210,19 @@ function Result({
                   <a
                     aria-label={`${index} page link`}
                     rel={`${pageNumber}`}
-                    href={pageInfo.nextPage
-                      ? pageInfo.nextPage.replace(
-                        pageRegex,
-                        `page=${pageNumber}`,
-                      )
-                      : pageInfo.previousPage
-                      ? pageInfo.previousPage.replace(
-                        pageRegex,
-                        `page=${pageNumber}`,
-                      )
-                      : ""}
+                    href={
+                      pageInfo.nextPage
+                        ? pageInfo.nextPage.replace(
+                            pageRegex,
+                            `page=${pageNumber}`
+                          )
+                        : pageInfo.previousPage
+                        ? pageInfo.previousPage.replace(
+                            pageRegex,
+                            `page=${pageNumber}`
+                          )
+                        : ""
+                    }
                     class={`flex justify-center items-center w-8 h-8 font-bold ${
                       pageInfo.currentPage == index
                         ? "bg-primary text-base-100 rounded-full"
@@ -252,12 +269,39 @@ function Result({
   );
 }
 
-function SearchResult({ page, ...props }: Props) {
-  if (!page) {
-    return <NotFound />;
+function SearchResult({ page, ...props }: SectionProps<typeof loader>) {
+  const { device, queryTerm, notFoundSettings } = props;
+
+  const notHasProducts = !page?.products?.length;
+
+  if (!page || notHasProducts) {
+    return (
+      <NotFound
+        notFoundSettings={notFoundSettings}
+        device={device}
+        queryTerm={queryTerm}
+      />
+    );
   }
 
   return <Result {...props} page={page} />;
 }
+
+export const loader = (props: Props, req: Request, ctx: FnContext) => {
+  const { page } = props;
+
+  const url = new URL(req.url);
+  const queryTerm = url.searchParams.get("q");
+
+  if (!page) {
+    ctx.response.status = 404;
+  }
+
+  return {
+    queryTerm,
+    device: ctx.device,
+    ...props,
+  };
+};
 
 export default SearchResult;
