@@ -7,10 +7,10 @@ interface ContentDevices {
   desktop: number;
 }
 export interface Layout {
-   /**
+  /**
    * @description Using height in pixels
    */
-  containerHeight : ContentDevices;
+  containerHeight: ContentDevices;
 }
 
 interface Props {

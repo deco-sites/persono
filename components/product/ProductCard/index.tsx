@@ -77,14 +77,13 @@ function ProductCard({
 
   const { hasDiscount, hasMultiplePrices } = useMemo(() => {
     const variantPrices = product.isVariantOf?.hasVariant.map(
-      (item) => item.offers?.offers?.[0]?.price
+      (item) => item.offers?.offers?.[0]?.price,
     );
 
-    const hasMultiplePrices =
-      variantPrices &&
+    const hasMultiplePrices = variantPrices &&
       variantPrices?.length > 1 &&
       variantPrices.some(
-        (price) => price !== Math.min(...(variantPrices as number[]))
+        (price) => price !== Math.min(...(variantPrices as number[])),
       );
 
     const discount = Math.floor(((listPrice - price) / listPrice) * 100);
@@ -101,7 +100,7 @@ function ProductCard({
       (item) =>
         item.propertyID === "TAG" &&
         item.identifier === identifier &&
-        item.value === value
+        item.value === value,
     );
 
   const { hasDiscountTag, hasNewsTag } = useMemo(() => {
@@ -118,8 +117,8 @@ function ProductCard({
   }, []);
 
   const hasCustomTag = useMemo(() => {
-    const { description, valueReference } =
-      tagsCapture("CUSTOM", "CUSTOM") ?? {};
+    const { description, valueReference } = tagsCapture("CUSTOM", "CUSTOM") ??
+      {};
 
     if (description && valueReference) {
       return { color: description, label: valueReference };
@@ -179,7 +178,7 @@ function ProductCard({
         />
       </a>
     ),
-    [product]
+    [product],
   );
 }
 
