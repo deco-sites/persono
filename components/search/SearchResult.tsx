@@ -1,5 +1,5 @@
 import { SendEventOnView } from "$store/components/Analytics.tsx";
-import { type SectionProps } from "deco/mod.ts";
+import { Resolved, type SectionProps } from "deco/mod.ts";
 import { FnContext } from "deco/types.ts";
 import Filters from "$store/components/search/Filters.tsx";
 import Icon from "$store/components/ui/Icon.tsx";
@@ -14,6 +14,7 @@ import { mapProductToAnalyticsItem } from "apps/commerce/utils/productToAnalytic
 import ProductGallery, { Columns } from "../product/ProductGallery.tsx";
 import { Layout as CardLayout } from "deco-sites/persono/components/product/ProductCard/index.tsx";
 import { Color } from "deco-sites/persono/loaders/Layouts/Colors.tsx";
+import { VMFilters } from "deco-sites/persono/packs/types.ts";
 
 import {
   type EditableProps as NotFoundEditableProps,
@@ -39,6 +40,7 @@ export interface Props {
   /** @title Integration */
   page: ProductListingPage | null;
   layout?: Layout;
+  VMFilters: Resolved<VMFilters>;
   notFoundSettings?: NotFoundEditableProps;
 }
 

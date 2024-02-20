@@ -1,4 +1,4 @@
-import Avatar from "$store/components/ui/Avatar.tsx";
+import { VMFilters } from "$store/packs/types.ts";
 import { formatPrice } from "$store/sdk/format.ts";
 import type {
   Filter,
@@ -12,6 +12,7 @@ import AvatarColor from "deco-sites/persono/components/ui/AvatarColor.tsx";
 import { Color } from "deco-sites/persono/loaders/Layouts/Colors.tsx";
 import Button from "deco-sites/persono/components/ui/Button.tsx";
 import { Signal, useSignal } from "@preact/signals";
+import { invoke } from "deco-sites/persono/runtime.ts";
 
 interface Props {
   filters: ProductListingPage["filters"];
@@ -41,8 +42,8 @@ function ValueItem({
         value={label}
         onInput={(e) => {
           rawFiltersToApply.value.push({
-            key: category,
-            value: e.currentTarget.value,
+            type: category,
+            slugs: e.currentTarget.value,
           });
         }}
       />
@@ -143,6 +144,22 @@ function Filters({ filters, colors }: Props) {
     return 0;
   });
 
+  async function callUrl({
+    transformedArray,
+  }: {
+    transformedArray: {
+      type: string;
+      slugs: string[];
+    }[];
+  }) {
+    const response = (await invoke({
+     // @ts-ignore: <I will resolve it>
+      key: "deco-sites/persono/loaders/url.ts",
+      props: { transformedArray },
+    })) as VMFilters | null;
+    console.log(response);
+  }
+
   return (
     <ul class="relative flex flex-col gap-6 p-4">
       <li class="flex flex-col gap-4 mb-20">
@@ -162,19 +179,20 @@ function Filters({ filters, colors }: Props) {
           onClick={() => {
             const transformedArray = rawFiltersToApply.value.reduce(
               (result, item) => {
-                const existingItem = result.find((r) => r.key === item.key);
+                const existingItem = result.find((r) => r.type === item.type);
 
                 if (existingItem) {
-                  existingItem.value.push(item.value);
+                  existingItem.slugs.push(item.slugs);
                 } else {
-                  result.push({ key: item.key, value: [item.value] });
+                  result.push({ type: item.type, slugs: [item.slugs] });
                 }
 
                 return result;
               },
-              [] as { key: string; value: string[] }[],
+              [] as { type: string; slugs: string[] }[],
             );
-            console.log(transformedArray);
+            // console.log(transformedArray)
+            callUrl({ transformedArray });
           }}
           class="btn rounded-full bg-primary w-full text-base-100"
         >
