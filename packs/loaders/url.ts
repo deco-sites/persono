@@ -6,6 +6,10 @@ export interface Props {
    * @title Filtros
    */
   filters?: VMFilters[];
+  /**
+   * @title Url de origem
+   */
+  origin?: string;
 }
 
 interface UrlProps {
@@ -27,9 +31,9 @@ const loader = (
   req: Request,
   _ctx: AppContext,
 ): LoaderResult | null => {
-  const { filters } = props;
-  const url = new URL(req.url);
-  const vm = url.pathname.match("\/vm\/([^\/]+)")![1];
+  const { filters, origin } = props;
+  const url = new URL(origin ?? req.url);
+  const vm = url.pathname.match("\/vm\/([^\/]+)");
 
   if (!vm) {
     return null;
@@ -44,7 +48,7 @@ const loader = (
       ],
     };
   }, {
-    path: ["vm", vm],
+    path: ["vm", vm[1]],
     searchParams: [],
   });
 

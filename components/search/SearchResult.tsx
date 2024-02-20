@@ -52,7 +52,7 @@ function Result({
   const previousPageWithoutNumber = pageInfo.previousPage?.slice(0, -1);
 
   if (!pageInfo.records) {
-    return <NotFound />;
+    return <></>;
   }
 
   const id = useId();
@@ -139,11 +139,13 @@ function Result({
                 <a
                   aria-label={`${index} page link`}
                   rel={`${pageNumber}`}
-                  href={nextPageWithoutNumber
-                    ? nextPageWithoutNumber + pageNumber
-                    : previousPageWithoutNumber
-                    ? previousPageWithoutNumber + pageNumber
-                    : ""}
+                  href={
+                    nextPageWithoutNumber
+                      ? nextPageWithoutNumber + pageNumber
+                      : previousPageWithoutNumber
+                      ? previousPageWithoutNumber + pageNumber
+                      : ""
+                  }
                   class={`flex justify-center items-center w-8 h-8 font-bold ${
                     pageInfo.currentPage == index
                       ? "bg-primary text-base-100 rounded-full"
