@@ -32,7 +32,7 @@ const ExternalContent = ({
       scrolling="no"
       src={contentLink}
       frameBorder="0"
-      class="w-full "
+      class="w-full"
     />
   );
 };
