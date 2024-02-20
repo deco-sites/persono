@@ -11,6 +11,7 @@ import AvatarSize from "deco-sites/persono/components/ui/AvatarSize.tsx";
 import AvatarColor from "deco-sites/persono/components/ui/AvatarColor.tsx";
 import { Color } from "deco-sites/persono/loaders/Layouts/Colors.tsx";
 import Button from "deco-sites/persono/components/ui/Button.tsx";
+import { Signal, useSignal } from "@preact/signals";
 
 interface Props {
   filters: ProductListingPage["filters"];
@@ -20,13 +21,34 @@ interface Props {
 const isToggle = (filter: Filter): filter is FilterToggle =>
   filter["@type"] === "FilterToggle";
 
-function ValueItem({ url, selected, label, quantity }: FilterToggleValue) {
+function ValueItem({
+  url,
+  selected,
+  label,
+  quantity,
+  rawFiltersToApply,
+  category,
+}: FilterToggleValue & {
+  rawFiltersToApply: Signal<Record<string, string>[]>;
+  category: string;
+}) {
   return (
-    <a href={url} rel="nofollow" class="flex items-center gap-2">
-      <div aria-checked={selected} class="checkbox" />
+    <div class="flex items-center gap-2">
+      <input
+        aria-checked={selected}
+        class="checkbox"
+        type="checkbox"
+        value={label}
+        onInput={(e) => {
+          rawFiltersToApply.value.push({
+            key: category,
+            value: e.currentTarget.value,
+          });
+        }}
+      />
       <span class="text-sm">{label}</span>
       {quantity > 0 && <span class="text-sm text-base-300">({quantity})</span>}
-    </a>
+    </div>
   );
 }
 
@@ -34,7 +56,11 @@ function FilterValues({
   key,
   values,
   colors,
-}: FilterToggle & { colors: Color[] }) {
+  rawFiltersToApply,
+}: FilterToggle & {
+  colors: Color[];
+  rawFiltersToApply: Signal<Record<string, string>[]>;
+}) {
   const flexDirection =
     key.toLowerCase().endsWith("size") || key === "baseColor"
       ? "flex-row"
@@ -75,6 +101,8 @@ function FilterValues({
           return (
             range && (
               <ValueItem
+                category={key}
+                rawFiltersToApply={rawFiltersToApply}
                 {...item}
                 label={`${formatPrice(range.from)} - ${formatPrice(range.to)}`}
               />
@@ -82,13 +110,20 @@ function FilterValues({
           );
         }
 
-        return <ValueItem {...item} />;
+        return (
+          <ValueItem
+            category={key}
+            rawFiltersToApply={rawFiltersToApply}
+            {...item}
+          />
+        );
       })}
     </ul>
   );
 }
 
 function Filters({ filters, colors }: Props) {
+  const rawFiltersToApply = useSignal<Record<string, string>[]>([{}]);
   const sortedFilters = filters.sort((a, b) => {
     const aEndsWithSize = a.key.toLowerCase().endsWith("size");
     const bEndsWithSize = b.key.toLowerCase().endsWith("size");
@@ -108,20 +143,41 @@ function Filters({ filters, colors }: Props) {
     return 0;
   });
 
-  console.log(sortedFilters);
-
   return (
     <ul class="relative flex flex-col gap-6 p-4">
       <li class="flex flex-col gap-4 mb-20">
         {sortedFilters.filter(isToggle).map((filter) => (
           <li class="flex flex-col gap-4">
             <span>{filter.label}</span>
-            <FilterValues colors={colors} {...filter} />
+            <FilterValues
+              rawFiltersToApply={rawFiltersToApply}
+              colors={colors}
+              {...filter}
+            />
           </li>
         ))}
       </li>
       <div class="flex fixed left-0 bottom-0 w-full px-4 py-2 bg-base-100 justify-between items-center border-t">
-        <Button class="btn rounded-full bg-primary w-full text-base-100">
+        <Button
+          onClick={() => {
+            const transformedArray = rawFiltersToApply.value.reduce(
+              (result, item) => {
+                const existingItem = result.find((r) => r.key === item.key);
+
+                if (existingItem) {
+                  existingItem.value.push(item.value);
+                } else {
+                  result.push({ key: item.key, value: [item.value] });
+                }
+
+                return result;
+              },
+              [] as { key: string; value: string[] }[],
+            );
+            console.log(transformedArray);
+          }}
+          class="btn rounded-full bg-primary w-full text-base-100"
+        >
           Aplicar Filtros
         </Button>
       </div>
