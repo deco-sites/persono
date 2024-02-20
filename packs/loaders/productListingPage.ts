@@ -1,6 +1,6 @@
 import { AppContext } from "$store/apps/site.ts";
 import type { ProductListingPage } from "apps/commerce/types.ts";
-import { VMDetails, VMDetailsRedirect } from "$store/packs/types.ts";
+import { VMDetails, VMDetailsRedirect, VMFilters } from "$store/packs/types.ts";
 import { getHeaders } from "$store/packs/utils/headers.ts";
 import { toProductListingPage } from "$store/packs/utils/transform.ts";
 import { typeChecker } from "$store/packs/utils/utils.ts";
@@ -24,7 +24,7 @@ interface VM {
    * @title Filtros
    * @description Filtros da VM
    */
-  filters?: Filters[];
+  filters?: VMFilters[];
   /**
    * @title Ordernar por
    */
@@ -34,18 +34,6 @@ interface VM {
    * @description Quantidade máxima de produtos retornados
    */
   take?: number;
-}
-
-interface Filters {
-  /**
-   * @title Tipo
-   * @example category
-   */
-  type: string;
-  /**
-   * @title Slugs do filtro
-   */
-  slugs: string[];
 }
 
 interface VmProps {

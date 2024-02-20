@@ -21,7 +21,8 @@ import * as $$$15 from "./loaders/product/productListingPage.ts";
 import * as $$$16 from "./loaders/product/productSearchPage.ts";
 import * as $$$17 from "./loaders/shippingSimulation.ts";
 import * as $$$18 from "./loaders/suggestions.ts";
-import * as $$$19 from "./loaders/userInfo.ts";
+import * as $$$19 from "./loaders/url.ts";
+import * as $$$20 from "./loaders/userInfo.ts";
 import * as $$$$$$0 from "./sections/About/InfoCard.tsx";
 import * as $$$$$$1 from "./sections/About/ProductCharacteristics.tsx";
 import * as $$$$$$2 from "./sections/Animation/Animation.tsx";
@@ -85,7 +86,8 @@ const manifest = {
     "deco-sites/persono/loaders/product/productSearchPage.ts": $$$16,
     "deco-sites/persono/loaders/shippingSimulation.ts": $$$17,
     "deco-sites/persono/loaders/suggestions.ts": $$$18,
-    "deco-sites/persono/loaders/userInfo.ts": $$$19,
+    "deco-sites/persono/loaders/url.ts": $$$19,
+    "deco-sites/persono/loaders/userInfo.ts": $$$20,
   },
   "sections": {
     "deco-sites/persono/sections/About/InfoCard.tsx": $$$$$$0,
