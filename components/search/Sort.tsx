@@ -68,7 +68,7 @@ function SortComponent({ sortOptions, sort }: SortProps) {
             value,
             label:
               portugueseMappings[label as keyof typeof portugueseMappings] ??
-              label,
+                label,
           }))
           .filter(({ label }) => label)
           .map(({ value, label }) => {

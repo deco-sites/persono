@@ -47,54 +47,62 @@ function Banner(props: SectionProps<ReturnType<typeof loader>>) {
   const { banner, productBannerCategory, bannerDefault, device } = props;
 
   if (!banner) {
-    return device == "desktop" ? (
-      <div
-        style={{
-          backgroundImage: `url(${bannerDefault?.image.desktop})`,
-        }}
-        class="h-48 w-full bg-cover bg-base-300 flex items-center justify-between overflow-hidden mb-0 sm:mb-14"
-      >
-        <h2 class="pl-20 text-[3.5rem] text-black">{productBannerCategory}</h2>
-      </div>
-    ) : (
-      <div
-        style={{
-          backgroundImage: `url(${bannerDefault?.image.mobile})`,
-        }}
-        class="h-28 w-full bg-cover bg-base-300 flex items-center justify-between overflow-hidden mb-0 sm:mb-14"
-      >
-        <h2 class="pl-6 text-2xl font-medium text-black">
-          {productBannerCategory}
-        </h2>
-      </div>
-    );
+    return device == "desktop"
+      ? (
+        <div
+          style={{
+            backgroundImage: `url(${bannerDefault?.image.desktop})`,
+          }}
+          class="h-48 w-full bg-cover bg-base-300 flex items-center justify-between overflow-hidden mb-0 sm:mb-14"
+        >
+          <h2 class="pl-20 text-[3.5rem] text-black">
+            {productBannerCategory}
+          </h2>
+        </div>
+      )
+      : (
+        <div
+          style={{
+            backgroundImage: `url(${bannerDefault?.image.mobile})`,
+          }}
+          class="h-28 w-full bg-cover bg-base-300 flex items-center justify-between overflow-hidden mb-0 sm:mb-14"
+        >
+          <h2 class="pl-6 text-2xl font-medium text-black">
+            {productBannerCategory}
+          </h2>
+        </div>
+      );
   }
 
   const { title, image } = banner;
 
-  return device == "desktop" ? (
-    <div
-      style={{
-        backgroundImage: `url(${image.desktop ?? bannerDefault.image.desktop})`,
-      }}
-      class="h-48 w-full bg-cover bg-base-300 flex items-center justify-between overflow-hidden mb-0 sm:mb-14"
-    >
-      <h2 class="pl-20 text-[3.5rem] text-black">
-        {title ?? productBannerCategory}
-      </h2>
-    </div>
-  ) : (
-    <div
-      style={{
-        backgroundImage: `url(${image.mobile ?? bannerDefault.image.mobile})`,
-      }}
-      class="h-28 w-full bg-cover bg-base-300 flex items-center justify-between overflow-hidden mb-0 sm:mb-14"
-    >
-      <h2 class="pl-6 text-2xl font-medium text-black">
-        {title ?? productBannerCategory}
-      </h2>
-    </div>
-  );
+  return device == "desktop"
+    ? (
+      <div
+        style={{
+          backgroundImage: `url(${
+            image.desktop ?? bannerDefault.image.desktop
+          })`,
+        }}
+        class="h-48 w-full bg-cover bg-base-300 flex items-center justify-between overflow-hidden mb-0 sm:mb-14"
+      >
+        <h2 class="pl-20 text-[3.5rem] text-black">
+          {title ?? productBannerCategory}
+        </h2>
+      </div>
+    )
+    : (
+      <div
+        style={{
+          backgroundImage: `url(${image.mobile ?? bannerDefault.image.mobile})`,
+        }}
+        class="h-28 w-full bg-cover bg-base-300 flex items-center justify-between overflow-hidden mb-0 sm:mb-14"
+      >
+        <h2 class="pl-6 text-2xl font-medium text-black">
+          {title ?? productBannerCategory}
+        </h2>
+      </div>
+    );
 }
 
 export const loader = (props: Props, req: Request, ctx: FnCustomContext) => {
