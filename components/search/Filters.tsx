@@ -153,7 +153,7 @@ function Filters({ filters, colors }: Props) {
     }[];
   }) {
     const response = (await invoke({
-     // @ts-ignore: <I will resolve it>
+      // @ts-ignore: <I will resolve it>
       key: "deco-sites/persono/loaders/url.ts",
       props: { transformedArray },
     })) as VMFilters | null;
