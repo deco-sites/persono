@@ -58,7 +58,7 @@ function deleteFilter({
 }) {
   appliedFilters.map((p) => console.log(p.filters.value));
   const rawNewAppliedFilters = appliedFilters.filter(
-    (f) => f.filters.value !== clickedFilter.filters.value
+    (f) => f.filters.value !== clickedFilter.filters.value,
   );
 
   const newAppliedFilters = rawNewAppliedFilters.reduce(
@@ -73,7 +73,7 @@ function deleteFilter({
 
       return acc;
     },
-    []
+    [],
   );
 
   callUrl({ transformedArray: newAppliedFilters });

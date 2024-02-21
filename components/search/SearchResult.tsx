@@ -135,13 +135,11 @@ function Result({
                 <a
                   aria-label={`1 page link`}
                   rel={`1`}
-                  href={
-                    pageInfo.nextPage
-                      ? pageInfo.nextPage.replace(pageRegex, `page=1`)
-                      : pageInfo.previousPage
-                      ? pageInfo.previousPage.replace(pageRegex, `page=1`)
-                      : ""
-                  }
+                  href={pageInfo.nextPage
+                    ? pageInfo.nextPage.replace(pageRegex, `page=1`)
+                    : pageInfo.previousPage
+                    ? pageInfo.previousPage.replace(pageRegex, `page=1`)
+                    : ""}
                   className={`flex justify-center items-center w-8 h-8 font-bold ${
                     pageInfo.currentPage === 1
                       ? "bg-primary text-base-100 rounded-full"
@@ -159,32 +157,32 @@ function Result({
 
                 const shouldDisplay = pageNumber >= inicio && pageNumber <= fim;
 
-                return shouldDisplay ? (
-                  <a
-                    aria-label={`${index} page link`}
-                    rel={`${pageNumber}`}
-                    href={
-                      pageInfo.nextPage
+                return shouldDisplay
+                  ? (
+                    <a
+                      aria-label={`${index} page link`}
+                      rel={`${pageNumber}`}
+                      href={pageInfo.nextPage
                         ? pageInfo.nextPage.replace(
-                            pageRegex,
-                            `page=${pageNumber}`
-                          )
+                          pageRegex,
+                          `page=${pageNumber}`,
+                        )
                         : pageInfo.previousPage
                         ? pageInfo.previousPage.replace(
-                            pageRegex,
-                            `page=${pageNumber}`
-                          )
-                        : ""
-                    }
-                    className={`flex justify-center items-center w-8 h-8 font-bold ${
-                      pageInfo.currentPage === index
-                        ? "bg-primary text-base-100 rounded-full"
-                        : "text-primary"
-                    }`}
-                  >
-                    {pageNumber}
-                  </a>
-                ) : null;
+                          pageRegex,
+                          `page=${pageNumber}`,
+                        )
+                        : ""}
+                      className={`flex justify-center items-center w-8 h-8 font-bold ${
+                        pageInfo.currentPage === index
+                          ? "bg-primary text-base-100 rounded-full"
+                          : "text-primary"
+                      }`}
+                    >
+                      {pageNumber}
+                    </a>
+                  )
+                  : null;
               })}
             </div>
 
@@ -195,19 +193,17 @@ function Result({
                   <a
                     aria-label={`${index} page link`}
                     rel={`${pageNumber}`}
-                    href={
-                      pageInfo.nextPage
-                        ? pageInfo.nextPage.replace(
-                            pageRegex,
-                            `page=${pageNumber}`
-                          )
-                        : pageInfo.previousPage
-                        ? pageInfo.previousPage.replace(
-                            pageRegex,
-                            `page=${pageNumber}`
-                          )
-                        : ""
-                    }
+                    href={pageInfo.nextPage
+                      ? pageInfo.nextPage.replace(
+                        pageRegex,
+                        `page=${pageNumber}`,
+                      )
+                      : pageInfo.previousPage
+                      ? pageInfo.previousPage.replace(
+                        pageRegex,
+                        `page=${pageNumber}`,
+                      )
+                      : ""}
                     class={`flex justify-center items-center w-8 h-8 font-bold ${
                       pageInfo.currentPage == index
                         ? "bg-primary text-base-100 rounded-full"

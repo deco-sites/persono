@@ -37,7 +37,7 @@ const toggleSelectFilter = ({
   slug: string;
 }) => {
   const filterIndex = rawFiltersToApply.value.findIndex(
-    (filter) => filter.type === category && filter.slugs === slug
+    (filter) => filter.type === category && filter.slugs === slug,
   );
 
   if (filterIndex !== -1) {
@@ -210,7 +210,7 @@ function Filters({ filters, colors }: Props) {
     }
   });
 
- async function callUrl({
+  async function callUrl({
     transformedArray,
   }: {
     transformedArray: {
