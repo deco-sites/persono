@@ -35,8 +35,6 @@ export async function getProductItems(
     return [];
   }
 
-  console.log(productItems)
-
   const productItemsResult = productItems.map((item: ProductItem) =>
     toProductItems(item, config, url, imageBaseUrl)
   );

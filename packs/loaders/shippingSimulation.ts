@@ -4,14 +4,14 @@ import { getHeaders } from "$store/packs/utils/headers.ts";
 
 export interface Props {
   /**
- * @title Postal code
- * @description Código postal para cálculo de frete
- */
+   * @title Postal code
+   * @description Código postal para cálculo de frete
+   */
   postalCode: string;
   /**
- * @title Sku
- * @description SKU do produto para cálculo de frete
- */
+   * @title Sku
+   * @description SKU do produto para cálculo de frete
+   */
   sku: string;
 }
 

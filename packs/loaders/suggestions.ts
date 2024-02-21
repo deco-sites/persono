@@ -5,12 +5,12 @@ import { AutoComplete } from "$store/packs/types.ts";
 import { getProductItems } from "../utils/getProductItems.ts";
 
 export interface Props {
-    /**
+  /**
    * @title query
    * @description termo a ser pesquisado
    */
   query: string;
-    /**
+  /**
    * @title count
    * @description Quantidade de itens a ser retornada
    */

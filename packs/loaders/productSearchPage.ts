@@ -3,16 +3,16 @@ import type { Product, ProductListingPage } from "apps/commerce/types.ts";
 import { getProductItems } from "../utils/getProductItems.ts";
 
 export interface Props {
-    /**
+  /**
    * @title query
    * @description termo a ser pesquisado
    */
   query: string;
-   /**
+  /**
    * @title page
    * @description Número da página a ser exibida
-   */  page: number;
-    /**
+   */ page: number;
+  /**
    * @title limit
    * @description Número de itens por página
    */
