@@ -5,9 +5,22 @@ import { AutoComplete } from "$store/packs/types.ts";
 import { getProductItems } from "../utils/getProductItems.ts";
 
 export interface Props {
+  /**
+   * @title Termo
+   * @description termo a ser pesquisado
+   */
   query: string;
+  /**
+   * @title Quantidade de produtos
+   * @description Quantidade de itens a ser retornada
+   */
   count: number;
 }
+
+/**
+ * @title Ammo Varejo - Sugestão de busca
+ * @description Obtém as sugestões de busca a partir do termo pesquisado.
+ */
 const loader = async (
   props: Props,
   req: Request,
