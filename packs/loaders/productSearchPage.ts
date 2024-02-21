@@ -3,9 +3,24 @@ import type { Product, ProductListingPage } from "apps/commerce/types.ts";
 import { getProductItems } from "../utils/getProductItems.ts";
 
 export interface Props {
+    /**
+   * @title query
+   * @description termo a ser pesquisado
+   */
   query: string;
-  page: number;
+   /**
+   * @title page
+   * @description Número da página a ser exibida
+   */  page: number;
+    /**
+   * @title limit
+   * @description Número de itens por página
+   */
   limit: number;
+  /**
+   * @title Forçar paginação
+   * @description Aplica a paginação estatica na página
+   */
   forcePagination?: boolean;
 }
 
@@ -31,6 +46,10 @@ const searchArgsOf = (props: Props, url: URL) => {
   };
 };
 
+/**
+ * @title Ammo Varejo - Página de busca
+ * @description Resultado da busca.
+ */
 const loader = async (
   props: Props,
   req: Request,
@@ -64,6 +83,7 @@ const loader = async (
     if (hasPreviousPage) {
       previousPage.set("page", (page - 1).toString());
     }
+
     return {
       "@type": "ProductListingPage",
       breadcrumb: {
