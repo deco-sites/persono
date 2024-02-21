@@ -56,19 +56,18 @@ function ProductShelf({
         )}
 
       <div id={id} class="container grid grid-cols-[48px_1fr_48px] pb-28">
-          {products?.map((product, index) => (
-              <ProductCard
-                layout={cardLayout}
-                itemListName={itemListName}
-                product={product}
-                index={index}
-              />
-          ))}
+        {products?.map((product, index) => (
+          <ProductCard
+            layout={cardLayout}
+            itemListName={itemListName}
+            product={product}
+            index={index}
+          />
+        ))}
 
         <div class="hidden relative sm:block z-10 col-start-1 row-start-3">
         </div>
         <div class="hidden relative sm:block z-10 col-start-3 row-start-3">
-        
         </div>
       </div>
     </div>
