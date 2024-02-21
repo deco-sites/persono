@@ -30,9 +30,9 @@ const ExternalContent = ({
     <iframe
       height={heightSetting}
       scrolling="no"
+      width="100%"
       src={contentLink}
       frameBorder="0"
-      class="w-full"
     />
   );
 };
