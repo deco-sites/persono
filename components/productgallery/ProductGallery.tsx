@@ -20,7 +20,7 @@ export interface Props {
   hasNotFoundPage?: boolean;
 }
 
-function ProductShelf({
+function ProductGallery({
   products,
   desktopTitle,
   mobileTitle,
@@ -94,4 +94,4 @@ const HeaderWithArrows = ({
   );
 };
 
-export default ProductShelf;
+export default ProductGallery;
