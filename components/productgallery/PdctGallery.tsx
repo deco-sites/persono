@@ -4,7 +4,6 @@ import ProductCard, {
   Layout as CardLayout,
 } from "deco-sites/persono/components/product/ProductCard/index.tsx";
 import Header from "$store/components/ui/SectionHeader.tsx";
-
 import { SectionProps } from "deco/mod.ts";
 import { FnCustomContext } from "deco-sites/persono/packs/types.ts";
 
@@ -20,7 +19,7 @@ export interface Props {
   hasNotFoundPage?: boolean;
 }
 
-function ProductGallery({
+function PdctGallery({
   products,
   desktopTitle,
   mobileTitle,
@@ -64,11 +63,6 @@ function ProductGallery({
             index={index}
           />
         ))}
-
-        <div class="hidden relative sm:block z-10 col-start-1 row-start-3">
-        </div>
-        <div class="hidden relative sm:block z-10 col-start-3 row-start-3">
-        </div>
       </div>
     </div>
   );
@@ -94,4 +88,4 @@ const HeaderWithArrows = ({
   );
 };
 
-export default ProductGallery;
+export default PdctGallery;
