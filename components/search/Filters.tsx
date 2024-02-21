@@ -37,7 +37,7 @@ const toggleSelectFilter = ({
   slug: string;
 }) => {
   const filterIndex = rawFiltersToApply.value.findIndex(
-    (filter) => filter.type === category && filter.slugs === slug,
+    (filter) => filter.type === category && filter.slugs === slug
   );
 
   if (filterIndex !== -1) {
@@ -64,7 +64,6 @@ function ValueItem({
   rawFiltersToApply: Signal<Record<string, string>[]>;
   category: string;
 }) {
-  console.log(selected, label, value);
   return (
     <div class="flex items-center gap-2">
       <input
@@ -72,6 +71,8 @@ function ValueItem({
         type="checkbox"
         value={label}
         checked={selected}
+        id={value}
+        class="cursor-pointer"
         onInput={(e) => {
           toggleSelectFilter({
             category,
@@ -80,7 +81,9 @@ function ValueItem({
           });
         }}
       />
-      <span class="text-sm">{label}</span>
+      <label for={value} class="text-sm cursor-pointer">
+        {label}
+      </label>
       {quantity > 0 && <span class="text-sm text-base-300">({quantity})</span>}
     </div>
   );
@@ -139,7 +142,6 @@ function FilterValues({
                   slug: item.value,
                 });
                 toggleSizeSelected.value = !toggleSizeSelected.value;
-                console.log(toggleSizeSelected.value);
               }}
             >
               <AvatarSize
@@ -208,7 +210,7 @@ function Filters({ filters, colors }: Props) {
     }
   });
 
-  async function callUrl({
+ async function callUrl({
     transformedArray,
   }: {
     transformedArray: {
@@ -263,7 +265,7 @@ function Filters({ filters, colors }: Props) {
               .filter((item) => item.slugs.length > 0);
             callUrl({ transformedArray });
           }}
-          class="btn rounded-full bg-primary w-full text-base-100"
+          class="rounded-full bg-primary w-full text-base-100"
         >
           Aplicar Filtros
         </Button>

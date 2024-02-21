@@ -21,6 +21,7 @@ import {
   NotFound,
 } from "deco-sites/persono/components/product/NotFound.tsx";
 import { Device } from "deco/utils/device.ts";
+import ActiveFilterTag from "deco-sites/persono/islands/ActiveFIlterTag.tsx";
 
 export interface Layout {
   /**
@@ -80,12 +81,12 @@ function Result({
     tabsQtt = tabsQtt + 1;
   }
 
-  const appliedFilters: FilterToggleValue[] = [];
+  const appliedFilters: { filters: FilterToggleValue; type: string }[] = [];
 
   filters.map((f) => {
     (f.values as FilterToggleValue[]).map((v) => {
       if (v.selected == true) {
-        appliedFilters.push(v);
+        appliedFilters.push({ filters: v, type: f.key });
       }
     }) as unknown as FilterToggleValue[];
   });
@@ -101,25 +102,7 @@ function Result({
           breadcrumb={breadcrumb}
           displayFilter={layout?.variant === "drawer"}
         />
-        <div
-          class={`${
-            appliedFilters.length == 0
-              ? "mb-6"
-              : "flex text-sm flex-wrap gap-3 mb-4 sm:mt-4 sm:mb-9"
-          }`}
-        >
-          {appliedFilters.map((af) => (
-            <span
-              style={{ minWidth: "86px" }}
-              class="py-1 gap-3 bg-black opacity-80 rounded-full px-3 flex flex-wrap justify-between items-center text-white"
-            >
-              {af.label}
-              <a href={af.url} rel="nofollow">
-                <Icon id="XMark" size={16} strokeWidth={2}></Icon>
-              </a>
-            </span>
-          ))}
-        </div>
+        <ActiveFilterTag appliedFilters={appliedFilters} />
 
         <div class="flex flex-row">
           {layout?.variant === "aside" && filters.length > 0 && (
@@ -152,11 +135,13 @@ function Result({
                 <a
                   aria-label={`1 page link`}
                   rel={`1`}
-                  href={pageInfo.nextPage
-                    ? pageInfo.nextPage.replace(pageRegex, `page=1`)
-                    : pageInfo.previousPage
-                    ? pageInfo.previousPage.replace(pageRegex, `page=1`)
-                    : ""}
+                  href={
+                    pageInfo.nextPage
+                      ? pageInfo.nextPage.replace(pageRegex, `page=1`)
+                      : pageInfo.previousPage
+                      ? pageInfo.previousPage.replace(pageRegex, `page=1`)
+                      : ""
+                  }
                   className={`flex justify-center items-center w-8 h-8 font-bold ${
                     pageInfo.currentPage === 1
                       ? "bg-primary text-base-100 rounded-full"
@@ -174,32 +159,32 @@ function Result({
 
                 const shouldDisplay = pageNumber >= inicio && pageNumber <= fim;
 
-                return shouldDisplay
-                  ? (
-                    <a
-                      aria-label={`${index} page link`}
-                      rel={`${pageNumber}`}
-                      href={pageInfo.nextPage
+                return shouldDisplay ? (
+                  <a
+                    aria-label={`${index} page link`}
+                    rel={`${pageNumber}`}
+                    href={
+                      pageInfo.nextPage
                         ? pageInfo.nextPage.replace(
-                          pageRegex,
-                          `page=${pageNumber}`,
-                        )
+                            pageRegex,
+                            `page=${pageNumber}`
+                          )
                         : pageInfo.previousPage
                         ? pageInfo.previousPage.replace(
-                          pageRegex,
-                          `page=${pageNumber}`,
-                        )
-                        : ""}
-                      className={`flex justify-center items-center w-8 h-8 font-bold ${
-                        pageInfo.currentPage === index
-                          ? "bg-primary text-base-100 rounded-full"
-                          : "text-primary"
-                      }`}
-                    >
-                      {pageNumber}
-                    </a>
-                  )
-                  : null;
+                            pageRegex,
+                            `page=${pageNumber}`
+                          )
+                        : ""
+                    }
+                    className={`flex justify-center items-center w-8 h-8 font-bold ${
+                      pageInfo.currentPage === index
+                        ? "bg-primary text-base-100 rounded-full"
+                        : "text-primary"
+                    }`}
+                  >
+                    {pageNumber}
+                  </a>
+                ) : null;
               })}
             </div>
 
@@ -210,17 +195,19 @@ function Result({
                   <a
                     aria-label={`${index} page link`}
                     rel={`${pageNumber}`}
-                    href={pageInfo.nextPage
-                      ? pageInfo.nextPage.replace(
-                        pageRegex,
-                        `page=${pageNumber}`,
-                      )
-                      : pageInfo.previousPage
-                      ? pageInfo.previousPage.replace(
-                        pageRegex,
-                        `page=${pageNumber}`,
-                      )
-                      : ""}
+                    href={
+                      pageInfo.nextPage
+                        ? pageInfo.nextPage.replace(
+                            pageRegex,
+                            `page=${pageNumber}`
+                          )
+                        : pageInfo.previousPage
+                        ? pageInfo.previousPage.replace(
+                            pageRegex,
+                            `page=${pageNumber}`
+                          )
+                        : ""
+                    }
                     class={`flex justify-center items-center w-8 h-8 font-bold ${
                       pageInfo.currentPage == index
                         ? "bg-primary text-base-100 rounded-full"

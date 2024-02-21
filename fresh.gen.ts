@@ -4,6 +4,7 @@
 
 import * as $_app from "./routes/_app.tsx";
 import * as $live_invoke_middleware from "./routes/live/invoke/_middleware.tsx";
+import * as $ActiveFIlterTag from "./islands/ActiveFIlterTag.tsx";
 import * as $AddToCartButton_CartButton from "./islands/AddToCartButton/CartButton.tsx";
 import * as $Header_Buttons from "./islands/Header/Buttons.tsx";
 import * as $Header_Drawers from "./islands/Header/Drawers.tsx";
@@ -24,6 +25,7 @@ const manifest = {
     "./routes/live/invoke/_middleware.tsx": $live_invoke_middleware,
   },
   islands: {
+    "./islands/ActiveFIlterTag.tsx": $ActiveFIlterTag,
     "./islands/AddToCartButton/CartButton.tsx": $AddToCartButton_CartButton,
     "./islands/Header/Buttons.tsx": $Header_Buttons,
     "./islands/Header/Drawers.tsx": $Header_Drawers,
