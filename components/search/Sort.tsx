@@ -11,16 +11,16 @@ const useSort = () =>
   useMemo(() => {
     if (IS_BROWSER) {
       const urlSearchParams = new URLSearchParams(window.location.search);
-      return urlSearchParams.get(SORT_QUERY_PARAM) ?? "aaa";
+      return urlSearchParams.get(SORT_QUERY_PARAM) ?? "";
     }
     return "";
   }, []);
 
 // TODO: Replace with "search utils"
-const applySort = (e: JSX.TargetedEvent<HTMLSelectElement, Event>) => {
+const applySort = ({ value }: { value: string }) => {
   const urlSearchParams = new URLSearchParams(window.location.search);
 
-  urlSearchParams.set(SORT_QUERY_PARAM, e.currentTarget.value);
+  urlSearchParams.set(SORT_QUERY_PARAM, value);
   window.location.search = urlSearchParams.toString();
 };
 
@@ -54,12 +54,7 @@ function SortComponent({ sortOptions, sort }: SortProps) {
     <details class="dropdown">
       <summary class="flex items-center justify-between btn shadow-none bg-transparent border-none hover:bg-transparent">
         {selectedItem ?? "Ordenar"}{" "}
-        <Icon
-          id="ChevronDown"
-          width={22}
-          height={22}
-          strokeWidth={1}
-        />
+        <Icon id="ChevronDown" width={22} height={22} strokeWidth={1} />
       </summary>
       <ul
         class="absolute flex flex-col z-10 mt-1 right-0 rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
@@ -78,18 +73,20 @@ function SortComponent({ sortOptions, sort }: SortProps) {
           .filter(({ label }) => label)
           .map(({ value, label }) => {
             return (
-              <a
-                href={`?sort=${value}`}
+              <button
                 key={value}
-                class="hover:bg-base-200 py-2 px-4 "
+                class="hover:bg-base-200 text-start py-2 px-4 "
                 id={`listbox-option-${value}`}
                 value={value}
                 selected={value === sort}
                 role="option"
-                onClick={() => (selectedItem.value = label)}
+                onClick={() => {
+                  selectedItem.value = label;
+                  applySort({ value });
+                }}
               >
                 {label}
-              </a>
+              </button>
             );
           })}
       </ul>

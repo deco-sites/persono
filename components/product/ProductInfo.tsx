@@ -67,7 +67,6 @@ function ProductInfo({ page, colors, sizes, benefits }: Props) {
     isVariantOf,
   );
 
-  const skus: string[] = [""];
   const productsNotAvailable: string[] = [""];
 
   hasVariant.map((p) => {

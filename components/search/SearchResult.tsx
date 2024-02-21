@@ -1,5 +1,5 @@
 import { SendEventOnView } from "$store/components/Analytics.tsx";
-import { type SectionProps } from "deco/mod.ts";
+import { Resolved, type SectionProps } from "deco/mod.ts";
 import { FnContext } from "deco/types.ts";
 import Filters from "$store/components/search/Filters.tsx";
 import Icon from "$store/components/ui/Icon.tsx";
@@ -14,11 +14,14 @@ import { mapProductToAnalyticsItem } from "apps/commerce/utils/productToAnalytic
 import ProductGallery, { Columns } from "../product/ProductGallery.tsx";
 import { Layout as CardLayout } from "deco-sites/persono/components/product/ProductCard/index.tsx";
 import { Color } from "deco-sites/persono/loaders/Layouts/Colors.tsx";
+import { VMFilters } from "deco-sites/persono/packs/types.ts";
 
 import {
   type EditableProps as NotFoundEditableProps,
   NotFound,
 } from "deco-sites/persono/components/product/NotFound.tsx";
+import { Device } from "deco/utils/device.ts";
+import ActiveFilterTag from "deco-sites/persono/islands/ActiveFIlterTag.tsx";
 
 export interface Layout {
   /**
@@ -38,6 +41,7 @@ export interface Props {
   /** @title Integration */
   page: ProductListingPage | null;
   layout?: Layout;
+  VMFilters: Resolved<VMFilters>;
   notFoundSettings?: NotFoundEditableProps;
 }
 
@@ -45,14 +49,25 @@ function Result({
   page,
   layout,
   colors,
-}: Omit<Props, "page"> & { page: ProductListingPage }) {
+  notFoundSettings,
+  device,
+  queryTerm,
+}: Omit<Props, "page"> & { page: ProductListingPage } & {
+  queryTerm: string | null;
+  device: Device;
+}) {
   const { products, filters, breadcrumb, pageInfo, sortOptions } = page;
   const perPage = pageInfo.recordPerPage || products.length;
-  const nextPageWithoutNumber = pageInfo.nextPage?.slice(0, -1);
-  const previousPageWithoutNumber = pageInfo.previousPage?.slice(0, -1);
+  const pageRegex = /page=(\d+)/;
 
   if (!pageInfo.records) {
-    return <></>;
+    return (
+      <NotFound
+        notFoundSettings={notFoundSettings}
+        device={device}
+        queryTerm={queryTerm}
+      />
+    );
   }
 
   const id = useId();
@@ -66,12 +81,12 @@ function Result({
     tabsQtt = tabsQtt + 1;
   }
 
-  const appliedFilters: FilterToggleValue[] = [];
+  const appliedFilters: { filters: FilterToggleValue; type: string }[] = [];
 
   filters.map((f) => {
     (f.values as FilterToggleValue[]).map((v) => {
       if (v.selected == true) {
-        appliedFilters.push(v);
+        appliedFilters.push({ filters: v, type: f.key });
       }
     }) as unknown as FilterToggleValue[];
   });
@@ -87,25 +102,7 @@ function Result({
           breadcrumb={breadcrumb}
           displayFilter={layout?.variant === "drawer"}
         />
-        <div
-          class={`${
-            appliedFilters.length == 0
-              ? "mb-6"
-              : "flex text-sm gap-3 mb-4 sm:mt-4 sm:mb-9"
-          }`}
-        >
-          {appliedFilters.map((af) => (
-            <span
-              style={{ minWidth: "86px" }}
-              class="py-1 gap-3 bg-black opacity-80 rounded-full px-3 flex flex-wrap justify-between items-center text-white"
-            >
-              {af.label}
-              <a href={af.url} rel="nofollow">
-                <Icon id="XMark" size={16} strokeWidth={2}></Icon>
-              </a>
-            </span>
-          ))}
-        </div>
+        <ActiveFilterTag appliedFilters={appliedFilters} />
 
         <div class="flex flex-row">
           {layout?.variant === "aside" && filters.length > 0 && (
@@ -133,27 +130,96 @@ function Result({
             >
               <Icon id="ChevronLeft" size={16} strokeWidth={2} />
             </a>
-            {Array.from({ length: tabsQtt }, (_, index) => {
-              const pageNumber = index + 1;
-              return (
+            <div class="sm:hidden flex items-center gap-1">
+              {pageInfo.currentPage < 3 ? null : (
                 <a
-                  aria-label={`${index} page link`}
-                  rel={`${pageNumber}`}
-                  href={nextPageWithoutNumber
-                    ? nextPageWithoutNumber + pageNumber
-                    : previousPageWithoutNumber
-                    ? previousPageWithoutNumber + pageNumber
-                    : ""}
-                  class={`flex justify-center items-center w-8 h-8 font-bold ${
-                    pageInfo.currentPage == index
+                  aria-label={`1 page link`}
+                  rel={`1`}
+                  href={
+                    pageInfo.nextPage
+                      ? pageInfo.nextPage.replace(pageRegex, `page=1`)
+                      : pageInfo.previousPage
+                      ? pageInfo.previousPage.replace(pageRegex, `page=1`)
+                      : ""
+                  }
+                  className={`flex justify-center items-center w-8 h-8 font-bold ${
+                    pageInfo.currentPage === 1
                       ? "bg-primary text-base-100 rounded-full"
                       : "text-primary"
                   }`}
                 >
-                  {pageNumber}
+                  {1}
                 </a>
-              );
-            })}
+              )}
+              {Array.from({ length: tabsQtt }, (_, index) => {
+                const pageNumber = index + 1;
+
+                const inicio = Math.max(1, pageInfo.currentPage - 1);
+                const fim = Math.min(inicio + 4, tabsQtt);
+
+                const shouldDisplay = pageNumber >= inicio && pageNumber <= fim;
+
+                return shouldDisplay ? (
+                  <a
+                    aria-label={`${index} page link`}
+                    rel={`${pageNumber}`}
+                    href={
+                      pageInfo.nextPage
+                        ? pageInfo.nextPage.replace(
+                            pageRegex,
+                            `page=${pageNumber}`
+                          )
+                        : pageInfo.previousPage
+                        ? pageInfo.previousPage.replace(
+                            pageRegex,
+                            `page=${pageNumber}`
+                          )
+                        : ""
+                    }
+                    className={`flex justify-center items-center w-8 h-8 font-bold ${
+                      pageInfo.currentPage === index
+                        ? "bg-primary text-base-100 rounded-full"
+                        : "text-primary"
+                    }`}
+                  >
+                    {pageNumber}
+                  </a>
+                ) : null;
+              })}
+            </div>
+
+            <div class="hidden sm:flex">
+              {Array.from({ length: tabsQtt }, (_, index) => {
+                const pageNumber = index + 1;
+                return (
+                  <a
+                    aria-label={`${index} page link`}
+                    rel={`${pageNumber}`}
+                    href={
+                      pageInfo.nextPage
+                        ? pageInfo.nextPage.replace(
+                            pageRegex,
+                            `page=${pageNumber}`
+                          )
+                        : pageInfo.previousPage
+                        ? pageInfo.previousPage.replace(
+                            pageRegex,
+                            `page=${pageNumber}`
+                          )
+                        : ""
+                    }
+                    class={`flex justify-center items-center w-8 h-8 font-bold ${
+                      pageInfo.currentPage == index
+                        ? "bg-primary text-base-100 rounded-full"
+                        : "text-primary"
+                    }`}
+                  >
+                    {pageNumber}
+                  </a>
+                );
+              })}
+            </div>
+
             <a
               aria-label="next page link"
               rel="next"

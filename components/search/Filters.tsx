@@ -1,4 +1,3 @@
-import Avatar from "$store/components/ui/Avatar.tsx";
 import { formatPrice } from "$store/sdk/format.ts";
 import type {
   Filter,
@@ -11,22 +10,82 @@ import AvatarSize from "deco-sites/persono/components/ui/AvatarSize.tsx";
 import AvatarColor from "deco-sites/persono/components/ui/AvatarColor.tsx";
 import { Color } from "deco-sites/persono/loaders/Layouts/Colors.tsx";
 import Button from "deco-sites/persono/components/ui/Button.tsx";
+import { Signal, useSignal } from "@preact/signals";
+import { invoke } from "deco-sites/persono/runtime.ts";
+import { IS_BROWSER } from "$fresh/runtime.ts";
 
 interface Props {
   filters: ProductListingPage["filters"];
   colors: Color[];
 }
 
+const getUrl = () => {
+  if (IS_BROWSER) {
+    const url = window.location.href;
+    return url;
+  }
+  return "";
+};
+
+const toggleSelectFilter = ({
+  rawFiltersToApply,
+  category,
+  slug,
+}: {
+  rawFiltersToApply: Signal<Record<string, string>[]>;
+  category: string;
+  slug: string;
+}) => {
+  const filterIndex = rawFiltersToApply.value.findIndex(
+    (filter) => filter.type === category && filter.slugs === slug,
+  );
+
+  if (filterIndex !== -1) {
+    rawFiltersToApply.value.splice(filterIndex, 1);
+  } else {
+    rawFiltersToApply.value.push({
+      type: category,
+      slugs: slug,
+    });
+  }
+};
+
 const isToggle = (filter: Filter): filter is FilterToggle =>
   filter["@type"] === "FilterToggle";
 
-function ValueItem({ url, selected, label, quantity }: FilterToggleValue) {
+function ValueItem({
+  selected,
+  label,
+  quantity,
+  rawFiltersToApply,
+  category,
+  value,
+}: FilterToggleValue & {
+  rawFiltersToApply: Signal<Record<string, string>[]>;
+  category: string;
+}) {
   return (
-    <a href={url} rel="nofollow" class="flex items-center gap-2">
-      <div aria-checked={selected} class="checkbox" />
-      <span class="text-sm">{label}</span>
+    <div class="flex items-center gap-2">
+      <input
+        aria-checked={selected}
+        type="checkbox"
+        value={label}
+        checked={selected}
+        id={value}
+        class="cursor-pointer"
+        onInput={(e) => {
+          toggleSelectFilter({
+            category,
+            rawFiltersToApply,
+            slug: value,
+          });
+        }}
+      />
+      <label for={value} class="text-sm cursor-pointer">
+        {label}
+      </label>
       {quantity > 0 && <span class="text-sm text-base-300">({quantity})</span>}
-    </a>
+    </div>
   );
 }
 
@@ -34,7 +93,11 @@ function FilterValues({
   key,
   values,
   colors,
-}: FilterToggle & { colors: Color[] }) {
+  rawFiltersToApply,
+}: FilterToggle & {
+  colors: Color[];
+  rawFiltersToApply: Signal<Record<string, string>[]>;
+}) {
   const flexDirection =
     key.toLowerCase().endsWith("size") || key === "baseColor"
       ? "flex-row"
@@ -44,28 +107,48 @@ function FilterValues({
     <ul class={`flex flex-wrap gap-2 ${flexDirection}`}>
       {values.map((item) => {
         const { url, selected, value, quantity } = item;
+        const toggleSizeSelected = useSignal<boolean>(selected);
+        const toggleColorSelected = useSignal<boolean>(selected);
 
         if (key === "baseColor") {
           return (
-            <a href={url} rel="nofollow">
+            <button
+              onClick={() => {
+                toggleSelectFilter({
+                  category: key,
+                  rawFiltersToApply,
+                  slug: item.label,
+                });
+                toggleColorSelected.value = !toggleColorSelected.value;
+              }}
+            >
               <AvatarColor
                 color={colors}
                 tipOnTop={true}
-                content={value}
-                variant={selected ? "active" : "default"}
+                content={item.label}
+                variant={toggleColorSelected.value ? "active" : "default"}
               />
-            </a>
+            </button>
           );
         }
 
         if (key.toLowerCase().endsWith("size")) {
           return (
-            <a href={url} rel="nofollow">
+            <button
+              onClick={() => {
+                toggleSelectFilter({
+                  category: key,
+                  rawFiltersToApply,
+                  slug: item.value,
+                });
+                toggleSizeSelected.value = !toggleSizeSelected.value;
+              }}
+            >
               <AvatarSize
-                content={value}
-                variant={selected ? "active" : "default"}
+                content={item.label}
+                variant={toggleSizeSelected.value ? "active" : "default"}
               />
-            </a>
+            </button>
           );
         }
 
@@ -75,6 +158,8 @@ function FilterValues({
           return (
             range && (
               <ValueItem
+                category={key}
+                rawFiltersToApply={rawFiltersToApply}
                 {...item}
                 label={`${formatPrice(range.from)} - ${formatPrice(range.to)}`}
               />
@@ -82,13 +167,20 @@ function FilterValues({
           );
         }
 
-        return <ValueItem {...item} />;
+        return (
+          <ValueItem
+            category={key}
+            rawFiltersToApply={rawFiltersToApply}
+            {...item}
+          />
+        );
       })}
     </ul>
   );
 }
 
 function Filters({ filters, colors }: Props) {
+  const rawFiltersToApply = useSignal<Record<string, string>[]>([{}]);
   const sortedFilters = filters.sort((a, b) => {
     const aEndsWithSize = a.key.toLowerCase().endsWith("size");
     const bEndsWithSize = b.key.toLowerCase().endsWith("size");
@@ -108,7 +200,36 @@ function Filters({ filters, colors }: Props) {
     return 0;
   });
 
-  console.log(sortedFilters);
+  sortedFilters.map((item) => {
+    if (isToggle(item)) {
+      item.values.map((v) => {
+        if (v.selected == true) {
+          rawFiltersToApply.value.push({ type: item.key, slugs: v.value });
+        }
+      });
+    }
+  });
+
+  async function callUrl({
+    transformedArray,
+  }: {
+    transformedArray: {
+      type: string;
+      slugs: string[];
+    }[];
+  }) {
+    const url = getUrl();
+    const response = await invoke["deco-sites/persono"].loaders.url({
+      filters: transformedArray,
+      origin: url,
+    });
+
+    if (!response || !response.url) {
+      window.location.href = url;
+      return null;
+    }
+    window.location.href = response.url;
+  }
 
   return (
     <ul class="relative flex flex-col gap-6 p-4">
@@ -116,12 +237,36 @@ function Filters({ filters, colors }: Props) {
         {sortedFilters.filter(isToggle).map((filter) => (
           <li class="flex flex-col gap-4">
             <span>{filter.label}</span>
-            <FilterValues colors={colors} {...filter} />
+            <FilterValues
+              rawFiltersToApply={rawFiltersToApply}
+              colors={colors}
+              {...filter}
+            />
           </li>
         ))}
       </li>
       <div class="flex fixed left-0 bottom-0 w-full px-4 py-2 bg-base-100 justify-between items-center border-t">
-        <Button class="btn rounded-full bg-primary w-full text-base-100">
+        <Button
+          onClick={() => {
+            const transformedArray = rawFiltersToApply.value
+              .reduce((result, item) => {
+                if (Object.keys(item).length > 0) {
+                  const existingItem = result.find((r) => r.type === item.type);
+
+                  if (existingItem) {
+                    existingItem.slugs.push(item.slugs);
+                  } else {
+                    result.push({ type: item.type, slugs: [item.slugs] });
+                  }
+                }
+
+                return result;
+              }, [] as { type: string; slugs: string[] }[])
+              .filter((item) => item.slugs.length > 0);
+            callUrl({ transformedArray });
+          }}
+          class="rounded-full bg-primary w-full text-base-100"
+        >
           Aplicar Filtros
         </Button>
       </div>
