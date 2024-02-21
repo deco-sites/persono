@@ -1,4 +1,3 @@
-import { VMFilters } from "$store/packs/types.ts";
 import { formatPrice } from "$store/sdk/format.ts";
 import type {
   Filter,
@@ -13,37 +12,71 @@ import { Color } from "deco-sites/persono/loaders/Layouts/Colors.tsx";
 import Button from "deco-sites/persono/components/ui/Button.tsx";
 import { Signal, useSignal } from "@preact/signals";
 import { invoke } from "deco-sites/persono/runtime.ts";
+import { IS_BROWSER } from "$fresh/runtime.ts";
 
 interface Props {
   filters: ProductListingPage["filters"];
   colors: Color[];
 }
 
+const getUrl = () => {
+  if (IS_BROWSER) {
+    const url = window.location.href;
+    return url;
+  }
+  return "";
+};
+
+const toggleSelectFilter = ({
+  rawFiltersToApply,
+  category,
+  slug,
+}: {
+  rawFiltersToApply: Signal<Record<string, string>[]>;
+  category: string;
+  slug: string;
+}) => {
+  const filterIndex = rawFiltersToApply.value.findIndex(
+    (filter) => filter.type === category && filter.slugs === slug
+  );
+
+  if (filterIndex !== -1) {
+    rawFiltersToApply.value.splice(filterIndex, 1);
+  } else {
+    rawFiltersToApply.value.push({
+      type: category,
+      slugs: slug,
+    });
+  }
+};
+
 const isToggle = (filter: Filter): filter is FilterToggle =>
   filter["@type"] === "FilterToggle";
 
 function ValueItem({
-  url,
   selected,
   label,
   quantity,
   rawFiltersToApply,
   category,
+  value,
 }: FilterToggleValue & {
   rawFiltersToApply: Signal<Record<string, string>[]>;
   category: string;
 }) {
+  console.log(selected, label, value);
   return (
     <div class="flex items-center gap-2">
       <input
         aria-checked={selected}
-        class="checkbox"
         type="checkbox"
         value={label}
+        checked={selected}
         onInput={(e) => {
-          rawFiltersToApply.value.push({
-            type: category,
-            slugs: e.currentTarget.value,
+          toggleSelectFilter({
+            category,
+            rawFiltersToApply,
+            slug: value,
           });
         }}
       />
@@ -71,28 +104,49 @@ function FilterValues({
     <ul class={`flex flex-wrap gap-2 ${flexDirection}`}>
       {values.map((item) => {
         const { url, selected, value, quantity } = item;
+        const toggleSizeSelected = useSignal<boolean>(selected);
+        const toggleColorSelected = useSignal<boolean>(selected);
 
         if (key === "baseColor") {
           return (
-            <a href={url} rel="nofollow">
+            <button
+              onClick={() => {
+                toggleSelectFilter({
+                  category: key,
+                  rawFiltersToApply,
+                  slug: item.label,
+                });
+                toggleColorSelected.value = !toggleColorSelected.value;
+              }}
+            >
               <AvatarColor
                 color={colors}
                 tipOnTop={true}
-                content={value}
-                variant={selected ? "active" : "default"}
+                content={item.label}
+                variant={toggleColorSelected.value ? "active" : "default"}
               />
-            </a>
+            </button>
           );
         }
 
         if (key.toLowerCase().endsWith("size")) {
           return (
-            <a href={url} rel="nofollow">
+            <button
+              onClick={() => {
+                toggleSelectFilter({
+                  category: key,
+                  rawFiltersToApply,
+                  slug: item.value,
+                });
+                toggleSizeSelected.value = !toggleSizeSelected.value;
+                console.log(toggleSizeSelected.value);
+              }}
+            >
               <AvatarSize
-                content={value}
-                variant={selected ? "active" : "default"}
+                content={item.label}
+                variant={toggleSizeSelected.value ? "active" : "default"}
               />
-            </a>
+            </button>
           );
         }
 
@@ -144,6 +198,16 @@ function Filters({ filters, colors }: Props) {
     return 0;
   });
 
+  sortedFilters.map((item) => {
+    if (isToggle(item)) {
+      item.values.map((v) => {
+        if (v.selected == true) {
+          rawFiltersToApply.value.push({ type: item.key, slugs: v.value });
+        }
+      });
+    }
+  });
+
   async function callUrl({
     transformedArray,
   }: {
@@ -152,12 +216,17 @@ function Filters({ filters, colors }: Props) {
       slugs: string[];
     }[];
   }) {
-    const response = (await invoke({
-      // @ts-ignore: <I will resolve it>
-      key: "deco-sites/persono/loaders/url.ts",
-      props: { transformedArray },
-    })) as VMFilters | null;
-    console.log(response);
+    const url = getUrl();
+    const response = await invoke["deco-sites/persono"].loaders.url({
+      filters: transformedArray,
+      origin: url,
+    });
+
+    if (!response || !response.url) {
+      window.location.href = url;
+      return null;
+    }
+    window.location.href = response.url;
   }
 
   return (
@@ -177,21 +246,21 @@ function Filters({ filters, colors }: Props) {
       <div class="flex fixed left-0 bottom-0 w-full px-4 py-2 bg-base-100 justify-between items-center border-t">
         <Button
           onClick={() => {
-            const transformedArray = rawFiltersToApply.value.reduce(
-              (result, item) => {
-                const existingItem = result.find((r) => r.type === item.type);
+            const transformedArray = rawFiltersToApply.value
+              .reduce((result, item) => {
+                if (Object.keys(item).length > 0) {
+                  const existingItem = result.find((r) => r.type === item.type);
 
-                if (existingItem) {
-                  existingItem.slugs.push(item.slugs);
-                } else {
-                  result.push({ type: item.type, slugs: [item.slugs] });
+                  if (existingItem) {
+                    existingItem.slugs.push(item.slugs);
+                  } else {
+                    result.push({ type: item.type, slugs: [item.slugs] });
+                  }
                 }
 
                 return result;
-              },
-              [] as { type: string; slugs: string[] }[],
-            );
-            // console.log(transformedArray)
+              }, [] as { type: string; slugs: string[] }[])
+              .filter((item) => item.slugs.length > 0);
             callUrl({ transformedArray });
           }}
           class="btn rounded-full bg-primary w-full text-base-100"
