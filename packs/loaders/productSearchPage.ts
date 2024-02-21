@@ -4,16 +4,16 @@ import { getProductItems } from "../utils/getProductItems.ts";
 
 export interface Props {
   /**
-   * @title query
+   * @title Termo
    * @description termo a ser pesquisado
    */
   query: string;
   /**
-   * @title page
+   * @title Página
    * @description Número da página a ser exibida
    */ page: number;
   /**
-   * @title limit
+   * @title Limite
    * @description Número de itens por página
    */
   limit: number;

@@ -4,7 +4,7 @@ import { getHeaders } from "$store/packs/utils/headers.ts";
 
 export interface Props {
   /**
-   * @title Postal code
+   * @title CEP
    * @description Código postal para cálculo de frete
    */
   postalCode: string;

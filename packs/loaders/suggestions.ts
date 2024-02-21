@@ -6,12 +6,12 @@ import { getProductItems } from "../utils/getProductItems.ts";
 
 export interface Props {
   /**
-   * @title query
+   * @title Termo
    * @description termo a ser pesquisado
    */
   query: string;
   /**
-   * @title count
+   * @title Quantidade de produtos
    * @description Quantidade de itens a ser retornada
    */
   count: number;
