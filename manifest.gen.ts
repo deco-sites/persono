@@ -2,15 +2,17 @@
 // This file SHOULD be checked into source version control.
 // This file is automatically updated during development when running `dev.ts`.
 
-import * as $$$0 from "./loaders/actions/cart/addCoupon.ts";
-import * as $$$1 from "./loaders/actions/cart/addItem.ts";
-import * as $$$2 from "./loaders/actions/cart/removeCoupon.ts";
-import * as $$$3 from "./loaders/actions/cart/removeItem.ts";
-import * as $$$4 from "./loaders/cart.ts";
-import * as $$$5 from "./loaders/config.ts";
-import * as $$$6 from "./loaders/Layouts/Benefits.tsx";
-import * as $$$7 from "./loaders/Layouts/ProductCard.tsx";
-import * as $$$8 from "./loaders/List/Sections.tsx";
+import * as $$$$$$$$$$$0 from "./apps/decohub.ts";
+import * as $$$$$$$$$$$1 from "./apps/site.ts";
+import * as $$$3 from "./loaders/actions/cart/addCoupon.ts";
+import * as $$$4 from "./loaders/actions/cart/addItem.ts";
+import * as $$$5 from "./loaders/actions/cart/removeCoupon.ts";
+import * as $$$6 from "./loaders/actions/cart/removeItem.ts";
+import * as $$$7 from "./loaders/cart.ts";
+import * as $$$8 from "./loaders/config.ts";
+import * as $$$0 from "./loaders/Layouts/Benefits.tsx";
+import * as $$$1 from "./loaders/Layouts/ProductCard.tsx";
+import * as $$$2 from "./loaders/List/Sections.tsx";
 import * as $$$9 from "./loaders/product/productDetails.ts";
 import * as $$$10 from "./loaders/product/productList.ts";
 import * as $$$11 from "./loaders/product/productListingPage.ts";
@@ -54,20 +56,18 @@ import * as $$$$$$32 from "./sections/Product/Wishlist.tsx";
 import * as $$$$$$33 from "./sections/Social/InstagramPosts.tsx";
 import * as $$$$$$34 from "./sections/Social/WhatsApp.tsx";
 import * as $$$$$$35 from "./sections/Theme/Theme.tsx";
-import * as $$$$$$$$$$$0 from "./apps/decohub.ts";
-import * as $$$$$$$$$$$1 from "./apps/site.ts";
 
 const manifest = {
   "loaders": {
-    "deco-sites/persono/loaders/actions/cart/addCoupon.ts": $$$0,
-    "deco-sites/persono/loaders/actions/cart/addItem.ts": $$$1,
-    "deco-sites/persono/loaders/actions/cart/removeCoupon.ts": $$$2,
-    "deco-sites/persono/loaders/actions/cart/removeItem.ts": $$$3,
-    "deco-sites/persono/loaders/cart.ts": $$$4,
-    "deco-sites/persono/loaders/config.ts": $$$5,
-    "deco-sites/persono/loaders/Layouts/Benefits.tsx": $$$6,
-    "deco-sites/persono/loaders/Layouts/ProductCard.tsx": $$$7,
-    "deco-sites/persono/loaders/List/Sections.tsx": $$$8,
+    "deco-sites/persono/loaders/actions/cart/addCoupon.ts": $$$3,
+    "deco-sites/persono/loaders/actions/cart/addItem.ts": $$$4,
+    "deco-sites/persono/loaders/actions/cart/removeCoupon.ts": $$$5,
+    "deco-sites/persono/loaders/actions/cart/removeItem.ts": $$$6,
+    "deco-sites/persono/loaders/cart.ts": $$$7,
+    "deco-sites/persono/loaders/config.ts": $$$8,
+    "deco-sites/persono/loaders/Layouts/Benefits.tsx": $$$0,
+    "deco-sites/persono/loaders/Layouts/ProductCard.tsx": $$$1,
+    "deco-sites/persono/loaders/List/Sections.tsx": $$$2,
     "deco-sites/persono/loaders/product/productDetails.ts": $$$9,
     "deco-sites/persono/loaders/product/productList.ts": $$$10,
     "deco-sites/persono/loaders/product/productListingPage.ts": $$$11,
