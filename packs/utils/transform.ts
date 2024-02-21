@@ -21,7 +21,6 @@ import {
   ProductItem,
   RelatedFilters,
   Sku,
-  Value,
   VMDetails,
 } from "$store/packs/types.ts";
 import { PROPS_AMMO_API, SORT_OPTIONS } from "$store/packs/constants.ts";
@@ -52,11 +51,6 @@ interface SkuAndProduct {
   productItem?: ProductItem;
   config: VMConfig | PDPConfig;
   imageBaseUrl?: string;
-}
-
-interface ReducedFilters {
-  url: Value[];
-  param: string[];
 }
 
 export function toProduct(
