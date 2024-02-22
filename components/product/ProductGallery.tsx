@@ -42,7 +42,9 @@ function ProductGallery({ products, layout, offset, cardLayout }: Props) {
   const tablet = TABLET_COLUMNS[layout?.columns?.tablet ?? 3];
 
   return (
-    <div class={`grid ${mobile} ${tablet} gap-x-2 gap-y-7 ${desktop} sm:gap-x-7 sm:gap-y-6 md:gap-x-11 md:gap-y-8`}>
+    <div
+      class={`grid ${mobile} ${tablet} gap-x-2 gap-y-7 ${desktop} sm:gap-x-7 sm:gap-y-6 md:gap-x-11 md:gap-y-8`}
+    >
       {products?.map((product, index) => (
         <ProductCard
           layout={cardLayout}
