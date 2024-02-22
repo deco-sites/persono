@@ -52,7 +52,7 @@ function SortComponent({ sortOptions, sort }: SortProps) {
 
   return (
     <details class="dropdown">
-      <summary class="flex items-center justify-between btn shadow-none bg-transparent border-none hover:bg-transparent">
+      <summary class="flex items-center justify-between btn px-0 shadow-none bg-transparent border-none hover:bg-transparent">
         {selectedItem ?? "Ordenar"}{" "}
         <Icon id="ChevronDown" width={22} height={22} strokeWidth={1} />
       </summary>

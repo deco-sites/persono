@@ -53,7 +53,7 @@ function Banner(props: SectionProps<ReturnType<typeof loader>>) {
           style={{
             backgroundImage: `url(${bannerDefault?.image.desktop})`,
           }}
-          class="h-48 w-full bg-cover bg-base-300 flex items-center justify-between overflow-hidden mb-0 sm:mb-14"
+          class="h-48 w-full bg-cover bg-base-300 flex items-center justify-between overflow-hidden mb-0 sm:mb-16"
         >
           <h2 class="pl-20 text-[3.5rem] text-black">
             {productBannerCategory}
@@ -65,7 +65,7 @@ function Banner(props: SectionProps<ReturnType<typeof loader>>) {
           style={{
             backgroundImage: `url(${bannerDefault?.image.mobile})`,
           }}
-          class="h-28 w-full bg-cover bg-base-300 flex items-center justify-between overflow-hidden mb-0 sm:mb-14"
+          class="h-28 w-full bg-cover bg-base-300 flex items-center justify-between overflow-hidden mb-0 sm:mb-16"
         >
           <h2 class="pl-6 text-2xl font-medium text-black">
             {productBannerCategory}
@@ -84,7 +84,7 @@ function Banner(props: SectionProps<ReturnType<typeof loader>>) {
             image.desktop ?? bannerDefault.image.desktop
           })`,
         }}
-        class="h-48 w-full bg-cover bg-base-300 flex items-center justify-between overflow-hidden mb-0 sm:mb-14"
+        class="h-48 w-full bg-cover bg-base-300 flex items-center justify-between overflow-hidden mb-0 sm:mb-16"
       >
         <h2 class="pl-20 text-[3.5rem] text-black">
           {title ?? productBannerCategory}
@@ -96,7 +96,7 @@ function Banner(props: SectionProps<ReturnType<typeof loader>>) {
         style={{
           backgroundImage: `url(${image.mobile ?? bannerDefault.image.mobile})`,
         }}
-        class="h-28 w-full bg-cover bg-base-300 flex items-center justify-between overflow-hidden mb-0 sm:mb-14"
+        class="h-28 w-full bg-cover bg-base-300 flex items-center justify-between overflow-hidden mb-0 sm:mb-16"
       >
         <h2 class="pl-6 text-2xl font-medium text-black">
           {title ?? productBannerCategory}

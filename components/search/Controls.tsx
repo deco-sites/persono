@@ -64,7 +64,7 @@ function SearchControls({
           />
         </div>
 
-        <div class="flex flex-row items-center justify-between border-b border-base-300 sm:gap-4 sm:border-none">
+        <div class="flex flex-row items-center justify-between border-b border-base-300 sm:gap-8 sm:border-none">
           <Button
             class={`px-0 text-sm ${
               displayFilter ? "btn-ghost" : "btn-ghost sm:hidden"
