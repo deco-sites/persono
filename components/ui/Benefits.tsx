@@ -1,6 +1,5 @@
 import Header from "$store/components/ui/SectionHeader.tsx";
 import { Benefits } from "deco-sites/persono/loaders/Layouts/Benefits.tsx";
-import Icon from "$store/components/ui/Icon.tsx";
 
 export interface Props {
   benefits?: Benefits[];
@@ -13,7 +12,7 @@ export default function Benefits(props: Props) {
         class={`flex sm:flex-row lg:flex-col sm:justify-center gap-4 w-full first:pt-0 last:pb-0 h-full max-lg:py-6 lg:pr-8 lg:border-r lg:last:border-r-0 lg:pb-0`}
       >
         <div class="flex items-center">
-          <img src={benefit.Icon} />
+          <img src={benefit.icon} />
         </div>
         <div class="flex flex-col gap-1 lg:gap-2 sm:w-[36%] lg:w-auto">
           <div

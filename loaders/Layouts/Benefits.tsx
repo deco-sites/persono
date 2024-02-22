@@ -1,9 +1,8 @@
 import { ImageWidget } from "apps/admin/widgets.ts";
-import Icon from "$store/components/ui/Icon.tsx";
 
 export interface Benefits {
   customAttribute: string | undefined;
-  Icon: ImageWidget;
+  icon: ImageWidget;
   label: string;
   description: string;
   descriptionHome?: string;
@@ -20,7 +19,9 @@ const loader = ({ benefits }: Props): Benefits[] => benefits;
 export const Preview = ({ benefits }: Props) => {
   return (
     <div class="h-full w-full grid place-items-center">
-      {benefits.map((b) => <p>{b.label}</p>)}
+      {benefits.map((b) => (
+        <p>{b.label}</p>
+      ))}
     </div>
   );
 };
