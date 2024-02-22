@@ -270,9 +270,8 @@ function SearchResult({ page, ...props }: SectionProps<typeof loader>) {
 
 export const loader = (props: Props, req: Request, ctx: FnContext) => {
   const { page } = props;
-
   const url = new URL(req.url);
-  const queryTerm = url.searchParams.get("q");
+  const queryTerm = url.searchParams.get("query");
 
   if (!page) {
     ctx.response.status = 404;

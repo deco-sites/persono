@@ -541,6 +541,7 @@ const toAdditionalProperties = (
 export function toProductItems(
   productItem: ProductItem,
   config: VMConfig,
+  baseUrl: URL,
   imageBaseUrl: string,
 ): Product {
   const product: Product = {
@@ -560,7 +561,7 @@ export function toProductItems(
     }),
 
     image: toImageItem(productItem, imageBaseUrl),
-    url: productItem.site,
+    url: new URL(baseUrl.origin).href,
     category: productItem.macroCategory,
   };
 
