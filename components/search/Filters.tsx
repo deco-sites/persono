@@ -117,7 +117,7 @@ function FilterValues({
                 toggleSelectFilter({
                   category: key,
                   rawFiltersToApply,
-                  slug: item.label,
+                  slug: item.value,
                 });
                 toggleColorSelected.value = !toggleColorSelected.value;
               }}
