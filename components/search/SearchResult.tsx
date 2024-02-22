@@ -75,11 +75,7 @@ function Result({
   const zeroIndexedOffsetPage = pageInfo.currentPage;
   const offset = zeroIndexedOffsetPage * perPage;
 
-  let tabsQtt = Math.floor(pageInfo.records / perPage);
-
-  if (pageInfo.records % perPage !== 0) {
-    tabsQtt = tabsQtt + 1;
-  }
+  const tabsQtt = Math.floor(pageInfo.records / perPage);
 
   const appliedFilters: { filters: FilterToggleValue; type: string }[] = [];
 
