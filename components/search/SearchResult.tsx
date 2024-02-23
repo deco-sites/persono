@@ -1,5 +1,5 @@
 import { SendEventOnView } from "$store/components/Analytics.tsx";
-import { Resolved, type SectionProps } from "deco/mod.ts";
+import { type SectionProps } from "deco/mod.ts";
 import { FnContext } from "deco/types.ts";
 import Filters from "$store/components/search/Filters.tsx";
 import Icon from "$store/components/ui/Icon.tsx";
@@ -14,13 +14,11 @@ import { mapProductToAnalyticsItem } from "apps/commerce/utils/productToAnalytic
 import ProductGallery, { Columns } from "../product/ProductGallery.tsx";
 import { Layout as CardLayout } from "deco-sites/persono/components/product/ProductCard/index.tsx";
 import { Color } from "deco-sites/persono/loaders/Layouts/Colors.tsx";
-import { VMFilters } from "deco-sites/persono/packs/types.ts";
 
 import {
   type EditableProps as NotFoundEditableProps,
   NotFound,
 } from "deco-sites/persono/components/product/NotFound.tsx";
-import { Device } from "deco/utils/device.ts";
 import ActiveFilterTag from "deco-sites/persono/islands/ActiveFIlterTag.tsx";
 
 export interface Layout {
@@ -51,7 +49,6 @@ function Result({
   queryTerm,
 }: Omit<Props, "page"> & { page: ProductListingPage } & {
   queryTerm: string | null;
-  device: Device;
 }) {
   const { products, filters, breadcrumb, pageInfo, sortOptions } = page;
   const perPage = pageInfo.recordPerPage || products.length;
