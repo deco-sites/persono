@@ -8,16 +8,15 @@ import { useSignal } from "@preact/signals";
 import type { ProductListingPage } from "apps/commerce/types.ts";
 import { Color } from "deco-sites/persono/loaders/Layouts/Colors.tsx";
 
-export type Props =
-  & Pick<
-    ProductListingPage,
-    "filters" | "breadcrumb" | "sortOptions"
-  >
-  & {
-    displayFilter?: boolean;
-    productsQtt?: number;
-    colors: Color[];
-  };
+export type Props = Pick<
+  ProductListingPage,
+  "filters" | "breadcrumb" | "sortOptions"
+> & {
+  displayFilter?: boolean;
+  productsQtt?: number;
+  colors: Color[];
+  notDisplay?: boolean;
+};
 
 function SearchControls({
   filters,
@@ -26,6 +25,7 @@ function SearchControls({
   sortOptions,
   productsQtt,
   colors,
+  notDisplay,
 }: Props) {
   const open = useSignal(false);
 
@@ -56,12 +56,14 @@ function SearchControls({
         </>
       }
     >
-      <div class="flex flex-col justify-between py-4 sm:mb-0 sm:p-0 gap-6 sm:gap-4 sm:flex-row sm:border-b sm:border-base-300">
+      <div
+        class={`flex flex-col justify-between ${
+          notDisplay ? "" : "py-4"
+        }  sm:mb-0 sm:p-0 gap-6 sm:gap-4 sm:flex-row sm:border-b sm:border-base-300`}
+      >
         <div
           class={`flex flex-row items-end sm:pb-4 ${
-            filters.length == 0 && breadcrumb?.itemListElement.length == 0
-              ? "hidden"
-              : ""
+            notDisplay ? "hidden" : ""
           }`}
         >
           <Breadcrumb
@@ -72,9 +74,7 @@ function SearchControls({
 
         <div
           class={`flex flex-row items-end justify-between border-b border-base-300 sm:gap-8 pb-4 sm:border-none ${
-            filters.length == 0 && breadcrumb?.itemListElement.length == 0
-              ? "hidden"
-              : ""
+            notDisplay ? "hidden" : ""
           }`}
         >
           <button
