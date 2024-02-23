@@ -1,9 +1,8 @@
 import { ImageWidget } from "apps/admin/widgets.ts";
-import Icon from "$store/components/ui/Icon.tsx";
 
 export interface Benefits {
   customAttribute: string | undefined;
-  Icon: ImageWidget;
+  icon: ImageWidget;
   label: string;
   description: string;
   descriptionHome?: string;

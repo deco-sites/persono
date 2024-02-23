@@ -75,11 +75,7 @@ function Result({
   const zeroIndexedOffsetPage = pageInfo.currentPage;
   const offset = zeroIndexedOffsetPage * perPage;
 
-  let tabsQtt = Math.floor(pageInfo.records / perPage);
-
-  if (pageInfo.records % perPage !== 0) {
-    tabsQtt = tabsQtt + 1;
-  }
+  const tabsQtt = Math.ceil(pageInfo.records / perPage);
 
   const appliedFilters: { filters: FilterToggleValue; type: string }[] = [];
 
@@ -91,12 +87,14 @@ function Result({
     }) as unknown as FilterToggleValue[];
   });
 
+  console.log(pageInfo.previousPage?.length);
+
   return (
     <>
-      <div class="sm:px-20 px-4">
+      <div class="container px-4 md:px-4 sm:px-0">
         <SearchControls
           colors={colors}
-          productsQtt={products.length}
+          productsQtt={pageInfo.records}
           sortOptions={sortOptions}
           filters={filters}
           breadcrumb={breadcrumb}
@@ -104,7 +102,7 @@ function Result({
         />
         <ActiveFilterTag appliedFilters={appliedFilters} />
 
-        <div class="flex flex-row">
+        <div class="flex flex-row sm:mt-6">
           {layout?.variant === "aside" && filters.length > 0 && (
             <aside class="hidden sm:block w-min min-w-[250px]">
               <Filters colors={colors} filters={filters} />
@@ -126,9 +124,20 @@ function Result({
               aria-label="previous page link"
               rel="prev"
               href={pageInfo.previousPage ?? "#"}
-              class="flex items-center hover:text-red-500 justify-center w-8 h-8 border rounded-full text-primary"
+              class={`flex items-center justify-center w-8 h-8 border rounded-full text-primary ${
+                !pageInfo.previousPage?.length ||
+                  pageInfo.previousPage?.length == 0
+                  ? "cursor-default opacity-50"
+                  : ""
+              }`}
+              disabled={pageInfo.nextPage?.length == 0}
             >
-              <Icon id="ChevronLeft" size={16} strokeWidth={2} />
+              <Icon
+                id="ChevronRight"
+                size={18}
+                class="rotate-180"
+                strokeWidth={2}
+              />
             </a>
             <div class="sm:hidden flex items-center gap-1">
               {pageInfo.currentPage < 3 ? null : (
@@ -147,6 +156,8 @@ function Result({
                       ? "bg-primary text-base-100 rounded-full"
                       : "text-primary"
                   }`}
+                  disabled={pageInfo.previousPage?.length == 0 ||
+                    pageInfo.previousPage?.length == undefined}
                 >
                   {1}
                 </a>
@@ -224,7 +235,13 @@ function Result({
               aria-label="next page link"
               rel="next"
               href={pageInfo.nextPage ?? "#"}
-              class="flex items-center justify-center w-8 h-8 border rounded-full text-primary"
+              class={`flex items-center justify-center w-8 h-8 border rounded-full text-primary ${
+                !pageInfo.nextPage?.length || pageInfo.nextPage?.length == 0
+                  ? "cursor-default opacity-50"
+                  : ""
+              }`}
+              disabled={pageInfo.nextPage?.length == 0 ||
+                pageInfo.nextPage?.length == undefined}
             >
               <Icon id="ChevronRight" size={18} strokeWidth={2} />
             </a>
@@ -274,9 +291,8 @@ function SearchResult({ page, ...props }: SectionProps<typeof loader>) {
 
 export const loader = (props: Props, req: Request, ctx: FnContext) => {
   const { page } = props;
-
   const url = new URL(req.url);
-  const queryTerm = url.searchParams.get("q");
+  const queryTerm = url.searchParams.get("query");
 
   if (!page) {
     ctx.response.status = 404;

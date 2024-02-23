@@ -56,18 +56,18 @@ function SearchControls({
         </>
       }
     >
-      <div class="flex flex-col justify-between py-4 sm:mb-0 sm:p-0 sm:gap-4 sm:flex-row sm:border-b sm:border-base-300">
-        <div class="flex flex-row items-center sm:p-0">
+      <div class="flex flex-col justify-between py-4 sm:mb-0 sm:p-0 gap-6 sm:gap-4 sm:flex-row sm:border-b sm:border-base-300">
+        <div class="flex flex-row items-end sm:pb-4">
           <Breadcrumb
             productsQtt={productsQtt}
             itemListElement={breadcrumb?.itemListElement.slice(0, 3)}
           />
         </div>
 
-        <div class="flex flex-row items-center justify-between border-b border-base-300 sm:gap-4 sm:border-none">
-          <Button
-            class={`px-0 text-sm ${
-              displayFilter ? "btn-ghost" : "btn-ghost sm:hidden"
+        <div class="flex flex-row items-end justify-between border-b border-base-300 sm:gap-8 pb-4 sm:border-none">
+          <button
+            class={`px-0 sm:text-sm text-md font-bold ${
+              displayFilter ? "flex gap-2" : "sm:hidden"
             }`}
             onClick={() => {
               open.value = true;
@@ -75,7 +75,7 @@ function SearchControls({
           >
             Filtrar
             <Icon id="FilterList" width={16} height={16} />
-          </Button>
+          </button>
           {sortOptions.length > 0 && <Sort sortOptions={sortOptions} />}
         </div>
       </div>

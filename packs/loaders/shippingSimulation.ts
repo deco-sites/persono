@@ -3,9 +3,22 @@ import { AppContext } from "$store/apps/site.ts";
 import { getHeaders } from "$store/packs/utils/headers.ts";
 
 export interface Props {
+  /**
+   * @title CEP
+   * @description Código postal para cálculo de frete
+   */
   postalCode: string;
+  /**
+   * @title Sku
+   * @description SKU do produto para cálculo de frete
+   */
   sku: string;
 }
+
+/**
+ * @title Ammo Varejo - Simulação de frete
+ * @description Realiza o calculo de frete a partir do código postal recebido.
+ */
 const loader = async (
   props: Props,
   req: Request,

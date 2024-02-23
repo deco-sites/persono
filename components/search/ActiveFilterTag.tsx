@@ -84,7 +84,7 @@ export default function ActiveFilterTag({ appliedFilters }: Props) {
     <div
       class={`${
         appliedFilters.length == 0
-          ? "mb-6"
+          ? "mb-6 hidden"
           : "flex text-sm flex-wrap gap-3 mb-4 sm:mt-4 sm:mb-9"
       }`}
     >

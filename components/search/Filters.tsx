@@ -72,8 +72,8 @@ function ValueItem({
         value={label}
         checked={selected}
         id={value}
-        class="cursor-pointer"
-        onInput={(e) => {
+        class="cursor-pointer checkbox rounded-sm w-4 h-4"
+        onInput={() => {
           toggleSelectFilter({
             category,
             rawFiltersToApply,
@@ -117,7 +117,7 @@ function FilterValues({
                 toggleSelectFilter({
                   category: key,
                   rawFiltersToApply,
-                  slug: item.label,
+                  slug: item.value,
                 });
                 toggleColorSelected.value = !toggleColorSelected.value;
               }}
