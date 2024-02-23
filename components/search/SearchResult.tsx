@@ -87,8 +87,6 @@ function Result({
     }) as unknown as FilterToggleValue[];
   });
 
-  console.log(pageInfo.previousPage?.length);
-
   return (
     <>
       <div class="container px-4 md:px-4 sm:px-0">
@@ -133,10 +131,9 @@ function Result({
               disabled={pageInfo.nextPage?.length == 0}
             >
               <Icon
-                id="ChevronRight"
-                size={18}
-                class="rotate-180"
-                strokeWidth={2}
+                id="ChevronLeft"
+                size={14}
+                strokeWidth={3}
               />
             </a>
             <div class="sm:hidden flex items-center gap-1">
@@ -239,7 +236,7 @@ function Result({
               disabled={pageInfo.nextPage?.length == 0 ||
                 pageInfo.nextPage?.length == undefined}
             >
-              <Icon id="ChevronRight" size={18} strokeWidth={2} />
+              <Icon id="ChevronRight" size={14} strokeWidth={3} />
             </a>
           </div>
         </div>
