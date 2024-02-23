@@ -19,9 +19,18 @@ const useSort = () =>
 // TODO: Replace with "search utils"
 const applySort = ({ value }: { value: string }) => {
   const urlSearchParams = new URLSearchParams(window.location.search);
+  const base = new URL(window.location.pathname, window.location.origin);
 
-  urlSearchParams.set(SORT_QUERY_PARAM, value);
-  window.location.search = urlSearchParams.toString();
+  urlSearchParams.delete(SORT_QUERY_PARAM);
+  urlSearchParams.delete("page");
+
+  if (value.length) {
+    urlSearchParams.set(SORT_QUERY_PARAM, value);
+  }
+
+  const newQueryString = urlSearchParams.toString();
+  window.location.href =
+    base.href + (newQueryString ? `?${newQueryString}` : "");
 };
 
 export type Props = Pick<ProductListingPage, "sortOptions">;
@@ -68,7 +77,7 @@ function SortComponent({ sortOptions, sort }: SortProps) {
             value,
             label:
               portugueseMappings[label as keyof typeof portugueseMappings] ??
-                label,
+              label,
           }))
           .filter(({ label }) => label)
           .map(({ value, label }) => {
