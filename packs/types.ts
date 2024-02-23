@@ -1277,3 +1277,15 @@ export interface NewsletterData {
   email: string;
   newsletterCouponCode: string;
 }
+
+export interface VMFilters {
+  /**
+   * @title Tipo
+   * @example category
+   */
+  type: string;
+  /**
+   * @title Slugs do filtro
+   */
+  slugs: string[];
+}
