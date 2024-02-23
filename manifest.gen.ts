@@ -32,28 +32,28 @@ import * as $$$$$$6 from "./sections/Content/Faq.tsx";
 import * as $$$$$$7 from "./sections/Content/Logos.tsx";
 import * as $$$$$$8 from "./sections/Content/Testimonials.tsx";
 import * as $$$$$$9 from "./sections/Footer/Footer.tsx";
-import * as $$$$$$10 from "./sections/Gallery/ProductGallery.tsx";
-import * as $$$$$$11 from "./sections/Gallery.tsx";
-import * as $$$$$$12 from "./sections/Header/Header.tsx";
-import * as $$$$$$13 from "./sections/Images/BannerGrid.tsx";
-import * as $$$$$$14 from "./sections/Images/Carousel.tsx";
-import * as $$$$$$15 from "./sections/Images/FeatureBlogArticle.tsx";
-import * as $$$$$$16 from "./sections/Images/ImageGallery.tsx";
-import * as $$$$$$17 from "./sections/Instagram/Instagram.tsx";
-import * as $$$$$$18 from "./sections/Layout/Container.tsx";
-import * as $$$$$$19 from "./sections/Layout/Flex.tsx";
-import * as $$$$$$20 from "./sections/Layout/Grid.tsx";
-import * as $$$$$$21 from "./sections/Layout/GridItem.tsx";
-import * as $$$$$$22 from "./sections/Links/LinkTree.tsx";
-import * as $$$$$$23 from "./sections/Links/Shortcuts.tsx";
-import * as $$$$$$24 from "./sections/Miscellaneous/CampaignTimer.tsx";
-import * as $$$$$$25 from "./sections/Miscellaneous/CookieConsent.tsx";
-import * as $$$$$$26 from "./sections/Newsletter/Newsletter.tsx";
-import * as $$$$$$27 from "./sections/Product/Benefits.tsx";
-import * as $$$$$$28 from "./sections/Product/ImageGalleryFrontBack.tsx";
-import * as $$$$$$29 from "./sections/Product/ImageGallerySlider.tsx";
-import * as $$$$$$30 from "./sections/Product/NotFound.tsx";
-import * as $$$$$$31 from "./sections/Product/NotFoundChallenge.tsx";
+import * as $$$$$$10 from "./sections/Gallery.tsx";
+import * as $$$$$$11 from "./sections/Header/Header.tsx";
+import * as $$$$$$12 from "./sections/Images/BannerGrid.tsx";
+import * as $$$$$$13 from "./sections/Images/Carousel.tsx";
+import * as $$$$$$14 from "./sections/Images/FeatureBlogArticle.tsx";
+import * as $$$$$$15 from "./sections/Images/ImageGallery.tsx";
+import * as $$$$$$16 from "./sections/Instagram/Instagram.tsx";
+import * as $$$$$$17 from "./sections/Layout/Container.tsx";
+import * as $$$$$$18 from "./sections/Layout/Flex.tsx";
+import * as $$$$$$19 from "./sections/Layout/Grid.tsx";
+import * as $$$$$$20 from "./sections/Layout/GridItem.tsx";
+import * as $$$$$$21 from "./sections/Links/LinkTree.tsx";
+import * as $$$$$$22 from "./sections/Links/Shortcuts.tsx";
+import * as $$$$$$23 from "./sections/Miscellaneous/CampaignTimer.tsx";
+import * as $$$$$$24 from "./sections/Miscellaneous/CookieConsent.tsx";
+import * as $$$$$$25 from "./sections/Newsletter/Newsletter.tsx";
+import * as $$$$$$26 from "./sections/Product/Benefits.tsx";
+import * as $$$$$$27 from "./sections/Product/ImageGalleryFrontBack.tsx";
+import * as $$$$$$28 from "./sections/Product/ImageGallerySlider.tsx";
+import * as $$$$$$29 from "./sections/Product/NotFound.tsx";
+import * as $$$$$$30 from "./sections/Product/NotFoundChallenge.tsx";
+import * as $$$$$$31 from "./sections/Product/PdcGallery.tsx";
 import * as $$$$$$32 from "./sections/Product/ProductInfo.tsx";
 import * as $$$$$$33 from "./sections/Product/ProductShelf.tsx";
 import * as $$$$$$34 from "./sections/Product/ProductShelfTabbed.tsx";
@@ -99,28 +99,28 @@ const manifest = {
     "deco-sites/persono/sections/Content/Logos.tsx": $$$$$$7,
     "deco-sites/persono/sections/Content/Testimonials.tsx": $$$$$$8,
     "deco-sites/persono/sections/Footer/Footer.tsx": $$$$$$9,
-    "deco-sites/persono/sections/Gallery.tsx": $$$$$$11,
-    "deco-sites/persono/sections/Gallery/ProductGallery.tsx": $$$$$$10,
-    "deco-sites/persono/sections/Header/Header.tsx": $$$$$$12,
-    "deco-sites/persono/sections/Images/BannerGrid.tsx": $$$$$$13,
-    "deco-sites/persono/sections/Images/Carousel.tsx": $$$$$$14,
-    "deco-sites/persono/sections/Images/FeatureBlogArticle.tsx": $$$$$$15,
-    "deco-sites/persono/sections/Images/ImageGallery.tsx": $$$$$$16,
-    "deco-sites/persono/sections/Instagram/Instagram.tsx": $$$$$$17,
-    "deco-sites/persono/sections/Layout/Container.tsx": $$$$$$18,
-    "deco-sites/persono/sections/Layout/Flex.tsx": $$$$$$19,
-    "deco-sites/persono/sections/Layout/Grid.tsx": $$$$$$20,
-    "deco-sites/persono/sections/Layout/GridItem.tsx": $$$$$$21,
-    "deco-sites/persono/sections/Links/LinkTree.tsx": $$$$$$22,
-    "deco-sites/persono/sections/Links/Shortcuts.tsx": $$$$$$23,
-    "deco-sites/persono/sections/Miscellaneous/CampaignTimer.tsx": $$$$$$24,
-    "deco-sites/persono/sections/Miscellaneous/CookieConsent.tsx": $$$$$$25,
-    "deco-sites/persono/sections/Newsletter/Newsletter.tsx": $$$$$$26,
-    "deco-sites/persono/sections/Product/Benefits.tsx": $$$$$$27,
-    "deco-sites/persono/sections/Product/ImageGalleryFrontBack.tsx": $$$$$$28,
-    "deco-sites/persono/sections/Product/ImageGallerySlider.tsx": $$$$$$29,
-    "deco-sites/persono/sections/Product/NotFound.tsx": $$$$$$30,
-    "deco-sites/persono/sections/Product/NotFoundChallenge.tsx": $$$$$$31,
+    "deco-sites/persono/sections/Gallery.tsx": $$$$$$10,
+    "deco-sites/persono/sections/Header/Header.tsx": $$$$$$11,
+    "deco-sites/persono/sections/Images/BannerGrid.tsx": $$$$$$12,
+    "deco-sites/persono/sections/Images/Carousel.tsx": $$$$$$13,
+    "deco-sites/persono/sections/Images/FeatureBlogArticle.tsx": $$$$$$14,
+    "deco-sites/persono/sections/Images/ImageGallery.tsx": $$$$$$15,
+    "deco-sites/persono/sections/Instagram/Instagram.tsx": $$$$$$16,
+    "deco-sites/persono/sections/Layout/Container.tsx": $$$$$$17,
+    "deco-sites/persono/sections/Layout/Flex.tsx": $$$$$$18,
+    "deco-sites/persono/sections/Layout/Grid.tsx": $$$$$$19,
+    "deco-sites/persono/sections/Layout/GridItem.tsx": $$$$$$20,
+    "deco-sites/persono/sections/Links/LinkTree.tsx": $$$$$$21,
+    "deco-sites/persono/sections/Links/Shortcuts.tsx": $$$$$$22,
+    "deco-sites/persono/sections/Miscellaneous/CampaignTimer.tsx": $$$$$$23,
+    "deco-sites/persono/sections/Miscellaneous/CookieConsent.tsx": $$$$$$24,
+    "deco-sites/persono/sections/Newsletter/Newsletter.tsx": $$$$$$25,
+    "deco-sites/persono/sections/Product/Benefits.tsx": $$$$$$26,
+    "deco-sites/persono/sections/Product/ImageGalleryFrontBack.tsx": $$$$$$27,
+    "deco-sites/persono/sections/Product/ImageGallerySlider.tsx": $$$$$$28,
+    "deco-sites/persono/sections/Product/NotFound.tsx": $$$$$$29,
+    "deco-sites/persono/sections/Product/NotFoundChallenge.tsx": $$$$$$30,
+    "deco-sites/persono/sections/Product/PdcGallery.tsx": $$$$$$31,
     "deco-sites/persono/sections/Product/ProductInfo.tsx": $$$$$$32,
     "deco-sites/persono/sections/Product/ProductShelf.tsx": $$$$$$33,
     "deco-sites/persono/sections/Product/ProductShelfTabbed.tsx": $$$$$$34,
