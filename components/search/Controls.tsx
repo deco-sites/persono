@@ -8,14 +8,16 @@ import { useSignal } from "@preact/signals";
 import type { ProductListingPage } from "apps/commerce/types.ts";
 import { Color } from "deco-sites/persono/loaders/Layouts/Colors.tsx";
 
-export type Props = Pick<
-  ProductListingPage,
-  "filters" | "breadcrumb" | "sortOptions"
-> & {
-  displayFilter?: boolean;
-  productsQtt?: number;
-  colors: Color[];
-};
+export type Props =
+  & Pick<
+    ProductListingPage,
+    "filters" | "breadcrumb" | "sortOptions"
+  >
+  & {
+    displayFilter?: boolean;
+    productsQtt?: number;
+    colors: Color[];
+  };
 
 function SearchControls({
   filters,

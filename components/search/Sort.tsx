@@ -29,8 +29,8 @@ const applySort = ({ value }: { value: string }) => {
   }
 
   const newQueryString = urlSearchParams.toString();
-  window.location.href =
-    base.href + (newQueryString ? `?${newQueryString}` : "");
+  window.location.href = base.href +
+    (newQueryString ? `?${newQueryString}` : "");
 };
 
 export type Props = Pick<ProductListingPage, "sortOptions">;
@@ -77,7 +77,7 @@ function SortComponent({ sortOptions, sort }: SortProps) {
             value,
             label:
               portugueseMappings[label as keyof typeof portugueseMappings] ??
-              label,
+                label,
           }))
           .filter(({ label }) => label)
           .map(({ value, label }) => {
