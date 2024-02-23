@@ -58,9 +58,10 @@ import * as $$$$$$32 from "./sections/Product/ProductShelf.tsx";
 import * as $$$$$$33 from "./sections/Product/ProductShelfTabbed.tsx";
 import * as $$$$$$34 from "./sections/Product/SearchResult.tsx";
 import * as $$$$$$35 from "./sections/Product/Wishlist.tsx";
-import * as $$$$$$36 from "./sections/Social/InstagramPosts.tsx";
-import * as $$$$$$37 from "./sections/Social/WhatsApp.tsx";
-import * as $$$$$$38 from "./sections/Theme/Theme.tsx";
+import * as $$$$$$36 from "./sections/productgallery/ProductGallery.tsx";
+import * as $$$$$$37 from "./sections/Social/InstagramPosts.tsx";
+import * as $$$$$$38 from "./sections/Social/WhatsApp.tsx";
+import * as $$$$$$39 from "./sections/Theme/Theme.tsx";
 import * as $$$$$$$$$$$0 from "./apps/decohub.ts";
 import * as $$$$$$$$$$$1 from "./apps/site.ts";
 
@@ -124,9 +125,10 @@ const manifest = {
     "deco-sites/persono/sections/Product/ProductShelfTabbed.tsx": $$$$$$33,
     "deco-sites/persono/sections/Product/SearchResult.tsx": $$$$$$34,
     "deco-sites/persono/sections/Product/Wishlist.tsx": $$$$$$35,
-    "deco-sites/persono/sections/Social/InstagramPosts.tsx": $$$$$$36,
-    "deco-sites/persono/sections/Social/WhatsApp.tsx": $$$$$$37,
-    "deco-sites/persono/sections/Theme/Theme.tsx": $$$$$$38,
+    "deco-sites/persono/sections/productgallery/ProductGallery.tsx": $$$$$$36,
+    "deco-sites/persono/sections/Social/InstagramPosts.tsx": $$$$$$37,
+    "deco-sites/persono/sections/Social/WhatsApp.tsx": $$$$$$38,
+    "deco-sites/persono/sections/Theme/Theme.tsx": $$$$$$39,
   },
   "apps": {
     "deco-sites/persono/apps/decohub.ts": $$$$$$$$$$$0,
