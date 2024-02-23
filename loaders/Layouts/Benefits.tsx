@@ -1,9 +1,12 @@
 import { ImageWidget } from "apps/admin/widgets.ts";
 
 export interface Benefits {
+  customAttribute: string | undefined;
   icon: ImageWidget;
   label: string;
   description: string;
+  descriptionHome?: string;
+  showInHome?: boolean;
 }
 
 interface Props {

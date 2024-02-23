@@ -1253,3 +1253,39 @@ export interface AutoComplete {
 export interface Term {
   term: string;
 }
+
+export interface SkuSubscribe {
+  data: SkuSubscribeData;
+}
+
+export interface SkuSubscribeData {
+  id: string;
+  sku: string;
+  email: string;
+  group: string;
+  site: string;
+  updatedAt: string;
+  createdAt: string;
+}
+
+export interface Newsleter {
+  data: NewsletterData;
+}
+
+export interface NewsletterData {
+  id: string;
+  email: string;
+  newsletterCouponCode: string;
+}
+
+export interface VMFilters {
+  /**
+   * @title Tipo
+   * @example category
+   */
+  type: string;
+  /**
+   * @title Slugs do filtro
+   */
+  slugs: string[];
+}

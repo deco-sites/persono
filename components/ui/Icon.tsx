@@ -44,7 +44,12 @@ export type AvailableIcons =
   | "XMark"
   | "PlusSign"
   | "MinusSign"
-  | "Zoom";
+  | "Zoom"
+  | "MagnifyingGlassFound"
+  | "ArrowUp"
+  | "Cloud"
+  | "Zoom"
+  | "Check";
 
 interface Props extends JSX.SVGAttributes<SVGSVGElement> {
   /**
@@ -56,9 +61,14 @@ interface Props extends JSX.SVGAttributes<SVGSVGElement> {
   size?: number;
 }
 
-function Icon(
-  { id, strokeWidth = 16, size, width, height, ...otherProps }: Props,
-) {
+function Icon({
+  id,
+  strokeWidth = 16,
+  size,
+  width,
+  height,
+  ...otherProps
+}: Props) {
   return (
     <svg
       {...otherProps}
