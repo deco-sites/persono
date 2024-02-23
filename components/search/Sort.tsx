@@ -52,12 +52,12 @@ function SortComponent({ sortOptions, sort }: SortProps) {
 
   return (
     <details class="dropdown">
-      <summary class="flex items-center justify-between btn px-0 shadow-none bg-transparent border-none hover:bg-transparent">
+      <summary class="flex items-center justify-between px-0 shadow-none bg-transparent font-bold gap-2 cursor-pointer border-none hover:bg-transparent text-md sm:text-sm">
         {selectedItem ?? "Ordenar"}{" "}
-        <Icon id="ChevronDown" width={22} height={22} strokeWidth={1} />
+        <Icon id="ChevronDown" width={20} height={20} strokeWidth={1} />
       </summary>
       <ul
-        class="absolute flex flex-col z-10 mt-1 right-0 rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+        class="absolute sm:min-w-[8rem] min-w-[10rem] flex flex-col z-10 mt-1 right-0 rounded-md bg-white py-1 text-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
         tabIndex={-1}
         role="listbox"
         aria-labelledby="listbox-label"
@@ -68,7 +68,7 @@ function SortComponent({ sortOptions, sort }: SortProps) {
             value,
             label:
               portugueseMappings[label as keyof typeof portugueseMappings] ??
-                label,
+              label,
           }))
           .filter(({ label }) => label)
           .map(({ value, label }) => {
