@@ -56,6 +56,10 @@ const loader = async (
   const url = new URL(req.url);
   const headers = getHeaders(req, apiKey);
   const page = Number(url.searchParams.get("page") ?? 1);
+  const vmConfig = {
+    ...config,
+    vmItemsPerPage: vm?.take ?? config.vmItemsPerPage,
+  };
 
   const vmProps = vm?.path
     ? vm!.filters?.reduce<VmProps>((acc, f) => {
@@ -68,7 +72,7 @@ const loader = async (
         sort: acc.sort,
       };
     }, {
-      path: [formatBaseVmPath(vm?.path ?? url.pathname)],
+      path: [formatBaseVmPath(vm!.path)],
       searchParams: [],
       sort: vm.sort === "recomendations" ? undefined : vm.sort,
     })
@@ -86,7 +90,7 @@ const loader = async (
           f: vmProps?.searchParams.join("_") ?? undefined,
           page,
           sort: vmProps?.sort,
-          take: vm?.take,
+          take: vm?.take ?? config.vmItemsPerPage,
         },
         {
           headers: headers,
@@ -98,17 +102,18 @@ const loader = async (
       return toProductListingPage({
         vmDetails: data as VMDetails,
         url,
-        vmConfig: {
-          ...config,
-          vmItemsPerPage: vm?.take ?? config.vmItemsPerPage,
-        },
+        vmConfig,
         imageBaseUrl,
       });
     }
     const redirectPath = data as VMDetailsRedirect;
     const redirectedResponse = await ammoc
       ["GET /api/product-catalog/resolve-route"](
-        { path: redirectPath.location, page, take: vm?.take },
+        {
+          path: redirectPath.location,
+          page,
+          take: vm?.take ?? config.vmItemsPerPage,
+        },
         {
           headers: headers,
         },
@@ -117,10 +122,7 @@ const loader = async (
     return toProductListingPage({
       vmDetails: await redirectedResponse.json() as VMDetails,
       url,
-      vmConfig: {
-        ...config,
-        vmItemsPerPage: vm?.take ?? config.vmItemsPerPage,
-      },
+      vmConfig,
       imageBaseUrl,
     });
   } catch (error) {
