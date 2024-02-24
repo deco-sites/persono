@@ -43,6 +43,7 @@ function Header({
   fastLinks,
   device,
   cart,
+  socialLinks,
 }: SectionProps<typeof loader>) {
   const platform = usePlatform();
   const items = navItems ?? [];
@@ -62,7 +63,7 @@ function Header({
         </div>
       </header>
       <Drawers
-        menu={{ items, fastLinks }}
+        menu={{ items, fastLinks, socialItems: socialLinks }}
         searchbar={searchbar}
         cart={cart}
         platform={platform}
