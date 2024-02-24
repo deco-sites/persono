@@ -1,57 +1,69 @@
 import Header from "$store/components/ui/SectionHeader.tsx";
 import type { ImageWidget } from "apps/admin/widgets.ts";
 
-export interface Props {
-  title?: string;
-
-  layout: {
-    image?: ImageWidget;
-    description?: string;
-    label?: string;
-    price?: string;
-    pricedescription?: string;
-  };
+export interface Product {
+  image?: ImageWidget;
+  label?: string;
+  description?: string;
+  price?: string;
+  pricedescription?: string;
 }
 
-function PdcGallery(
-  { title, layout }: Props,
-) {
+export interface Props {
+  header?: {
+    title?: string;
+  };
 
+  layout: Product[];
+}
+
+function PdcGallery(props: Props) {
   const {
-    image,
-    description,
-    label,
-    price,
-    pricedescription,
-  } = layout;
+    header = {
+      title: "",
+    },
+    layout = [
+      {
+        image: "",
+        label: "",
+        description: "",
+        price: "",
+        pricedescription: "",
+      },
+    ],
+  } = props;
 
   return (
-    <div class="container h-auto sm:h-[305px] w-full flex flex-col items-center">
+    <div class="container h-auto w-full flex flex-col gap-10">
       <Header
-        title={title}
+        title={header.title}
+        alignment="center"
       />
+      <div class="w-full h-auto justify-center">
+        {layout.map((
+          { image, description, label, price, pricedescription },
+        ) => (
+          <div class="flex w-full h-auto md:w-1/2">
+            <img
+              src={image}
+              class="w-[60%] h-full object-cover rounded-l-3xl"
+              height={307}
+              width={307}
+            />
 
-      <div class="w-full h-auto rounded-[40px]">
-        <div class="flex w-full h-auto">
-          <img
-            src={image}
-            class="w-2/4 h-full object-cover"
-            height={307}
-            width={307}
-          />
+            <div class="flex justify-between items-center flex-col bg-black h-auto w-1/2 px-6 py-6 sm:py-12 rounded-r-3xl">
+              <h3 class="text-white text-base sm:text-2xl font-medium w-full">
+                {label}
+              </h3>
 
-          <div class="flex justify-between items-center flex-col bg-black h-auto w-1/2 px-6 py-6">
-            <h3 class="text-white text-base font-medium">
-              {description}
-            </h3>
-
-            <div class="flex flex-col h-auto w-full text-white">
-              <p class="text-xs">{label}</p>
-              <p class="font-medium text-base">{price}</p>
-              <p class="text-xs">{pricedescription}</p>
+              <div class="flex flex-col h-auto w-full text-white">
+                <p class="text-xs">{description}</p>
+                <p class="font-medium text-base sm:text-2xl">{price}</p>
+                <p class="text-xs">{pricedescription}</p>
+              </div>
             </div>
           </div>
-        </div>
+        ))}
       </div>
     </div>
   );
