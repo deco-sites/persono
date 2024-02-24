@@ -34,7 +34,7 @@ function PdcGallery(props: Props) {
   } = props;
 
   return (
-    <div class="container flex flex-col h-auto w-full px-6 gap-10">
+    <div class="container flex flex-col h-auto w-full pt-10 px-6 sm:px-0">
       <Header
         title={header.title}
         alignment="center"
@@ -51,7 +51,7 @@ function PdcGallery(props: Props) {
               width={307}
             />
 
-            <div class="flex justify-between items-center flex-col bg-black h-auto w-[40%] px-6 py-12 rounded-r-[40px]">
+            <div class="flex justify-between items-center flex-col bg-black h-auto w-[40%] px-6 py-6 sm:py-12 rounded-r-[40px]">
               <h3 class="text-white text-base sm:text-2xl font-medium w-full">
                 {label}
               </h3>
