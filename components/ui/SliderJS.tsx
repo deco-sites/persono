@@ -5,8 +5,6 @@ export interface Props {
   scroll?: "smooth" | "auto";
   interval?: number;
   infinite?: boolean;
-  nextButtonId?: string;
-  prevButtonId?: string;
 }
 
 const ATTRIBUTES = {
@@ -48,23 +46,12 @@ const isHTMLElement = (x: Element): x is HTMLElement =>
   // deno-lint-ignore no-explicit-any
   typeof (x as any).offsetLeft === "number";
 
-const setup = ({
-  rootId,
-  scroll,
-  interval,
-  infinite,
-  nextButtonId,
-  prevButtonId,
-}: Props) => {
+const setup = ({ rootId, scroll, interval, infinite }: Props) => {
   const root = document.getElementById(rootId);
   const slider = root?.querySelector(`[${ATTRIBUTES["data-slider"]}]`);
   const items = root?.querySelectorAll(`[${ATTRIBUTES["data-slider-item"]}]`);
-  const prev = prevButtonId
-    ? document?.getElementById(prevButtonId)
-    : root?.querySelector(`[${ATTRIBUTES['data-slide="prev"']}]`);
-  const next = nextButtonId
-    ? document?.getElementById(nextButtonId)
-    : root?.querySelector(`[${ATTRIBUTES['data-slide="next"']}]`);
+  const prev = root?.querySelector(`[${ATTRIBUTES['data-slide="prev"']}]`);
+  const next = root?.querySelector(`[${ATTRIBUTES['data-slide="next"']}]`);
   const dots = root?.querySelectorAll(`[${ATTRIBUTES["data-dot"]}]`);
 
   if (!root || !slider || !items || items.length === 0) {
@@ -199,8 +186,6 @@ function Slider({
   scroll = "smooth",
   interval,
   infinite = false,
-  nextButtonId,
-  prevButtonId,
 }: Props) {
   useEffect(
     () =>
@@ -209,8 +194,6 @@ function Slider({
         scroll,
         interval,
         infinite,
-        nextButtonId,
-        prevButtonId,
       }),
     [rootId, scroll, interval, infinite],
   );
