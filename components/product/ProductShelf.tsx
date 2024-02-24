@@ -12,11 +12,9 @@ import { SectionProps } from "deco/mod.ts";
 import { FnCustomContext } from "deco-sites/persono/packs/types.ts";
 
 export interface Props {
-  products: Product[] | null;
   title?: { desktop: string; mobile?: string };
-
+  products: Product[] | null;
   /** @description used for analytics event */
-
   itemListName?: string;
   cardLayout?: CardLayout;
   mobileTopNavigation?: boolean;
