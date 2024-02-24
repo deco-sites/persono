@@ -83,7 +83,8 @@ export default function GallerySlider(props: SectionProps<typeof loader>) {
               data-dot={index}
               aria-label={`go to slider item ${index}`}
               class="w-2 h-2 checked:bg-primary active:bg-primary rounded-full block disabled:bg-primary bg-neutral "
-            ></button>
+            >
+            </button>
           </li>
         ))}
       </ul>

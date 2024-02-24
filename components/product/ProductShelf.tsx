@@ -45,20 +45,22 @@ function ProductShelf({
 
   return (
     <div class="w-full container">
-      {arrowsvVisibleTop && currentTitle ? (
-        <HeaderWithArrows
-          title={currentTitle}
-          prevButtonId={prevButtonId}
-          nextButtonId={nextButtonId}
-        />
-      ) : (
-        currentTitle && (
-          <Header
+      {arrowsvVisibleTop && currentTitle
+        ? (
+          <HeaderWithArrows
             title={currentTitle}
-            alignment={isMobile ? "left" : "center"}
+            prevButtonId={prevButtonId}
+            nextButtonId={nextButtonId}
           />
         )
-      )}
+        : (
+          currentTitle && (
+            <Header
+              title={currentTitle}
+              alignment={isMobile ? "left" : "center"}
+            />
+          )
+        )}
 
       <div id={id} class="container grid grid-cols-[48px_1fr_48px] pb-28">
         <Slider
