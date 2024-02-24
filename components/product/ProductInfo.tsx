@@ -80,7 +80,6 @@ function ProductInfo({
     isVariantOf
   );
 
-  const skus: string[] = [""];
   const productsNotAvailable: string[] = [""];
 
   hasVariant.map((p) => {

@@ -89,9 +89,9 @@ function ProductShelf({
             class="justify-center btn btn-circle border border-neutral  bg-white disabled:border-neutral disabled:bg-white  disable:bg-white z-10 absolute left-[-18px] top-[calc(50%-18px)] hidden sm:flex rounded-full cursor-pointer"
           >
             <Icon
-              class="text-primary"
+              class="text-primary rotate-180"
               size={20}
-              id="ChevronLeft"
+              id="ChevronRight"
               strokeWidth={2}
             />
           </Slider.PrevButton>
