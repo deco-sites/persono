@@ -46,18 +46,20 @@ export const NotFound = ({ queryTerm, device, notFoundSettings }: Props) => {
       <span class="font-medium text-center text-2xl mt-4 text-black">
         {currentTitle}
       </span>
-      {isMobile || queryTerm ? (
-        <span class="font-normal text-base text-center text-black mb-24">
-          {currentSubtitle}
-        </span>
-      ) : (
-        <a
-          href="/"
-          class="btn no-animation text-md font-bold text-white bg-primary mt-6 mb-24"
-        >
-          {pageSettings?.redirectButtonText}
-        </a>
-      )}
+      {isMobile || queryTerm
+        ? (
+          <span class="font-normal text-base text-center text-black mb-24">
+            {currentSubtitle}
+          </span>
+        )
+        : (
+          <a
+            href="/"
+            class="btn no-animation text-md font-bold text-white bg-primary mt-6 mb-24"
+          >
+            {pageSettings?.redirectButtonText}
+          </a>
+        )}
 
       {children && <children.Component {...children.props} />}
     </div>

@@ -235,10 +235,8 @@ function Result({
                   ? "cursor-default opacity-50"
                   : ""
               }`}
-              disabled={
-                pageInfo.nextPage?.length == 0 ||
-                pageInfo.nextPage?.length == undefined
-              }
+              disabled={pageInfo.nextPage?.length == 0 ||
+                pageInfo.nextPage?.length == undefined}
             >
               <Icon id="ChevronRight" size={14} strokeWidth={3} />
             </a>

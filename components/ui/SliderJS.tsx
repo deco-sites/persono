@@ -57,7 +57,7 @@ const setup = ({ rootId, scroll, interval, infinite }: Props) => {
   if (!root || !slider || !items || items.length === 0) {
     console.warn(
       "Missing necessary slider attributes. It will not work as intended. Necessary elements:",
-      { root, slider, items, rootId }
+      { root, slider, items, rootId },
     );
 
     return;
@@ -86,7 +86,7 @@ const setup = ({ rootId, scroll, interval, infinite }: Props) => {
 
     if (!isHTMLElement(item)) {
       console.warn(
-        `Element at index ${index} is not an html element. Skipping carousel`
+        `Element at index ${index} is not an html element. Skipping carousel`,
       );
 
       return;
@@ -108,7 +108,7 @@ const setup = ({ rootId, scroll, interval, infinite }: Props) => {
     const pageIndex = Math.floor(indices[indices.length - 1] / itemsPerPage);
 
     goToItem(
-      isShowingFirst ? items.length - 1 : (pageIndex - 1) * itemsPerPage
+      isShowingFirst ? items.length - 1 : (pageIndex - 1) * itemsPerPage,
     );
   };
 
@@ -152,7 +152,7 @@ const setup = ({ rootId, scroll, interval, infinite }: Props) => {
           }
         }
       }),
-    { threshold: THRESHOLD, root: slider }
+    { threshold: THRESHOLD, root: slider },
   );
 
   items.forEach((item) => observer.observe(item));
@@ -195,7 +195,7 @@ function Slider({
         interval,
         infinite,
       }),
-    [rootId, scroll, interval, infinite]
+    [rootId, scroll, interval, infinite],
   );
 
   return <div data-slider-controller-js />;
