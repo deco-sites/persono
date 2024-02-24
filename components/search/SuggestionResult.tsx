@@ -57,7 +57,7 @@ export function SuggestionResult({
           {searches.map(({ term }) => (
             <li>
               <a
-                href={`${action}?q=${term}`}
+                href={`${action}?query=${term}`}
                 class="flex gap-4 items-center link"
               >
                 <span>

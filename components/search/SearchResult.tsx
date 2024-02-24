@@ -1,5 +1,5 @@
 import { SendEventOnView } from "$store/components/Analytics.tsx";
-import { Resolved, type SectionProps } from "deco/mod.ts";
+import { type SectionProps } from "deco/mod.ts";
 import { FnContext } from "deco/types.ts";
 import Filters from "$store/components/search/Filters.tsx";
 import Icon from "$store/components/ui/Icon.tsx";
@@ -14,7 +14,6 @@ import { mapProductToAnalyticsItem } from "apps/commerce/utils/productToAnalytic
 import ProductGallery, { Columns } from "../product/ProductGallery.tsx";
 import { Layout as CardLayout } from "deco-sites/persono/components/product/ProductCard/index.tsx";
 import { Color } from "deco-sites/persono/loaders/Layouts/Colors.tsx";
-import { VMFilters } from "deco-sites/persono/packs/types.ts";
 
 import {
   type EditableProps as NotFoundEditableProps,
@@ -41,7 +40,6 @@ export interface Props {
   /** @title Integration */
   page: ProductListingPage | null;
   layout?: Layout;
-  VMFilters: Resolved<VMFilters>;
   notFoundSettings?: NotFoundEditableProps;
 }
 
@@ -49,8 +47,6 @@ function Result({
   page,
   layout,
   colors,
-  notFoundSettings,
-  device,
   queryTerm,
 }: Omit<Props, "page"> & { page: ProductListingPage } & {
   queryTerm: string | null;
@@ -60,22 +56,17 @@ function Result({
   const perPage = pageInfo.recordPerPage || products.length;
   const pageRegex = /page=(\d+)/;
 
-  if (!pageInfo.records) {
-    return (
-      <NotFound
-        notFoundSettings={notFoundSettings}
-        device={device}
-        queryTerm={queryTerm}
-      />
-    );
-  }
+  products.map((p) => console.log(p.name));
+  console.log({ pageinfor: pageInfo });
 
   const id = useId();
 
   const zeroIndexedOffsetPage = pageInfo.currentPage;
   const offset = zeroIndexedOffsetPage * perPage;
 
-  const tabsQtt = Math.ceil(pageInfo.records / perPage);
+  const totalProductsQtt = pageInfo.records ?? products.length;
+
+  const tabsQtt = Math.ceil(totalProductsQtt / perPage);
 
   const appliedFilters: { filters: FilterToggleValue; type: string }[] = [];
 
@@ -90,6 +81,14 @@ function Result({
   return (
     <>
       <div class="container px-4 md:px-4 sm:px-0">
+        <p
+          class={`py-4 text-sm flex items-center gap-2 ${
+            filters.length == 0 ? "" : "hidden"
+          }`}
+        >
+          Resultados de pesquisa para "{queryTerm}"{" "}
+          <span class="text-gray-600">({products.length} produtos)</span>
+        </p>
         <SearchControls
           colors={colors}
           productsQtt={pageInfo.records}
@@ -97,6 +96,8 @@ function Result({
           filters={filters}
           breadcrumb={breadcrumb}
           displayFilter={layout?.variant === "drawer"}
+          notDisplay={filters.length == 0 &&
+            breadcrumb?.itemListElement.length == 0}
         />
         <ActiveFilterTag appliedFilters={appliedFilters} />
 
@@ -124,11 +125,13 @@ function Result({
               href={pageInfo.previousPage ?? "#"}
               class={`flex items-center justify-center w-8 h-8 border rounded-full text-primary ${
                 !pageInfo.previousPage?.length ||
-                pageInfo.previousPage?.length == 0
+                  pageInfo.previousPage?.length == 0 ||
+                  pageInfo.currentPage == 1
                   ? "cursor-default opacity-50"
                   : ""
               }`}
-              disabled={pageInfo.nextPage?.length == 0}
+              disabled={pageInfo.nextPage?.length == 0 ||
+                pageInfo.currentPage == 1}
             >
               <Icon id="ChevronLeft" size={14} strokeWidth={3} />
             </a>
@@ -137,22 +140,19 @@ function Result({
                 <a
                   aria-label={`1 page link`}
                   rel={`1`}
-                  href={
-                    pageInfo.nextPage
-                      ? pageInfo.nextPage.replace(pageRegex, `page=1`)
-                      : pageInfo.previousPage
-                      ? pageInfo.previousPage.replace(pageRegex, `page=1`)
-                      : ""
-                  }
+                  href={pageInfo.nextPage
+                    ? pageInfo.nextPage.replace(pageRegex, `page=1`)
+                    : pageInfo.previousPage
+                    ? pageInfo.previousPage.replace(pageRegex, `page=1`)
+                    : ""}
                   className={`flex justify-center items-center w-8 h-8 font-bold ${
-                    pageInfo.currentPage === 1
+                    pageInfo.currentPage === 1 || pageInfo.currentPage == 0
                       ? "bg-primary text-base-100 rounded-full"
                       : "text-primary"
                   }`}
-                  disabled={
-                    pageInfo.previousPage?.length == 0 ||
-                    pageInfo.previousPage?.length == undefined
-                  }
+                  disabled={pageInfo.previousPage?.length == 0 ||
+                    pageInfo.previousPage?.length == undefined ||
+                    pageInfo.currentPage == 1}
                 >
                   {1}
                 </a>
@@ -165,32 +165,33 @@ function Result({
 
                 const shouldDisplay = pageNumber >= inicio && pageNumber <= fim;
 
-                return shouldDisplay ? (
-                  <a
-                    aria-label={`${index} page link`}
-                    rel={`${pageNumber}`}
-                    href={
-                      pageInfo.nextPage
+                return shouldDisplay
+                  ? (
+                    <a
+                      aria-label={`${index} page link`}
+                      rel={`${pageNumber}`}
+                      href={pageInfo.nextPage
                         ? pageInfo.nextPage.replace(
-                            pageRegex,
-                            `page=${pageNumber}`
-                          )
+                          pageRegex,
+                          `page=${pageNumber}`,
+                        )
                         : pageInfo.previousPage
                         ? pageInfo.previousPage.replace(
-                            pageRegex,
-                            `page=${pageNumber}`
-                          )
-                        : ""
-                    }
-                    className={`flex justify-center items-center w-8 h-8 font-bold ${
-                      pageInfo.currentPage === index
-                        ? "bg-primary text-base-100 rounded-full"
-                        : "text-primary"
-                    }`}
-                  >
-                    {pageNumber}
-                  </a>
-                ) : null;
+                          pageRegex,
+                          `page=${pageNumber}`,
+                        )
+                        : ""}
+                      class={`flex justify-center items-center w-8 h-8 font-bold ${
+                        pageInfo.currentPage == index ||
+                          (pageInfo.currentPage == 1 && index == 0)
+                          ? "bg-primary text-base-100 rounded-full"
+                          : "text-primary"
+                      }`}
+                    >
+                      {pageNumber}
+                    </a>
+                  )
+                  : null;
               })}
             </div>
 
@@ -201,21 +202,20 @@ function Result({
                   <a
                     aria-label={`${index} page link`}
                     rel={`${pageNumber}`}
-                    href={
-                      pageInfo.nextPage
-                        ? pageInfo.nextPage.replace(
-                            pageRegex,
-                            `page=${pageNumber}`
-                          )
-                        : pageInfo.previousPage
-                        ? pageInfo.previousPage.replace(
-                            pageRegex,
-                            `page=${pageNumber}`
-                          )
-                        : ""
-                    }
+                    href={pageInfo.nextPage
+                      ? pageInfo.nextPage.replace(
+                        pageRegex,
+                        `page=${pageNumber}`,
+                      )
+                      : pageInfo.previousPage
+                      ? pageInfo.previousPage.replace(
+                        pageRegex,
+                        `page=${pageNumber}`,
+                      )
+                      : ""}
                     class={`flex justify-center items-center w-8 h-8 font-bold ${
-                      pageInfo.currentPage == index
+                      pageInfo.currentPage == index ||
+                        (pageInfo.currentPage == 1 && index == 0)
                         ? "bg-primary text-base-100 rounded-full"
                         : "text-primary"
                     }`}
