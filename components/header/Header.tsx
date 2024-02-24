@@ -74,6 +74,11 @@ function Header({
 export const loader = (props: Props, _req: Request, ctx: FnCustomContext) => {
   const device = ctx.device;
 
+  if (props.cart && props.cart.freeShipping) {
+    props.cart.freeShipping.target =
+      ctx.config?.features?.freeShippingCampaigns[0].minBagValue;
+  }
+
   return {
     ...props,
     device: device || "desktop",
