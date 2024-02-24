@@ -18,9 +18,9 @@ function transformColors(inputColors: Color[] | undefined) {
 
 interface Props {
   variant?: "active" | "disabled" | "default";
-  name?: string;
   content: string;
   color?: Color[];
+  tipOnTop?: boolean;
 }
 
 const variants = {
@@ -31,7 +31,9 @@ const variants = {
   default: "border border-neutral hover:border-primary",
 };
 
-function AvatarColor({ content, variant = "default", color }: Props) {
+function AvatarColor(
+  { tipOnTop = false, content, variant = "default", color }: Props,
+) {
   const transformedColors = transformColors(color);
 
   return (
@@ -54,7 +56,11 @@ function AvatarColor({ content, variant = "default", color }: Props) {
             : null,
         }}
       >
-        <span class="rounded shadow border top-9 -right-3 absolute px-2 py-1 text-base-content bg-white hidden group-hover:flex">
+        <span
+          class={`rounded shadow border ${
+            tipOnTop ? "bottom-9" : "top-9"
+          } -right-3 absolute px-2 py-1 text-base-content bg-white hidden group-hover:flex`}
+        >
           {content}
         </span>
       </div>

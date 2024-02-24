@@ -21,7 +21,7 @@ export default function GallerySlider(props: SectionProps<typeof loader>) {
   const id = useId();
 
   if (props.page === null) {
-    throw new Error("Missing Product Details Page Info");
+    return null;
   }
 
   const {

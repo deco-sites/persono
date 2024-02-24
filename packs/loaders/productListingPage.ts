@@ -1,6 +1,6 @@
 import { AppContext } from "$store/apps/site.ts";
 import type { ProductListingPage } from "apps/commerce/types.ts";
-import { VMDetails, VMDetailsRedirect } from "$store/packs/types.ts";
+import { VMDetails, VMDetailsRedirect, VMFilters } from "$store/packs/types.ts";
 import { getHeaders } from "$store/packs/utils/headers.ts";
 import { toProductListingPage } from "$store/packs/utils/transform.ts";
 import { typeChecker } from "$store/packs/utils/utils.ts";
@@ -24,7 +24,7 @@ interface VM {
    * @title Filtros
    * @description Filtros da VM
    */
-  filters?: Filters[];
+  filters?: VMFilters[];
   /**
    * @title Ordernar por
    */
@@ -34,18 +34,6 @@ interface VM {
    * @description Quantidade máxima de produtos retornados
    */
   take?: number;
-}
-
-interface Filters {
-  /**
-   * @title Tipo
-   * @example category
-   */
-  type: string;
-  /**
-   * @title Slugs do filtro
-   */
-  slugs: string[];
 }
 
 interface VmProps {
@@ -68,6 +56,10 @@ const loader = async (
   const url = new URL(req.url);
   const headers = getHeaders(req, apiKey);
   const page = Number(url.searchParams.get("page") ?? 1);
+  const vmConfig = {
+    ...config,
+    vmItemsPerPage: vm?.take ?? config.vmItemsPerPage,
+  };
 
   const vmProps = vm?.path
     ? vm!.filters?.reduce<VmProps>((acc, f) => {
@@ -80,7 +72,7 @@ const loader = async (
         sort: acc.sort,
       };
     }, {
-      path: [formatBaseVmPath(vm?.path ?? url.pathname)],
+      path: [formatBaseVmPath(vm!.path)],
       searchParams: [],
       sort: vm.sort === "recomendations" ? undefined : vm.sort,
     })
@@ -98,7 +90,7 @@ const loader = async (
           f: vmProps?.searchParams.join("_") ?? undefined,
           page,
           sort: vmProps?.sort,
-          take: vm?.take,
+          take: vm?.take ?? config.vmItemsPerPage,
         },
         {
           headers: headers,
@@ -110,17 +102,18 @@ const loader = async (
       return toProductListingPage({
         vmDetails: data as VMDetails,
         url,
-        vmConfig: {
-          ...config,
-          vmItemsPerPage: vm?.take ?? config.vmItemsPerPage,
-        },
+        vmConfig,
         imageBaseUrl,
       });
     }
     const redirectPath = data as VMDetailsRedirect;
     const redirectedResponse = await ammoc
       ["GET /api/product-catalog/resolve-route"](
-        { path: redirectPath.location, page, take: vm?.take },
+        {
+          path: redirectPath.location,
+          page,
+          take: vm?.take ?? config.vmItemsPerPage,
+        },
         {
           headers: headers,
         },
@@ -129,10 +122,7 @@ const loader = async (
     return toProductListingPage({
       vmDetails: await redirectedResponse.json() as VMDetails,
       url,
-      vmConfig: {
-        ...config,
-        vmItemsPerPage: vm?.take ?? config.vmItemsPerPage,
-      },
+      vmConfig,
       imageBaseUrl,
     });
   } catch (error) {

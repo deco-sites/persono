@@ -14,10 +14,15 @@ import AddCartButton from "$store/islands/AddToCartButton/CartButton.tsx";
 import { Color } from "deco-sites/persono/loaders/Layouts/Colors.tsx";
 import { Size } from "deco-sites/persono/loaders/Layouts/Size.tsx";
 import { Benefits } from "../../loaders/Layouts/Benefits.tsx";
-import { Resolved } from "deco/mod.ts";
+import { Resolved, SectionProps } from "deco/mod.ts";
 import type { GroupedData } from "$store/sdk/useVariantPossiblities.ts";
 import { useVariantPossibilities } from "$store/sdk/useVariantPossiblities.ts";
 import { ShippingSimulation as ShippingSimulationLoader } from "deco-sites/persono/packs/types.ts";
+import {
+  type EditableProps as NotFoundProps,
+  NotFound,
+} from "deco-sites/persono/components/product/NotFound.tsx";
+import { FnContext } from "deco/types.ts";
 
 interface Props {
   colors: Color[];
@@ -25,13 +30,21 @@ interface Props {
   benefits: Benefits[];
   shippingSimulation: Resolved<ShippingSimulationLoader>;
   page: ProductDetailsPage | null;
+  notFoundSettings?: NotFoundProps;
 }
 
-function ProductInfo({ page, colors, sizes, benefits }: Props) {
+function ProductInfo({
+  page,
+  colors,
+  sizes,
+  benefits,
+  notFoundSettings,
+  device,
+}: SectionProps<typeof loader>) {
   const id = useId();
 
   if (page === null) {
-    throw new Error("Missing Product Details Page Info");
+    return <NotFound device={device} notFoundSettings={notFoundSettings} />;
   }
 
   const { breadcrumbList, product } = page;
@@ -67,7 +80,6 @@ function ProductInfo({ page, colors, sizes, benefits }: Props) {
     isVariantOf,
   );
 
-  const skus: string[] = [""];
   const productsNotAvailable: string[] = [""];
 
   hasVariant.map((p) => {
@@ -229,5 +241,13 @@ function ProductInfo({ page, colors, sizes, benefits }: Props) {
     </div>
   );
 }
+
+export const loader = (props: Props, _req: Request, ctx: FnContext) => {
+  const device = ctx.device;
+  return {
+    device,
+    ...props,
+  };
+};
 
 export default ProductInfo;
