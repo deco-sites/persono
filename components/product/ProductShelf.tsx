@@ -13,8 +13,7 @@ import { FnCustomContext } from "deco-sites/persono/packs/types.ts";
 
 export interface Props {
   products: Product[] | null;
-  mobileTitle?: string;
-  desktopTitle?: string;
+  title?: { desktop: string; mobile?: string };
 
   /** @description used for analytics event */
 
@@ -26,8 +25,7 @@ export interface Props {
 
 function ProductShelf({
   products,
-  desktopTitle,
-  mobileTitle,
+  title,
   device,
   itemListName,
   cardLayout,
@@ -38,8 +36,10 @@ function ProductShelf({
   const prevButtonId = useId();
   const nextButtonId = useId();
   const arrowsvVisibleTop = mobileTopNavigation && device === "mobile";
+
+  const { desktop, mobile } = title ?? {};
   const isMobile = device === "mobile";
-  const currentTitle = isMobile ? mobileTitle : desktopTitle;
+  const currentTitle = isMobile ? mobile ?? desktop : desktop;
 
   if (!products || products.length === 0) {
     return null;
@@ -49,14 +49,14 @@ function ProductShelf({
     <div class="w-full container">
       {arrowsvVisibleTop && currentTitle ? (
         <HeaderWithArrows
-          title={isMobile ? mobileTitle : desktopTitle}
+          title={currentTitle}
           prevButtonId={prevButtonId}
           nextButtonId={nextButtonId}
         />
       ) : (
         currentTitle && (
           <Header
-            title={isMobile ? mobileTitle : desktopTitle}
+            title={currentTitle}
             alignment={isMobile ? "left" : "center"}
           />
         )
