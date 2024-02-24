@@ -39,14 +39,15 @@ interface Props {
 }
 
 function Flex({ layout, children }: Props) {
-  const items = !context.isDeploy && !children?.length
-    ? new Array(4).fill(0).map(() => <ItemPreview />)
-    : children;
+  const items =
+    !context.isDeploy && !children?.length
+      ? new Array(4).fill(0).map(() => <ItemPreview />)
+      : children;
 
   return (
     <div
       class={clx(
-        "flex",
+        "flex 2xl:justify-between",
         flex.gap.mobile[layout?.gap?.mobile ?? "4"],
         flex.gap.desktop[layout?.gap?.desktop ?? "8"],
         flex.direction.mobile[layout?.direction?.mobile ?? "col"],
@@ -55,7 +56,7 @@ function Flex({ layout, children }: Props) {
         flex.justify.desktop[layout?.justify?.desktop ?? "center"],
         flex.wrap.mobile[layout?.wrap?.mobile ?? "wrap"],
         flex.wrap.desktop[layout?.wrap?.desktop ?? "wrap"],
-        flex.container.desktop[layout?.container?.desktop ?? "none"],
+        flex.container.desktop[layout?.container?.desktop ?? "none"]
       )}
     >
       {items}

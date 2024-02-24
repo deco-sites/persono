@@ -14,10 +14,15 @@ import AddCartButton from "$store/islands/AddToCartButton/CartButton.tsx";
 import { Color } from "deco-sites/persono/loaders/Layouts/Colors.tsx";
 import { Size } from "deco-sites/persono/loaders/Layouts/Size.tsx";
 import { Benefits } from "../../loaders/Layouts/Benefits.tsx";
-import { Resolved } from "deco/mod.ts";
+import { Resolved, SectionProps } from "deco/mod.ts";
 import type { GroupedData } from "$store/sdk/useVariantPossiblities.ts";
 import { useVariantPossibilities } from "$store/sdk/useVariantPossiblities.ts";
 import { ShippingSimulation as ShippingSimulationLoader } from "deco-sites/persono/packs/types.ts";
+import {
+  NotFound,
+  type EditableProps as NotFoundProps,
+} from "deco-sites/persono/components/product/NotFound.tsx";
+import { FnContext } from "deco/types.ts";
 
 interface Props {
   colors: Color[];
@@ -25,13 +30,21 @@ interface Props {
   benefits: Benefits[];
   shippingSimulation: Resolved<ShippingSimulationLoader>;
   page: ProductDetailsPage | null;
+  notFoundSettings?: NotFoundProps;
 }
 
-function ProductInfo({ page, colors, sizes, benefits }: Props) {
+function ProductInfo({
+  page,
+  colors,
+  sizes,
+  benefits,
+  notFoundSettings,
+  device,
+}: SectionProps<typeof loader>) {
   const id = useId();
 
   if (page === null) {
-    throw new Error("Missing Product Details Page Info");
+    return <NotFound device={device} notFoundSettings={notFoundSettings} />;
   }
 
   const { breadcrumbList, product } = page;
@@ -56,15 +69,15 @@ function ProductInfo({ page, colors, sizes, benefits }: Props) {
     listPrice,
   });
 
-  const productBenefits = product.isVariantOf?.hasVariant[0].additionalProperty
-    ?.filter((p) => {
+  const productBenefits =
+    product.isVariantOf?.hasVariant[0].additionalProperty?.filter((p) => {
       if (p.identifier?.startsWith("CUSTOM")) return p.value;
     });
 
   const hasVariant = isVariantOf?.hasVariant ?? [];
   const possibilities: GroupedData = useVariantPossibilities(
     hasVariant,
-    isVariantOf,
+    isVariantOf
   );
 
   const productsNotAvailable: string[] = [""];
@@ -125,16 +138,16 @@ function ProductInfo({ page, colors, sizes, benefits }: Props) {
           productBenefits?.length == 0 ? "mb-5" : "mb-10"
         } flex flex-col`}
       >
-        {availability === "https://schema.org/InStock"
-          ? (
-            <>
-              <AddCartButton
-                eventParams={{ items: [eventItem] }}
-                sku={product.sku}
-              />
-            </>
-          )
-          : <OutOfStock sku={sku} />}
+        {availability === "https://schema.org/InStock" ? (
+          <>
+            <AddCartButton
+              eventParams={{ items: [eventItem] }}
+              sku={product.sku}
+            />
+          </>
+        ) : (
+          <OutOfStock sku={sku} />
+        )}
       </div>
       {/* Benefities */}
       <div class={`${productBenefits?.length == 0 ? "hidden" : ""}`}>
@@ -167,13 +180,11 @@ function ProductInfo({ page, colors, sizes, benefits }: Props) {
                   product?.isVariantOf?.hasVariant[0]?.additionalProperty.map(
                     (ad) =>
                       ad.propertyID == "TECNICALSPECIFICATION" &&
-                        !ad.description?.startsWith("CUSTOM_")
-                        ? (
-                          <p>
-                            {ad.description}:&ensp;{ad.value}
-                          </p>
-                        )
-                        : null,
+                      !ad.description?.startsWith("CUSTOM_") ? (
+                        <p>
+                          {ad.description}:&ensp;{ad.value}
+                        </p>
+                      ) : null
                   )}
               </div>
             </div>
@@ -187,13 +198,11 @@ function ProductInfo({ page, colors, sizes, benefits }: Props) {
                 {product.isVariantOf?.hasVariant[0].additionalProperty &&
                   product?.isVariantOf?.hasVariant[0]?.additionalProperty.map(
                     (ad) =>
-                      ad.propertyID == "KITITEM"
-                        ? (
-                          <p>
-                            {ad.value}&ensp;{ad.description}
-                          </p>
-                        )
-                        : null,
+                      ad.propertyID == "KITITEM" ? (
+                        <p>
+                          {ad.value}&ensp;{ad.description}
+                        </p>
+                      ) : null
                   )}
               </div>
             </div>
@@ -228,5 +237,13 @@ function ProductInfo({ page, colors, sizes, benefits }: Props) {
     </div>
   );
 }
+
+export const loader = (props: Props, _req: Request, ctx: FnContext) => {
+  const device = ctx.device;
+  return {
+    device,
+    ...props,
+  };
+};
 
 export default ProductInfo;

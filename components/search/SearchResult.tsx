@@ -19,6 +19,7 @@ import {
   type EditableProps as NotFoundEditableProps,
   NotFound,
 } from "deco-sites/persono/components/product/NotFound.tsx";
+
 import ActiveFilterTag from "deco-sites/persono/islands/ActiveFIlterTag.tsx";
 
 export interface Layout {
@@ -49,6 +50,7 @@ function Result({
   queryTerm,
 }: Omit<Props, "page"> & { page: ProductListingPage } & {
   queryTerm: string | null;
+  device: string;
 }) {
   const { products, filters, breadcrumb, pageInfo, sortOptions } = page;
   const perPage = pageInfo.recordPerPage || products.length;
@@ -233,8 +235,10 @@ function Result({
                   ? "cursor-default opacity-50"
                   : ""
               }`}
-              disabled={pageInfo.nextPage?.length == 0 ||
-                pageInfo.nextPage?.length == undefined}
+              disabled={
+                pageInfo.nextPage?.length == 0 ||
+                pageInfo.nextPage?.length == undefined
+              }
             >
               <Icon id="ChevronRight" size={14} strokeWidth={3} />
             </a>
