@@ -8,7 +8,9 @@ export function getHeaders(
 ) {
   const { apiKey, cookieNames } = ctx;
 
-  const { AMMO_DEVICE_ID_HEADER, AMMO_TOKEN_HEADER } = getSiteCookies(cookieNames);
+  const { AMMO_DEVICE_ID_HEADER, AMMO_TOKEN_HEADER } = getSiteCookies(
+    cookieNames,
+  );
   const cookieSite = getCookies(req.headers);
   const deviceId = cookieSite[AMMO_DEVICE_ID_HEADER];
   const token = cookieSite[AMMO_TOKEN_HEADER];
