@@ -6,9 +6,9 @@ const loader = async (
   req: Request,
   ctx: AppContext,
 ): Promise<UserInfo | null> => {
-  const { ammoc, apiKey } = ctx;
+  const { ammoc } = ctx;
 
-  const headers = getHeaders(req, apiKey);
+  const headers = getHeaders(req, ctx);
 
   try {
     const response = await ammoc

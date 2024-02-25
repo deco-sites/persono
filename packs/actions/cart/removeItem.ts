@@ -14,8 +14,8 @@ const action = async (
   const {
     sku,
   } = props;
-  const { ammoc, apiKey } = ctx;
-  const headers = getHeaders(req, apiKey);
+  const { ammoc } = ctx;
+  const headers = getHeaders(req, ctx);
 
   try {
     const response = await ammoc

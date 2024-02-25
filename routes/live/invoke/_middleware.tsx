@@ -23,7 +23,7 @@ export const handler = async (
       //@ts-ignore Um erro bizarro acontecendo quando remove o ts-ignore
       Manifest
     >
-  >,
+  >, 
 ) => {
   const res = await ctx.next!();
   const cookies = getCookies(req.headers);

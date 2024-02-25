@@ -18,10 +18,10 @@ const loader = async (
   req: Request,
   ctx: AppContext,
 ): Promise<ProductDetailsPage | null> => {
-  const { ammoc, apiKey, config, imageBaseUrl } = ctx;
+  const { ammoc, config, imageBaseUrl } = ctx;
   const { sku } = props;
   const url = new URL(req.url);
-  const headers = getHeaders(req, apiKey);
+  const headers = getHeaders(req, ctx);
 
   try {
     const response = await ammoc

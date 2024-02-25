@@ -26,9 +26,9 @@ const loader = async (
   req: Request,
   ctx: AppContext,
 ): Promise<Suggestion | null> => {
-  const { ammoc, apiKey } = ctx;
+  const { ammoc } = ctx;
 
-  const headers = getHeaders(req, apiKey);
+  const headers = getHeaders(req, ctx);
   const { query, count } = props;
 
   try {

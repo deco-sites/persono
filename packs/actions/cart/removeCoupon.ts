@@ -7,8 +7,8 @@ const action = async (
   req: Request,
   ctx: AppContext,
 ): Promise<Bag> => {
-  const { ammoc, apiKey } = ctx;
-  const headers = getHeaders(req, apiKey);
+  const { ammoc } = ctx;
+  const headers = getHeaders(req, ctx);
 
   try {
     const response = await ammoc
