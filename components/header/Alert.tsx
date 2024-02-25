@@ -12,6 +12,7 @@ export interface Icon {
 
 export interface IAlert {
   label: string;
+  link?: string;
   beforeIcon?: Icon;
   afterIcon?: Icon;
   layout: "primary" | "secondary" | "accent";
@@ -47,7 +48,12 @@ function Alert({ alerts = [], interval = 5 }: Props) {
             index={index}
             class={`carousel-item ${LAYOUT[alert.layout]}`}
           >
-            <p class="text-sm flex justify-center items-center w-screen gap-2 lg:py-2.5 py-2">
+            <a
+              href={alert.link}
+              class={`${
+                alert.link ? "cursor-pointer" : "cursor-default"
+              } text-sm flex justify-center items-center w-screen gap-2 lg:py-2.5 py-2`}
+            >
               {alert.beforeIcon
                 ? (
                   <Image
@@ -73,7 +79,7 @@ function Alert({ alerts = [], interval = 5 }: Props) {
                   />
                 )
                 : null}
-            </p>
+            </a>
           </Slider.Item>
         ))}
       </Slider>
