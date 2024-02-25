@@ -6,6 +6,9 @@ export interface Props {
   coupon: string;
 }
 
+/**
+ * @title Ammo Varejo - Adição de cupom na sacola
+ */
 const action = async (
   props: Props,
   req: Request,

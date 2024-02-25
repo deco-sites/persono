@@ -6,6 +6,9 @@ export interface Props {
   sku: string;
 }
 
+/**
+ * @title Ammo Varejo - Remoção de item na sacola
+ */
 const action = async (
   props: Props,
   req: Request,

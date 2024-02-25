@@ -2,6 +2,9 @@ import { Bag } from "$store/packs/types.ts";
 import { AppContext } from "$store/apps/site.ts";
 import { getHeaders } from "$store/packs/utils/headers.ts";
 
+/**
+ * @title Ammo Varejo - Remoção de cupom na sacola
+ */
 const action = async (
   _props: null,
   req: Request,
