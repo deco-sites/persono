@@ -56,7 +56,6 @@ function deleteFilter({
     type: string;
   };
 }) {
-
   const rawNewAppliedFilters = appliedFilters.filter(
     (f) => f.filters.value !== clickedFilter.filters.value,
   );
