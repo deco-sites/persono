@@ -2,7 +2,6 @@ import { UserInfo } from "$store/packs/types.ts";
 import { AppContext } from "$store/apps/site.ts";
 import { getHeaders } from "$store/packs/utils/headers.ts";
 
-
 /**
  * @title Ammo Varejo - Informação do usuário
  * @description Obtém as informações do usuário logado
