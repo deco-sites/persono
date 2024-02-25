@@ -23,7 +23,7 @@ export interface EditableProps {
 
 interface Props {
   notFoundSettings?: EditableProps;
-  queryTerm: string | null;
+  queryTerm?: string | null;
   device: string;
 }
 

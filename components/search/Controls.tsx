@@ -17,6 +17,7 @@ export type Props =
     displayFilter?: boolean;
     productsQtt?: number;
     colors: Color[];
+    notDisplay?: boolean;
   };
 
 function SearchControls({
@@ -26,6 +27,7 @@ function SearchControls({
   sortOptions,
   productsQtt,
   colors,
+  notDisplay,
 }: Props) {
   const open = useSignal(false);
 
@@ -56,15 +58,27 @@ function SearchControls({
         </>
       }
     >
-      <div class="flex flex-col justify-between py-4 sm:mb-0 sm:p-0 gap-6 sm:gap-4 sm:flex-row sm:border-b sm:border-base-300">
-        <div class="flex flex-row items-end sm:pb-4">
+      <div
+        class={`flex flex-col justify-between ${
+          notDisplay ? "" : "py-4"
+        }  sm:mb-0 sm:p-0 gap-6 sm:gap-4 sm:flex-row sm:border-b sm:border-base-300`}
+      >
+        <div
+          class={`flex flex-row items-end sm:pb-4 ${
+            notDisplay ? "hidden" : ""
+          }`}
+        >
           <Breadcrumb
             productsQtt={productsQtt}
             itemListElement={breadcrumb?.itemListElement.slice(0, 3)}
           />
         </div>
 
-        <div class="flex flex-row items-end justify-between border-b border-base-300 sm:gap-8 pb-4 sm:border-none">
+        <div
+          class={`flex flex-row items-end justify-between border-b border-base-300 sm:gap-8 pb-4 sm:border-none ${
+            notDisplay ? "hidden" : ""
+          }`}
+        >
           <button
             class={`px-0 sm:text-sm text-md font-bold ${
               displayFilter ? "flex gap-2" : "sm:hidden"

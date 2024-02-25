@@ -56,7 +56,6 @@ function deleteFilter({
     type: string;
   };
 }) {
-  appliedFilters.map((p) => console.log(p.filters.value));
   const rawNewAppliedFilters = appliedFilters.filter(
     (f) => f.filters.value !== clickedFilter.filters.value,
   );

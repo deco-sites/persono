@@ -24,14 +24,14 @@ export const PriceAndName = ({
   return (
     <div class="flex-auto flex flex-col p-4 ">
       <h2
-        class=" line-clamp-2 text-sm lg:text-lg font-normal  text-black mb-2"
+        class=" line-clamp-2 h-10 text-sm lg:text-lg font-normal  text-black mb-2"
         dangerouslySetInnerHTML={{ __html: productName ?? "" }}
       />
 
       <div class="flex flex-col">
         <div
           class={`flex ${
-            search ? "flex-row gap-2" : "flex-col gap-0"
+            search ? `flex-row ${hasDiscount ? "gap-2" : ""}` : "flex-col gap-0"
           } justify-start`}
         >
           <div class="h-5">

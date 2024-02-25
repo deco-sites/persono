@@ -11,21 +11,22 @@ import * as $$$8 from "./loaders/actions/cart/removeItem.ts";
 import * as $$$9 from "./loaders/avaliabilitySubscription.ts";
 import * as $$$10 from "./loaders/cart.ts";
 import * as $$$11 from "./loaders/config.ts";
+import * as $$$12 from "./loaders/cookieNames.ts";
 import * as $$$0 from "./loaders/Layouts/Benefits.tsx";
 import * as $$$1 from "./loaders/Layouts/Colors.tsx";
 import * as $$$2 from "./loaders/Layouts/ProductCard.tsx";
 import * as $$$3 from "./loaders/Layouts/Size.tsx";
 import * as $$$4 from "./loaders/List/Sections.tsx";
-import * as $$$12 from "./loaders/newsletter.ts";
-import * as $$$13 from "./loaders/product/productDetails.ts";
-import * as $$$14 from "./loaders/product/productList.ts";
-import * as $$$15 from "./loaders/product/productListingPage.ts";
-import * as $$$16 from "./loaders/product/productSearchPage.ts";
-import * as $$$17 from "./loaders/proxy.ts";
-import * as $$$18 from "./loaders/shippingSimulation.ts";
-import * as $$$19 from "./loaders/suggestions.ts";
-import * as $$$20 from "./loaders/url.ts";
-import * as $$$21 from "./loaders/userInfo.ts";
+import * as $$$13 from "./loaders/newsletter.ts";
+import * as $$$14 from "./loaders/product/productDetails.ts";
+import * as $$$15 from "./loaders/product/productList.ts";
+import * as $$$16 from "./loaders/product/productListingPage.ts";
+import * as $$$17 from "./loaders/product/productSearchPage.ts";
+import * as $$$18 from "./loaders/proxy.ts";
+import * as $$$19 from "./loaders/shippingSimulation.ts";
+import * as $$$20 from "./loaders/suggestions.ts";
+import * as $$$21 from "./loaders/url.ts";
+import * as $$$22 from "./loaders/userInfo.ts";
 import * as $$$$$$0 from "./sections/About/InfoCard.tsx";
 import * as $$$$$$1 from "./sections/About/ProductCharacteristics.tsx";
 import * as $$$$$$2 from "./sections/Animation/Animation.tsx";
@@ -76,21 +77,22 @@ const manifest = {
     "deco-sites/persono/loaders/avaliabilitySubscription.ts": $$$9,
     "deco-sites/persono/loaders/cart.ts": $$$10,
     "deco-sites/persono/loaders/config.ts": $$$11,
+    "deco-sites/persono/loaders/cookieNames.ts": $$$12,
     "deco-sites/persono/loaders/Layouts/Benefits.tsx": $$$0,
     "deco-sites/persono/loaders/Layouts/Colors.tsx": $$$1,
     "deco-sites/persono/loaders/Layouts/ProductCard.tsx": $$$2,
     "deco-sites/persono/loaders/Layouts/Size.tsx": $$$3,
     "deco-sites/persono/loaders/List/Sections.tsx": $$$4,
-    "deco-sites/persono/loaders/newsletter.ts": $$$12,
-    "deco-sites/persono/loaders/product/productDetails.ts": $$$13,
-    "deco-sites/persono/loaders/product/productList.ts": $$$14,
-    "deco-sites/persono/loaders/product/productListingPage.ts": $$$15,
-    "deco-sites/persono/loaders/product/productSearchPage.ts": $$$16,
-    "deco-sites/persono/loaders/proxy.ts": $$$17,
-    "deco-sites/persono/loaders/shippingSimulation.ts": $$$18,
-    "deco-sites/persono/loaders/suggestions.ts": $$$19,
-    "deco-sites/persono/loaders/url.ts": $$$20,
-    "deco-sites/persono/loaders/userInfo.ts": $$$21,
+    "deco-sites/persono/loaders/newsletter.ts": $$$13,
+    "deco-sites/persono/loaders/product/productDetails.ts": $$$14,
+    "deco-sites/persono/loaders/product/productList.ts": $$$15,
+    "deco-sites/persono/loaders/product/productListingPage.ts": $$$16,
+    "deco-sites/persono/loaders/product/productSearchPage.ts": $$$17,
+    "deco-sites/persono/loaders/proxy.ts": $$$18,
+    "deco-sites/persono/loaders/shippingSimulation.ts": $$$19,
+    "deco-sites/persono/loaders/suggestions.ts": $$$20,
+    "deco-sites/persono/loaders/url.ts": $$$21,
+    "deco-sites/persono/loaders/userInfo.ts": $$$22,
   },
   "sections": {
     "deco-sites/persono/sections/About/InfoCard.tsx": $$$$$$0,

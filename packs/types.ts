@@ -1,6 +1,11 @@
 import { Props as SiteProps } from "$store/apps/site.ts";
 import { FnContext as DefaultFnContext } from "deco/types.ts";
 
+export interface CookieNames {
+  ammoDeviceIdCookie: string;
+  ammoTokenCookie: string;
+}
+
 export interface AmmoProduct {
   //Default
   brand: string;

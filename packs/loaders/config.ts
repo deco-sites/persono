@@ -40,9 +40,9 @@ const loader = async (
   req: Request,
   ctx: AppContext,
 ): Promise<Partial<Config>> => {
-  const { ammoc, apiKey } = ctx;
+  const { ammoc } = ctx;
 
-  const headers = getHeaders(req, apiKey);
+  const headers = getHeaders(req, ctx);
 
   const storeConfigs = props.fields.map((item) => item.split("."));
   try {

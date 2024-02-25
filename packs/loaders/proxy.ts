@@ -44,13 +44,13 @@ export interface Props {
 function loader(
   { pagesToProxy = [] }: Props,
   req: Request,
-  { publicUrl, apiKey }: AppContext,
+  ctx: AppContext,
 ): Route[] {
   const url = new URL(
-    publicUrl?.startsWith("http") ? publicUrl : `https://${publicUrl}`,
+    ctx.publicUrl?.startsWith("http") ? ctx.publicUrl : `https://${ctx.publicUrl}`,
   );
-  const headers = getHeaders(req, apiKey, true);
-  console.log(headers.entries())
+  const headers = getHeaders(req, ctx, true);
+  console.log(headers);
 
   const internalDomainPaths = [
     ...PAGE_PATHS,
