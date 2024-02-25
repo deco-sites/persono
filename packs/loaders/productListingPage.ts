@@ -51,10 +51,10 @@ const loader = async (
   req: Request,
   ctx: AppContext,
 ): Promise<ProductListingPage | null> => {
-  const { ammoc, apiKey, config, imageBaseUrl } = ctx;
+  const { ammoc, config, imageBaseUrl } = ctx;
   const { vm } = props;
   const url = new URL(req.url);
-  const headers = getHeaders(req, apiKey);
+  const headers = getHeaders(req, ctx);
   const page = Number(url.searchParams.get("page") ?? 1);
   const vmConfig = {
     ...config,

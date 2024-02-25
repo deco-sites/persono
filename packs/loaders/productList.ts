@@ -54,9 +54,9 @@ const loader = async (
   req: Request,
   ctx: AppContext,
 ): Promise<Product[] | null> => {
-  const { ammoc, apiKey, config, imageBaseUrl } = ctx;
+  const { ammoc, config, imageBaseUrl } = ctx;
   const url = new URL(req.url);
-  const headers = getHeaders(req, apiKey);
+  const headers = getHeaders(req, ctx);
   const { props } = extendedProps;
 
   try {
