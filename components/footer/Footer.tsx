@@ -71,6 +71,7 @@ export interface Props {
     text?: string;
   };
   layout?: Layout;
+  copyright?: string;
 }
 
 function Footer({
@@ -133,6 +134,7 @@ function Footer({
       backToTheTop: false,
     },
   },
+  copyright,
 }: Props) {
   const _logo = layout?.hide?.logo ? <></> : <Logo logo={logo} />;
   const _sectionLinks = layout?.hide?.sectionLinks ? <></> : (
@@ -176,6 +178,13 @@ function Footer({
           {_social}
           {/* <PoweredByDeco /> */}
         </div>
+        {copyright
+          ? (
+            <p class="mt-6 text-xs lg:text-sm">
+              {copyright}
+            </p>
+          )
+          : null}
       </div>
       {layout?.hide?.backToTheTop
         ? <></>

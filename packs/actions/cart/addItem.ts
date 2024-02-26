@@ -6,6 +6,9 @@ export interface Props {
   bagItems: BagItems[];
 }
 
+/**
+ * @title Ammo Varejo - Adição de item na sacola
+ */
 const action = async (
   props: Props,
   req: Request,
@@ -14,8 +17,8 @@ const action = async (
   const {
     bagItems,
   } = props;
-  const { ammoc, apiKey } = ctx;
-  const headers = getHeaders(req, apiKey);
+  const { ammoc } = ctx;
+  const headers = getHeaders(req, ctx);
 
   try {
     const response = await ammoc

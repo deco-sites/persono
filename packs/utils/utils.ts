@@ -1,3 +1,4 @@
+import { CookieNames } from "$store/packs/types.ts";
 const imageExtensionsRegex = /\.(gif|jpe?g|tiff?|png|webp|bmp)$/i;
 
 export const typeChecker = <T extends object>(v: T, prop: keyof T) => prop in v;
@@ -21,4 +22,11 @@ export const getImageUrl = (imageBaseUrl?: string, path?: string) => {
     }
   }
   return "";
+};
+
+export const getSiteCookies = (cookies: CookieNames) => {
+  return {
+    AMMO_DEVICE_ID_HEADER: cookies?.ammoDeviceIdCookie,
+    AMMO_TOKEN_HEADER: cookies?.ammoTokenCookie,
+  };
 };

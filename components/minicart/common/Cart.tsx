@@ -50,22 +50,16 @@ function Cart({
   onClose,
 }: Props) {
   const isEmpty = items.length === 0;
-  const totalDiscounts = discounts?.reduce(
-    (acc, { value }) => value + acc,
-    0,
-  );
+  const totalDiscounts = discounts?.reduce((acc, { value }) => value + acc, 0);
   const calcSubtotal = items.reduce(
-    (acc, { price, quantity }) => acc + (price.sale * quantity),
+    (acc, { price, quantity }) => acc + price.sale * quantity,
     0,
   );
   const calcTotal = calcSubtotal - totalDiscounts;
 
   return (
     <div class="flex w-full h-full flex-col justify-center items-center overflow-hidden">
-      <DrawerHeader
-        title="Minha sacola"
-        onClose={onClose}
-      />
+      <DrawerHeader title="Minha sacola" onClose={onClose} />
       {isEmpty
         ? (
           <div class="p-4 flex-grow flex flex-col w-full items-center">
@@ -163,7 +157,7 @@ function Cart({
                 <a class="block" href={checkoutHref}>
                   <Button
                     data-deco="buy-button"
-                    class="btn-primary btn-block"
+                    class="btn-primary w-full"
                     disabled={loading || isEmpty}
                     onClick={() => {
                       sendEvent({

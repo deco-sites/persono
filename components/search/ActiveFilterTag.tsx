@@ -56,7 +56,6 @@ function deleteFilter({
     type: string;
   };
 }) {
-  appliedFilters.map((p) => console.log(p.filters.value));
   const rawNewAppliedFilters = appliedFilters.filter(
     (f) => f.filters.value !== clickedFilter.filters.value,
   );
@@ -99,7 +98,7 @@ export default function ActiveFilterTag({ appliedFilters }: Props) {
         >
           <span
             style={{ minWidth: "86px" }}
-            class="py-1 gap-3 bg-black opacity-80 rounded-full px-3 flex flex-wrap justify-between items-center text-white"
+            class="py-1 gap-2 bg-black opacity-80 rounded-full px-3 flex flex-wrap justify-between items-center text-white"
           >
             {af.filters.label}
             <Icon id="XMark" size={16} strokeWidth={2}></Icon>

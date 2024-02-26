@@ -56,9 +56,6 @@ function Result({
   const perPage = pageInfo.recordPerPage || products.length;
   const pageRegex = /page=(\d+)/;
 
-  products.map((p) => console.log(p.name));
-  console.log({ pageinfor: pageInfo });
-
   const id = useId();
 
   const zeroIndexedOffsetPage = pageInfo.currentPage;

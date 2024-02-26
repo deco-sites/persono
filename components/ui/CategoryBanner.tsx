@@ -55,7 +55,7 @@ function Banner(props: SectionProps<ReturnType<typeof loader>>) {
           }}
           class="h-48 w-full bg-cover bg-base-300 flex items-center justify-between overflow-hidden mb-0 sm:mb-16"
         >
-          <h2 class="pl-20 text-[3.5rem] text-black">
+          <h2 class="container pl-20 text-[3.5rem] text-black">
             {productBannerCategory}
           </h2>
         </div>
@@ -67,7 +67,7 @@ function Banner(props: SectionProps<ReturnType<typeof loader>>) {
           }}
           class="h-28 w-full bg-cover bg-base-300 flex items-center justify-between overflow-hidden mb-0 sm:mb-16"
         >
-          <h2 class="pl-6 text-2xl font-medium text-black">
+          <h2 class="container pl-6 text-2xl font-medium text-black">
             {productBannerCategory}
           </h2>
         </div>
@@ -86,7 +86,7 @@ function Banner(props: SectionProps<ReturnType<typeof loader>>) {
         }}
         class="h-48 w-full bg-cover bg-base-300 flex items-center justify-between overflow-hidden mb-0 sm:mb-16"
       >
-        <h2 class="pl-20 text-[3.5rem] text-black">
+        <h2 class="container pl-20 text-[3.5rem] text-black">
           {title ?? productBannerCategory}
         </h2>
       </div>
@@ -98,7 +98,7 @@ function Banner(props: SectionProps<ReturnType<typeof loader>>) {
         }}
         class="h-28 w-full bg-cover bg-base-300 flex items-center justify-between overflow-hidden mb-0 sm:mb-16"
       >
-        <h2 class="pl-6 text-2xl font-medium text-black">
+        <h2 class="container pl-6 text-2xl font-medium text-black">
           {title ?? productBannerCategory}
         </h2>
       </div>
