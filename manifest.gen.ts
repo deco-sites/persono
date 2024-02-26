@@ -53,11 +53,11 @@ import * as $$$$$$23 from "./sections/Links/Shortcuts.tsx";
 import * as $$$$$$24 from "./sections/Miscellaneous/CampaignTimer.tsx";
 import * as $$$$$$25 from "./sections/Miscellaneous/CookieConsent.tsx";
 import * as $$$$$$26 from "./sections/Newsletter/Newsletter.tsx";
-import * as $$$$$$27 from "./sections/Product/Benefits.tsx";
-import * as $$$$$$28 from "./sections/Product/ImageGalleryFrontBack.tsx";
-import * as $$$$$$29 from "./sections/Product/ImageGallerySlider.tsx";
-import * as $$$$$$30 from "./sections/Product/NotFound.tsx";
-import * as $$$$$$31 from "./sections/Product/NotFoundChallenge.tsx";
+import * as $$$$$$27 from "./sections/Product/ImageGalleryFrontBack.tsx";
+import * as $$$$$$28 from "./sections/Product/ImageGallerySlider.tsx";
+import * as $$$$$$29 from "./sections/Product/NotFound.tsx";
+import * as $$$$$$30 from "./sections/Product/NotFoundChallenge.tsx";
+import * as $$$$$$31 from "./sections/Product/ProductBenefits.tsx";
 import * as $$$$$$32 from "./sections/Product/ProductInfo.tsx";
 import * as $$$$$$33 from "./sections/Product/ProductShelf.tsx";
 import * as $$$$$$34 from "./sections/Product/ProductShelfTabbed.tsx";
@@ -120,11 +120,11 @@ const manifest = {
     "deco-sites/persono/sections/Miscellaneous/CampaignTimer.tsx": $$$$$$24,
     "deco-sites/persono/sections/Miscellaneous/CookieConsent.tsx": $$$$$$25,
     "deco-sites/persono/sections/Newsletter/Newsletter.tsx": $$$$$$26,
-    "deco-sites/persono/sections/Product/Benefits.tsx": $$$$$$27,
-    "deco-sites/persono/sections/Product/ImageGalleryFrontBack.tsx": $$$$$$28,
-    "deco-sites/persono/sections/Product/ImageGallerySlider.tsx": $$$$$$29,
-    "deco-sites/persono/sections/Product/NotFound.tsx": $$$$$$30,
-    "deco-sites/persono/sections/Product/NotFoundChallenge.tsx": $$$$$$31,
+    "deco-sites/persono/sections/Product/ImageGalleryFrontBack.tsx": $$$$$$27,
+    "deco-sites/persono/sections/Product/ImageGallerySlider.tsx": $$$$$$28,
+    "deco-sites/persono/sections/Product/NotFound.tsx": $$$$$$29,
+    "deco-sites/persono/sections/Product/NotFoundChallenge.tsx": $$$$$$30,
+    "deco-sites/persono/sections/Product/ProductBenefits.tsx": $$$$$$31,
     "deco-sites/persono/sections/Product/ProductInfo.tsx": $$$$$$32,
     "deco-sites/persono/sections/Product/ProductShelf.tsx": $$$$$$33,
     "deco-sites/persono/sections/Product/ProductShelfTabbed.tsx": $$$$$$34,
