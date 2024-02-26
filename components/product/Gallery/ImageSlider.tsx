@@ -27,24 +27,23 @@ export default function GallerySlider(props: SectionProps<typeof loader>) {
 
   const {
     page: {
-      product: { image: images = [] },
+      product: { image: defaultImages = [] },
     },
   } = props;
   const aspectRatio = `1/1`;
 
   // Change the first image
+  const images = useMemo(() => {
+    if (defaultImages.length > 1) {
+      const newImages = [...defaultImages];
+      const firstImage = newImages[0];
+      newImages.splice(0, 1).unshift(newImages[0]);
+      newImages[1] = firstImage;
+      return newImages;
+    }
 
-  // const images = useMemo(() => {
-  //   if (defaultImages.length > 1) {
-  //     const newImages = [...defaultImages];
-  //     const firstImage = newImages[0];
-  //     newImages.splice(0, 1).unshift(newImages[0]);
-  //     newImages[1] = firstImage;
-  //     return newImages;
-  //   }
-
-  //   return defaultImages;
-  // }, [defaultImages]);
+    return defaultImages;
+  }, [defaultImages]);
 
   if (props.device == "desktop") {
     return (
@@ -98,8 +97,7 @@ export default function GallerySlider(props: SectionProps<typeof loader>) {
               data-dot={index}
               aria-label={`go to slider item ${index}`}
               class="w-2 h-2 checked:bg-primary active:bg-primary rounded-full block disabled:bg-primary bg-neutral "
-            >
-            </button>
+            ></button>
           </li>
         ))}
       </ul>
