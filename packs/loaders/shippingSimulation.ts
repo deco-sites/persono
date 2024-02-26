@@ -24,8 +24,8 @@ const loader = async (
   req: Request,
   ctx: AppContext,
 ): Promise<ShippingSimulation> => {
-  const { ammoc, apiKey } = ctx;
-  const headers = getHeaders(req, apiKey, true);
+  const { ammoc } = ctx;
+  const headers = getHeaders(req, ctx, true);
 
   const params = new URLSearchParams();
 

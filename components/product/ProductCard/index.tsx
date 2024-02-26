@@ -54,6 +54,10 @@ interface Props {
   itemListName?: string;
 
   layout?: Layout;
+
+  hasRelatedProducts?: boolean;
+
+  isMobile?: boolean;
 }
 
 const relative = (url: string) => {
@@ -68,6 +72,8 @@ function ProductCard({
   search,
   itemListName,
   layout,
+  hasRelatedProducts,
+  isMobile,
 }: Props) {
   const { customTagColors, defaultTags } = layout ?? {};
   const { url, productID, name, image: images, offers } = product;
@@ -132,7 +138,7 @@ function ProductCard({
       <a
         key={`${id}-${index}`}
         id={id}
-        class="card card-compact group rounded-[10px] border border-gray-300 text-start w-full"
+        class="card card-compact group rounded-[10px] border border-gray-300 text-start w-full overflow-hidden"
         data-deco="view-product"
         href={url && relative(url)}
         aria-label="view product"
@@ -167,7 +173,7 @@ function ProductCard({
         />
 
         <PriceAndName
-          search={search}
+          search={search || (hasRelatedProducts && isMobile)}
           hasDiscount={hasDiscount}
           hasMultiplePrices={hasMultiplePrices}
           installments={installments}

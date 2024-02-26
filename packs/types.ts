@@ -1,6 +1,11 @@
 import { Props as SiteProps } from "$store/apps/site.ts";
 import { FnContext as DefaultFnContext } from "deco/types.ts";
 
+export interface CookieNames {
+  ammoDeviceIdCookie: string;
+  ammoTokenCookie: string;
+}
+
 export interface AmmoProduct {
   //Default
   brand: string;
@@ -1276,4 +1281,16 @@ export interface NewsletterData {
   id: string;
   email: string;
   newsletterCouponCode: string;
+}
+
+export interface VMFilters {
+  /**
+   * @title Tipo
+   * @example category
+   */
+  type: string;
+  /**
+   * @title Slugs do filtro
+   */
+  slugs: string[];
 }

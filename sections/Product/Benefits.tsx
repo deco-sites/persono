@@ -39,8 +39,8 @@ export default function Benefits({
           <div class="flex flex-col gap-2">
             <div class="flex items-center gap-2">
               <Image
-                src={l.Icon}
-                class="text-primary"
+                src={l.icon}
+                class="text-primary w-7 h-7"
                 width={36}
                 height={36}
                 alt={l.label}

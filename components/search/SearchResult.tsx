@@ -6,15 +6,21 @@ import Icon from "$store/components/ui/Icon.tsx";
 import SearchControls from "$store/islands/SearchControls.tsx";
 import { useId } from "$store/sdk/useId.ts";
 import { useOffer } from "$store/sdk/useOffer.ts";
-import type { ProductListingPage } from "apps/commerce/types.ts";
+import type {
+  FilterToggleValue,
+  ProductListingPage,
+} from "apps/commerce/types.ts";
 import { mapProductToAnalyticsItem } from "apps/commerce/utils/productToAnalyticsItem.ts";
 import ProductGallery, { Columns } from "../product/ProductGallery.tsx";
 import { Layout as CardLayout } from "deco-sites/persono/components/product/ProductCard/index.tsx";
+import { Color } from "deco-sites/persono/loaders/Layouts/Colors.tsx";
 
 import {
   type EditableProps as NotFoundEditableProps,
   NotFound,
 } from "deco-sites/persono/components/product/NotFound.tsx";
+
+import ActiveFilterTag from "deco-sites/persono/islands/ActiveFIlterTag.tsx";
 
 export interface Layout {
   /**
@@ -30,6 +36,7 @@ export interface Layout {
 }
 
 export interface Props {
+  colors: Color[];
   /** @title Integration */
   page: ProductListingPage | null;
   layout?: Layout;
@@ -39,29 +46,62 @@ export interface Props {
 function Result({
   page,
   layout,
-}: Omit<Props, "page"> & { page: ProductListingPage }) {
+  colors,
+  queryTerm,
+}: Omit<Props, "page"> & { page: ProductListingPage } & {
+  queryTerm: string | null;
+  device: string;
+}) {
   const { products, filters, breadcrumb, pageInfo, sortOptions } = page;
   const perPage = pageInfo.recordPerPage || products.length;
+  const pageRegex = /page=(\d+)/;
 
   const id = useId();
 
   const zeroIndexedOffsetPage = pageInfo.currentPage;
   const offset = zeroIndexedOffsetPage * perPage;
 
+  const totalProductsQtt = pageInfo.records ?? products.length;
+
+  const tabsQtt = Math.ceil(totalProductsQtt / perPage);
+
+  const appliedFilters: { filters: FilterToggleValue; type: string }[] = [];
+
+  filters.map((f) => {
+    (f.values as FilterToggleValue[]).map((v) => {
+      if (v.selected == true) {
+        appliedFilters.push({ filters: v, type: f.key });
+      }
+    }) as unknown as FilterToggleValue[];
+  });
+
   return (
     <>
-      <div class="container px-4 sm:py-10">
+      <div class="container px-4 md:px-4 sm:px-0">
+        <p
+          class={`py-4 text-sm flex items-center gap-2 ${
+            filters.length == 0 ? "" : "hidden"
+          }`}
+        >
+          Resultados de pesquisa para "{queryTerm}"{" "}
+          <span class="text-gray-600">({products.length} produtos)</span>
+        </p>
         <SearchControls
+          colors={colors}
+          productsQtt={pageInfo.records}
           sortOptions={sortOptions}
           filters={filters}
           breadcrumb={breadcrumb}
           displayFilter={layout?.variant === "drawer"}
+          notDisplay={filters.length == 0 &&
+            breadcrumb?.itemListElement.length == 0}
         />
+        <ActiveFilterTag appliedFilters={appliedFilters} />
 
-        <div class="flex flex-row">
+        <div class="flex flex-row sm:mt-6">
           {layout?.variant === "aside" && filters.length > 0 && (
             <aside class="hidden sm:block w-min min-w-[250px]">
-              <Filters filters={filters} />
+              <Filters colors={colors} filters={filters} />
             </aside>
           )}
           <div class="flex-grow" id={id}>
@@ -74,26 +114,128 @@ function Result({
           </div>
         </div>
 
-        <div class="flex justify-center my-4">
-          <div class="join">
+        <div class="flex justify-center mb-6 mt-12">
+          <div class="join text-sm flex items-center gap-1">
             <a
               aria-label="previous page link"
               rel="prev"
               href={pageInfo.previousPage ?? "#"}
-              class="btn btn-ghost join-item"
+              class={`flex items-center justify-center w-8 h-8 border rounded-full text-primary ${
+                !pageInfo.previousPage?.length ||
+                  pageInfo.previousPage?.length == 0 ||
+                  pageInfo.currentPage == 1
+                  ? "cursor-default opacity-50"
+                  : ""
+              }`}
+              disabled={pageInfo.nextPage?.length == 0 ||
+                pageInfo.currentPage == 1}
             >
-              <Icon id="ChevronLeft" size={24} strokeWidth={2} />
+              <Icon id="ChevronLeft" size={14} strokeWidth={3} />
             </a>
-            <span class="btn btn-ghost join-item">
-              Page {zeroIndexedOffsetPage + 1}
-            </span>
+            <div class="sm:hidden flex items-center gap-1">
+              {pageInfo.currentPage < 3 ? null : (
+                <a
+                  aria-label={`1 page link`}
+                  rel={`1`}
+                  href={pageInfo.nextPage
+                    ? pageInfo.nextPage.replace(pageRegex, `page=1`)
+                    : pageInfo.previousPage
+                    ? pageInfo.previousPage.replace(pageRegex, `page=1`)
+                    : ""}
+                  className={`flex justify-center items-center w-8 h-8 font-bold ${
+                    pageInfo.currentPage === 1 || pageInfo.currentPage == 0
+                      ? "bg-primary text-base-100 rounded-full"
+                      : "text-primary"
+                  }`}
+                  disabled={pageInfo.previousPage?.length == 0 ||
+                    pageInfo.previousPage?.length == undefined ||
+                    pageInfo.currentPage == 1}
+                >
+                  {1}
+                </a>
+              )}
+              {Array.from({ length: tabsQtt }, (_, index) => {
+                const pageNumber = index + 1;
+
+                const inicio = Math.max(1, pageInfo.currentPage - 1);
+                const fim = Math.min(inicio + 4, tabsQtt);
+
+                const shouldDisplay = pageNumber >= inicio && pageNumber <= fim;
+
+                return shouldDisplay
+                  ? (
+                    <a
+                      aria-label={`${index} page link`}
+                      rel={`${pageNumber}`}
+                      href={pageInfo.nextPage
+                        ? pageInfo.nextPage.replace(
+                          pageRegex,
+                          `page=${pageNumber}`,
+                        )
+                        : pageInfo.previousPage
+                        ? pageInfo.previousPage.replace(
+                          pageRegex,
+                          `page=${pageNumber}`,
+                        )
+                        : ""}
+                      class={`flex justify-center items-center w-8 h-8 font-bold ${
+                        pageInfo.currentPage == index ||
+                          (pageInfo.currentPage == 1 && index == 0)
+                          ? "bg-primary text-base-100 rounded-full"
+                          : "text-primary"
+                      }`}
+                    >
+                      {pageNumber}
+                    </a>
+                  )
+                  : null;
+              })}
+            </div>
+
+            <div class="hidden sm:flex">
+              {Array.from({ length: tabsQtt }, (_, index) => {
+                const pageNumber = index + 1;
+                return (
+                  <a
+                    aria-label={`${index} page link`}
+                    rel={`${pageNumber}`}
+                    href={pageInfo.nextPage
+                      ? pageInfo.nextPage.replace(
+                        pageRegex,
+                        `page=${pageNumber}`,
+                      )
+                      : pageInfo.previousPage
+                      ? pageInfo.previousPage.replace(
+                        pageRegex,
+                        `page=${pageNumber}`,
+                      )
+                      : ""}
+                    class={`flex justify-center items-center w-8 h-8 font-bold ${
+                      pageInfo.currentPage == index ||
+                        (pageInfo.currentPage == 1 && index == 0)
+                        ? "bg-primary text-base-100 rounded-full"
+                        : "text-primary"
+                    }`}
+                  >
+                    {pageNumber}
+                  </a>
+                );
+              })}
+            </div>
+
             <a
               aria-label="next page link"
               rel="next"
               href={pageInfo.nextPage ?? "#"}
-              class="btn btn-ghost join-item"
+              class={`flex items-center justify-center w-8 h-8 border rounded-full text-primary ${
+                !pageInfo.nextPage?.length || pageInfo.nextPage?.length == 0
+                  ? "cursor-default opacity-50"
+                  : ""
+              }`}
+              disabled={pageInfo.nextPage?.length == 0 ||
+                pageInfo.nextPage?.length == undefined}
             >
-              <Icon id="ChevronRight" size={24} strokeWidth={2} />
+              <Icon id="ChevronRight" size={14} strokeWidth={3} />
             </a>
           </div>
         </div>

@@ -19,7 +19,7 @@ function Header(props: Props) {
             }`}
           >
             {props.title && (
-              <h1 class="flex md:justify-center text-2xl font-medium  leading-8 lg:leading-10 text-black">
+              <h1 class="flex md:justify-center text-2xl font-medium py-10  leading-8 lg:leading-10 text-black ">
                 {props.title}
               </h1>
             )}
