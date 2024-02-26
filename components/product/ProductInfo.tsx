@@ -211,7 +211,7 @@ function ProductInfo({
               </div>
             </div>
 
-            <div class="collapse collapse-plus items-start">
+            <div class="collapse collapse-plus items-start collapse-open">
               <input type="checkbox" />
               <div class="flex items-center collapse-title text-base after:text-2xl after:text-primary">
                 Calcular frete
