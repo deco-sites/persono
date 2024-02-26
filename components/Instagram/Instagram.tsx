@@ -38,7 +38,7 @@ function Instagram(props: Props) {
     >
       <Header title={header.title} />
       <div>
-        <Slider class="flex carousel carousel-start gap-6 lg:gap-10">
+        <Slider class="flex carousel carousel-start gap-6 lg:justify-between">
           {list.map((
             { mobile, desktop },
             index,
