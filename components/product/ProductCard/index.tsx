@@ -99,7 +99,7 @@ function ProductCard({
       hasDiscount: listPrice > price,
       discount,
     };
-  }, [listPrice, price]);
+  }, [product, listPrice, price]);
 
   const tagsCapture = (value: string, identifier: string) =>
     product.additionalProperty?.find(

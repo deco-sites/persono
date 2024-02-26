@@ -8,7 +8,7 @@ import { ProductDetailsPage } from "apps/commerce/types.ts";
 import { mapProductToAnalyticsItem } from "apps/commerce/utils/productToAnalyticsItem.ts";
 import ProductSizeSelector from "./ProductSizeVariantSelector.tsx";
 import ProductColorSelector from "./ProductColorVariantSelector.tsx";
-import BenefitsComponent from "../../sections/Product/Benefits.tsx";
+import ProductBenefits from "../../sections/Product/ProductBenefits.tsx";
 import { useOfferWithoutTaxes } from "deco-sites/persono/sdk/useOfferWithoutTaxes.ts";
 import AddCartButton from "$store/islands/AddToCartButton/CartButton.tsx";
 import { Color } from "deco-sites/persono/loaders/Layouts/Colors.tsx";
@@ -151,7 +151,7 @@ function ProductInfo({
       </div>
       {/* Benefities */}
       <div class={`${productBenefits?.length == 0 ? "hidden" : ""}`}>
-        <BenefitsComponent
+        <ProductBenefits
           productBenefits={productBenefits}
           adminBenefits={benefits}
         />

@@ -1,28 +1,4 @@
-export interface Layout {
-  backgroundColor?:
-    | "Primary"
-    | "Secondary"
-    | "Accent"
-    | "Base 100"
-    | "Base 100 inverted";
-  variation?:
-    | "Variation 1"
-    | "Variation 2"
-    | "Variation 3"
-    | "Variation 4"
-    | "Variation 5";
-  hide?: {
-    logo?: boolean;
-    newsletter?: boolean;
-    sectionLinks?: boolean;
-    socialLinks?: boolean;
-    paymentMethods?: boolean;
-    mobileApps?: boolean;
-    regionOptions?: boolean;
-    extraLinks?: boolean;
-    backToTheTop?: boolean;
-  };
-}
+import { Layout } from "deco-sites/persono/components/footer/Footer.tsx";
 
 export default function colorClasses(layout: Layout) {
   switch (layout?.backgroundColor) {

@@ -32,6 +32,8 @@ function Newsletter({ content, layout = {} }: Props) {
   const handleSubmit: JSX.GenericEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
 
+    if (!sendable.value) return;
+
     try {
       loading.value = true;
 
@@ -49,34 +51,36 @@ function Newsletter({ content, layout = {} }: Props) {
     }
   };
 
-  const handleInput: JSX.GenericEventHandler<HTMLInputElement> = (e) => {
+  const handleChange: JSX.GenericEventHandler<HTMLInputElement> = (e) => {
     const email = e.currentTarget.value;
 
     sendable.value = validateEmail(email);
   };
 
   return (
-    <div class="flex lg:flex-nowrap flex-wrap md:gap-20 gap-6 max-md:justify-stretch max-md:items-stretch">
-      <div class="flex flex-col md:gap-4 gap-3">
+    <div class="flex lg:flex-nowrap flex-wrap lg:gap-20 gap-6 max-lg:justify-stretch max-lg:items-stretch justify-start">
+      <div class="flex flex-col flex-auto lg:gap-4 gap-3 lg:min-w-[400px]">
         {content?.title && (
-          <h3 class="text-2xl font-medium">{content?.title}</h3>
+          <h3 class="text-2xl font-medium">
+            {content?.title}
+          </h3>
         )}
         {content?.description && (
-          <div class="md:max-w-[400px] w-full text-sm">
+          <div class="lg:max-w-[400px] w-full text-sm">
             {content?.description}
           </div>
         )}
       </div>
-      <div class="flex flex-col gap-4 max-md:w-full">
+      <div class="flex flex-col gap-4 w-full">
         <form
-          class="form-control flex flex-row max-md:w-full flex-nowrap gap-2"
+          class="form-control flex flex-row max-lg:w-full flex-nowrap gap-2"
           onSubmit={handleSubmit}
         >
           <input
             name="email"
-            class="flex-auto md:flex-none md:max-w-xs w-auto input-bordered input-accent input text-secondary-content bg-secondary placeholder:text-secondary-content disabled:text-secondary-content disabled:bg-secondary"
+            class="flex-auto lg:flex-none lg:max-w-xs lg:w-full w-auto input-bordered input-accent input text-secondary-content bg-secondary placeholder:text-secondary-content disabled:text-secondary-content disabled:bg-secondary"
             placeholder={content?.form?.placeholder || "Digite seu email"}
-            onChange={handleInput}
+            onChange={handleChange}
             disabled={sended.value}
           />
 
@@ -84,11 +88,8 @@ function Newsletter({ content, layout = {} }: Props) {
             <button
               type="submit"
               class={`btn btn-accent group text-base ${
-                loading.value
-                  ? "loading text-white"
-                  : "disabled:bg-opacity-90 disabled:border-opacity-90"
+                loading.value ? "loading text-white" : ""
               }`}
-              disabled={!sendable.value}
             >
               <span class="group-disabled:text-[#505050]">
                 {content?.form?.buttonText || "Inscrever"}
@@ -97,10 +98,10 @@ function Newsletter({ content, layout = {} }: Props) {
           )}
 
           {sended.value && (
-            <span class="flex items-center">
+            <p class="flex items-center font-bold">
               <Icon width={27} height={28} strokeWidth={1} id={"Check"} />
               Cadastrado!
-            </span>
+            </p>
           )}
         </form>
         {content?.form?.helpText && (
