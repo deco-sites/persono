@@ -6,9 +6,11 @@ import { CookieNames } from "$store/packs/types.ts";
 const setCookies = (res: Response, deviceId: string, cookieName: string) => {
   res.headers.append(
     "Set-Cookie",
-    `${cookieName}=${deviceId}; Expires=${new Date().setFullYear(
-      new Date().getFullYear() + 1
-    )}; Path=/; Secure; HttpOnly`
+    `${cookieName}=${deviceId}; Expires=${
+      new Date().setFullYear(
+        new Date().getFullYear() + 1,
+      )
+    }; Path=/; Secure; HttpOnly`,
   );
 };
 
@@ -21,13 +23,13 @@ export const handler = async (
       //@ts-ignore Um erro bizarro acontecendo quando remove o ts-ignore
       Manifest
     >
-  >
+  >,
 ) => {
   const res = await ctx.next!();
   const cookies = getCookies(req.headers);
 
   const cookieNames = (await ctx.state.invoke(
-    "Cookie Config Names"
+    "Cookie Config Names",
   )) as CookieNames;
   const AMMO_DEVICE_ID_HEADER = cookieNames.ammoDeviceIdCookie;
 

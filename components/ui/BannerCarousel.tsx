@@ -120,7 +120,7 @@ export const BannerActionLayout = ({ action }: { action: ActionProps }) => {
         </span>
       )}
       {action?.label && (
-        <button class="btn w-full max-w-[117px] md:max-w-[396px] text-blueNew bg-white h-9 rounded-xl">
+        <button class="btn w-full max-w-[117px] md:max-w-[396px] btn-accent text-primary">
           {action.label}
         </button>
       )}

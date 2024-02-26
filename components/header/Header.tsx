@@ -42,6 +42,7 @@ function Header({
   navItems,
   fastLinks,
   device,
+  imageBaseUrl,
   cart,
 }: SectionProps<typeof loader>) {
   const platform = usePlatform();
@@ -64,6 +65,7 @@ function Header({
       <Drawers
         menu={{ items, fastLinks }}
         searchbar={searchbar}
+        imageBaseUrl={imageBaseUrl}
         cart={cart}
         platform={platform}
       />
@@ -73,6 +75,7 @@ function Header({
 
 export const loader = (props: Props, _req: Request, ctx: FnCustomContext) => {
   const device = ctx.device;
+  const imageBaseUrl = ctx.imageBaseUrl;
 
   if (props.cart && props.cart.freeShipping) {
     props.cart.freeShipping.target = ctx.config?.features
@@ -82,6 +85,7 @@ export const loader = (props: Props, _req: Request, ctx: FnCustomContext) => {
   return {
     ...props,
     device: device || "desktop",
+    imageBaseUrl,
   };
 };
 

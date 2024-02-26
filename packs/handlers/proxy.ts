@@ -6,7 +6,6 @@ import { Script } from "apps/website/types.ts";
 import { Monitoring } from "deco/engine/core/resolver.ts";
 /* import { CookieNames } from "$store/packs/types.ts"; */
 
-
 const HOP_BY_HOP = [
   "Keep-Alive",
   "Transfer-Encoding",
@@ -111,7 +110,7 @@ export default function Proxy({
       "Cookie Config Names",
     )) as CookieNames;
 
-     const reqCookies = getCookies(req.headers); 
+     const reqCookies = getCookies(req.headers);
 
      const cookies = [{
       key: "dev_kfjhsk7987KJHfkjh898",
