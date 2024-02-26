@@ -14,7 +14,7 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[xml]": {
-    "editor.defaultFormatter": "redhat.vscode-xml"
+    "editor.defaultFormatter": "DotJoshJohnson.xml"
   },
   "[typescript]": {
     "editor.defaultFormatter": "denoland.vscode-deno"

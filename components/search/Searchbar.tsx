@@ -180,7 +180,7 @@ function Searchbar({
           class="join-item btn-ghost btn-circle w-4 hidden lg:inline-flex hover:text-error"
           onClick={() => (displaySearchPopup.value = false)}
         >
-          <Icon id="XMark" size={24} strokeWidth={2} />
+          <Icon id="XMark" size={20} strokeWidth={2} />
         </Button>
       </div>
       {loading.value
