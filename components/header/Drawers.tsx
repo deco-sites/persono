@@ -16,7 +16,7 @@ export interface Props {
   menu: MenuProps;
   searchbar?: SearchbarProps;
   cart?: CartProps;
-  imageBaseUrl?:string;
+  imageBaseUrl?: string;
   /**
    * @ignore_gen true
    */
@@ -65,7 +65,9 @@ const setup = () => {
   };
 };
 
-function Drawers({ menu, searchbar, cart,imageBaseUrl, children, platform }: Props) {
+function Drawers(
+  { menu, searchbar, cart, imageBaseUrl, children, platform }: Props,
+) {
   const { displayCart, displayMenu, displaySearchDrawer } = useUI();
 
   useEffect(() => {
@@ -102,7 +104,13 @@ function Drawers({ menu, searchbar, cart,imageBaseUrl, children, platform }: Pro
               ? <SearchBar withHeader {...searchbar!} />
               : null}
             {displayCart.value
-              ? <Cart {...cart} imageBaseUrl={imageBaseUrl} onClose={() => (displayCart.value = false)} />
+              ? (
+                <Cart
+                  {...cart}
+                  imageBaseUrl={imageBaseUrl}
+                  onClose={() => (displayCart.value = false)}
+                />
+              )
               : null}
           </Aside>
         }

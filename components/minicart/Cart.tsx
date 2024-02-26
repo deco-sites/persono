@@ -27,13 +27,13 @@ function Cart({
   const freebie: CartFreebie | null | undefined =
     cart.value?.freebie.eligible && cart.value?.freebie.active
       ? {
-          selectedSku: cart.value.freebie.items.find(
-            (item) => item.sku === cart.value!.freebie.selectedFreebie
-          ),
-          items: cart.value.freebie.items,
-          image: cart.value.freebie.drawerImage,
-          target: cart.value.freebie.subtotalToActivate,
-        }
+        selectedSku: cart.value.freebie.items.find(
+          (item) => item.sku === cart.value!.freebie.selectedFreebie,
+        ),
+        items: cart.value.freebie.items,
+        image: cart.value.freebie.drawerImage,
+        target: cart.value.freebie.subtotalToActivate,
+      }
       : null;
 
   return (
@@ -55,7 +55,7 @@ function Cart({
       }))}
       total={total}
       discounts={discounts.filter(
-        (discount) => !hiddenDiscounts.includes(discount.type)
+        (discount) => !hiddenDiscounts.includes(discount.type),
       )}
       loading={loading.value}
       freeShippingCompletedText={freeShipping?.completedText}
@@ -65,8 +65,7 @@ function Cart({
       onClose={onClose}
       freebie={freebie}
       onUpdateQuantity={(amount: number, sku: string) =>
-        addItems({ bagItems: [{ sku, amount }] })
-      }
+        addItems({ bagItems: [{ sku, amount }] })}
       itemToAnalyticsItem={(sku: string) => {
         const item = items.find((item) => (item.sku = sku));
 
