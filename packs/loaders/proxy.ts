@@ -1,26 +1,25 @@
 import { Route } from "apps/website/flags/audience.ts";
 import { AppContext } from "$store/apps/site.ts";
-import { getHeaders } from "$store/packs/utils/headers.ts";
 
 const PAGE_PATHS = [
-  "/checkout",
-  "/checkout/*",
-  "/checkout-s",
-  "/checkout-s/*",
-  "/checkout-s/endereco",
-  "/checkout-s/entrega",
-  "/checkout-s/pagamento",
-  "/checkout-s/resumo",
-  "/checkout-s/sucesso",
-  "/perfil",
-  "/perfil/*",
-  "/perfil/dados-pessoais",
-  "/perfil/pedidos",
-  "/perfil/pedidos/*",
-  "/perfil/enderecos",
-  "/perfil/minha-carteira",
-  "/perfil/clube-mmartan",
-  "/login",
+  "/secure/checkout",
+  "/secure/checkout/*",
+  "/secure/checkout-s",
+  "/secure/checkout-s/*",
+  "/secure/checkout-s/endereco",
+  "/secure/checkout-s/entrega",
+  "/secure/checkout-s/pagamento",
+  "/secure/checkout-s/resumo",
+  "/secure/checkout-s/sucesso",
+  "/secure/perfil",
+  "/secure/perfil/*",
+  "/secure/perfil/dados-pessoais",
+  "/secure/perfil/pedidos",
+  "/secure/perfil/pedidos/*",
+  "/secure/perfil/enderecos",
+  "/secure/perfil/minha-carteira",
+  "/secure/perfil/clube-mmartan",
+  "/secure/login",
 ];
 
 const ASSETS_PATHS = [
@@ -28,7 +27,10 @@ const ASSETS_PATHS = [
   "/images/*",
   "/_next",
   "/_next/*",
+  "/manifest.json",
+  "/android-chrome-192x192.png",
 ];
+
 const API_PATHS = [
   "/api/*",
 ];
@@ -43,18 +45,17 @@ export interface Props {
  */
 function loader(
   { pagesToProxy = [] }: Props,
-  req: Request,
+  _req: Request,
   ctx: AppContext,
 ): Route[] {
   const url = new URL(
-    ctx.publicUrl?.startsWith("http") ? ctx.publicUrl : `https://${ctx.publicUrl}`,
+    ctx.publicUrl?.startsWith("http")
+      ? ctx.publicUrl
+      : `https://${ctx.publicUrl}`,
   );
-  const headers = getHeaders(req, ctx, true);
-  console.log(headers);
 
   const internalDomainPaths = [
     ...PAGE_PATHS,
-    ...ASSETS_PATHS,
     ...pagesToProxy,
   ].map((
     pathTemplate,
@@ -62,31 +63,24 @@ function loader(
     pathTemplate,
     handler: {
       value: {
-        __resolveType: "website/handlers/proxy.ts",
+        __resolveType: "deco-sites/persono/loaders/handlers/proxy.ts",
         url: url.origin,
         host: url.hostname,
+        basePath: "/secure",
       },
     },
   }));
 
-  const apiDomainPaths = API_PATHS.map((pathTemplate) => ({
+  const apiDomainPaths = [
+    ...API_PATHS,
+    ...ASSETS_PATHS,
+  ].map((pathTemplate) => ({
     pathTemplate,
     handler: {
       value: {
-        __resolveType: "website/handlers/proxy.ts",
-        url: "https://dev.mmartan.com.br",
+        __resolveType: "deco-sites/persono/loaders/handlers/proxy.ts",
+        url: url.origin,
         host: url.hostname,
-        customHeaders: [{
-          key: "X-Ammo-Device-Id",
-          value: "520af0a0-77d9-11ec-8e34-6158c87e0aae",
-        }, {
-          key: "X-Ammo-Token",
-          value:
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiY2ZlNTJmMjYtOTllNy00MDViLWFlZGEtODVlOGM2ZWQ1MDliIiwiaWF0IjoxNjkxMTI3MzU2fQ.4f-lB492HUIq639UrT5h1oH-Uf6tMwsgRJiw-3a4dYM",
-        }, {
-          key: "Content-Type",
-          value: "application/x-www-form-urlencoded",
-        }],
       },
     },
   }));
