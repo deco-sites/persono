@@ -117,6 +117,7 @@ const loader = async (
         imageBaseUrl,
       });
     }
+    
     const redirectPath = data as VMDetailsRedirect;
     const redirectedResponse = await ammoc
       ["GET /api/product-catalog/resolve-route"](

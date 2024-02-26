@@ -17,7 +17,6 @@ export default {
     container: { center: true },
     extend: {
       colors: {
-        "blueNew": "#0070F7",
         "gray-600": "#666666",
         "gray-100": "#CCCCCC",
       },

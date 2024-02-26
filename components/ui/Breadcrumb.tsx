@@ -14,8 +14,8 @@ function Breadcrumb({ itemListElement = [], productsQtt }: Props) {
         {items
           .filter(({ name, item }) => name && item)
           .map(({ name, item }) => (
-            <li class="before:text-black before:!opacity-100 link hover:text-blueNew">
-              <a class="link hover:text-blueNew" href={item}>{name}</a>
+            <li class="before:text-black before:!opacity-100 link">
+              <a href={item}>{name}</a>
             </li>
           ))}
       </ul>
