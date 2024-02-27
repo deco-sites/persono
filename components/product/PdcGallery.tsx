@@ -11,18 +11,14 @@ export interface Product {
 }
 
 export interface Props {
-  header?: {
-    title?: string;
-  };
-
+  title?: string;
   layout: Product[];
 }
 
 function PdcGallery(props: Props) {
   const {
-    header = {
-      title: "",
-    },
+    title,
+
     layout = [
       {
         image: "",
@@ -38,7 +34,7 @@ function PdcGallery(props: Props) {
   return (
     <div class="container flex flex-col h-auto w-full pt-10 px-6 sm:px-0">
       <Header
-        title={header.title}
+        title={title}
         alignment="center"
       />
       <div class="flex flex-col lg:grid lg:grid-cols-2 w-full h-auto gap-10">
