@@ -41,7 +41,7 @@ export const handler = async (
 
   const cookieObj = {
     [AMMO_DEVICE_ID_HEADER]: deviceId,
-    [TIMESTAMP_HEADER]: `${timestamp  }`,
+    [TIMESTAMP_HEADER]: `${timestamp}`,
   };
 
   setCookies(res, btoa(JSON.stringify(cookieObj)), AMMO_DEVICE_ID_HEADER);
