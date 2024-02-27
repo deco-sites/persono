@@ -213,7 +213,7 @@ export interface Bag {
   total: number;
   discounts: Discount[];
   coupon: string;
-  freebie: Freebie;
+  freebies: Freebie;
   childBags: unknown[];
   withDeliverySplit: boolean;
 }
