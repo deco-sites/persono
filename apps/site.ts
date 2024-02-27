@@ -25,16 +25,19 @@ export type DefaultProps = {
 } & CommerceProps;
 
 export type Props = {
-  /**
-  @title URL Pública do ecommerce
-  @default https://mmartan.com.br/api/
-  */
+  /** @title URL Base da API */
   publicUrl: string;
 
+  /** @title URL Base da API de Imagem */
   imageBaseUrl: string;
 
+  /** @title Key da API */
+  apiKey: string;
+
+  /** @title Nome de cookies */
   cookieNames: CookieNames;
 
+  /** @title Integração de Configs */
   config: Partial<Config>;
 } & DefaultProps;
 

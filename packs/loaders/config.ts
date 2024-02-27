@@ -48,6 +48,7 @@ const loader = async (
   try {
     const response = await ammoc
       ["GET /api/config"](
+        {},
         {
           headers: headers,
         },
