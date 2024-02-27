@@ -121,7 +121,7 @@ function Result({
               rel="prev"
               href={pageInfo.previousPage ?? "#"}
               class={`flex items-center justify-center w-8 h-8 border rounded-full text-primary ${
-                pageInfo.previousPage?.length == undefined||
+                pageInfo.previousPage?.length == undefined ||
                   pageInfo.previousPage?.length == 0
                   ? "cursor-default opacity-50"
                   : ""
@@ -143,7 +143,7 @@ function Result({
                     : ""}
                   className={`flex justify-center items-center w-8 h-8 font-bold ${
                     pageInfo.previousPage?.length == 0 ||
-                    pageInfo.previousPage?.length == undefined
+                      pageInfo.previousPage?.length == undefined
                       ? "bg-primary text-base-100 rounded-full"
                       : "text-primary"
                   }`}
@@ -225,7 +225,8 @@ function Result({
               rel="next"
               href={pageInfo.nextPage ?? "#"}
               class={`flex items-center justify-center w-8 h-8 border rounded-full text-primary ${
-                pageInfo.nextPage?.length == undefined || pageInfo.nextPage?.length == 0
+                pageInfo.nextPage?.length == undefined ||
+                  pageInfo.nextPage?.length == 0
                   ? "cursor-default opacity-50"
                   : ""
               }`}
