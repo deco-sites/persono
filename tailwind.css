@@ -35,19 +35,39 @@
     min-height: 36px;
     height: 36px;
   }
+
+  .btn-accent:disabled,
+  .btn-secondary:disabled {
+    opacity: .8;
+    color: #999;
+  }
+
+  .btn-accent:disabled {
+    background-color: var(--s);
+  }
+
+  .btn-secondary:disabled {
+    background-color: var(--a);
+  }
+
+
   .btn-accent {
     border: 1px solid #ccc;
   }
+
   .btn-ghost:hover {
     background-color: transparent;
   }
+
   .input {
     height: 36px;
     min-height: 36px;
   }
+
   .link {
     text-decoration: none;
   }
+
   .link:hover {
     color: oklch(var(--p))
   }

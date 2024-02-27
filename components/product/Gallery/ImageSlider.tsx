@@ -5,6 +5,7 @@ import { FnCustomContext } from "deco-sites/persono/packs/types.ts";
 import { SectionProps } from "deco/mod.ts";
 import Slider from "deco-sites/persono/components/ui/Slider.tsx";
 import SliderJS from "deco-sites/persono/islands/SliderJS.tsx";
+import { useMemo } from "preact/compat";
 
 export interface Props {
   /** @title Integration */
@@ -26,10 +27,23 @@ export default function GallerySlider(props: SectionProps<typeof loader>) {
 
   const {
     page: {
-      product: { image: images = [] },
+      product: { image: defaultImages = [] },
     },
   } = props;
   const aspectRatio = `1/1`;
+
+  // Change the first image
+  const images = useMemo(() => {
+    if (defaultImages.length > 1) {
+      const newImages = [...defaultImages];
+      const firstImage = newImages[0];
+      newImages.splice(0, 1).unshift(newImages[0]);
+      newImages[1] = firstImage;
+      return newImages;
+    }
+
+    return defaultImages;
+  }, [defaultImages]);
 
   if (props.device == "desktop") {
     return (

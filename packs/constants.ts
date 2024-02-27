@@ -1,6 +1,4 @@
 import { SortOption } from "apps/commerce/types.ts";
-export const AMMO_DEVICE_ID_HEADER = "X-Ammo-Device-Id";
-export const AMMO_TOKEN_HEADER = "X-Ammo-Token";
 export const SORT_OPTIONS: SortOption[] = [
   { value: "", label: "Recomendados" },
   { value: "discount_desc", label: "Maior desconto" },

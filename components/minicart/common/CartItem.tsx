@@ -68,7 +68,7 @@ function CartItem(
       <div class="flex flex-col flex-grow gap-6">
         <div class="relative flex flex-col gap-1">
           <p class="text-base">{name}</p>
-          <p class="text-sm capitalize">Tamanho {size}</p>
+          <p class="text-sm capitalize">Tamanho {size.toLowerCase()}</p>
           <div class="flex items-center gap-2">
             <p class="line-through text-[#666] text-xs">
               {formatPrice(list / 100, currency, locale)}

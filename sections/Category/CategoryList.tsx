@@ -45,9 +45,8 @@ function CategoryList(props: Props) {
     >
       <Header title={header.title} />
       <div class="relative">
-        <Slider.PrevButton class="justify-center btn btn-circle border border-neutral bg-white z-10 absolute left-[-18px] top-[calc(50%-18px)] hidden sm:flex rounded-full cursor-pointer">
+        <Slider.PrevButton class="justify-center btn btn-circle btn-accent text-primary disabled:bg-white border border-neutra z-10 absolute left-[-18px] top-[calc(50%-18px)] hidden sm:flex rounded-full cursor-pointer">
           <Icon
-            class="text-primary"
             size={20}
             id="ChevronLeft"
             strokeWidth={2}
@@ -60,7 +59,7 @@ function CategoryList(props: Props) {
           ) => (
             <Slider.Item
               index={index}
-              class="flex flex-col gap-12 carousel-item lg:w-[calc(25%-42px)] sm:w-[calc(33.3%-13px)] w-2/3"
+              class="flex flex-col gap-12 carousel-item lg:w-[calc(25%-42px)] sm:w-[calc(33.3%-16px)] w-2/3"
             >
               <a
                 href={href}
@@ -97,9 +96,8 @@ function CategoryList(props: Props) {
             </Slider.Item>
           ))}
         </Slider>
-        <Slider.NextButton class="justify-center btn btn-circle border border-neutral bg-white z-10 absolute right-[-18px] top-[calc(50%-18px)] hidden sm:flex rounded-full cursor-pointer">
+        <Slider.NextButton class="justify-center btn btn-circle btn-accent text-primary disabled:bg-white border border-neutra z-10 absolute right-[-18px] top-[calc(50%-18px)] hidden sm:flex rounded-full cursor-pointer">
           <Icon
-            class="text-primary"
             size={20}
             id="ChevronRight"
             strokeWidth={2}

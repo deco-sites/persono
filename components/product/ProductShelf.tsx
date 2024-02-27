@@ -51,7 +51,7 @@ function ProductShelf({
           {products?.map((product, index) => (
             <Slider.Item
               index={index}
-              class="carousel-item pl-6 sm:pl-0 last:pr-6 sm:last:pr-0 lg:w-[calc(25%-25px)] sm:w-[calc(33.3%-30px)] w-2/3"
+              class="carousel-item pl-6 sm:pl-0 last:pr-6 sm:last:pr-0 lg:w-[calc(25%-24px)] sm:w-[calc(33.3%-21px)] w-2/3"
             >
               <ProductCard
                 isMobile={isMobile}
@@ -66,19 +66,17 @@ function ProductShelf({
         </Slider>
 
         <div class="hidden relative sm:block z-10 col-start-1 row-start-3">
-          <Slider.PrevButton class="justify-center btn btn-circle border border-neutral  bg-white disabled:border-neutral disabled:bg-white  disable:bg-white z-10 absolute left-[-18px] top-[calc(50%-18px)] hidden sm:flex rounded-full cursor-pointer">
+          <Slider.PrevButton class="justify-center btn btn-circle btn-accent text-primary disabled:bg-white border border-neutra z-10 absolute left-[-18px] top-[calc(50%-18px)] hidden sm:flex rounded-full cursor-pointer">
             <Icon
-              class="text-primary rotate-180"
               size={20}
-              id="ChevronRight"
+              id="ChevronLeft"
               strokeWidth={2}
             />
           </Slider.PrevButton>
         </div>
         <div class="hidden relative sm:block z-10 col-start-3 row-start-3">
-          <Slider.NextButton class="justify-center btn btn-circle border-neutral bg-white disabled:border-neutral disabled:bg-white z-10 absolute right-[-18px] top-[calc(50%-18px)] hidden sm:flex rounded-full cursor-pointer">
+          <Slider.NextButton class="justify-center btn btn-circle btn-accent text-primary disabled:bg-white border border-neutra z-10 absolute right-[-18px] top-[calc(50%-18px)] hidden sm:flex rounded-full cursor-pointer">
             <Icon
-              class="text-primary"
               size={20}
               id="ChevronRight"
               strokeWidth={2}

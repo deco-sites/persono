@@ -265,7 +265,7 @@ function Filters({ filters, colors }: Props) {
               .filter((item) => item.slugs.length > 0);
             callUrl({ transformedArray });
           }}
-          class="rounded-full bg-primary w-full text-base-100"
+          class="rounded-full btn-primary w-full text-base-100"
         >
           Aplicar Filtros
         </Button>

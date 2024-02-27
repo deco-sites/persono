@@ -6,6 +6,9 @@ export interface Props {
   coupon: string;
 }
 
+/**
+ * @title Ammo Varejo - Adição de cupom na sacola
+ */
 const action = async (
   props: Props,
   req: Request,
@@ -14,8 +17,8 @@ const action = async (
   const {
     coupon,
   } = props;
-  const { ammoc, apiKey } = ctx;
-  const headers = getHeaders(req, apiKey);
+  const { ammoc } = ctx;
+  const headers = getHeaders(req, ctx);
 
   try {
     const response = await ammoc
