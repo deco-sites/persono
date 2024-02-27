@@ -24,15 +24,16 @@ function Cart({
   const { cart, loading, addItems, mapItemsToAnalyticsItems } = useCart();
   const { items = [], total = 0, discounts = [] } = cart.value ?? {};
   const coupon = cart.value?.coupon;
+
   const freebie: CartFreebie | null | undefined =
-    cart.value?.freebie.eligible && cart.value?.freebie.active
+    cart.value?.freebies.eligible && cart.value?.freebies.active
       ? {
-        selectedSku: cart.value.freebie.items.find(
-          (item) => item.sku === cart.value!.freebie.selectedFreebie,
+        selectedSku: cart.value.freebies.items.find(
+          (item) => item.sku === cart.value?.freebies.selectedFreebie,
         ),
-        items: cart.value.freebie.items,
-        image: cart.value.freebie.drawerImage,
-        target: cart.value.freebie.subtotalToActivate,
+        items: cart.value.freebies.items,
+        image: cart.value.freebies.drawerImage,
+        target: cart.value.freebies.subtotalToActivate,
       }
       : null;
 
