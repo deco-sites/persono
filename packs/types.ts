@@ -336,6 +336,7 @@ export interface BagItems {
 }
 
 export interface Config {
+  freeShipping: number;
   maxInstallments: number;
   minInstallmentValue: number;
   postalCodeLength: number;

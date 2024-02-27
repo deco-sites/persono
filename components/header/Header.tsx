@@ -77,14 +77,17 @@ function Header({
 export const loader = (props: Props, _req: Request, ctx: FnCustomContext) => {
   const device = ctx.device;
   const imageBaseUrl = ctx.imageBaseUrl;
-
-  if (props.cart && props.cart.freeShipping) {
-    props.cart.freeShipping.target = ctx.config?.features
-      ?.freeShippingCampaigns[0].minBagValue;
-  }
+  const freeShipping = ctx.config.freeShipping;
 
   return {
     ...props,
+    cart: {
+      ...props.cart,
+      freeShipping: {
+        ...props.cart?.freeShipping,
+        target: freeShipping,
+      },
+    },
     device: device || "desktop",
     imageBaseUrl,
   };

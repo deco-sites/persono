@@ -4,6 +4,7 @@ import { Config } from "$store/packs/types.ts";
 import { getHeaders } from "$store/packs/utils/headers.ts";
 
 export interface Props {
+  freeShipping: number;
   fields: string[];
 }
 
@@ -58,7 +59,12 @@ const loader = async (
 
     const selectedFields = getConfigValues(config, storeConfigs);
 
-    return selectedFields;
+    const selectedFieldsWithFreeShipping: Config = {
+      ...selectedFields,
+      freeShipping: props.freeShipping,
+    };
+
+    return selectedFieldsWithFreeShipping;
   } catch (error) {
     throw new Error(error);
   }
