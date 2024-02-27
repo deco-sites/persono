@@ -33,11 +33,18 @@ export const handler = async (
   )) as CookieNames;
   const AMMO_DEVICE_ID_HEADER = cookieNames.ammoDeviceIdCookie;
 
-  const deviceId = crypto.randomUUID();
-
   if (cookies[AMMO_DEVICE_ID_HEADER]) return res;
 
-  setCookies(res, deviceId, AMMO_DEVICE_ID_HEADER);
+  const deviceId = crypto.randomUUID();
+  const TIMESTAMP_HEADER = cookieNames.timestampCookie;
+  const timestamp = new Date().getTime();
+
+  const cookieObj = {
+    [AMMO_DEVICE_ID_HEADER]: deviceId,
+    [TIMESTAMP_HEADER]: `${timestamp  }`,
+  };
+
+  setCookies(res, btoa(JSON.stringify(cookieObj)), AMMO_DEVICE_ID_HEADER);
 
   return res;
 };

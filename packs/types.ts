@@ -4,6 +4,7 @@ import { FnContext as DefaultFnContext } from "deco/types.ts";
 export interface CookieNames {
   ammoDeviceIdCookie: string;
   ammoTokenCookie: string;
+  timestampCookie: string;
 }
 
 export interface AmmoProduct {
@@ -213,7 +214,7 @@ export interface Bag {
   total: number;
   discounts: Discount[];
   coupon: string;
-  freebie: Freebie;
+  freebies: Freebie;
   childBags: unknown[];
   withDeliverySplit: boolean;
 }

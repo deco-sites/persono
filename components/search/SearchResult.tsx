@@ -20,6 +20,8 @@ import {
   NotFound,
 } from "deco-sites/persono/components/product/NotFound.tsx";
 
+import { Device } from "apps/website/matchers/device.ts";
+
 import ActiveFilterTag from "deco-sites/persono/islands/ActiveFIlterTag.tsx";
 
 export interface Layout {
