@@ -123,14 +123,13 @@ function Result({
               rel="prev"
               href={pageInfo.previousPage ?? "#"}
               class={`flex items-center justify-center w-8 h-8 border rounded-full text-primary ${
-                !pageInfo.previousPage?.length ||
-                  pageInfo.previousPage?.length == 0 ||
-                  pageInfo.currentPage == 1
+                pageInfo.previousPage?.length == undefined ||
+                  pageInfo.previousPage?.length == 0
                   ? "cursor-default opacity-50"
                   : ""
               }`}
               disabled={pageInfo.nextPage?.length == 0 ||
-                pageInfo.currentPage == 1}
+                pageInfo.previousPage?.length == undefined}
             >
               <Icon id="ChevronLeft" size={14} strokeWidth={3} />
             </a>
@@ -145,13 +144,13 @@ function Result({
                     ? pageInfo.previousPage.replace(pageRegex, `page=1`)
                     : ""}
                   className={`flex justify-center items-center w-8 h-8 font-bold ${
-                    pageInfo.currentPage === 1 || pageInfo.currentPage == 0
+                    pageInfo.previousPage?.length == 0 ||
+                      pageInfo.previousPage?.length == undefined
                       ? "bg-primary text-base-100 rounded-full"
                       : "text-primary"
                   }`}
                   disabled={pageInfo.previousPage?.length == 0 ||
-                    pageInfo.previousPage?.length == undefined ||
-                    pageInfo.currentPage == 1}
+                    pageInfo.previousPage?.length == undefined}
                 >
                   {1}
                 </a>
@@ -181,8 +180,7 @@ function Result({
                         )
                         : ""}
                       class={`flex justify-center items-center w-8 h-8 font-bold ${
-                        pageInfo.currentPage == index ||
-                          (pageInfo.currentPage == 1 && index == 0)
+                        pageInfo.currentPage == index
                           ? "bg-primary text-base-100 rounded-full"
                           : "text-primary"
                       }`}
@@ -213,8 +211,7 @@ function Result({
                       )
                       : ""}
                     class={`flex justify-center items-center w-8 h-8 font-bold ${
-                      pageInfo.currentPage == index ||
-                        (pageInfo.currentPage == 1 && index == 0)
+                      pageInfo.currentPage == index
                         ? "bg-primary text-base-100 rounded-full"
                         : "text-primary"
                     }`}
@@ -230,7 +227,8 @@ function Result({
               rel="next"
               href={pageInfo.nextPage ?? "#"}
               class={`flex items-center justify-center w-8 h-8 border rounded-full text-primary ${
-                !pageInfo.nextPage?.length || pageInfo.nextPage?.length == 0
+                pageInfo.nextPage?.length == undefined ||
+                  pageInfo.nextPage?.length == 0
                   ? "cursor-default opacity-50"
                   : ""
               }`}
