@@ -1,6 +1,7 @@
-import { getCookies } from "std/http/mod.ts";
 import { AppContext } from "$store/apps/site.ts";
 import { getSiteCookies } from "$store/packs/utils/utils.ts";
+import { StringCodec } from "deco-sites/persono/packs/utils/stringCodec.ts";
+import { getCookies } from "std/http/mod.ts";
 export function getHeaders(
   req: Request,
   ctx: AppContext,
@@ -12,8 +13,8 @@ export function getHeaders(
     cookieNames,
   );
   const cookieSite = getCookies(req.headers);
-  const deviceId = cookieSite[AMMO_DEVICE_ID_HEADER];
-  const token = cookieSite[AMMO_TOKEN_HEADER];
+  const deviceId = parseCookie(AMMO_DEVICE_ID_HEADER, cookieSite);
+  const token = parseCookie(AMMO_TOKEN_HEADER, cookieSite);
 
   const headers = new Headers({
     "x-api-key": apiKey,
@@ -26,4 +27,20 @@ export function getHeaders(
   }
 
   return headers;
+}
+
+function parseCookie(key: string, cookies: Record<string, string>) {
+  const rawValue = cookies[key];
+
+  if (!rawValue) {
+    return null;
+  }
+
+  try {
+    const decodedRawValue = StringCodec.decode(rawValue);
+
+    return decodedRawValue[key];
+  } catch (e) {
+    return null;
+  }
 }
