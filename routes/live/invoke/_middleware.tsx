@@ -6,11 +6,9 @@ import { CookieNames } from "$store/packs/types.ts";
 const setCookies = (res: Response, deviceId: string, cookieName: string) => {
   res.headers.append(
     "Set-Cookie",
-    `${cookieName}=${deviceId}; Expires=${
-      new Date().setFullYear(
-        new Date().getFullYear() + 1,
-      )
-    }; Path=/; Secure; HttpOnly`,
+    `${cookieName}=${deviceId}; Expires=${new Date(
+      Date.now() + 365 * 864e5,
+    )}; Path=/; Secure; HttpOnly`,
   );
 };
 
@@ -35,13 +33,10 @@ export const handler = async (
 
   if (cookies[AMMO_DEVICE_ID_HEADER]) return res;
 
-  const deviceId = crypto.randomUUID();
-  const TIMESTAMP_HEADER = cookieNames.timestampCookie;
-  const timestamp = new Date().getTime();
-
   const cookieObj = {
-    [AMMO_DEVICE_ID_HEADER]: deviceId,
-    [TIMESTAMP_HEADER]: `${timestamp}`,
+    [AMMO_DEVICE_ID_HEADER]: crypto.randomUUID(),
+    [cookieNames.creationDateCookie]: new Date().getTime().toString(),
+    [cookieNames.expirationDaysCookie]: "-1",
   };
 
   setCookies(res, btoa(JSON.stringify(cookieObj)), AMMO_DEVICE_ID_HEADER);

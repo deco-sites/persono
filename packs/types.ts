@@ -4,7 +4,8 @@ import { FnContext as DefaultFnContext } from "deco/types.ts";
 export interface CookieNames {
   ammoDeviceIdCookie: string;
   ammoTokenCookie: string;
-  timestampCookie: string;
+  creationDateCookie: string;
+  expirationDaysCookie: string;
 }
 
 export interface AmmoProduct {
