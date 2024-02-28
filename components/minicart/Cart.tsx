@@ -26,7 +26,7 @@ function Cart({
   const coupon = cart.value?.coupon;
 
   const freebie: CartFreebie | null | undefined =
-    cart.value?.freebies.eligible && cart.value?.freebies.active
+    cart.value?.freebies?.eligible && cart.value?.freebies?.active
       ? {
         selectedSku: cart.value.freebies.items.find(
           (item) => item.sku === cart.value?.freebies.selectedFreebie,
