@@ -1,7 +1,6 @@
 import Button from "$store/components/ui/Button.tsx";
 import { sendEvent } from "$store/sdk/analytics.tsx";
-import { formatPrice, formatter } from "$store/sdk/format.ts";
-import { useUI } from "$store/sdk/useUI.ts";
+import { formatPrice } from "$store/sdk/format.ts";
 import { AnalyticsItem } from "apps/commerce/types.ts";
 import { Discounts } from "deco-sites/persono/components/minicart/Discounts.tsx";
 import {
