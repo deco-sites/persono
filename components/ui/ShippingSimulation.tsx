@@ -46,7 +46,7 @@ function ShippingContent({
             </span>
             <span class="text-button">até {method.maxDays} dias úteis</span>
             <span class="text-base text-right">
-              {method.cost === 0 ? "Grátis" : formatPrice(method.cost)}
+              {method.cost === 0 ? "Grátis" : formatPrice(method.cost / 100)}
             </span>
           </div>
           <span
@@ -95,6 +95,7 @@ function ShippingSimulation({ sku }: Props) {
           props: { postalCode, sku: sku },
         })) as ShippingSimulation | null;
         error.value = false;
+        console.log(simulateResult.value);
       } catch (e) {
         error.value = true;
       } finally {
