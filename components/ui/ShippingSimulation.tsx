@@ -46,7 +46,7 @@ function ShippingContent({
             </span>
             <span class="text-button">até {method.maxDays} dias úteis</span>
             <span class="text-base text-right">
-              {method.cost === 0 ? "Grátis" : formatPrice(method.cost)}
+              {method.cost === 0 ? "Grátis" : formatPrice(method.cost / 100)}
             </span>
           </div>
           <span
