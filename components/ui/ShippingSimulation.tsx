@@ -95,7 +95,6 @@ function ShippingSimulation({ sku }: Props) {
           props: { postalCode, sku: sku },
         })) as ShippingSimulation | null;
         error.value = false;
-        console.log(simulateResult.value);
       } catch (e) {
         error.value = true;
       } finally {
