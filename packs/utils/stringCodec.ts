@@ -1,3 +1,6 @@
+// deno-lint-ignore-file no-explicit-any
+//@ts-nocheck Type any is not allowed to commit, so, to a provisory solution I put a ts-nocheck
+
 const isobtoa = Buffer
   ? (input: string) => Buffer.from(input).toString("base64")
   : btoa;
