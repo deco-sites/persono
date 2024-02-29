@@ -1,6 +1,6 @@
 import Button from "$store/components/ui/Button.tsx";
 import { sendEvent } from "$store/sdk/analytics.tsx";
-import { formatPrice } from "$store/sdk/format.ts";
+import { formatPrice, formatter } from "$store/sdk/format.ts";
 import { useUI } from "$store/sdk/useUI.ts";
 import { AnalyticsItem } from "apps/commerce/types.ts";
 import { Discounts } from "deco-sites/persono/components/minicart/Discounts.tsx";
@@ -8,7 +8,7 @@ import {
   CartFreebie,
   FreebieChoice,
 } from "deco-sites/persono/components/minicart/common/FreebieChoice.tsx";
-import Icon from "deco-sites/persono/components/ui/Icon.tsx";
+
 import { Discount } from "deco-sites/persono/packs/types.ts";
 import CartItem, { Item, Props as ItemProps } from "./CartItem.tsx";
 import FreeShippingProgressBar from "./FreeShippingProgressBar.tsx";

@@ -4,6 +4,6 @@ import manifest from "./manifest.gen.ts";
 
 export default defineConfig({
   // Using to render internal pages in localHost
-  port: 6006,
+  // port: 6006,
   plugins: plugins({ manifest }),
 });
