@@ -42,7 +42,7 @@ function ProductShelf({
         <Header title={title} alignment={isMobile ? "left" : "center"} />
       )}
 
-      <div id={id} class="container grid grid-cols-[48px_1fr_48px] pb-28">
+      <div id={id} class="container grid grid-cols-[48px_1fr_48px] pb-20 sm:pb-16">
         <Slider
           class={`carousel carousel-start sm:carousel-end md:gap-8 col-span-full row-start-2 row-end-5 ${
             !title ? "pt-10" : ""
