@@ -1,5 +1,6 @@
 import { FnContext } from "deco/types.ts";
 import { SectionProps } from "deco/mod.ts";
+import ExternalFrame from "$store/islands/ExternalFrame.tsx";
 
 interface ContentDevices {
   mobile: number;
@@ -13,7 +14,7 @@ export interface Layout {
   containerHeight: ContentDevices;
 }
 
-interface Props {
+export interface Props {
   contentLink: string;
   layout: Layout;
 }
@@ -23,16 +24,11 @@ const ExternalContent = ({
   device,
   layout,
 }: SectionProps<typeof loader>) => {
-  const { containerHeight } = layout;
-  const heightSetting = containerHeight[device];
-
   return (
-    <iframe
-      height={heightSetting}
-      scrolling="no"
-      width="100%"
-      src={contentLink}
-      frameBorder="0"
+    <ExternalFrame
+      contentLink={contentLink}
+      device={device}
+      layout={layout}
     />
   );
 };
