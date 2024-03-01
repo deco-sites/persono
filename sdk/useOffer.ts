@@ -2,6 +2,7 @@ import type {
   AggregateOffer,
   UnitPriceSpecification,
 } from "apps/commerce/types.ts";
+import { formatPrice } from "deco-sites/persono/sdk/format.ts";
 
 const bestInstallment = (
   acc: UnitPriceSpecification | null,
@@ -45,7 +46,7 @@ const installmentToString = (
 
   const withTaxes = sellingPrice < price;
 
-  return `${billingDuration}x de R$ ${billingIncrement} ${
+  return `${billingDuration}x de ${formatPrice(billingIncrement)} ${
     withTaxes ? "com juros" : "sem juros"
   }`;
 };
