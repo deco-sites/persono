@@ -8,6 +8,8 @@ interface Props {
   sizes: Size[];
   possibilities: GroupedData;
   productsNotAvailable: string[];
+  category: string;
+  categoryModalDisplay?: string[];
 }
 
 type Possibilities = { name: string; value: string; url: string; sku: string };
@@ -17,6 +19,8 @@ function VariantSizeSelector({
   url,
   possibilities,
   sizes,
+  categoryModalDisplay,
+  category,
 }: Props) {
   const sizePossibilities: Possibilities[] = [];
   let color = "";
@@ -86,11 +90,18 @@ function VariantSizeSelector({
 
           <label
             for="my_modal_6"
-            class="btn justify-start underline btn-link p-0 text-black text-sm font-normal"
+            class={`btn justify-start underline btn-link p-0 text-black text-sm font-normal ${
+              !categoryModalDisplay || categoryModalDisplay.filter((c) => (
+                    c.toLowerCase() === category.toLowerCase()
+                  )
+                  ).length > 0
+                ? ""
+                : "hidden"
+            } ${category.length <= 0 ? "hidden" : ""}`}
           >
             Guia de tamanhos
           </label>
-          {/* <SizesGuideModal segment={product.category?.split(">")[0]} /> */}
+          <SizesGuideModal segment={category} />
         </div>
       </ul>
     </div>

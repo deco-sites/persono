@@ -28,6 +28,7 @@ interface Props {
   colors: Color[];
   sizes: Size[];
   benefits: Benefits[];
+  categoryModalDisplay?: string[]
   shippingSimulation: Resolved<ShippingSimulationLoader>;
   page: ProductDetailsPage | null;
   notFoundSettings?: NotFoundProps;
@@ -40,6 +41,7 @@ function ProductInfo({
   benefits,
   notFoundSettings,
   device,
+  categoryModalDisplay
 }: SectionProps<typeof loader>) {
   const id = useId();
 
@@ -120,6 +122,8 @@ function ProductInfo({
       {/* Sku Selector */}
       <div class="sm:mt-6 mt-4 flex flex-col gap-4 ">
         <ProductSizeSelector
+          category={product.category?.split(">")[product.category?.split(">").length-1] ?? ""}
+          categoryModalDisplay={categoryModalDisplay}
           sizes={sizes}
           url={url}
           productsNotAvailable={productsNotAvailable}
