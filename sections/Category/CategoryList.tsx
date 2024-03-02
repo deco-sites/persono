@@ -44,7 +44,7 @@ function CategoryList(props: Props) {
       class="container flex flex-col pb-10 pt-5"
     >
       <div class="pl-6 sm:pl-0">
-        <Header title={header.title}/>
+        <Header title={header.title} />
       </div>
       <div class="relative">
         <Slider.PrevButton class="justify-center btn btn-circle btn-accent text-primary disabled:bg-white border border-neutra z-10 absolute left-[-18px] top-[calc(50%-18px)] hidden sm:flex rounded-full cursor-pointer">
