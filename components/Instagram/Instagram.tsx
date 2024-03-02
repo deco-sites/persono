@@ -36,7 +36,7 @@ function Instagram(props: Props) {
       id={id}
       class="container flex flex-col pb-10"
     >
-      <div class="pl-6 sm:pl-0">
+      <div class="pl-6 sm:pl-0 pt-6 pb-10">
         <Header title={header.title} />
       </div>
       <div>

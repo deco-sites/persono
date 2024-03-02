@@ -59,7 +59,7 @@ export default function FeatureBlogArticle(props: Props) {
             />
           </Picture>
         </figure>
-        <div class="flex flex-col pt-7 gap-5">
+        <div class="flex flex-col pt-10 gap-5">
           <h2 class="card-title text-2xl lg:text-[40px] font-medium">
             {title}
           </h2>

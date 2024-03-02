@@ -41,9 +41,9 @@ function CategoryList(props: Props) {
   return (
     <div
       id={id}
-      class="container flex flex-col pb-10 pt-5"
+      class="container flex flex-col pb-[60px] pt-5"
     >
-      <div class="pl-6 sm:pl-0">
+      <div class="pl-6 py-10 sm:pl-0">
         <Header title={header.title} />
       </div>
       <div class="relative">
