@@ -41,9 +41,11 @@ function CategoryList(props: Props) {
   return (
     <div
       id={id}
-      class="container max-sm:pl-6 flex flex-col pb-10 pt-5"
+      class="container flex flex-col pb-10 pt-5"
     >
-      <Header title={header.title} />
+      <div class="pl-6 sm:pl-0">
+        <Header title={header.title}/>
+      </div>
       <div class="relative">
         <Slider.PrevButton class="justify-center btn btn-circle btn-accent text-primary disabled:bg-white border border-neutra z-10 absolute left-[-18px] top-[calc(50%-18px)] hidden sm:flex rounded-full cursor-pointer">
           <Icon
@@ -59,7 +61,7 @@ function CategoryList(props: Props) {
           ) => (
             <Slider.Item
               index={index}
-              class="flex flex-col gap-12 carousel-item lg:w-[calc(25%-42px)] sm:w-[calc(33.3%-16px)] w-2/3"
+              class="flex flex-col gap-12 carousel-item first-of-type:pl-6 sm:first-of-type:pl-0 lg:w-[calc(25%-42px)] sm:w-[calc(33.3%-16px)] w-2/3"
             >
               <a
                 href={href}
