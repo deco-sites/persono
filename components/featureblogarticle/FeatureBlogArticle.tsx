@@ -34,7 +34,7 @@ export default function FeatureBlogArticle(props: Props) {
 
   return (
     <div class="container px-6 md:px-0">
-      <div class="card lg:card-side lg:w-auto rounded grid grid-cols-1 lg:grid-cols-[50%_47%] gap-8 pt-10 pb-12 lg:pb-24 lg:pt-[120px]">
+      <div class="card lg:card-side lg:w-auto rounded grid grid-cols-1 lg:grid-cols-[50%_47%] lg:gap-8 pt-10 pb-12 lg:pb-24 lg:pt-[120px]">
         <figure class="relative object-cover">
           <Picture>
             <Source
@@ -64,7 +64,7 @@ export default function FeatureBlogArticle(props: Props) {
             {title}
           </h2>
           <p>{text}</p>
-          <div class="card-actions pt-5">
+          <div class="card-actions lg:pt-5">
             <a
               class="flex text-black not-italic font-bold gap-2 h-9 justify-center items-center link"
               href={link?.href}
