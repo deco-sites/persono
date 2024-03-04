@@ -6,10 +6,6 @@ interface Props {
 }
 
 export function SizesGuideModal({ sizes, segment }: Props) {
-  const teste = [{ name: "asd", value: "asdasda" }, {
-    name: "asd",
-    value: "asdasda",
-  }];
   return (
     <>
       <input type="checkbox" id="my_modal_6" class="modal-toggle" />
@@ -27,7 +23,7 @@ export function SizesGuideModal({ sizes, segment }: Props) {
             Escolha de acordo com o tamanho do(a) {segment ?? "produto"}
           </p>
           <div class="flex flex-col divide-y mb-14">
-            {teste?.map((s) => (
+            {sizes?.map((s) => (
               <div class="flex py-4 text-base justify-between">
                 <span>{s.name}</span>
                 <span class="text-gray-600">{s.value}</span>

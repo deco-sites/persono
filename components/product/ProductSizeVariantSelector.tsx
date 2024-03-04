@@ -71,8 +71,6 @@ function VariantSizeSelector({
     return match ? { ...match } : null;
   }).filter((item) => item !== null) as { name: string; value: string }[];
 
-  console.log(newCategorySize);
-
   return (
     <div class="flex flex-col gap-4">
       <ul class="flex flex-col gap-2">

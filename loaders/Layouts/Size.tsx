@@ -3,11 +3,11 @@
  */
 
 export interface Size {
-/** 
- * @description Size
- * */
+  /**
+   * @description Size
+   */
   name: string;
-  /** 
+  /**
    * @description Size and the size measurement
    */
   value: string;
@@ -17,11 +17,11 @@ export interface Size {
  * @title {{{category}}}
  */
 export interface SizeGroup {
-  /** 
+  /**
    * @description Category product name
    */
   category: string;
-  /** 
+  /**
    * @description Sizes list of that category
    */
   size: Size[];
