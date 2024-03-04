@@ -1,11 +1,11 @@
 import AvatarSize from "$store/components/ui/AvatarSize.tsx";
 import type { GroupedData } from "$store/sdk/useVariantPossiblities.ts";
-import { Size } from "deco-sites/persono/loaders/Layouts/Size.tsx";
+import { SizeGroup } from "deco-sites/persono/loaders/Layouts/Size.tsx";
 import { SizesGuideModal } from "deco-sites/persono/components/product/SizesGuideModal.tsx";
 
 interface Props {
   url: string | undefined;
-  sizes: Size[];
+  sizes: SizeGroup[];
   possibilities: GroupedData;
   productsNotAvailable: string[];
   category: string;
@@ -19,7 +19,6 @@ function VariantSizeSelector({
   url,
   possibilities,
   sizes,
-  categoryModalDisplay,
   category,
 }: Props) {
   const sizePossibilities: Possibilities[] = [];
@@ -43,21 +42,33 @@ function VariantSizeSelector({
     sizePossibilities.push(...links);
   });
 
+  const rawCategorySizes = sizes.filter(s=> s.category.toLowerCase() == category.toLowerCase())
+
+  const categorySizes = rawCategorySizes.map(item => item.size)
+  .flat()
+  .map(({ name, value }) => ({ name, value }));
+
   // Sort array based in admin sizes
   const sortedSizeArray = sizePossibilities.sort((a, b) => {
-    const indexA = sizes.findIndex((size) => size.size === a.name);
-    const indexB = sizes.findIndex((size) => size.size === b.name);
-
-    // Move os tamanhos não encontrados (índice -1) para o final
+    const indexA = categorySizes.findIndex((size) => size.name === a.name);
+    const indexB = categorySizes.findIndex((size) => size.name === b.name);
+    
     if (indexA === -1 && indexB !== -1) {
-      return 1; // Coloca b no final
+      return 1;
     } else if (indexB === -1 && indexA !== -1) {
-      return -1; // Coloca a no final
+      return -1;
     }
-
+    
     return indexA - indexB;
   });
+  
+  const newCategorySize = sortedSizeArray.map(item => {
+    const match = categorySizes.find(a1Item => a1Item.name.toLowerCase() === item.name.toLowerCase());
+    return match ? { ...match } : null;
+  }).filter(item => item !== null) as { name: string; value: string }[];
 
+  console.log(newCategorySize)
+  
   return (
     <div class="flex flex-col gap-4">
       <ul class="flex flex-col gap-2">
@@ -91,8 +102,8 @@ function VariantSizeSelector({
           <label
             for="my_modal_6"
             class={`btn justify-start underline btn-link p-0 text-black text-sm font-normal ${
-              !categoryModalDisplay || categoryModalDisplay.filter((c) => (
-                    c.toLowerCase() === category.toLowerCase()
+              !rawCategorySizes || rawCategorySizes.filter((c) => (
+                    c.category.toLowerCase() === category.toLowerCase()
                   )
                   ).length > 0
                 ? ""
@@ -101,7 +112,7 @@ function VariantSizeSelector({
           >
             Guia de tamanhos
           </label>
-          <SizesGuideModal segment={category} />
+          <SizesGuideModal sizes={newCategorySize} segment={category} />
         </div>
       </ul>
     </div>

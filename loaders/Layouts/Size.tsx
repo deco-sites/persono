@@ -1,18 +1,33 @@
+/**
+ * @title {{{name}}}
+ */
+
 export interface Size {
-  size: string;
+  name: string;
+  value: string;
+}
+
+/**
+ * @title {{{category}}}
+ */
+export interface SizeGroup {
+  category: string;
+  size: Size[];
 }
 
 interface Props {
-  sizes: Size[];
+  sizes: SizeGroup[];
 }
 
 /** @title Sizes */
-const loader = ({ sizes }: Props): Size[] => sizes;
+const loader = ({ sizes }: Props): SizeGroup[] => sizes;
 
 export const Preview = ({ sizes }: Props) => {
   return (
     <div class="h-full w-full grid place-items-center">
-      {sizes.map((c) => <p>{c.size}</p>)}
+      {sizes.map((c) => {
+        c.size.map((s) => <p>s.sizeName</p>);
+      })}
     </div>
   );
 };
