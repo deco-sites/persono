@@ -63,8 +63,6 @@ function SortComponent({ sortOptions, sort }: SortProps) {
   const label = mapSortToPortuguese(sort);
   const selectedItem = useSignal(label);
 
-  console.log(sortOptions, sort);
-
   return (
     <details class="dropdown">
       <summary class="flex items-center justify-between px-0 shadow-none bg-transparent font-bold gap-2 cursor-pointer border-none hover:bg-transparent text-md sm:text-sm">
