@@ -64,7 +64,6 @@ function VariantSizeSelector({
     return indexA - indexB;
   });
 
-  
   const newCategorySize = sortedSizeArray.map((item) => {
     const match = categorySizes.find((a1Item) =>
       a1Item.name.toLowerCase() === item.name.toLowerCase()
