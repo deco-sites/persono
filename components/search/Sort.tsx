@@ -28,7 +28,7 @@ const applySort = ({ value }: { value: string }) => {
     urlSearchParams.set(SORT_QUERY_PARAM, value);
   }
 
-  if (!value.length){
+  if (!value.length) {
     urlSearchParams.set(SORT_QUERY_PARAM, "recomendados");
   }
 
@@ -63,7 +63,7 @@ function SortComponent({ sortOptions, sort }: SortProps) {
   const label = mapSortToPortuguese(sort);
   const selectedItem = useSignal(label);
 
-  console.log(sortOptions, sort)
+  console.log(sortOptions, sort);
 
   return (
     <details class="dropdown">
