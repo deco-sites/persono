@@ -59,7 +59,7 @@ const loader = async (
     const selectedFields = getConfigValues(config, storeConfigs);
 
     const selectedFieldsWithFreeShipping: Config = {
-      ...selectedFields
+      ...selectedFields,
     };
 
     return selectedFieldsWithFreeShipping;
