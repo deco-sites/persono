@@ -56,7 +56,7 @@ function ProductInfo({
     listPrice,
     availability,
   } = useOfferWithoutTaxes(offers);
-  const {installments} = useOffer(offers)
+  const { installments } = useOffer(offers);
   const breadcrumb = {
     ...breadcrumbList,
     itemListElement: breadcrumbList?.itemListElement.slice(0, -1),
