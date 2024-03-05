@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+ body {
+        background-color: black;
+    }
+
 @layer base {
 
   /* Allow changing font family via CMS */
