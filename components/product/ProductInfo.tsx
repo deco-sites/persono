@@ -23,7 +23,6 @@ import {
   NotFound,
 } from "deco-sites/persono/components/product/NotFound.tsx";
 import { FnContext } from "deco/types.ts";
-import { useOffer } from "deco-sites/persono/sdk/useOffer.ts";
 
 interface Props {
   colors: Color[];
@@ -54,9 +53,9 @@ function ProductInfo({
   const {
     price = 0,
     listPrice,
+    installments,
     availability,
   } = useOfferWithoutTaxes(offers);
-  const { installments } = useOffer(offers);
   const breadcrumb = {
     ...breadcrumbList,
     itemListElement: breadcrumbList?.itemListElement.slice(0, -1),
