@@ -70,13 +70,13 @@ function CartItem(
           <p class="text-base">{name}</p>
           <p class="text-sm capitalize">Tamanho {size.toLowerCase()}</p>
           <div class="flex items-center gap-2">
-            <p
-              class={`${
-                list !== sale ? "" : "hidden"
-              } line-through text-[#666] text-xs`}
-            >
-              {formatPrice(list / 100, currency, locale)}
-            </p>
+            {list !== sale
+              ? (
+                <p class="line-through text-[#666] text-xs">
+                  {formatPrice(list / 100, currency, locale)}
+                </p>
+              )
+              : null}
             <p class="text-base">
               {formatPrice(sale / 100, currency, locale)}
             </p>
