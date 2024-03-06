@@ -1,4 +1,5 @@
 import { useId } from "$store/sdk/useId.ts";
+import { scriptAsDataURI } from "apps/utils/dataURI.ts";
 
 const script = (id: string) => {
   const callback = () => {
@@ -26,7 +27,6 @@ const script = (id: string) => {
 };
 
 export interface Props {
-  title?: string;
   /** @format html */
   text?: string;
   policy?: {
@@ -38,13 +38,12 @@ export interface Props {
     cancelText?: string;
   };
   layout?: {
-    position?: "Expanded" | "Left" | "Center" | "Right";
+    position?: "Expanded";
     content?: "Tiled" | "Piled up";
   };
 }
 
 const DEFAULT_PROPS = {
-  title: "Cookies",
   text:
     "Guardamos estatísticas de visitas para melhorar sua experiência de navegação.",
   policy: {
@@ -63,7 +62,7 @@ const DEFAULT_PROPS = {
 
 function CookieConsent(props: Props) {
   const id = useId();
-  const { title, text, policy, buttons, layout } = {
+  const {policy, buttons, layout } = {
     ...DEFAULT_PROPS,
     ...props,
   };
@@ -107,15 +106,7 @@ function CookieConsent(props: Props) {
               !layout?.content || layout?.content === "Tiled" ? "lg:gap-2" : ""
             }`}
           >
-            <h3 class="text-xl">{title}</h3>
-            {text && (
-              <div
-                class="text-base"
-                dangerouslySetInnerHTML={{ __html: text }}
-              />
-            )}
-
-            <a href={policy.link} class="text-sm link link-secondary">
+            <a href={policy.link} class="text- link link-secondary">
               {policy.text}
             </a>
           </div>
@@ -136,10 +127,7 @@ function CookieConsent(props: Props) {
           </div>
         </div>
       </div>
-      <script
-        type="module"
-        dangerouslySetInnerHTML={{ __html: `(${script})("${id}");` }}
-      />
+      <script defer src={scriptAsDataURI(script, id)} />
     </>
   );
 }
