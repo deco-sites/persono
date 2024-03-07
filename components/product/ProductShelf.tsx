@@ -38,13 +38,15 @@ function ProductShelf({
 
   return (
     <div class="w-full container">
-      {title && (
-        <Header title={title} alignment={isMobile ? "left" : "center"} />
-      )}
+      <div class="pt-10">
+        {title && (
+          <Header title={title} alignment={isMobile ? "left" : "center"} />
+        )}
+      </div>
 
       <div
         id={id}
-        class="container grid grid-cols-[48px_1fr_48px] pb-20 sm:pb-16"
+        class="container grid grid-cols-[48px_1fr_48px] pb-20 pt-10 sm:pb-16"
       >
         <Slider
           class={`carousel carousel-start sm:carousel-end md:gap-8 col-span-full row-start-2 row-end-5 ${

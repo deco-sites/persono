@@ -1,5 +1,6 @@
 import { FnContext } from "deco/types.ts";
 import { SectionProps } from "deco/mod.ts";
+import { redirect } from "deco/mod.ts";
 
 interface ContentDevices {
   mobile: number;
@@ -13,19 +14,16 @@ export interface Layout {
   containerHeight: ContentDevices;
 }
 
-interface Props {
+export interface Props {
   contentLink: string;
   layout: Layout;
 }
 
-const ExternalContent = ({
-  contentLink,
-  device,
-  layout,
-}: SectionProps<typeof loader>) => {
+const ExternalContent = (
+  { contentLink, device, layout }: SectionProps<typeof loader>,
+) => {
   const { containerHeight } = layout;
   const heightSetting = containerHeight[device];
-
   return (
     <iframe
       height={heightSetting}
@@ -37,11 +35,25 @@ const ExternalContent = ({
   );
 };
 
-export const loader = (props: Props, _: Request, ctx: FnContext) => {
+export const loader = (
+  props: Props,
+  req: Request,
+  ctx: FnContext,
+) => {
+  const url = new URL(req.url);
+  const refer = req.headers.get("referer");
+  const path =  url.pathname
+
+  if (refer) {
+    url.pathname = path.startsWith("/secure") ? path : "/secure" + path;
+    redirect(url.href);
+  }
+
   return {
     device: ctx.device,
     ...props,
   };
 };
+
 
 export default ExternalContent;

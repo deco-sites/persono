@@ -1,4 +1,5 @@
 import { useId } from "$store/sdk/useId.ts";
+import { scriptAsDataURI } from "apps/utils/dataURI.ts";
 
 const script = (id: string) => {
   const callback = () => {
@@ -26,8 +27,6 @@ const script = (id: string) => {
 };
 
 export interface Props {
-  title?: string;
-  /** @format html */
   text?: string;
   policy?: {
     text?: string;
@@ -38,17 +37,15 @@ export interface Props {
     cancelText?: string;
   };
   layout?: {
-    position?: "Expanded" | "Left" | "Center" | "Right";
+    position?: "Expanded";
     content?: "Tiled" | "Piled up";
   };
 }
 
 const DEFAULT_PROPS = {
-  title: "Cookies",
-  text:
-    "Guardamos estatísticas de visitas para melhorar sua experiência de navegação.",
+  text: "",
   policy: {
-    text: "Saiba mais sobre sobre política de privacidade",
+    text: "",
     link: "/politica-de-privacidade",
   },
   buttons: {
@@ -63,7 +60,7 @@ const DEFAULT_PROPS = {
 
 function CookieConsent(props: Props) {
   const id = useId();
-  const { title, text, policy, buttons, layout } = {
+  const { text, policy, buttons, layout } = {
     ...DEFAULT_PROPS,
     ...props,
   };
@@ -73,15 +70,11 @@ function CookieConsent(props: Props) {
       <div
         id={id}
         class={`
-          transform-gpu translate-y-[200%] transition fixed bottom-0 lg:bottom-2 w-screen z-50 lg:flex
-          ${layout?.position === "Left" ? "lg:justify-start" : ""}
-          ${layout?.position === "Center" ? "lg:justify-center" : ""}
-          ${layout?.position === "Right" ? "lg:justify-end" : ""}
-        `}
+          transform-gpu translate-y-[200%] transition fixed bottom-0 lg:bottom-2 w-screen z-50 lg:flex `}
       >
         <div
           class={`
-          p-4 mx-4 my-2 flex flex-col gap-4 shadow bg-base-100 rounded border border-base-200 
+          p-4 mx-4 my-2 flex flex-col lg:flex-row gap-4 shadow bg-base-100 rounded-2xl border border-base-200 
           ${
             !layout?.position || layout?.position === "Expanded"
               ? "lg:container lg:mx-auto"
@@ -107,39 +100,40 @@ function CookieConsent(props: Props) {
               !layout?.content || layout?.content === "Tiled" ? "lg:gap-2" : ""
             }`}
           >
-            <h3 class="text-xl">{title}</h3>
             {text && (
               <div
-                class="text-base"
+                class="text-base font-normal lg:w-[66%]"
                 dangerouslySetInnerHTML={{ __html: text }}
               />
             )}
-
-            <a href={policy.link} class="text-sm link link-secondary">
-              {policy.text}
-            </a>
           </div>
 
           <div
-            class={`flex flex-col gap-2 ${
+            class={`flex flex-col gap-2 md:items-center ${
               !layout?.position || layout?.position === "Expanded"
-                ? "lg:flex-row"
+                ? "md:flex-row"
                 : ""
             }`}
           >
-            <button class="btn" data-button-cc-accept>
+            <a
+              href={policy.link}
+              class="text-base link link-secondary underline lg:pr-2"
+            >
+              {policy.text}
+            </a>
+            <button
+              class="btn bg-primary text-white hover:text-black"
+              data-button-cc-accept
+            >
               {buttons.allowText}
             </button>
-            <button class="btn btn-outline" data-button-cc-close>
+            <button class="btn btn-outline border-neutral" data-button-cc-close>
               {buttons.cancelText}
             </button>
           </div>
         </div>
       </div>
-      <script
-        type="module"
-        dangerouslySetInnerHTML={{ __html: `(${script})("${id}");` }}
-      />
+      <script defer src={scriptAsDataURI(script, id)} />
     </>
   );
 }
