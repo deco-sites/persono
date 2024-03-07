@@ -23,6 +23,7 @@ import {
   NotFound,
 } from "deco-sites/persono/components/product/NotFound.tsx";
 import { FnContext } from "deco/types.ts";
+import { Collapse } from "deco-sites/persono/islands/Collapse.tsx";
 
 interface Props {
   colors: Color[];
@@ -31,6 +32,7 @@ interface Props {
   shippingSimulation: Resolved<ShippingSimulationLoader>;
   page: ProductDetailsPage | null;
   notFoundSettings?: NotFoundProps;
+  showBreadcrumbProductQty?: boolean;
 }
 
 function ProductInfo({
@@ -40,6 +42,7 @@ function ProductInfo({
   benefits,
   notFoundSettings,
   device,
+  showBreadcrumbProductQty,
 }: SectionProps<typeof loader>) {
   const id = useId();
 
@@ -89,9 +92,13 @@ function ProductInfo({
   });
 
   return (
-    <div class="flex flex-col w-full sm:mt-10 px-4 sm:px-0" id={id}>
+    <div
+      class="flex flex-col w-full sm:mt-10 px-4 sm:px-0 sm:sticky sm:top-24"
+      id={id}
+    >
       <Breadcrumb
         itemListElement={breadcrumb.itemListElement}
+        showBreadcrumbProductQty={showBreadcrumbProductQty}
         productsQtt={breadcrumb.numberOfItems}
       />
       {/* Code and name */}
@@ -100,7 +107,7 @@ function ProductInfo({
           {gtin && <span class="text-sm text-[#666]">Cod. {gtin}</span>}
         </div>
         <h1>
-          <span class="font-medium text-xl sm:text-2xl capitalize">{name}</span>
+          <span class="font-medium text-xl sm:text-2xl">{name}</span>
         </h1>
       </div>
       {/* Prices */}
@@ -157,62 +164,47 @@ function ProductInfo({
         />
       </div>
       {/* Description card */}
+
       <div class="mt-6 sm:mt-7">
         {description && (
           <div class="flex flex-col divide-y border-t">
-            <div class="collapse collapse-plus items-start">
-              <input type="checkbox" />
-              <div class="flex items-center collapse-title text-base after:text-2xl after:text-primary">
-                Descrição
-              </div>
-              <div class="collapse-content max-w-lg">
-                <p>{description}</p>
-              </div>
-            </div>
+            {description && (
+              <Collapse title=" Descrição">
+                <p class="text-base font-normal">{description}</p>
+              </Collapse>
+            )}
 
-            <div class="collapse collapse-plus items-start">
-              <input type="checkbox" />
-              <div class="flex items-center collapse-title text-base after:text-2xl after:text-primary">
-                Especificações
-              </div>
-              <div class="collapse-content max-w-lg flex flex-col gap-2">
-                {product.isVariantOf?.hasVariant[0].additionalProperty &&
-                  product?.isVariantOf?.hasVariant[0]?.additionalProperty.map(
-                    (ad) =>
-                      ad.propertyID == "TECNICALSPECIFICATION" &&
-                        !ad.description?.startsWith("CUSTOM_")
-                        ? (
-                          <p>
-                            {ad.description}:&ensp;{ad.value}
-                          </p>
-                        )
-                        : null,
-                  )}
-              </div>
-            </div>
+            <Collapse title="Especificações">
+              {product.isVariantOf?.hasVariant[0].additionalProperty &&
+                product?.isVariantOf?.hasVariant[0]?.additionalProperty.map(
+                  (ad) =>
+                    ad.propertyID == "TECNICALSPECIFICATION" &&
+                      !ad.description?.startsWith("CUSTOM_")
+                      ? (
+                        <p class="text-base font-normal">
+                          {ad.description}:&ensp;{ad.value}
+                        </p>
+                      )
+                      : null,
+                )}
+            </Collapse>
 
-            <div class="collapse collapse-plus items-start">
-              <input type="checkbox" />
-              <div class="flex items-center collapse-title text-base after:text-2xl after:text-primary">
-                O que vai na embalagem?
-              </div>
-              <div class="collapse-content max-w-lg flex flex-col gap-2">
-                {product.isVariantOf?.hasVariant[0].additionalProperty &&
-                  product?.isVariantOf?.hasVariant[0]?.additionalProperty.map(
-                    (ad) =>
-                      ad.propertyID == "KITITEM"
-                        ? (
-                          <p>
-                            {ad.value}&ensp;{ad.description}
-                          </p>
-                        )
-                        : null,
-                  )}
-              </div>
-            </div>
+            <Collapse title="O que vai na embalagem?">
+              {product.isVariantOf?.hasVariant[0].additionalProperty &&
+                product?.isVariantOf?.hasVariant[0]?.additionalProperty.map(
+                  (ad) =>
+                    ad.propertyID == "KITITEM"
+                      ? (
+                        <p class="text-base font-normal">
+                          {ad.value}&ensp;{ad.description}
+                        </p>
+                      )
+                      : null,
+                )}
+            </Collapse>
 
-            <div class="collapse collapse-plus items-start collapse-open">
-              <input type="checkbox" />
+            {/* Shipping Simulation */}
+            <div class="collapse items-start collapse-open">
               <div class="flex items-center collapse-title text-base after:text-2xl after:text-primary">
                 Calcular frete
               </div>
@@ -225,7 +217,7 @@ function ProductInfo({
           </div>
         )}
       </div>
-      {/* Shipping Simulation */}
+
       {/* Analytics Event */}
       <SendEventOnView
         id={id}
