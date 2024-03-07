@@ -1,7 +1,6 @@
 import { FnContext } from "deco/types.ts";
 import { SectionProps } from "deco/mod.ts";
-import ExternalFrame from "$store/islands/ExternalFrame.tsx";
-import { Device } from "deco/utils/userAgent.ts";
+import { redirect } from "deco/mod.ts";
 
 interface ContentDevices {
   mobile: number;
@@ -20,50 +19,37 @@ export interface Props {
   layout: Layout;
 }
 
-interface LoaderReturn extends Props {
-  device: Device
-  url: string
-}
-
-const ExternalContent = (props: SectionProps<typeof loader>) => {
-  const a = props as LoaderReturn
-  console.log(props)
+const ExternalContent = (
+  { contentLink, device, layout }: SectionProps<typeof loader>,
+) => {
+  const { containerHeight } = layout;
+  const heightSetting = containerHeight[device];
   return (
-    <ExternalFrame
-      contentLink={a!.contentLink}
-      device={a.device}
-      layout={a.layout}
-      url={a.url}
+    <iframe
+      height={heightSetting}
+      scrolling="no"
+      width="100%"
+      src={contentLink}
+      frameBorder="0"
     />
   );
 };
 
-export const loader = (props: Props, req: Request, ctx: FnContext): LoaderReturn | Response => {
+export const loader = (
+  props: Props,
+  req: Request,
+  ctx: FnContext,
+) => {
+  const url = new URL(req.url);
   const refer = req.headers.get("referer");
-  const url = req.url;
-  
+
   if (refer) {
-    const newHeaders = new Headers({
-      location: req.url,
-    });
-
-    req.headers.forEach((value, key) => {
-      if (key === "referer") {
-        return;
-      }
-      newHeaders.append(key, value);
-    });
-
-    const res = new Response("porra", {
-      status: 307,
-      headers: newHeaders,
-    });
-
-    return res
+    url.pathname = `/secure${url.pathname}`;
+    redirect(url.href);
   }
+
   return {
     device: ctx.device,
-    url,
     ...props,
   };
 };
