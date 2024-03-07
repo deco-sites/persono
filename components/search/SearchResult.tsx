@@ -78,11 +78,6 @@ function Result({
     }) as unknown as FilterToggleValue[];
   });
 
-  console.log(
-    "category:",
-    breadcrumb.itemListElement[breadcrumb.numberOfItems - 1].name,
-  );
-
   const sizeByCategory = sizes.find((s) =>
     breadcrumb.itemListElement[breadcrumb.numberOfItems - 1].name?.toLowerCase()
       .startsWith(s.category.toLowerCase()) ||
@@ -90,7 +85,6 @@ function Result({
       .endsWith(s.category.toLowerCase())
   );
 
-  console.log(sizeByCategory);
   return (
     <>
       <div class="container px-4 md:px-4 sm:px-0">

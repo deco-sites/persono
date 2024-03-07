@@ -66,13 +66,15 @@ function ValueItem({
   rawFiltersToApply: Signal<Record<string, string>[]>;
   category: string;
 }) {
+  const toggleInputSelected = useSignal<boolean>(selected);
+
   return (
     <div class="flex items-center gap-2">
       <input
-        aria-checked={selected}
+        aria-checked={toggleInputSelected}
         type="checkbox"
         value={label}
-        checked={selected}
+        checked={toggleInputSelected}
         id={value}
         class="cursor-pointer checkbox rounded-sm w-4 h-4"
         onInput={() => {
@@ -81,6 +83,7 @@ function ValueItem({
             rawFiltersToApply,
             slug: value,
           });
+          toggleInputSelected.value = !toggleInputSelected.value
         }}
       />
       <label for={value} class="text-sm cursor-pointer">
@@ -105,7 +108,6 @@ function FilterValues({
       ? "flex-row"
       : "flex-col";
 
-  console.log(rawFiltersToApply.value);
   return (
     <ul class={`flex flex-wrap gap-2 ${flexDirection}`}>
       {values.map((item) => {
@@ -202,38 +204,40 @@ function Filters({ filters, colors, sizes }: Props) {
 
     return 0;
   });
-
-  const sortedSizeArray = sortedFilters.map((s) => {
-    if (isToggle(s)) {
-      const filtersOrdened = s.values.sort((a, b) => {
+  const sortedSizeArray = sortedFilters.map((filter) => {
+    if (isToggle(filter)) {
+      const filtersOrdered = filter.values.sort((a, b) => {
         if (!sizes) {
           return 0;
         }
-
-        const indexA = sizes.size.findIndex((size) =>
-          size.name.toLowerCase() === a.label.toLowerCase()
-        );
-        const indexB = sizes.size.findIndex((size) =>
-          size.name.toLowerCase() === b.label.toLowerCase()
-        );
+  
+        const findIndexByName = (label:string) =>
+          sizes.size.findIndex((size) => size.name.toLowerCase() === label.toLowerCase());
+  
+        const indexA = findIndexByName(a.label);
+        const indexB = findIndexByName(b.label);
+  
 
         if (indexA === -1 && indexB !== -1) {
           return 1;
         } else if (indexB === -1 && indexA !== -1) {
           return -1;
         }
+  
 
         return indexA - indexB;
       });
-      return filtersOrdened;
+  
+      return { ...filter, values: filtersOrdered };
+    } else {
+
+      return filter as Filter;
     }
   });
 
-  console.log("asas:", sortedSizeArray);
-
-  sortedFilters.map((item) => {
-    if (isToggle(item)) {
-      item.values.map((v) => {
+  sortedSizeArray.map((item, idx) => {
+    if (isToggle(item)){
+      item?.values.map((v) => {
         if (v.selected == true) {
           rawFiltersToApply.value.push({ type: item.key, slugs: v.value });
         }
