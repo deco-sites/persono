@@ -40,7 +40,7 @@ function parseCookie(key: string, cookies: Record<string, string>) {
     const decodedRawValue = StringCodec.decode(rawValue);
 
     return decodedRawValue[key];
-  } catch (e) {
+  } catch (_e) {
     return null;
   }
 }

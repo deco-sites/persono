@@ -4,7 +4,6 @@ import { Handler } from "std/http/mod.ts";
 import { proxySetCookie } from "apps/utils/cookie.ts";
 import { Script } from "apps/website/types.ts";
 import { Monitoring } from "deco/engine/core/resolver.ts";
-/* import { CookieNames } from "$store/packs/types.ts"; */
 
 const HOP_BY_HOP = [
   "Keep-Alive",
@@ -106,20 +105,6 @@ export default function Proxy({
   redirect = "manual",
 }: Props): Handler {
   return async (req, _ctx) => {
-    /* const cookieNames = (await _ctx.state.invoke(
-      "Cookie Config Names",
-    )) as CookieNames;
-
-     const reqCookies = getCookies(req.headers);
-
-     const cookies = [{
-      key: "dev_kfjhsk7987KJHfkjh898",
-      value: reqCookies["dev_kfjhsk7987KJHfkjh898"],
-    }, {
-      key: "X-Ammo-Device-Id",
-      value: reqCookies["dev_fjdhf480&o90898rufdslj9do"],
-    }];
-  */
     const url = new URL(req.url);
     const proxyUrl = noTrailingSlashes(rawProxyUrl);
     const qs = url.searchParams.toString();

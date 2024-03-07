@@ -34,9 +34,11 @@ function Instagram(props: Props) {
   return (
     <div
       id={id}
-      class="container max-sm:px-6 flex flex-col pb-10"
+      class="container flex flex-col pb-10"
     >
-      <Header title={header.title} />
+      <div class="pl-6 sm:pl-0 pt-6 pb-10">
+        <Header title={header.title} />
+      </div>
       <div>
         <Slider class="flex carousel carousel-start gap-6 lg:justify-between">
           {list.map((
@@ -45,7 +47,7 @@ function Instagram(props: Props) {
           ) => (
             <Slider.Item
               index={index}
-              class="flex flex-col gap-12 carousel-item w-2/3 lg:w-[calc(25%-40px)] sm:w-[calc(33.3%-13px)]"
+              class="flex flex-col gap-12 first-of-type:pl-6 sm:first-of-type:pl-0 carousel-item w-2/3 lg:w-[calc(25%-40px)] sm:w-[calc(33.3%-13px)]"
             >
               <figure>
                 <Picture>

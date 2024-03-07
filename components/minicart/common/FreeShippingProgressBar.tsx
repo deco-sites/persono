@@ -1,5 +1,6 @@
 import Icon from "$store/components/ui/Icon.tsx";
 import { formatPrice } from "$store/sdk/format.ts";
+import { useMemo } from "preact/hooks";
 
 export interface EditableProps {
   /** @description Use %price to auto replace for the current difference between total and target */
@@ -19,12 +20,15 @@ function FreeShippingProgressBar(
   {
     completedText = "Parabéns! Você ganhou frete grátis.",
     textTemplate = "Faltam %price para ganhar frete grátis!",
-    target = 0,
-    total,
+    target: currentTarget = 0,
+    total: currentTotal,
     currency,
     locale,
   }: Props,
 ) {
+  const total = useMemo(() => currentTotal / 100, [currentTotal]);
+  const target = currentTarget / 100;
+
   const remaining = target - total;
   const percent = Math.floor((total / target) * 100);
 
