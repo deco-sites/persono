@@ -20,7 +20,6 @@ interface Props {
   variant?: "active" | "disabled" | "default";
   content: string;
   color?: Color[];
-  tipOnTop?: boolean;
 }
 
 const variants = {
@@ -32,16 +31,11 @@ const variants = {
 };
 
 function AvatarColor(
-  { tipOnTop = false, content, variant = "default", color }: Props,
+  {content, variant = "default", color }: Props,
 ) {
   const transformedColors = transformColors(color);
 
   return (
-    <div
-      class={`placeholder text-xs ${
-        !transformedColors[content.toLowerCase()] ? "" : ""
-      }`}
-    >
       <div
         class={`rounded-full w-8 h-8 p-2 group relative bg-cover bg-center ${
           variants[variant]
@@ -55,16 +49,7 @@ function AvatarColor(
             ? `url("${transformedColors[content.toLowerCase()][2]}")`
             : null,
         }}
-      >
-        <span
-          class={`rounded shadow border ${
-            tipOnTop ? "bottom-9" : "top-9"
-          } -right-3 absolute px-2 py-1 text-base-content bg-white hidden group-hover:flex`}
-        >
-          {content}
-        </span>
-      </div>
-    </div>
+      /> 
   );
 }
 

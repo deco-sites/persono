@@ -124,7 +124,6 @@ function FilterValues({
             >
               <AvatarColor
                 color={colors}
-                tipOnTop={true}
                 content={item.label}
                 variant={toggleColorSelected.value ? "active" : "default"}
               />
