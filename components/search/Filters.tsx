@@ -204,25 +204,25 @@ function Filters({ filters, colors, sizes }: Props) {
   });
 
   const sortedSizeArray = sortedFilters.map((s) => {
-    if(isToggle(s)){
+    if (isToggle(s)) {
       const filtersOrdened = s.values.sort((a, b) => {
         if (!sizes) {
           return 0;
         }
-  
+
         const indexA = sizes.size.findIndex((size) =>
           size.name.toLowerCase() === a.label.toLowerCase()
         );
         const indexB = sizes.size.findIndex((size) =>
           size.name.toLowerCase() === b.label.toLowerCase()
         );
-  
+
         if (indexA === -1 && indexB !== -1) {
           return 1;
         } else if (indexB === -1 && indexA !== -1) {
           return -1;
         }
-  
+
         return indexA - indexB;
       });
       return filtersOrdened;
