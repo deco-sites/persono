@@ -169,7 +169,7 @@ function ProductInfo({
 
       {/* Description card */}
 
-      <div class="mt-6 sm:mt-7">
+      <div class="mt-6 sm:mt-7 sm:max-w-lg">
         {description && (
           <div class="flex flex-col divide-y border-t">
             {description && (
@@ -213,10 +213,10 @@ function ProductInfo({
               <div class="flex items-center collapse-title text-base after:text-2xl after:text-primary">
                 Calcular frete
               </div>
-              <div class="collapse-content max-w-lg pr-0">
-                <div class="max-w-lg">
+              <div class="collapse-content w-full pr-0">
+                
                   <ShippingSimulation sku={product.sku} />
-                </div>
+              
               </div>
             </div>
           </div>
