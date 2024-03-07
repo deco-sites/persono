@@ -42,9 +42,10 @@ export const loader = (
 ) => {
   const url = new URL(req.url);
   const refer = req.headers.get("referer");
+  const path =  url.pathname
 
   if (refer) {
-    url.pathname = `/secure${url.pathname}`;
+    url.pathname = path.startsWith("/secure") ? path : "/secure" + path;
     redirect(url.href);
   }
 
@@ -53,5 +54,6 @@ export const loader = (
     ...props,
   };
 };
+
 
 export default ExternalContent;
