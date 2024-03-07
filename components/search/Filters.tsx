@@ -83,7 +83,7 @@ function ValueItem({
             rawFiltersToApply,
             slug: value,
           });
-          toggleInputSelected.value = !toggleInputSelected.value
+          toggleInputSelected.value = !toggleInputSelected.value;
         }}
       />
       <label for={value} class="text-sm cursor-pointer">
@@ -210,33 +210,32 @@ function Filters({ filters, colors, sizes }: Props) {
         if (!sizes) {
           return 0;
         }
-  
-        const findIndexByName = (label:string) =>
-          sizes.size.findIndex((size) => size.name.toLowerCase() === label.toLowerCase());
-  
+
+        const findIndexByName = (label: string) =>
+          sizes.size.findIndex((size) =>
+            size.name.toLowerCase() === label.toLowerCase()
+          );
+
         const indexA = findIndexByName(a.label);
         const indexB = findIndexByName(b.label);
-  
 
         if (indexA === -1 && indexB !== -1) {
           return 1;
         } else if (indexB === -1 && indexA !== -1) {
           return -1;
         }
-  
 
         return indexA - indexB;
       });
-  
+
       return { ...filter, values: filtersOrdered };
     } else {
-
       return filter as Filter;
     }
   });
 
   sortedSizeArray.map((item, idx) => {
-    if (isToggle(item)){
+    if (isToggle(item)) {
       item?.values.map((v) => {
         if (v.selected == true) {
           rawFiltersToApply.value.push({ type: item.key, slugs: v.value });
