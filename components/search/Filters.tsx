@@ -13,10 +13,12 @@ import Button from "deco-sites/persono/components/ui/Button.tsx";
 import { Signal, useSignal } from "@preact/signals";
 import { invoke } from "deco-sites/persono/runtime.ts";
 import { IS_BROWSER } from "$fresh/runtime.ts";
+import { SizeGroup } from "deco-sites/persono/loaders/Layouts/Size.tsx";
 
 interface Props {
   filters: ProductListingPage["filters"];
   colors: Color[];
+  sizes?: SizeGroup;
 }
 
 const getUrl = () => {
@@ -103,6 +105,7 @@ function FilterValues({
       ? "flex-row"
       : "flex-col";
 
+  console.log(rawFiltersToApply.value);
   return (
     <ul class={`flex flex-wrap gap-2 ${flexDirection}`}>
       {values.map((item) => {
@@ -179,7 +182,7 @@ function FilterValues({
   );
 }
 
-function Filters({ filters, colors }: Props) {
+function Filters({ filters, colors, sizes }: Props) {
   const rawFiltersToApply = useSignal<Record<string, string>[]>([{}]);
   const sortedFilters = filters.sort((a, b) => {
     const aEndsWithSize = a.key.toLowerCase().endsWith("size");
@@ -199,6 +202,34 @@ function Filters({ filters, colors }: Props) {
 
     return 0;
   });
+
+  const sortedSizeArray = sortedFilters.map((s) => {
+    if(isToggle(s)){
+      const filtersOrdened = s.values.sort((a, b) => {
+        if (!sizes) {
+          return 0;
+        }
+  
+        const indexA = sizes.size.findIndex((size) =>
+          size.name.toLowerCase() === a.label.toLowerCase()
+        );
+        const indexB = sizes.size.findIndex((size) =>
+          size.name.toLowerCase() === b.label.toLowerCase()
+        );
+  
+        if (indexA === -1 && indexB !== -1) {
+          return 1;
+        } else if (indexB === -1 && indexA !== -1) {
+          return -1;
+        }
+  
+        return indexA - indexB;
+      });
+      return filtersOrdened;
+    }
+  });
+
+  console.log("asas:", sortedSizeArray);
 
   sortedFilters.map((item) => {
     if (isToggle(item)) {

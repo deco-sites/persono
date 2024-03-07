@@ -20,9 +20,8 @@ import {
   NotFound,
 } from "deco-sites/persono/components/product/NotFound.tsx";
 
-import { Device } from "apps/website/matchers/device.ts";
-
 import ActiveFilterTag from "deco-sites/persono/islands/ActiveFIlterTag.tsx";
+import { SizeGroup } from "deco-sites/persono/loaders/Layouts/Size.tsx";
 
 export interface Layout {
   /**
@@ -39,6 +38,7 @@ export interface Layout {
 
 export interface Props {
   colors: Color[];
+  sizes: SizeGroup[];
   /** @title Integration */
   page: ProductListingPage | null;
   layout?: Layout;
@@ -50,6 +50,7 @@ function Result({
   layout,
   colors,
   queryTerm,
+  sizes,
 }: Omit<Props, "page"> & { page: ProductListingPage } & {
   queryTerm: string | null;
   device: string;
@@ -77,6 +78,19 @@ function Result({
     }) as unknown as FilterToggleValue[];
   });
 
+  console.log(
+    "category:",
+    breadcrumb.itemListElement[breadcrumb.numberOfItems - 1].name,
+  );
+
+  const sizeByCategory = sizes.find((s) =>
+    breadcrumb.itemListElement[breadcrumb.numberOfItems - 1].name?.toLowerCase()
+      .startsWith(s.category.toLowerCase()) ||
+    breadcrumb.itemListElement[breadcrumb.numberOfItems - 1].name?.toLowerCase()
+      .endsWith(s.category.toLowerCase())
+  );
+
+  console.log(sizeByCategory);
   return (
     <>
       <div class="container px-4 md:px-4 sm:px-0">
@@ -89,6 +103,7 @@ function Result({
           <span class="text-gray-600">({products.length} produtos)</span>
         </p>
         <SearchControls
+          sizes={sizeByCategory}
           colors={colors}
           productsQtt={pageInfo.records}
           sortOptions={sortOptions}
@@ -103,7 +118,11 @@ function Result({
         <div class="flex flex-row sm:mt-6">
           {layout?.variant === "aside" && filters.length > 0 && (
             <aside class="hidden sm:block w-min min-w-[250px]">
-              <Filters colors={colors} filters={filters} />
+              <Filters
+                sizes={sizeByCategory}
+                colors={colors}
+                filters={filters}
+              />
             </aside>
           )}
           <div class="flex-grow" id={id}>
