@@ -25,7 +25,6 @@ import {
 import { FnContext } from "deco/types.ts";
 import ProductInfoCollapse from "deco-sites/persono/islands/ProductInfoCollapse.tsx";
 
-
 interface Props {
   colors: Color[];
   sizes: Size[];
@@ -214,9 +213,7 @@ function ProductInfo({
                 Calcular frete
               </div>
               <div class="collapse-content w-full pr-0">
-                
-                  <ShippingSimulation sku={product.sku} />
-              
+                <ShippingSimulation sku={product.sku} />
               </div>
             </div>
           </div>

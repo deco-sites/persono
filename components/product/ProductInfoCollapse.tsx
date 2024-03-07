@@ -1,11 +1,12 @@
 import { useEffect, useState } from "preact/hooks";
 import type { ComponentChildren } from "preact";
 
-export interface Props { title?: string; children?: ComponentChildren }
+export interface Props {
+  title?: string;
+  children?: ComponentChildren;
+}
 
-
-
- const ProductInfoCollapse = (
+const ProductInfoCollapse = (
   { title, children }: Props,
 ) => {
   const [openCollapse, setOpenCollapse] = useState(false);
@@ -49,5 +50,4 @@ export interface Props { title?: string; children?: ComponentChildren }
   );
 };
 
-
-export default ProductInfoCollapse
+export default ProductInfoCollapse;
