@@ -1,7 +1,7 @@
 import { useEffect, useState } from "preact/hooks";
 import type { ComponentChildren } from "preact";
 
-export const Collapse = (
+export const ProductInfoCollapse = (
   { title, children }: { title?: string; children?: ComponentChildren },
 ) => {
   const [openCollapse, setOpenCollapse] = useState(false);

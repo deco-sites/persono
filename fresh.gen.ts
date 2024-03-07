@@ -6,13 +6,13 @@ import * as $_app from "./routes/_app.tsx";
 import * as $live_invoke_middleware from "./routes/live/invoke/_middleware.tsx";
 import * as $ActiveFIlterTag from "./islands/ActiveFIlterTag.tsx";
 import * as $AddToCartButton_CartButton from "./islands/AddToCartButton/CartButton.tsx";
-import * as $Collapse from "./islands/Collapse.tsx";
 import * as $Header_Buttons from "./islands/Header/Buttons.tsx";
 import * as $Header_Drawers from "./islands/Header/Drawers.tsx";
 import * as $Header_Searchbar from "./islands/Header/Searchbar.tsx";
 import * as $Newsletter from "./islands/Newsletter.tsx";
 import * as $OutOfStock from "./islands/OutOfStock.tsx";
 import * as $ProductImageZoom from "./islands/ProductImageZoom.tsx";
+import * as $ProductInfoCollapse from "./islands/ProductInfoCollapse.tsx";
 import * as $SearchControls from "./islands/SearchControls.tsx";
 import * as $ShippingSimulation from "./islands/ShippingSimulation.tsx";
 import * as $SliderJS from "./islands/SliderJS.tsx";
@@ -28,13 +28,13 @@ const manifest = {
   islands: {
     "./islands/ActiveFIlterTag.tsx": $ActiveFIlterTag,
     "./islands/AddToCartButton/CartButton.tsx": $AddToCartButton_CartButton,
-    "./islands/Collapse.tsx": $Collapse,
     "./islands/Header/Buttons.tsx": $Header_Buttons,
     "./islands/Header/Drawers.tsx": $Header_Drawers,
     "./islands/Header/Searchbar.tsx": $Header_Searchbar,
     "./islands/Newsletter.tsx": $Newsletter,
     "./islands/OutOfStock.tsx": $OutOfStock,
     "./islands/ProductImageZoom.tsx": $ProductImageZoom,
+    "./islands/ProductInfoCollapse.tsx": $ProductInfoCollapse,
     "./islands/SearchControls.tsx": $SearchControls,
     "./islands/ShippingSimulation.tsx": $ShippingSimulation,
     "./islands/SliderJS.tsx": $SliderJS,

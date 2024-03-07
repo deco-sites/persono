@@ -23,7 +23,7 @@ import {
   NotFound,
 } from "deco-sites/persono/components/product/NotFound.tsx";
 import { FnContext } from "deco/types.ts";
-import { Collapse } from "deco-sites/persono/islands/Collapse.tsx";
+import { ProductInfoCollapse } from "deco-sites/persono/islands/ProductInfoCollapse.tsx";
 
 interface Props {
   colors: Color[];
@@ -156,25 +156,28 @@ function ProductInfo({
           )
           : <OutOfStock sku={sku} />}
       </div>
+
       {/* Benefities */}
+
       <div class={`${productBenefits?.length == 0 ? "hidden" : ""}`}>
         <ProductBenefits
           productBenefits={productBenefits}
           adminBenefits={benefits}
         />
       </div>
+
       {/* Description card */}
 
       <div class="mt-6 sm:mt-7">
         {description && (
           <div class="flex flex-col divide-y border-t">
             {description && (
-              <Collapse title=" Descrição">
+              <ProductInfoCollapse title=" Descrição">
                 <p class="text-base font-normal">{description}</p>
-              </Collapse>
+              </ProductInfoCollapse>
             )}
 
-            <Collapse title="Especificações">
+            <ProductInfoCollapse title="Especificações">
               {product.isVariantOf?.hasVariant[0].additionalProperty &&
                 product?.isVariantOf?.hasVariant[0]?.additionalProperty.map(
                   (ad) =>
@@ -187,9 +190,9 @@ function ProductInfo({
                       )
                       : null,
                 )}
-            </Collapse>
+            </ProductInfoCollapse>
 
-            <Collapse title="O que vai na embalagem?">
+            <ProductInfoCollapse title="O que vai na embalagem?">
               {product.isVariantOf?.hasVariant[0].additionalProperty &&
                 product?.isVariantOf?.hasVariant[0]?.additionalProperty.map(
                   (ad) =>
@@ -201,9 +204,10 @@ function ProductInfo({
                       )
                       : null,
                 )}
-            </Collapse>
+            </ProductInfoCollapse>
 
             {/* Shipping Simulation */}
+
             <div class="collapse items-start collapse-open">
               <div class="flex items-center collapse-title text-base after:text-2xl after:text-primary">
                 Calcular frete
@@ -219,6 +223,7 @@ function ProductInfo({
       </div>
 
       {/* Analytics Event */}
+
       <SendEventOnView
         id={id}
         event={{
