@@ -43,8 +43,7 @@ export interface Props {
 }
 
 const DEFAULT_PROPS = {
-  text:
-    "",
+  text: "",
   policy: {
     text: "",
     link: "/politica-de-privacidade",
@@ -110,12 +109,22 @@ function CookieConsent(props: Props) {
           </div>
 
           <div
-            class={`flex flex-col gap-2 md:items-center ${ !layout?.position || layout?.position === "Expanded" ? "md:flex-row" : "" }`}
+            class={`flex flex-col gap-2 md:items-center ${
+              !layout?.position || layout?.position === "Expanded"
+                ? "md:flex-row"
+                : ""
+            }`}
           >
-            <a href={policy.link} class="text-base link link-secondary underline">
+            <a
+              href={policy.link}
+              class="text-base link link-secondary underline"
+            >
               {policy.text}
             </a>
-            <button class="btn bg-primary text-white hover:text-black" data-button-cc-accept>
+            <button
+              class="btn bg-primary text-white hover:text-black"
+              data-button-cc-accept
+            >
               {buttons.allowText}
             </button>
             <button class="btn btn-outline border-neutral" data-button-cc-close>
