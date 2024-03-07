@@ -23,7 +23,8 @@ import {
   NotFound,
 } from "deco-sites/persono/components/product/NotFound.tsx";
 import { FnContext } from "deco/types.ts";
-import { ProductInfoCollapse } from "deco-sites/persono/islands/ProductInfoCollapse.tsx";
+import ProductInfoCollapse from "deco-sites/persono/islands/ProductInfoCollapse.tsx";
+
 
 interface Props {
   colors: Color[];
