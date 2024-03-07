@@ -117,7 +117,7 @@ function CookieConsent(props: Props) {
           >
             <a
               href={policy.link}
-              class="text-base link link-secondary underline"
+              class="text-base link link-secondary underline lg:pr-2"
             >
               {policy.text}
             </a>
