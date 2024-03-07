@@ -48,25 +48,45 @@ function Banner(props: SectionProps<ReturnType<typeof loader>>) {
 
   if (!banner) {
     return (
-      <div
-        style={{
-          backgroundImage: device === "desktop"
-            ? `url(${bannerDefault?.image.desktop})`
-            : `url(${bannerDefault?.image.mobile})`,
-        }}
-        class={` ${
-          device === "desktop" ? "h-48" : "h-28"
-        } w-full bg-cover bg-base-300 flex items-center justify-between overflow-hidden mb-0 sm:mb-16`}
-      >
-        <h2
-          class={` ${
-            device === "desktop"
-              ? "text-[3.5rem] px-4"
-              : "text-2xl font-medium px-7"
-          } container text-black`}
-        >
-          {productBannerCategory}
-        </h2>
+      <div class="w-full bg-base-300">
+        <div class="flex items-center justify-between mb-0 sm:mb-16 relative">
+          <div class="w-full absolute">
+            <div class="container">
+              <h2
+                class={` ${
+                  device === "desktop"
+                    ? "text-[3.5rem] px-4"
+                    : "text-2xl font-medium px-7"
+                } text-black`}
+              >
+                {productBannerCategory}
+              </h2>
+            </div>
+          </div>
+          <Picture
+            class={` ${
+              device === "desktop" ? "h-48" : "h-28"
+            } overflow-hidden w-full`}
+            preload={true}
+          >
+            <Source
+              media="(max-width: 768px)"
+              src={bannerDefault!.image.mobile}
+              width={270}
+              height={377}
+            />
+            <Source
+              media="(min-width: 768px)"
+              src={bannerDefault!.image.desktop}
+              width={800}
+              height={1200}
+            />
+            <img
+              src={bannerDefault?.image.desktop}
+              class="w-full h-full object-cover"
+            />
+          </Picture>
+        </div>
       </div>
     );
   }
@@ -74,23 +94,45 @@ function Banner(props: SectionProps<ReturnType<typeof loader>>) {
   const { title, image } = banner;
 
   return (
-    <div
-      style={{
-        backgroundImage: device === "desktop"
-          ? `url(${image.desktop})`
-          : `url(${image.mobile})`,
-      }}
-      class={` ${
-        device === "desktop" ? "h-48" : "h-28"
-      } w-full bg-cover bg-base-300 flex items-center justify-between overflow-hidden mb-0 sm:mb-16`}
-    >
-      <h2
-        class={` ${
-          device === "desktop" ? "text-[3.5rem]" : "text-2xl font-medium px-7"
-        } container text-black`}
-      >
-        {title ?? productBannerCategory}
-      </h2>
+    <div class="w-full bg-base-300">
+      <div class="flex items-center justify-between mb-0 sm:mb-16 relative">
+        <div class="w-full absolute">
+          <div class="container">
+            <h2
+              class={` ${
+                device === "desktop"
+                  ? "text-[3.5rem]"
+                  : "text-2xl font-medium px-7"
+              } text-black`}
+            >
+              {title ?? productBannerCategory}
+            </h2>
+          </div>
+        </div>
+        <Picture
+          class={` ${
+            device === "desktop" ? "h-48" : "h-28"
+          }  overflow-hidden w-full`}
+          preload={true}
+        >
+          <Source
+            media="(max-width: 768px)"
+            src={image.mobile}
+            width={270}
+            height={377}
+          />
+          <Source
+            media="(min-width: 768px)"
+            src={image.desktop}
+            width={800}
+            height={1200}
+          />
+          <img
+            src={image.desktop}
+            class="w-full h-full object-cover"
+          />
+        </Picture>
+      </div>
     </div>
   );
 }
@@ -110,6 +152,8 @@ export const loader = (props: Props, req: Request, ctx: FnCustomContext) => {
   const banner = banners.find(({ matcher }) =>
     new URLPattern({ pathname: matcher }).test(req.url)
   );
+
+  console.log(page.products);
 
   return {
     banner,
