@@ -1,16 +1,7 @@
 import { Route } from "apps/website/flags/audience.ts";
 import { AppContext } from "$store/apps/site.ts";
 
-const PAGE_PATHS = [
-  "/secure/checkout",
-  "/secure/checkout/*",
-  "/secure/checkout-s",
-  "/secure/checkout-s/*",
-  "/secure/checkout-s/endereco",
-  "/secure/checkout-s/entrega",
-  "/secure/checkout-s/pagamento",
-  "/secure/checkout-s/resumo",
-  "/secure/checkout-s/sucesso",
+const PAGE_SECURE_PATHS = [
   "/secure/perfil",
   "/secure/perfil/*",
   "/secure/perfil/dados-pessoais",
@@ -18,8 +9,23 @@ const PAGE_PATHS = [
   "/secure/perfil/pedidos/*",
   "/secure/perfil/enderecos",
   "/secure/perfil/minha-carteira",
-  "/secure/perfil/clube-mmartan",
   "/secure/login",
+  "/redefinir-senha",
+];
+
+const PAGE_PATHS = [
+  "/pagaleve-checkout/*",
+  "/nps/*",
+  "/recriar-sacola/*",
+  "/checkout",
+  "/checkout/*",
+  "/checkout-s",
+  "/checkout-s/*",
+  "/checkout-s/endereco",
+  "/checkout-s/entrega",
+  "/checkout-s/pagamento",
+  "/checkout-s/resumo",
+  "/checkout-s/sucesso",
 ];
 
 const ASSETS_PATHS = [
@@ -55,7 +61,7 @@ function loader(
   );
 
   const internalDomainPaths = [
-    ...PAGE_PATHS,
+    ...PAGE_SECURE_PATHS,
     ...pagesToProxy,
   ].map((
     pathTemplate,
@@ -74,6 +80,7 @@ function loader(
   const apiDomainPaths = [
     ...API_PATHS,
     ...ASSETS_PATHS,
+    ...PAGE_PATHS,
   ].map((pathTemplate) => ({
     pathTemplate,
     handler: {
