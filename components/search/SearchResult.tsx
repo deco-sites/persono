@@ -135,16 +135,16 @@ function Result({
               aria-label="previous page link"
               rel="prev"
               href={pageInfo.previousPage ?? "#"}
-              class={`flex items-center justify-center w-8 h-8 border rounded-full text-primary ${
+              class={`flex items-center justify-center w-8 h-8 border rounded-full ${
                 pageInfo.previousPage?.length == undefined ||
                   pageInfo.previousPage?.length == 0
-                  ? "cursor-default opacity-50"
-                  : ""
+                  ? "text-gray-600 opacity-60 bg-white border z-10 sm:flex rounded-full cursor-default"
+                  : "text-primary"
               }`}
               disabled={pageInfo.nextPage?.length == 0 ||
                 pageInfo.previousPage?.length == undefined}
             >
-              <Icon id="ChevronLeft" size={14} strokeWidth={3} />
+              <Icon id="ChevronLeft" size={17} strokeWidth={3} />
             </a>
             <div class="sm:hidden flex items-center gap-1">
               {pageInfo.currentPage < 3 ? null : (
@@ -239,16 +239,16 @@ function Result({
               aria-label="next page link"
               rel="next"
               href={pageInfo.nextPage ?? "#"}
-              class={`flex items-center justify-center w-8 h-8 border rounded-full text-primary ${
+              class={`flex items-center justify-center w-8 h-8 border rounded-full ${
                 pageInfo.nextPage?.length == undefined ||
                   pageInfo.nextPage?.length == 0
-                  ? "cursor-default opacity-50"
-                  : ""
+                  ? "text-gray-600 opacity-60 bg-white border z-10 sm:flex rounded-full cursor-default"
+                  : "text-primary "
               }`}
               disabled={pageInfo.nextPage?.length == 0 ||
                 pageInfo.nextPage?.length == undefined}
             >
-              <Icon id="ChevronRight" size={14} strokeWidth={3} />
+              <Icon id="ChevronRight" size={17} strokeWidth={3} />
             </a>
           </div>
         </div>

@@ -28,6 +28,10 @@ const applySort = ({ value }: { value: string }) => {
     urlSearchParams.set(SORT_QUERY_PARAM, value);
   }
 
+  if (!value.length) {
+    urlSearchParams.set(SORT_QUERY_PARAM, "recomendados");
+  }
+
   const newQueryString = urlSearchParams.toString();
   window.location.href = base.href +
     (newQueryString ? `?${newQueryString}` : "");
@@ -47,7 +51,7 @@ const portugueseMappings: Record<string, string> = {
   orders_desc: "Mais vendidos",
   name_desc: "Nome - de Z a A",
   name_asc: "Nome - de A a Z",
-  // "release:desc": "Relevância - Decrescente",
+  recomendados: "Recomendados",
   discount_desc: "Maior desconto",
 };
 

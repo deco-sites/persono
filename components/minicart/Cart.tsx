@@ -73,7 +73,7 @@ function Cart({
         return item && mapItemsToAnalyticsItems([item!]).at(0);
       }}
       locale="pt-BR"
-      checkoutHref="/checkout"
+      checkoutHref="/checkout-s"
       currency="BRL"
     />
   );
