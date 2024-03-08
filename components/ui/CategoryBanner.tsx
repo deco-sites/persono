@@ -47,62 +47,94 @@ function Banner(props: SectionProps<ReturnType<typeof loader>>) {
   const { banner, productBannerCategory, bannerDefault, device } = props;
 
   if (!banner) {
-    return device == "desktop"
-      ? (
-        <div
-          style={{
-            backgroundImage: `url(${bannerDefault?.image.desktop})`,
-          }}
-          class="h-48 w-full bg-cover bg-base-300 flex items-center justify-between overflow-hidden mb-0 sm:mb-16"
-        >
-          <h2 class="container pl-20 text-[3.5rem] text-black">
-            {productBannerCategory}
-          </h2>
+    return (
+      <div class="w-full bg-base-300">
+        <div class="flex items-center justify-between mb-0 sm:mb-16 relative">
+          <div class="w-full absolute">
+            <div class="container">
+              <h2
+                class={` ${
+                  device === "desktop"
+                    ? "text-[3.5rem] px-4"
+                    : "text-2xl font-medium px-7"
+                } text-black`}
+              >
+                {productBannerCategory}
+              </h2>
+            </div>
+          </div>
+          <Picture
+            class={` ${
+              device === "desktop" ? "h-48" : "h-28"
+            } overflow-hidden w-full`}
+            preload={true}
+          >
+            <Source
+              media="(max-width: 768px)"
+              src={bannerDefault!.image.mobile}
+              width={270}
+              height={377}
+            />
+            <Source
+              media="(min-width: 768px)"
+              src={bannerDefault!.image.desktop}
+              width={800}
+              height={1200}
+            />
+            <img
+              src={bannerDefault?.image.desktop}
+              class="w-full h-full object-cover"
+            />
+          </Picture>
         </div>
-      )
-      : (
-        <div
-          style={{
-            backgroundImage: `url(${bannerDefault?.image.mobile})`,
-          }}
-          class="h-28 w-full bg-cover bg-base-300 flex items-center justify-between overflow-hidden mb-0 sm:mb-16"
-        >
-          <h2 class="container pl-6 text-2xl font-medium text-black">
-            {productBannerCategory}
-          </h2>
-        </div>
-      );
+      </div>
+    );
   }
 
   const { title, image } = banner;
 
-  return device == "desktop"
-    ? (
-      <div
-        style={{
-          backgroundImage: `url(${
-            image.desktop ?? bannerDefault.image.desktop
-          })`,
-        }}
-        class="h-48 w-full bg-cover bg-base-300 flex items-center justify-between overflow-hidden mb-0 sm:mb-16"
-      >
-        <h2 class="container pl-20 text-[3.5rem] text-black">
-          {title ?? productBannerCategory}
-        </h2>
+  return (
+    <div class="w-full bg-base-300">
+      <div class="flex items-center justify-between mb-0 sm:mb-16 relative">
+        <div class="w-full absolute">
+          <div class="container">
+            <h2
+              class={` ${
+                device === "desktop"
+                  ? "text-[3.5rem]"
+                  : "text-2xl font-medium px-7"
+              } text-black`}
+            >
+              {title ?? productBannerCategory}
+            </h2>
+          </div>
+        </div>
+        <Picture
+          class={` ${
+            device === "desktop" ? "h-48" : "h-28"
+          }  overflow-hidden w-full`}
+          preload={true}
+        >
+          <Source
+            media="(max-width: 768px)"
+            src={image.mobile}
+            width={270}
+            height={377}
+          />
+          <Source
+            media="(min-width: 768px)"
+            src={image.desktop}
+            width={800}
+            height={1200}
+          />
+          <img
+            src={image.desktop}
+            class="w-full h-full object-cover"
+          />
+        </Picture>
       </div>
-    )
-    : (
-      <div
-        style={{
-          backgroundImage: `url(${image.mobile ?? bannerDefault.image.mobile})`,
-        }}
-        class="h-28 w-full bg-cover bg-base-300 flex items-center justify-between overflow-hidden mb-0 sm:mb-16"
-      >
-        <h2 class="container pl-6 text-2xl font-medium text-black">
-          {title ?? productBannerCategory}
-        </h2>
-      </div>
-    );
+    </div>
+  );
 }
 
 export const loader = (props: Props, req: Request, ctx: FnCustomContext) => {
@@ -120,6 +152,8 @@ export const loader = (props: Props, req: Request, ctx: FnCustomContext) => {
   const banner = banners.find(({ matcher }) =>
     new URLPattern({ pathname: matcher }).test(req.url)
   );
+
+  console.log(page.products);
 
   return {
     banner,
