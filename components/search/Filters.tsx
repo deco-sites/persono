@@ -111,7 +111,7 @@ function FilterValues({
   return (
     <ul class={`flex flex-wrap gap-2 ${flexDirection}`}>
       {values.map((item) => {
-        const { url, selected, value, quantity } = item;
+        const { selected } = item;
         const toggleSizeSelected = useSignal<boolean>(selected);
         const toggleColorSelected = useSignal<boolean>(selected);
 
@@ -186,55 +186,8 @@ function FilterValues({
 
 function Filters({ filters, colors, sizes }: Props) {
   const rawFiltersToApply = useSignal<Record<string, string>[]>([{}]);
-  const sortedFilters = filters.sort((a, b) => {
-    const aEndsWithSize = a.key.toLowerCase().endsWith("size");
-    const bEndsWithSize = b.key.toLowerCase().endsWith("size");
-    const aEndsWithColor = a.key.toLowerCase().endsWith("color");
-    const bEndsWithColor = b.key.toLowerCase().endsWith("color");
 
-    if (aEndsWithColor && !bEndsWithColor) {
-      return 1;
-    } else if (aEndsWithSize && !bEndsWithSize) {
-      return 1;
-    } else if (!aEndsWithColor && bEndsWithColor) {
-      return -1;
-    } else if (!aEndsWithSize && bEndsWithSize) {
-      return -1;
-    }
-
-    return 0;
-  });
-  const sortedSizeArray = sortedFilters.map((filter) => {
-    if (isToggle(filter)) {
-      const filtersOrdered = filter.values.sort((a, b) => {
-        if (!sizes) {
-          return 0;
-        }
-
-        const findIndexByName = (label: string) =>
-          sizes.size.findIndex((size) =>
-            size.name.toLowerCase() === label.toLowerCase()
-          );
-
-        const indexA = findIndexByName(a.label);
-        const indexB = findIndexByName(b.label);
-
-        if (indexA === -1 && indexB !== -1) {
-          return 1;
-        } else if (indexB === -1 && indexA !== -1) {
-          return -1;
-        }
-
-        return indexA - indexB;
-      });
-
-      return { ...filter, values: filtersOrdered };
-    } else {
-      return filter as Filter;
-    }
-  });
-
-  sortedSizeArray.map((item, idx) => {
+  filters.map((item, idx) => {
     if (isToggle(item)) {
       item?.values.map((v) => {
         if (v.selected == true) {
@@ -268,7 +221,7 @@ function Filters({ filters, colors, sizes }: Props) {
   return (
     <ul class="relative flex flex-col gap-6 p-4">
       <li class="flex flex-col gap-4 mb-20">
-        {sortedFilters.filter(isToggle).map((filter) => (
+        {filters.filter(isToggle).map((filter) => (
           <li class="flex flex-col gap-4">
             <span>{filter.label}</span>
             <FilterValues

@@ -7,6 +7,7 @@ import SearchControls from "$store/islands/SearchControls.tsx";
 import { useId } from "$store/sdk/useId.ts";
 import { useOffer } from "$store/sdk/useOffer.ts";
 import type {
+  Filter,
   FilterToggleValue,
   ProductListingPage,
 } from "apps/commerce/types.ts";
@@ -85,6 +86,54 @@ function Result({
       .endsWith(s.category.toLowerCase())
   );
 
+  const sortedFilters = filters.sort((a, b) => {
+    const aEndsWithSize = a.key.toLowerCase().endsWith("size");
+    const bEndsWithSize = b.key.toLowerCase().endsWith("size");
+    const aEndsWithColor = a.key.toLowerCase().endsWith("color");
+    const bEndsWithColor = b.key.toLowerCase().endsWith("color");
+
+    if (aEndsWithColor && !bEndsWithColor) {
+      return 1;
+    } else if (aEndsWithSize && !bEndsWithSize) {
+      return 1;
+    } else if (!aEndsWithColor && bEndsWithColor) {
+      return -1;
+    } else if (!aEndsWithSize && bEndsWithSize) {
+      return -1;
+    }
+
+    return 0;
+  });
+  const sortedFiltersSizeOrderly = sortedFilters.map((filter) => {
+    if (filter["@type"] == "FilterToggle") {
+      const filtersOrdered = filter.values.sort((a, b) => {
+        if (!sizes) {
+          return 0;
+        }
+
+        const findIndexByName = (label: string) =>
+          sizes.findIndex((size) =>
+            size.category.toLowerCase() === label.toLowerCase()
+          );
+
+        const indexA = findIndexByName(a.label);
+        const indexB = findIndexByName(b.label);
+
+        if (indexA === -1 && indexB !== -1) {
+          return 1;
+        } else if (indexB === -1 && indexA !== -1) {
+          return -1;
+        }
+
+        return indexA - indexB;
+      });
+
+      return { ...filter, values: filtersOrdered };
+    } else {
+      return filter as Filter;
+    }
+  });
+
   return (
     <>
       <div class="container px-4 md:px-4 sm:px-0">
@@ -115,7 +164,7 @@ function Result({
               <Filters
                 sizes={sizeByCategory}
                 colors={colors}
-                filters={filters}
+                filters={sortedFiltersSizeOrderly}
               />
             </aside>
           )}

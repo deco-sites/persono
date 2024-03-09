@@ -41,7 +41,6 @@ function ProductInfo({
   benefits,
   notFoundSettings,
   device,
-  categoryModalDisplay,
 }: SectionProps<typeof loader>) {
   const id = useId();
 
@@ -125,7 +124,6 @@ function ProductInfo({
           category={product.category?.split(
             ">",
           )[product.category?.split(">").length - 1] ?? ""}
-          categoryModalDisplay={categoryModalDisplay}
           sizes={sizes}
           url={url}
           productsNotAvailable={productsNotAvailable}

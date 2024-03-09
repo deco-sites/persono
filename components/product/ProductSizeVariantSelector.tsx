@@ -9,7 +9,6 @@ interface Props {
   possibilities: GroupedData;
   productsNotAvailable: string[];
   category: string;
-  categoryModalDisplay?: string[];
 }
 
 type Possibilities = { name: string; value: string; url: string; sku: string };
