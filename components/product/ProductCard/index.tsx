@@ -112,7 +112,7 @@ function ProductCard({
   const { hasDiscountTag, hasNewsTag } = useMemo(() => {
     return {
       hasDiscountTag: {
-        label: tagsCapture("PROMOTION", "TOPLEFT")?.valueReference,
+        label: tagsCapture("PROMOTION", "TOPLEFT")?.valueReference?.replace("-","- "),
         colors: defaultTags?.discountTag,
       },
       hasNewsTag: {
