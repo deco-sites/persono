@@ -168,16 +168,17 @@ function ProductInfo({
 
       {/* Description card */}
 
-      <div class="mt-6 sm:mt-7 sm:max-w-lg">
+      <div class="mt-6 sm:mt-7 ">
         {description && (
           <div class="flex flex-col divide-y border-t">
             {description && (
-              <ProductInfoCollapse title=" Descrição">
+              <ProductInfoCollapse title="Descrição">
                 <p class="text-base font-normal">{description}</p>
               </ProductInfoCollapse>
             )}
 
             <ProductInfoCollapse title="Especificações">
+              <div class="flex flex-col gap-2">
               {product.isVariantOf?.hasVariant[0].additionalProperty &&
                 product?.isVariantOf?.hasVariant[0]?.additionalProperty.map(
                   (ad) =>
@@ -190,9 +191,11 @@ function ProductInfo({
                       )
                       : null,
                 )}
+                </div>
             </ProductInfoCollapse>
 
             <ProductInfoCollapse title="O que vai na embalagem?">
+            <div class="flex flex-col gap-2"> 
               {product.isVariantOf?.hasVariant[0].additionalProperty &&
                 product?.isVariantOf?.hasVariant[0]?.additionalProperty.map(
                   (ad) =>
@@ -204,6 +207,7 @@ function ProductInfo({
                       )
                       : null,
                 )}
+                </div>
             </ProductInfoCollapse>
 
             {/* Shipping Simulation */}
