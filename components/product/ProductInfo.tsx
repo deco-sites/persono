@@ -125,7 +125,7 @@ function ProductInfo({
         <span class="text-sm text-[#666]">{installments}</span>
       </div>
       {/* Sku Selector */}
-      <div class="sm:mt-6 mt-4 flex flex-col gap-4 ">
+      <div class="sm:mt-6 mt-4 flex flex-col gap-4">
         <ProductSizeSelector
           sizes={sizes}
           url={url}
