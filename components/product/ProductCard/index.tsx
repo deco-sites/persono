@@ -86,11 +86,8 @@ function ProductCard({
       (item) => item.offers?.offers?.[0]?.price,
     );
 
-    const hasMultiplePrices = variantPrices &&
-      variantPrices?.length > 1 &&
-      variantPrices.some(
-        (price) => price !== Math.min(...(variantPrices as number[])),
-      );
+    const hasMultiplePrices =
+      product?.offers?.highPrice !== product?.offers?.lowPrice;
 
     const discount = Math.floor(((listPrice - price) / listPrice) * 100);
 

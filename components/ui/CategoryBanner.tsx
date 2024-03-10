@@ -153,8 +153,6 @@ export const loader = (props: Props, req: Request, ctx: FnCustomContext) => {
     new URLPattern({ pathname: matcher }).test(req.url)
   );
 
-  console.log(page.products);
-
   return {
     banner,
     productBannerCategory,
