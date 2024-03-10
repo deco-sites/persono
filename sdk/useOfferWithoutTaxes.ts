@@ -2,6 +2,7 @@ import type {
   AggregateOffer,
   UnitPriceSpecification,
 } from "apps/commerce/types.ts";
+import { formatPrice } from "deco-sites/persono/sdk/format.ts";
 
 const bestInstallment = (
   acc: UnitPriceSpecification | null,
@@ -35,14 +36,19 @@ const bestInstallment = (
 
 const installmentToString = (
   installment: UnitPriceSpecification,
+  sellingPrice: number,
 ) => {
-  const { billingDuration, billingIncrement } = installment;
+  const { billingDuration, billingIncrement, price } = installment;
 
   if (!billingDuration || !billingIncrement) {
     return "";
   }
 
-  return `ou ${billingDuration}x de R$ ${billingIncrement.toLocaleString()}`;
+  const withTaxes = sellingPrice < price;
+
+  return `${billingDuration}x de ${formatPrice(billingIncrement)} ${
+    withTaxes ? "com juros" : "sem juros"
+  }`;
 };
 
 export const useOfferWithoutTaxes = (aggregateOffer?: AggregateOffer) => {
@@ -61,7 +67,7 @@ export const useOfferWithoutTaxes = (aggregateOffer?: AggregateOffer) => {
     availability,
     seller,
     installments: installment && price
-      ? installmentToString(installment)
+      ? installmentToString(installment, price)
       : null,
   };
 };
