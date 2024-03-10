@@ -12,7 +12,7 @@ import ProductBenefits from "../../sections/Product/ProductBenefits.tsx";
 import { useOfferWithoutTaxes } from "deco-sites/persono/sdk/useOfferWithoutTaxes.ts";
 import AddCartButton from "$store/islands/AddToCartButton/CartButton.tsx";
 import { Color } from "deco-sites/persono/loaders/Layouts/Colors.tsx";
-import { Size } from "deco-sites/persono/loaders/Layouts/Size.tsx";
+import { SizeGroup } from "deco-sites/persono/loaders/Layouts/Size.tsx";
 import { Benefits } from "../../loaders/Layouts/Benefits.tsx";
 import { Resolved, SectionProps } from "deco/mod.ts";
 import type { GroupedData } from "$store/sdk/useVariantPossiblities.ts";
@@ -26,8 +26,9 @@ import { FnContext } from "deco/types.ts";
 
 interface Props {
   colors: Color[];
-  sizes: Size[];
+  sizes: SizeGroup[];
   benefits: Benefits[];
+  categoryModalDisplay?: string[];
   shippingSimulation: Resolved<ShippingSimulationLoader>;
   page: ProductDetailsPage | null;
   notFoundSettings?: NotFoundProps;
@@ -120,6 +121,9 @@ function ProductInfo({
       {/* Sku Selector */}
       <div class="sm:mt-6 mt-4 flex flex-col gap-4 ">
         <ProductSizeSelector
+          category={product.category?.split(
+            ">",
+          )[product.category?.split(">").length - 1] ?? ""}
           sizes={sizes}
           url={url}
           productsNotAvailable={productsNotAvailable}
