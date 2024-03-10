@@ -45,7 +45,7 @@ const ProductInfoCollapse = (
       </button>
       <section
         class={`w-full flex flex-col transition-[max-height] duration-500  ease-linear ${
-          openCollapse ? "max-h-[500px] " : "max-h-0 "
+          openCollapse ? "max-h-screen " : "max-h-0 "
         } overflow-hidden`}
       >
         <div
