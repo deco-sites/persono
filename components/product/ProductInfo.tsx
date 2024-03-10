@@ -179,35 +179,35 @@ function ProductInfo({
 
             <ProductInfoCollapse title="Especificações">
               <div class="flex flex-col gap-2">
-              {product.isVariantOf?.hasVariant[0].additionalProperty &&
-                product?.isVariantOf?.hasVariant[0]?.additionalProperty.map(
-                  (ad) =>
-                    ad.propertyID == "TECNICALSPECIFICATION" &&
-                      !ad.description?.startsWith("CUSTOM_")
-                      ? (
-                        <p class="text-base font-normal">
-                          {ad.description}:&ensp;{ad.value}
-                        </p>
-                      )
-                      : null,
-                )}
-                </div>
+                {product.isVariantOf?.hasVariant[0].additionalProperty &&
+                  product?.isVariantOf?.hasVariant[0]?.additionalProperty.map(
+                    (ad) =>
+                      ad.propertyID == "TECNICALSPECIFICATION" &&
+                        !ad.description?.startsWith("CUSTOM_")
+                        ? (
+                          <p class="text-base font-normal">
+                            {ad.description}:&ensp;{ad.value}
+                          </p>
+                        )
+                        : null,
+                  )}
+              </div>
             </ProductInfoCollapse>
 
             <ProductInfoCollapse title="O que vai na embalagem?">
-            <div class="flex flex-col gap-2"> 
-              {product.isVariantOf?.hasVariant[0].additionalProperty &&
-                product?.isVariantOf?.hasVariant[0]?.additionalProperty.map(
-                  (ad) =>
-                    ad.propertyID == "KITITEM"
-                      ? (
-                        <p class="text-base font-normal">
-                          {ad.value}&ensp;{ad.description}
-                        </p>
-                      )
-                      : null,
-                )}
-                </div>
+              <div class="flex flex-col gap-2">
+                {product.isVariantOf?.hasVariant[0].additionalProperty &&
+                  product?.isVariantOf?.hasVariant[0]?.additionalProperty.map(
+                    (ad) =>
+                      ad.propertyID == "KITITEM"
+                        ? (
+                          <p class="text-base font-normal">
+                            {ad.value}&ensp;{ad.description}
+                          </p>
+                        )
+                        : null,
+                  )}
+              </div>
             </ProductInfoCollapse>
 
             {/* Shipping Simulation */}

@@ -31,25 +31,25 @@ const variants = {
 };
 
 function AvatarColor(
-  {content, variant = "default", color }: Props,
+  { content, variant = "default", color }: Props,
 ) {
   const transformedColors = transformColors(color);
 
   return (
-      <div
-        class={`rounded-full w-8 h-8 p-2 group relative bg-cover bg-center ${
-          variants[variant]
-        }`}
-        style={{
-          backgroundColor: transformedColors[content.toLowerCase()]
-            ? transformedColors[content.toLowerCase()][0]
-            : "#fff",
-          backgroundImage: transformedColors[content.toLowerCase()] &&
-              transformedColors[content.toLowerCase()][2].length > 2
-            ? `url("${transformedColors[content.toLowerCase()][2]}")`
-            : null,
-        }}
-      /> 
+    <div
+      class={`rounded-full w-8 h-8 p-2 group relative bg-cover bg-center ${
+        variants[variant]
+      }`}
+      style={{
+        backgroundColor: transformedColors[content.toLowerCase()]
+          ? transformedColors[content.toLowerCase()][0]
+          : "#fff",
+        backgroundImage: transformedColors[content.toLowerCase()] &&
+            transformedColors[content.toLowerCase()][2].length > 2
+          ? `url("${transformedColors[content.toLowerCase()][2]}")`
+          : null,
+      }}
+    />
   );
 }
 
