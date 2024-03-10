@@ -28,6 +28,7 @@ function Newsletter({ content, layout = {} }: Props) {
   const loading = useSignal(false);
   const sended = useSignal(false);
   const sendable = useSignal(false);
+  const inputIsEmpty = useSignal(true);
 
   const handleSubmit: JSX.GenericEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
@@ -53,7 +54,8 @@ function Newsletter({ content, layout = {} }: Props) {
 
   const handleChange: JSX.GenericEventHandler<HTMLInputElement> = (e) => {
     const email = e.currentTarget.value;
-
+    
+    inputIsEmpty.value = email.length <= 0;
     sendable.value = validateEmail(email);
   };
 
@@ -80,16 +82,19 @@ function Newsletter({ content, layout = {} }: Props) {
             name="email"
             class="flex-auto lg:flex-none lg:max-w-xs lg:w-full w-auto input-bordered input-accent input text-secondary-content bg-secondary placeholder:text-secondary-content disabled:text-secondary-content disabled:bg-secondary"
             placeholder={content?.form?.placeholder || "Digite seu email"}
-            onChange={handleChange}
+            onChange={(e) => {
+              handleChange(e);
+            }}
             disabled={sended.value}
           />
 
           {!sended.value && (
             <button
               type="submit"
-              class={`btn btn-accent group text-base ${
+              class={`btn btn-accent group text-base disabled:bg-base-100 ${
                 loading.value ? "loading text-white" : ""
               }`}
+              disabled={inputIsEmpty.value}
             >
               <span class="group-disabled:text-[#505050]">
                 {content?.form?.buttonText || "Inscrever"}
