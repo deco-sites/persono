@@ -67,7 +67,7 @@ function CategoryList(props: Props) {
                 href={href}
                 class="rounded-[40px] overflow-hidden"
               >
-                <figure class="relative">
+                <figure class="relative hover:scale-110 transition duration-[1500ms] cursor-pointer object-cover">
                   <Picture>
                     <Source
                       media="(max-width: 767px)"
@@ -86,7 +86,7 @@ function CategoryList(props: Props) {
                       width={220}
                       height={268}
                       loading="lazy"
-                      class="w-full"
+                      class="w-full "
                     />
                   </Picture>
                   <div class="absolute left-0 bottom-0 w-full h-full bg-gradient-to-b from-transparent via-transparent to-black bg-opacity-10" />
