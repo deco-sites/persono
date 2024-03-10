@@ -54,7 +54,7 @@ function Newsletter({ content, layout = {} }: Props) {
 
   const handleChange: JSX.GenericEventHandler<HTMLInputElement> = (e) => {
     const email = e.currentTarget.value;
-    
+
     inputIsEmpty.value = email.length <= 0;
     sendable.value = validateEmail(email);
   };
