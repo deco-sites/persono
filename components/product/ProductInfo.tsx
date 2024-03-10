@@ -90,7 +90,10 @@ function ProductInfo({
   });
 
   return (
-    <div class="flex flex-col w-full sm:mt-10 px-4 sm:px-0 sm:sticky sm:top-24" id={id}>
+    <div
+      class="flex flex-col w-full sm:mt-10 px-4 sm:px-0 sm:sticky sm:top-24"
+      id={id}
+    >
       <Breadcrumb
         itemListElement={breadcrumb.itemListElement}
         productsQtt={breadcrumb.numberOfItems}
