@@ -119,11 +119,14 @@ function ProductCard({
         colors: defaultTags?.discountTag,
       },
       hasNewsTag: {
-        label: tagsCapture("LANCAMENTO", "TOPLEFT")?.valueReference,
-        colors: defaultTags?.discountTag,
+        label: tagsCapture("LANCAMENTO", "TOPLEFT") && "Novidade",
+        colors: defaultTags?.newsTag,
       },
     };
   }, []);
+
+
+  console.log("@@@ ")
 
   const hasCustomTag = useMemo(() => {
     const { description, valueReference } = tagsCapture("CUSTOM", "CUSTOM") ??
