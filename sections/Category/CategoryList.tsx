@@ -65,10 +65,10 @@ function CategoryList(props: Props) {
             >
               <a
                 href={href}
-                class="rounded-[40px] overflow-hidden"
+                class="rounded-[40px] overflow-hidden relative"
               >
-                <figure class="relative hover:scale-110 transition duration-[1500ms] cursor-pointer object-cover">
-                  <Picture>
+                <figure class="relative animateImage">
+                  <Picture >
                     <Source
                       media="(max-width: 767px)"
                       src={image}
@@ -86,14 +86,17 @@ function CategoryList(props: Props) {
                       width={220}
                       height={268}
                       loading="lazy"
-                      class="w-full "
+                      class="w-full animateImage"
                     />
                   </Picture>
                   <div class="absolute left-0 bottom-0 w-full h-full bg-gradient-to-b from-transparent via-transparent to-black bg-opacity-10" />
-                  <h3 class="w-full text-center text-base text-white absolute bottom-[52px] left-0 px-2">
+                  
+                </figure>
+
+                <h3 class="w-full text-center text-base text-white absolute bottom-[52px] left-0 px-2">
                     {label}
                   </h3>
-                </figure>
+
               </a>
             </Slider.Item>
           ))}
