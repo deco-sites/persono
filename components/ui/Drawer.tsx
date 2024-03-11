@@ -56,7 +56,7 @@ function Drawer(props: Props) {
       </div>
 
       <aside
-        class={`drawer-side overflow-hidden z-50 ${
+        class={`drawer-side sm:overflow-hidden z-50 ${
           showHeader ? "bottom-0 top-auto" : "h-full"
         }`}
       >
