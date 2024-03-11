@@ -72,7 +72,7 @@ function MenuItem(
       <div
         class={`${
           CHILD_TITLE[child]
-        } collapse-title !pl-1 after:!w-5 after:!h-5 after:!static after:!leading-5 after:!text-center after:!text-2xl flex items-center justify-between`}
+        } collapse-title !pl-2 after:!w-5 after:!h-5 after:!static after:!leading-5 after:!text-center after:!text-2xl flex items-center justify-between`}
       >
         <a class={`${TEXT[child]} flex-grow`} href={item.url}>{item.label}</a>
       </div>
@@ -95,9 +95,9 @@ function Menu({ items = [], fastLinks = [], socialItems = [] }: Props) {
               href={link.url}
             >
               {link.icon
-                ? <Icon id={link.icon} size={20} strokeWidth={2} />
+                ? <Icon id={link.icon} size={20} strokeWidth={2}  />
                 : null}
-              <span class="text-sm">{link.label}</span>
+              <span class="text-base font-normal">{link.label}</span>
             </a>
           </li>
         ))}
@@ -108,7 +108,7 @@ function Menu({ items = [], fastLinks = [], socialItems = [] }: Props) {
           target="_blank"
           class="flex items-center gap-1 text-sm"
         >
-          <Logo color ="white"   />
+          <Logo color ="white"/>
         </a>
         <Social content={{ items: socialItems }} vertical={false} />
       </div>

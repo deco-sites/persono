@@ -31,7 +31,7 @@ function Navbar({
           <Logo isMobile />
         </a>
 
-        <div class="flex gap-1">
+        <div class="flex gap-6">
           <SearchButton />
           <CartButton />
         </div>
