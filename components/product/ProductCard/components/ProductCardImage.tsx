@@ -100,7 +100,6 @@ export const HighlightTag = ({
         color: customTagColors.textColor,
       };
     }
-
   }, []);
 
   if (!taglabel || !tagStyleColorSettings) {

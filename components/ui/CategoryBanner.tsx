@@ -12,19 +12,23 @@ import { FnCustomContext } from "deco-sites/persono/packs/types.ts";
 export interface Banner {
   /** @description RegExp to enable this banner on the current URL. Use /feminino/* to display this banner on feminino category  */
   matcher: string;
-  /** @description text to be rendered on top of the image */
+  /** @description Text to be rendered on top of the image */
   title?: string;
+  /** @description Banner title text color*/
+  color: "primary" | "secondary" | "accent" | "black" | "white";
   image: {
     /** @description Image for big screens */
     desktop: ImageWidget;
     /** @description Image for small screens */
     mobile: ImageWidget;
-    /** @description image alt text */
+    /** @description Image alt text */
     alt?: string;
   };
 }
 
 export interface bannerDefault {
+  /** @description Banner title text color*/
+  color: "primary" | "secondary" | "accent" | "black" | "white";
   image: {
     /** @description Image for big screens */
     desktop: ImageWidget;
@@ -46,6 +50,14 @@ export interface Props {
 function Banner(props: SectionProps<ReturnType<typeof loader>>) {
   const { banner, productBannerCategory, bannerDefault, device } = props;
 
+  const COLOR = {
+    primary: "text-primary-content",
+    secondary: "text-secondary-content",
+    accent: "text-accent-content",
+    black: "text-black",
+    white: "text-white",
+  } as const;
+
   if (!banner) {
     return (
       <div class="w-full bg-base-300">
@@ -57,7 +69,7 @@ function Banner(props: SectionProps<ReturnType<typeof loader>>) {
                   device === "desktop"
                     ? "text-[3.5rem] px-4"
                     : "text-2xl font-medium px-7"
-                } text-black`}
+                } ${COLOR[bannerDefault?.color ?? "black"]}`}
               >
                 {productBannerCategory}
               </h2>
@@ -91,7 +103,7 @@ function Banner(props: SectionProps<ReturnType<typeof loader>>) {
     );
   }
 
-  const { title, image } = banner;
+  const { title, image, color } = banner;
 
   return (
     <div class="w-full bg-base-300">
@@ -103,7 +115,7 @@ function Banner(props: SectionProps<ReturnType<typeof loader>>) {
                 device === "desktop"
                   ? "text-[3.5rem]"
                   : "text-2xl font-medium px-7"
-              } text-black`}
+              } ${COLOR[color]}`}
             >
               {title ?? productBannerCategory}
             </h2>
@@ -145,15 +157,18 @@ export const loader = (props: Props, req: Request, ctx: FnCustomContext) => {
     return {};
   }
 
-  const productBannerCategory = page.products
-    .map((p) => p.category)[0]
-    ?.split(">")[0];
+  const category = page.products
+    .map((p) => p.category)[0];
+
+  const productBannerCategory = category
+    ?.split(">")[
+      category
+        ?.split(">").length - 1
+    ];
 
   const banner = banners.find(({ matcher }) =>
     new URLPattern({ pathname: matcher }).test(req.url)
   );
-
-  console.log(page.products);
 
   return {
     banner,

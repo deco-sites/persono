@@ -13,10 +13,12 @@ import Button from "deco-sites/persono/components/ui/Button.tsx";
 import { Signal, useSignal } from "@preact/signals";
 import { invoke } from "deco-sites/persono/runtime.ts";
 import { IS_BROWSER } from "$fresh/runtime.ts";
+import { SizeGroup } from "deco-sites/persono/loaders/Layouts/Size.tsx";
 
 interface Props {
   filters: ProductListingPage["filters"];
   colors: Color[];
+  sizes?: SizeGroup;
 }
 
 const getUrl = () => {
@@ -64,13 +66,15 @@ function ValueItem({
   rawFiltersToApply: Signal<Record<string, string>[]>;
   category: string;
 }) {
+  const toggleInputSelected = useSignal<boolean>(selected);
+
   return (
     <div class="flex items-center gap-2">
       <input
-        aria-checked={selected}
+        aria-checked={toggleInputSelected}
         type="checkbox"
         value={label}
-        checked={selected}
+        checked={toggleInputSelected}
         id={value}
         class="cursor-pointer checkbox rounded-sm w-4 h-4"
         onInput={() => {
@@ -79,6 +83,7 @@ function ValueItem({
             rawFiltersToApply,
             slug: value,
           });
+          toggleInputSelected.value = !toggleInputSelected.value;
         }}
       />
       <label for={value} class="text-sm cursor-pointer">
@@ -106,7 +111,7 @@ function FilterValues({
   return (
     <ul class={`flex flex-wrap gap-2 ${flexDirection}`}>
       {values.map((item) => {
-        const { url, selected, value, quantity } = item;
+        const { selected } = item;
         const toggleSizeSelected = useSignal<boolean>(selected);
         const toggleColorSelected = useSignal<boolean>(selected);
 
@@ -179,30 +184,12 @@ function FilterValues({
   );
 }
 
-function Filters({ filters, colors }: Props) {
+function Filters({ filters, colors, sizes }: Props) {
   const rawFiltersToApply = useSignal<Record<string, string>[]>([{}]);
-  const sortedFilters = filters.sort((a, b) => {
-    const aEndsWithSize = a.key.toLowerCase().endsWith("size");
-    const bEndsWithSize = b.key.toLowerCase().endsWith("size");
-    const aEndsWithColor = a.key.toLowerCase().endsWith("color");
-    const bEndsWithColor = b.key.toLowerCase().endsWith("color");
 
-    if (aEndsWithColor && !bEndsWithColor) {
-      return 1;
-    } else if (aEndsWithSize && !bEndsWithSize) {
-      return 1;
-    } else if (!aEndsWithColor && bEndsWithColor) {
-      return -1;
-    } else if (!aEndsWithSize && bEndsWithSize) {
-      return -1;
-    }
-
-    return 0;
-  });
-
-  sortedFilters.map((item) => {
+  filters.map((item, idx) => {
     if (isToggle(item)) {
-      item.values.map((v) => {
+      item?.values.map((v) => {
         if (v.selected == true) {
           rawFiltersToApply.value.push({ type: item.key, slugs: v.value });
         }
@@ -234,7 +221,7 @@ function Filters({ filters, colors }: Props) {
   return (
     <ul class="relative flex flex-col gap-6 p-4">
       <li class="flex flex-col gap-4 mb-20">
-        {sortedFilters.filter(isToggle).map((filter) => (
+        {filters.filter(isToggle).map((filter) => (
           <li class="flex flex-col gap-4">
             <span>{filter.label}</span>
             <FilterValues
