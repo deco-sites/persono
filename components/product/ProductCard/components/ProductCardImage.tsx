@@ -40,14 +40,14 @@ export const ProductCardImage = ({
 
   return (
     <figure class="relative">
-      <div class="w-full">
+      <div class="w-full overflow-hidden" >
         {showHighlightTag && <HighlightTag {...highlightTagProps} />}
         <Image
           src={imageSrc}
           alt={imageAlt}
           width={search ? 230 : 287}
           height={search ? 230 : 287}
-          class="bg-base-100 col-span-full row-span-full w-full"
+          class="bg-base-100 col-span-full row-span-full w-full animateImage cursor-pointer object-cover z-10"
           sizes="(max-width: 640px) 50vw, 20vw"
           preload={preload}
           loading={preload ? "eager" : "lazy"}
@@ -109,7 +109,7 @@ export const HighlightTag = ({
   return (
     <span
       style={tagStyleColorSettings}
-      class="py-1 px-3 flex absolute rounded-br-[10px] rounded-tl-[8px]  justify-center items-center text-sm "
+      class="py-1 px-3 flex absolute rounded-br-[10px] rounded-tl-[8px]  justify-center items-center text-sm z-20 "
     >
       {taglabel}
     </span>

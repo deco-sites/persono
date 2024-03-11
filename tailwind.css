@@ -3,7 +3,6 @@
 @tailwind utilities;
 
 @layer base {
-
   /* Allow changing font family via CMS */
   html {
     font-family: var(--font-family);
@@ -14,8 +13,8 @@
   }
 
   /** Remove default styles from input[type=number] */
-  input[type=number]::-webkit-inner-spin-button,
-  input[type=number]::-webkit-outer-spin-button {
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
   }
@@ -29,6 +28,20 @@
 }
 
 @layer components {
+  .animateImage {
+    transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg)
+      rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg);
+    transform-style: preserve-3d;
+    transition-duration: 700ms;
+  }
+
+  .animateImage:hover {
+    transform: translate3d(0px, 0px, 0px) scale3d(1.13, 1.13, 1.13) rotateX(0deg)
+      rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg);
+    will-change: transform;
+    transition-duration: 2700ms;
+  }
+
   .btn {
     width: auto;
     min-width: 36px;
@@ -38,7 +51,7 @@
 
   .btn-accent:disabled,
   .btn-secondary:disabled {
-    opacity: .8;
+    opacity: 0.8;
     color: #999;
   }
 
@@ -49,7 +62,6 @@
   .btn-secondary:disabled {
     background-color: var(--a);
   }
-
 
   .btn-accent {
     border: 1px solid #ccc;
@@ -69,20 +81,20 @@
   }
 
   .link:hover {
-    color: oklch(var(--p))
+    color: oklch(var(--p));
   }
 }
 
 .group:disabled .group-disabled\:animate-progress {
-  animation: progress-frame ease normal
+  animation: progress-frame ease normal;
 }
 
 @keyframes progress-frame {
   0% {
-    --dot-progress: 0%
+    --dot-progress: 0%;
   }
 
   to {
-    --dot-progress: 100%
+    --dot-progress: 100%;
   }
 }
