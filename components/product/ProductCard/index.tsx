@@ -125,9 +125,6 @@ function ProductCard({
     };
   }, []);
 
-
-  console.log("@@@ ")
-
   const hasCustomTag = useMemo(() => {
     const { description, valueReference } = tagsCapture("CUSTOM", "CUSTOM") ??
       {};
