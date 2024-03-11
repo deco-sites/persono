@@ -77,7 +77,7 @@ export const HighlightTag = ({
 
   const customTagColors = customTagColor?.[custonTagColorIdentifier ?? ""];
 
-  const taglabel = newsTagLabel ?? customTagLabel ?? discountTagLabel;
+  const taglabel = newsTagLabel ?? discountTagLabel ?? customTagLabel;
 
   const tagStyleColorSettings = useMemo(() => {
     if (newsTagColors && newsTagLabel) {
@@ -87,17 +87,17 @@ export const HighlightTag = ({
       };
     }
 
-    if (customTagColors && customTagLabel) {
-      return {
-        backgroundColor: customTagColors.backgroundColor,
-        color: customTagColors.textColor,
-      };
-    }
-
     if (discountTagColors && discountTagLabel) {
       return {
         backgroundColor: discountTagColors.backgroundColor,
         color: discountTagColors.textColor,
+      };
+    }
+
+    if (customTagColors && customTagLabel) {
+      return {
+        backgroundColor: customTagColors.backgroundColor,
+        color: customTagColors.textColor,
       };
     }
   }, []);
