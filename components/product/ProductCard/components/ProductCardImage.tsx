@@ -40,7 +40,7 @@ export const ProductCardImage = ({
 
   return (
     <figure class="relative">
-      <div class="w-full overflow-hidden" >
+      <div class="w-full overflow-hidden">
         {showHighlightTag && <HighlightTag {...highlightTagProps} />}
         <Image
           src={imageSrc}
