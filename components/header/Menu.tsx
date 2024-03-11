@@ -82,7 +82,7 @@ function MenuItem(
 function Menu({ items = [], fastLinks = [], socialItems = [] }: Props) {
   return (
     <div class="flex flex-col h-full">
-      <ul class="px-4 flex-grow flex flex-col divide-y divide-[#D4DBD7]">
+      <ul class="px-4 flex-grow bg-base-100 flex flex-col divide-y divide-[#D4DBD7]">
         {items?.map((item) => <MenuItem item={item} />)}
       </ul>
 
