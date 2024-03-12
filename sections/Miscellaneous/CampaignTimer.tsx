@@ -43,7 +43,7 @@ export interface Props {
 }
 
 const snippet = (expiresAt: string, rootId: string) => {
-  const expirationDate = new Date(expiresAt).getTime();
+  /* const expirationDate = new Date(expiresAt).getTime();
 
   const getDelta = () => {
     const delta = expirationDate - new Date().getTime();
@@ -91,7 +91,9 @@ const snippet = (expiresAt: string, rootId: string) => {
 
   document.readyState === "complete"
     ? start()
-    : addEventListener("load", start);
+    : addEventListener("load", start); */
+
+    //addEventListener("message", (e) => console.log(e.data))
 };
 
 function CampaignTimer({
@@ -105,7 +107,7 @@ function CampaignTimer({
 
   return (
     <>
-      <div class="bg-accent text-accent-content">
+      {/* <div class="bg-accent text-accent-content">
         <div class="container mx-auto flex flex-col lg:flex-row lg:items-center lg:justify-center lg:gap-16 py-4 px-6 gap-4 ">
           {layout?.textPosition !== "After counter" &&
             (
@@ -175,7 +177,7 @@ function CampaignTimer({
           >
           </div>
         </div>
-      </div>
+      </div> */}
       <script
         type="module"
         dangerouslySetInnerHTML={{

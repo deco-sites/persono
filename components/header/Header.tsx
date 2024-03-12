@@ -11,6 +11,7 @@ import Alert, { IAlert } from "./Alert.tsx";
 import Navbar from "./Navbar.tsx";
 import type { EditableProps as CartProps } from "deco-sites/persono/components/minicart/Cart.tsx";
 import { FnCustomContext } from "deco-sites/persono/packs/types.ts";
+import CampaignTimer from "deco-sites/persono/sections/Miscellaneous/CampaignTimer.tsx"; 
 
 export interface Props {
   alerts: IAlert[];
@@ -63,6 +64,7 @@ function Header({
           </div>
         </div>
       </header>
+      <CampaignTimer/>
       <Drawers
         menu={{ items, fastLinks, socialItems: socialLinks }}
         searchbar={searchbar}

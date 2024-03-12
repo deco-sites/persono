@@ -22,6 +22,7 @@ export interface Props {
 const ExternalContent = (
   { contentLink, device, layout }: SectionProps<typeof loader>,
 ) => {
+
   const { containerHeight } = layout;
   const heightSetting = containerHeight[device];
   return (
@@ -31,6 +32,7 @@ const ExternalContent = (
       width="100%"
       src={contentLink}
       frameBorder="0"
+      onLoad={() => self.postMessage("Olá")}
     />
   );
 };
