@@ -157,7 +157,7 @@ export const loader = (props: Props, req: Request, ctx: FnCustomContext) => {
     return {};
   }
 
-  const productBannerCategory = page.seo?.title
+  const productBannerCategory = page.seo?.title;
 
   const banner = banners.find(({ matcher }) =>
     new URLPattern({ pathname: matcher }).test(req.url)
