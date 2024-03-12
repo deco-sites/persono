@@ -55,7 +55,7 @@ function VariantColorSelector({
   });
 
   return (
-    <div class="flex flex-col gap-4">
+    <div class="flex flex-col gap-4 max-w-[38.5rem]">
       <ul class="flex flex-col gap-2">
         <p class="text-sm">Cor: {color}</p>
         <div class="flex flex-wrap gap-3">
