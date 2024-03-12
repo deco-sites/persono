@@ -61,13 +61,13 @@ function CategoryList(props: Props) {
           ) => (
             <Slider.Item
               index={index}
-              class="flex flex-col gap-12 carousel-item first-of-type:pl-6 sm:first-of-type:pl-0 lg:w-[calc(25%-42px)] sm:w-[calc(33.3%-16px)] w-2/3"
+              class="flex flex-col carousel-item first-of-type:pl-6 sm:first-of-type:pl-0 lg:w-[calc(25%-42px)] sm:w-[calc(33.3%-16px)] w-2/3"
             >
               <a
                 href={href}
-                class="rounded-[40px] overflow-hidden"
+                class="rounded-[40px] overflow-hidden relative"
               >
-                <figure class="relative">
+                <figure class="relative animateImage">
                   <Picture>
                     <Source
                       media="(max-width: 767px)"
@@ -86,14 +86,15 @@ function CategoryList(props: Props) {
                       width={220}
                       height={268}
                       loading="lazy"
-                      class="w-full"
+                      class="w-full animateImage"
                     />
                   </Picture>
                   <div class="absolute left-0 bottom-0 w-full h-full bg-gradient-to-b from-transparent via-transparent to-black bg-opacity-10" />
-                  <h3 class="w-full text-center text-base text-white absolute bottom-[52px] left-0 px-2">
-                    {label}
-                  </h3>
                 </figure>
+
+                <h3 class="w-full text-center text-base text-white absolute bottom-[52px] left-0 px-2">
+                  {label}
+                </h3>
               </a>
             </Slider.Item>
           ))}
