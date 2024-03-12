@@ -6,6 +6,8 @@ interface Props {
 }
 
 export function SizesGuideModal({ sizes, segment }: Props) {
+console.log(sizes)
+
   return (
     <>
       <input type="checkbox" id="my_modal_6" class="modal-toggle" />

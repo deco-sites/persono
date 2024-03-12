@@ -1,11 +1,11 @@
 import AvatarSize from "$store/components/ui/AvatarSize.tsx";
 import type { GroupedData } from "$store/sdk/useVariantPossiblities.ts";
-import { SizeGroup } from "deco-sites/persono/loaders/Layouts/Size.tsx";
+import { Size } from "deco-sites/persono/loaders/Layouts/Size.tsx";
 import { SizesGuideModal } from "deco-sites/persono/components/product/SizesGuideModal.tsx";
 
 interface Props {
   url: string | undefined;
-  sizes: SizeGroup[];
+  sizes: Size[];
   possibilities: GroupedData;
   productsNotAvailable: string[];
   category: string;
@@ -41,18 +41,10 @@ function VariantSizeSelector({
     sizePossibilities.push(...links);
   });
 
-  const rawCategorySizes = sizes.filter((s) =>
-    s.category.toLowerCase() == category.toLowerCase()
-  );
-
-  const categorySizes = rawCategorySizes.map((item) => item.size)
-    .flat()
-    .map(({ name, value }) => ({ name, value }));
-
   // Sort array based in admin sizes
   const sortedSizeArray = sizePossibilities.sort((a, b) => {
-    const indexA = categorySizes.findIndex((size) => size.name === a.name);
-    const indexB = categorySizes.findIndex((size) => size.name === b.name);
+    const indexA = sizes.findIndex((size) => size.name === a.name);
+    const indexB = sizes.findIndex((size) => size.name === b.name);
 
     if (indexA === -1 && indexB !== -1) {
       return 1;
@@ -64,7 +56,7 @@ function VariantSizeSelector({
   });
 
   const newCategorySize = sortedSizeArray.map((item) => {
-    const match = categorySizes.find((a1Item) =>
+    const match = sizes.find((a1Item) =>
       a1Item.name.toLowerCase() === item.name.toLowerCase()
     );
     return match ? { ...match } : null;
@@ -102,14 +94,7 @@ function VariantSizeSelector({
 
           <label
             for="my_modal_6"
-            class={`btn justify-start underline btn-link p-0 text-black text-sm font-normal ${
-              !rawCategorySizes || rawCategorySizes.filter((c) => (
-                    c.category.toLowerCase() === category.toLowerCase()
-                  )
-                  ).length > 0
-                ? ""
-                : "hidden"
-            } ${category.length <= 0 ? "hidden" : ""}`}
+            class={`btn justify-start underline btn-link p-0 text-black text-sm font-normal ${category.length <= 0 ? "hidden" : ""}`}
           >
             Guia de tamanhos
           </label>
