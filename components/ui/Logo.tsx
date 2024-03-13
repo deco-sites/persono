@@ -1,11 +1,11 @@
 export const Logo = ({
   isMobile,
   onlySymbol,
-  color ="black"
+  color = "black",
 }: {
   isMobile?: boolean;
   onlySymbol?: boolean;
-  color?:string
+  color?: string;
 }) =>
   onlySymbol
     ? (
