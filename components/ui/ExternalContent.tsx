@@ -22,18 +22,17 @@ export interface Props {
 const ExternalContent = (
   { contentLink, device, layout }: SectionProps<typeof loader>,
 ) => {
-
   const { containerHeight } = layout;
   const heightSetting = containerHeight[device];
   return (
-    <iframe
-      height={heightSetting}
-      scrolling="no"
-      width="100%"
-      src={contentLink}
-      frameBorder="0"
-      onLoad={() => self.postMessage("Olá")}
-    />
+      <iframe
+        height={heightSetting}
+        scrolling="no"
+        width="100%"
+        src={contentLink}
+        frameBorder="0"
+      />
+
   );
 };
 
