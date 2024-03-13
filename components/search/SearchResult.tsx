@@ -1,7 +1,9 @@
 import { SendEventOnView } from "$store/components/Analytics.tsx";
 import { type SectionProps } from "deco/mod.ts";
 import { FnContext } from "deco/types.ts";
-import Filters, { FilterEditableProps } from "$store/components/search/Filters.tsx";
+import Filters, {
+  FilterEditableProps,
+} from "$store/components/search/Filters.tsx";
 import Icon from "$store/components/ui/Icon.tsx";
 import SearchControls from "$store/islands/SearchControls.tsx";
 import { useId } from "$store/sdk/useId.ts";
@@ -44,7 +46,7 @@ export interface Props {
   page: ProductListingPage | null;
   layout?: Layout;
   notFoundSettings?: NotFoundEditableProps;
-  filterSettings?:FilterEditableProps
+  filterSettings?: FilterEditableProps;
 }
 
 function Result({
@@ -53,7 +55,7 @@ function Result({
   colors,
   queryTerm,
   sizes,
-  filterSettings
+  filterSettings,
 }: Omit<Props, "page"> & { page: ProductListingPage } & {
   queryTerm: string | null;
   device: string;

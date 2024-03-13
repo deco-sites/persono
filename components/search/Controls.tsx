@@ -21,7 +21,7 @@ export type Props =
     colors: Color[];
     notDisplay?: boolean;
     sizes?: SizeGroup;
-    filterSettings?:FilterEditableProps
+    filterSettings?: FilterEditableProps;
   };
 
 function SearchControls({
@@ -33,7 +33,7 @@ function SearchControls({
   colors,
   notDisplay,
   sizes,
-  filterSettings
+  filterSettings,
 }: Props) {
   const open = useSignal(false);
 
@@ -58,7 +58,12 @@ function SearchControls({
               </Button>
             </div>
             <div class="flex-grow overflow-auto">
-              <Filters filterSettings={filterSettings} sizes={sizes} colors={colors} filters={filters} />
+              <Filters
+                filterSettings={filterSettings}
+                sizes={sizes}
+                colors={colors}
+                filters={filters}
+              />
             </div>
           </div>
         </>

@@ -6,6 +6,7 @@ export interface Filter {
 }
 
 /** @title Filter Settings */
-const loader = ({ filterSettings }: Filter): FilterEditableProps => filterSettings;
+const loader = ({ filterSettings }: Filter): FilterEditableProps =>
+  filterSettings;
 
 export default loader;
