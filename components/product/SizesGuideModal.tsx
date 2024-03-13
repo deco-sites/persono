@@ -6,7 +6,7 @@ interface Props {
 }
 
 export function SizesGuideModal({ sizes, segment }: Props) {
-console.log(sizes)
+  console.log(sizes);
 
   return (
     <>

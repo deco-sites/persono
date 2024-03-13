@@ -94,7 +94,9 @@ function VariantSizeSelector({
 
           <label
             for="my_modal_6"
-            class={`btn justify-start underline btn-link p-0 text-black text-sm font-normal ${category.length <= 0 ? "hidden" : ""}`}
+            class={`btn justify-start underline btn-link p-0 text-black text-sm font-normal ${
+              category.length <= 0 ? "hidden" : ""
+            }`}
           >
             Guia de tamanhos
           </label>
