@@ -1,11 +1,13 @@
 import AvatarSize from "$store/components/ui/AvatarSize.tsx";
 import type { GroupedData } from "$store/sdk/useVariantPossiblities.ts";
 import { Size } from "deco-sites/persono/loaders/Layouts/Size.tsx";
+import { SizeGuideGroup } from "deco-sites/persono/loaders/Layouts/SizeGuide.tsx";
 import { SizesGuideModal } from "deco-sites/persono/components/product/SizesGuideModal.tsx";
 
 interface Props {
   url: string | undefined;
   sizes: Size[];
+  sizeGuide: SizeGuideGroup[];
   possibilities: GroupedData;
   productsNotAvailable: string[];
   category: string;
@@ -19,6 +21,7 @@ function VariantSizeSelector({
   possibilities,
   sizes,
   category,
+  sizeGuide,
 }: Props) {
   const sizePossibilities: Possibilities[] = [];
   let color = "";
@@ -54,6 +57,15 @@ function VariantSizeSelector({
 
     return indexA - indexB;
   });
+  
+  const rawCategorySizes = sizeGuide.filter((s) =>
+    s.category.toLowerCase() == category.toLowerCase()
+  );
+
+
+  const categorySizes = rawCategorySizes.map((item) => item.size)
+    .flat()
+    .map(({ name, value }) => ({ name, value }));
 
   const newCategorySize = sortedSizeArray.map((item) => {
     const match = sizes.find((a1Item) =>
@@ -100,7 +112,7 @@ function VariantSizeSelector({
           >
             Guia de tamanhos
           </label>
-          <SizesGuideModal sizes={newCategorySize} segment={category} />
+          <SizesGuideModal sizes={categorySizes} segment={category} />
         </div>
       </ul>
     </div>

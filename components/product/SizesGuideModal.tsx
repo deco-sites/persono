@@ -1,12 +1,11 @@
-import { Size } from "deco-sites/persono/loaders/Layouts/Size.tsx";
+import { SizeGuide } from "deco-sites/persono/loaders/Layouts/SizeGuide.tsx";
 
 interface Props {
   segment: string | undefined;
-  sizes?: Size[];
+  sizes?: SizeGuide[];
 }
 
 export function SizesGuideModal({ sizes, segment }: Props) {
-  console.log(sizes);
 
   return (
     <>

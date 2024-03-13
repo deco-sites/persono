@@ -3,14 +3,7 @@
  */
 
 export interface Size {
-  /**
-   * @description Size
-   */
   name: string;
-  /**
-   * @description Size and the size measurement
-   */
-  value: string;
 }
 
 interface Props {
