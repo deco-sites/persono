@@ -254,7 +254,7 @@ function Filters({ filters, colors, sizes }: Props) {
           }}
           class="rounded-full btn-primary w-full text-base-100"
         >
-          Aplicar Filtros
+          Aplicar filtros
         </Button>
       </div>
     </ul>
