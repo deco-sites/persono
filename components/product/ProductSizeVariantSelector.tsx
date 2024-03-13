@@ -57,11 +57,10 @@ function VariantSizeSelector({
 
     return indexA - indexB;
   });
-  
+
   const rawCategorySizes = sizeGuide.filter((s) =>
     s.category.toLowerCase() == category.toLowerCase()
   );
-
 
   const categorySizes = rawCategorySizes.map((item) => item.size)
     .flat()
