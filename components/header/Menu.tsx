@@ -42,9 +42,9 @@ const TEXT = [
 ];
 
 const CHILD_TITLE = [
-  "!p-4",
-  "!py-4 !px-4 peer-checked:bg-base-300 peer-checked:border-b border-white",
-  "!py-4 !px-8 bg-base-300",
+  "!p-4 !pl-2",
+  "!py-4 !px-4 !pl-2 peer-checked:bg-base-300 peer-checked:border-b border-white",
+  "!py-4 !px-8 !pl-6 bg-base-300",
 ];
 
 function MenuItem(
@@ -54,7 +54,7 @@ function MenuItem(
   return (
     <li
       class={`${
-        hasChildren ? "collapse collapse-plus rounded-none" : ""
+        hasChildren ? "collapse collapse-plus rounded-none " : ""
       } relative items-start`}
     >
       {hasChildren
@@ -72,7 +72,7 @@ function MenuItem(
       <div
         class={`${
           CHILD_TITLE[child]
-        } collapse-title !pl-2 after:!w-5 after:!h-5 after:!static after:!leading-5 after:!text-center after:!text-2xl flex items-center justify-between`}
+        } collapse-title after:!w-5 after:!h-5 after:!static after:!leading-5 after:!text-center after:!text-2xl flex items-center justify-between`}
       >
         <a class={`${TEXT[child]} flex-grow`} href={item.url}>{item.label}</a>
       </div>
