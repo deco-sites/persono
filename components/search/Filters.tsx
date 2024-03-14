@@ -13,7 +13,7 @@ import Button from "deco-sites/persono/components/ui/Button.tsx";
 import { Signal, useSignal } from "@preact/signals";
 import { invoke } from "deco-sites/persono/runtime.ts";
 import { IS_BROWSER } from "$fresh/runtime.ts";
-import { SizeGroup } from "deco-sites/persono/loaders/Layouts/Size.tsx";
+import { Size } from "deco-sites/persono/loaders/Layouts/Size.tsx";
 
 export interface FilterEditableProps {
   /**  @title Hidden Filters */
@@ -27,7 +27,8 @@ export interface FilterEditableProps {
 interface Props {
   filters: ProductListingPage["filters"];
   colors: Color[];
-  sizes?: SizeGroup;
+
+  sizes?: Size[];
   filterSettings?: FilterEditableProps;
 }
 
@@ -195,7 +196,7 @@ function FilterValues({
   );
 }
 
-function Filters({ filters, colors, sizes, filterSettings }: Props) {
+function Filters({ filters, colors, filterSettings }: Props) {
   const rawFiltersToApply = useSignal<Record<string, string>[]>([{}]);
   const { label: hiddenFilters = [], renameFilters = [] } = filterSettings ??
     {};
