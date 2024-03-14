@@ -7,7 +7,7 @@ import Breadcrumb from "$store/components/ui/Breadcrumb.tsx";
 import { useSignal } from "@preact/signals";
 import type { ProductListingPage } from "apps/commerce/types.ts";
 import { Color } from "deco-sites/persono/loaders/Layouts/Colors.tsx";
-import { SizeGroup } from "deco-sites/persono/loaders/Layouts/Size.tsx";
+import { Size } from "deco-sites/persono/loaders/Layouts/Size.tsx";
 
 export type Props =
   & Pick<
@@ -19,7 +19,7 @@ export type Props =
     productsQtt?: number;
     colors: Color[];
     notDisplay?: boolean;
-    sizes?: SizeGroup;
+    sizes?: Size[];
   };
 
 function SearchControls({

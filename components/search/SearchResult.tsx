@@ -22,7 +22,7 @@ import {
 } from "deco-sites/persono/components/product/NotFound.tsx";
 
 import ActiveFilterTag from "deco-sites/persono/islands/ActiveFIlterTag.tsx";
-import { SizeGroup } from "deco-sites/persono/loaders/Layouts/Size.tsx";
+import { Size } from "deco-sites/persono/loaders/Layouts/Size.tsx";
 
 export interface Layout {
   /**
@@ -39,7 +39,7 @@ export interface Layout {
 
 export interface Props {
   colors: Color[];
-  sizes: SizeGroup[];
+  sizes: Size[];
   /** @title Integration */
   page: ProductListingPage | null;
   layout?: Layout;
@@ -79,13 +79,6 @@ function Result({
     }) as unknown as FilterToggleValue[];
   });
 
-  const sizeByCategory = sizes.find((s) =>
-    breadcrumb.itemListElement[breadcrumb.numberOfItems - 1].name?.toLowerCase()
-      .startsWith(s.category.toLowerCase()) ||
-    breadcrumb.itemListElement[breadcrumb.numberOfItems - 1].name?.toLowerCase()
-      .endsWith(s.category.toLowerCase())
-  );
-
   const sortedFilters = filters.sort((a, b) => {
     const aEndsWithSize = a.key.toLowerCase().endsWith("size");
     const bEndsWithSize = b.key.toLowerCase().endsWith("size");
@@ -104,6 +97,7 @@ function Result({
 
     return 0;
   });
+
   const sortedFiltersSizeOrderly = sortedFilters.map((filter) => {
     if (filter["@type"] == "FilterToggle") {
       const filtersOrdered = filter.values.sort((a, b) => {
@@ -113,7 +107,7 @@ function Result({
 
         const findIndexByName = (label: string) =>
           sizes.findIndex((size) =>
-            size.category.toLowerCase() === label.toLowerCase()
+            size.name.toLowerCase() === label.toLowerCase()
           );
 
         const indexA = findIndexByName(a.label);
@@ -146,7 +140,7 @@ function Result({
           <span class="text-gray-600">({products.length} produtos)</span>
         </p>
         <SearchControls
-          sizes={sizeByCategory}
+          sizes={sizes}
           colors={colors}
           productsQtt={pageInfo.records}
           sortOptions={sortOptions}
@@ -162,7 +156,7 @@ function Result({
           {layout?.variant === "aside" && filters.length > 0 && (
             <aside class="hidden sm:block w-min min-w-[250px]">
               <Filters
-                sizes={sizeByCategory}
+                sizes={sizes}
                 colors={colors}
                 filters={sortedFiltersSizeOrderly}
               />
