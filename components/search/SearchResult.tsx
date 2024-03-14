@@ -1,7 +1,9 @@
 import { SendEventOnView } from "$store/components/Analytics.tsx";
 import { type SectionProps } from "deco/mod.ts";
 import { FnContext } from "deco/types.ts";
-import Filters from "$store/components/search/Filters.tsx";
+import Filters, {
+  FilterEditableProps,
+} from "$store/components/search/Filters.tsx";
 import Icon from "$store/components/ui/Icon.tsx";
 import SearchControls from "$store/islands/SearchControls.tsx";
 import { useId } from "$store/sdk/useId.ts";
@@ -44,6 +46,7 @@ export interface Props {
   page: ProductListingPage | null;
   layout?: Layout;
   notFoundSettings?: NotFoundEditableProps;
+  filterSettings?: FilterEditableProps;
 }
 
 function Result({
@@ -52,6 +55,7 @@ function Result({
   colors,
   queryTerm,
   sizes,
+  filterSettings,
 }: Omit<Props, "page"> & { page: ProductListingPage } & {
   queryTerm: string | null;
   device: string;
@@ -145,6 +149,7 @@ function Result({
           productsQtt={pageInfo.records}
           sortOptions={sortOptions}
           filters={filters}
+          filterSettings={filterSettings}
           breadcrumb={breadcrumb}
           displayFilter={layout?.variant === "drawer"}
           notDisplay={filters.length == 0 &&
@@ -156,6 +161,7 @@ function Result({
           {layout?.variant === "aside" && filters.length > 0 && (
             <aside class="hidden sm:block w-min min-w-[250px]">
               <Filters
+                filterSettings={filterSettings}
                 sizes={sizes}
                 colors={colors}
                 filters={sortedFiltersSizeOrderly}
