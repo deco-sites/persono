@@ -5,7 +5,6 @@ import Social, {
 } from "deco-sites/persono/components/footer/Social.tsx";
 import { Logo } from "deco-sites/persono/components/ui/Logo.tsx";
 
-
 export interface ImageObject {
   url: ImageWidget;
   alt: string;
@@ -95,7 +94,7 @@ function Menu({ items = [], fastLinks = [], socialItems = [] }: Props) {
               href={link.url}
             >
               {link.icon
-                ? <Icon id={link.icon} size={20} strokeWidth={2}  />
+                ? <Icon id={link.icon} size={20} strokeWidth={2} />
                 : null}
               <span class="text-base font-normal">{link.label}</span>
             </a>
@@ -108,7 +107,7 @@ function Menu({ items = [], fastLinks = [], socialItems = [] }: Props) {
           target="_blank"
           class="flex items-center gap-1 text-sm"
         >
-          <Logo color ="white"/>
+          <Logo color="white" />
         </a>
         <Social content={{ items: socialItems }} vertical={false} />
       </div>
