@@ -21,7 +21,6 @@ export const PriceAndName = ({
   priceCurrency = "BRL",
   search,
 }: Props) => {
-
   return (
     <div class="flex-auto flex flex-col p-4 ">
       <h2
