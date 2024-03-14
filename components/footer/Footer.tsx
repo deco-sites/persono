@@ -20,7 +20,14 @@ export type Section = {
 };
 
 export interface PaymentItem {
-  label: "American" | "Diners" | "Elo" | "Mastercard" | "Pix" | "PagaLeve" | "Visa";
+  label:
+    | "American"
+    | "Diners"
+    | "Elo"
+    | "Mastercard"
+    | "Pix"
+    | "PagaLeve"
+    | "Visa";
 }
 
 export interface NewsletterForm {
