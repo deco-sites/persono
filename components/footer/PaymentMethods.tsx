@@ -1,7 +1,7 @@
 import Icon from "$store/components/ui/Icon.tsx";
 
 export interface PaymentItem {
-  label: "Diners" | "Elo" | "Mastercard" | "Pix" | "Visa";
+  label: "American" | "Diners" | "Elo" | "Mastercard" | "Pix" | "Visa" | "PagaLeve";
 }
 
 export default function PaymentMethods(
@@ -17,7 +17,7 @@ export default function PaymentMethods(
               {content.items.map((item) => {
                 return (
                   <li
-                    class="border"
+                    class="border rounded"
                     title={item.label}
                   >
                     <Icon
