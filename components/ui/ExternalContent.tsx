@@ -9,18 +9,17 @@ interface ContentDevices {
 }
 export interface Layout {
   /**
-   * @description Using height in pixels
+   * @description Using height in pixels]
    */
   containerHeight: ContentDevices;
 }
 
 export interface Props {
-  contentLink: string;
   layout: Layout;
 }
 
 const ExternalContent = (
-  { contentLink, device, layout }: SectionProps<typeof loader>,
+  { device, layout, path }: SectionProps<typeof loader>,
 ) => {
   const { containerHeight } = layout;
   const heightSetting = containerHeight[device];
@@ -29,7 +28,7 @@ const ExternalContent = (
       height={heightSetting}
       scrolling="no"
       width="100%"
-      src={contentLink}
+      src={path}
       frameBorder="0"
     />
   );
@@ -51,6 +50,7 @@ export const loader = (
 
   return {
     device: ctx.device,
+    path: "/secure" + url.pathname,
     ...props,
   };
 };
