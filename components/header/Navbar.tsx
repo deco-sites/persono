@@ -21,9 +21,8 @@ function Navbar({
 }) {
   if (device !== "desktop") {
     return (
-      <div class="flex flex-row justify-between items-center w-full px-4 py-5 gap-2 relative">
+      <div class="flex flex-row justify-between items-center w-full px-4 py-5 gap-2 relative ">
         <MenuButton />
-
         <a
           href="/"
           class="flex-grow inline-flex items-center"
@@ -32,7 +31,7 @@ function Navbar({
           <Logo isMobile />
         </a>
 
-        <div class="flex gap-1">
+        <div class="flex gap-6">
           <SearchButton />
           <CartButton />
         </div>
