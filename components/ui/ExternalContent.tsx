@@ -1,6 +1,5 @@
 import { FnContext } from "deco/types.ts";
 import { SectionProps } from "deco/mod.ts";
-import { redirect } from "deco/mod.ts";
 
 interface ContentDevices {
   mobile: number;
@@ -40,13 +39,6 @@ export const loader = (
   ctx: FnContext,
 ) => {
   const url = new URL(req.url);
-  const refer = req.headers.get("referer");
-  const path = url.pathname;
-
-  if (refer) {
-    url.pathname = path.startsWith("/secure") ? path : "/secure" + path;
-    redirect(url.href);
-  }
 
   return {
     device: ctx.device,
