@@ -25,7 +25,7 @@ export interface Props {
 }
 
 const Aside = ({ children }: { children: ComponentChildren }) => (
-  <div class="bg-base-100 flex flex-col items-stretch justify-items-stretch h-full divide w-full sm:max-w-xl">
+  <div class="bg-base-100 flex flex-col items-stretch justify-items-stretch sm:h-full divide w-full sm:max-w-xl">
     <Suspense
       fallback={
         <div class="w-screen flex items-center justify-center">
