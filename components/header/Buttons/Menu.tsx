@@ -7,7 +7,7 @@ export default function MenuButton() {
 
   return (
     <Button
-      class="btn btn-ghost min-h-0 h-auto p-2"
+      class="btn btn-ghost min-h-0 h-auto p-2 pt-[13px] pl-0"
       aria-label="open menu"
       onClick={() => {
         displayMenu.value = !displayMenu.peek();

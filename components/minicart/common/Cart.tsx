@@ -57,7 +57,7 @@ function Cart({
   const calcTotal = calcSubtotal - totalDiscounts;
 
   return (
-    <div class="flex w-full h-full flex-col justify-center items-center overflow-hidden">
+    <div class="flex w-full h-full flex-col justify-center items-center">
       <DrawerHeader title="Minha sacola" onClose={onClose} />
       {isEmpty
         ? (
@@ -122,7 +122,7 @@ function Cart({
                 </li>
               ))}
             </ul>
-            <footer class="w-full flex flex-col gap-4">
+            <footer class="w-full flex flex-col gap-4 overflow-x-scroll">
               {calcSubtotal !== calcTotal
                 ? (
                   <div class="flex flex-col gap-4 px-4 pt-4 border-t border-[#ccc]">
