@@ -187,7 +187,7 @@ function Footer({
         </div>
         {copyright
           ? (
-            <p class="mt-6 text-xs lg:text-sm">
+            <p class="mt-6 mb-8 text-xs lg:text-sm">
               {copyright}
             </p>
           )
