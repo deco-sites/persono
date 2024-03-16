@@ -187,7 +187,7 @@ function Result({
               class={`flex items-center justify-center w-8 h-8 border rounded-full ${
                 pageInfo.previousPage?.length == undefined ||
                   pageInfo.previousPage?.length == 0
-                  ? "text-gray-600 opacity-60 bg-white border z-10 sm:flex rounded-full cursor-default"
+                  ? "text-gray-600 opacity-60 bg-white border z-10 sm:flex rounded-full cursor-default  pointer-events-none"
                   : "text-primary"
               }`}
               disabled={pageInfo.nextPage?.length == 0 ||
@@ -208,7 +208,7 @@ function Result({
                   className={`flex justify-center items-center w-8 h-8 font-bold ${
                     pageInfo.previousPage?.length == 0 ||
                       pageInfo.previousPage?.length == undefined
-                      ? "bg-primary text-base-100 rounded-full"
+                      ? "bg-primary text-base-100 rounded-full "
                       : "text-primary"
                   }`}
                   disabled={pageInfo.previousPage?.length == 0 ||
@@ -291,7 +291,7 @@ function Result({
               class={`flex items-center justify-center w-8 h-8 border rounded-full ${
                 pageInfo.nextPage?.length == undefined ||
                   pageInfo.nextPage?.length == 0
-                  ? "text-gray-600 opacity-60 bg-white border z-10 sm:flex rounded-full cursor-default"
+                  ? "text-gray-600 opacity-60 bg-white border z-10 sm:flex rounded-full cursor-default pointer-events-none"
                   : "text-primary "
               }`}
               disabled={pageInfo.nextPage?.length == 0 ||
