@@ -96,7 +96,7 @@ function Newsletter({ content, layout = {} }: Props) {
               }`}
               disabled={inputIsEmpty.value}
             >
-              <span class="group-disabled:text-[#505050]">
+              <span class="group-disabled:text-gray-600">
                 {content?.form?.buttonText || "Inscrever"}
               </span>
             </button>

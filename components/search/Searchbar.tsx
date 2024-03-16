@@ -128,7 +128,7 @@ function Searchbar({
         <form
           id={id}
           action={action}
-          class="join gap-2 flex-grow px-3 sm:pr-6 py-2 items-center rounded-full border border-[#CCC] focus-within:border-black"
+          class="join gap-2 flex-grow px-3 sm:pr-6 py-2 items-center rounded-full border border-gray-100 focus-within:border-black"
         >
           <Button
             type="submit"
@@ -144,7 +144,7 @@ function Searchbar({
           <input
             ref={searchInputRef}
             id="search-input"
-            class="input join-item flex-grow text-base placeholder:text-[#666] !outline-0 border-none px-0"
+            class="input join-item flex-grow text-base placeholder:text-gray-600 !outline-0 border-none px-0"
             name={name}
             onInput={(e) => {
               const value = e.currentTarget.value;

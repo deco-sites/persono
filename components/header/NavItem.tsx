@@ -37,7 +37,7 @@ function NavItem({ item }: { item: SiteNavigationElement }) {
                       {node.label}
                     </a>
                     {!!node.children?.length && (
-                      <ul class="py-2 pl-8 text-[#666] h-full absolute left-full top-0 group-hover/item:flex flex-col justify-start gap-2 hidden border-l border-[#ccc]">
+                      <ul class="py-2 pl-8 text-gray-600 h-full absolute left-full top-0 group-hover/item:flex flex-col justify-start gap-2 hidden border-l border-gray-100">
                         {node.children.map((node) => (
                           <li class="leading-2">
                             <a class="hover:text-black" href={node.url}>

@@ -38,7 +38,7 @@ export default function Benefits(props: Props) {
     <>
       <div class="flex w-full container px-6 pb-[62px] pt-6 lg:py-20 sm:px-0">
         <Header />
-        <div class="flex max-lg:flex-col sm:justify-center sm:items-center w-full border border-[#cccccc] lg:gap-9 p-6 lg:p-10 rounded divide-y lg:divide-y-0 divide-[#cccccc]">
+        <div class="flex max-lg:flex-col sm:justify-center sm:items-center w-full border border-gray-100 lg:gap-9 p-6 lg:p-10 rounded divide-y lg:divide-y-0 divide-gray-100">
           {listOfBenefits}
         </div>
       </div>

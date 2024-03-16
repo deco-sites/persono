@@ -104,7 +104,7 @@ function ProductInfo({
       {/* Code and name */}
       <div class="sm:mt-6 mt-4 ">
         <div>
-          {gtin && <span class="text-sm text-[#666]">Cod. {gtin}</span>}
+          {gtin && <span class="text-sm text-gray-600">Cod. {gtin}</span>}
         </div>
         <h1>
           <span class="font-medium text-xl sm:text-2xl capitalize">{name}</span>
@@ -114,7 +114,7 @@ function ProductInfo({
       <div class="sm:mt-6 mt-4  ">
         <div class="flex flex-row gap-2 items-center">
           {(listPrice ?? 0) > price && (
-            <span class="line-through text-[#666] text-xs">
+            <span class="line-through text-gray-600 text-xs">
               {formatPrice(listPrice, offers?.priceCurrency)}
             </span>
           )}
@@ -122,7 +122,7 @@ function ProductInfo({
             {formatPrice(price, offers?.priceCurrency)}
           </span>
         </div>
-        <span class="text-sm text-[#666]">{installments}</span>
+        <span class="text-sm text-gray-600">{installments}</span>
       </div>
       {/* Sku Selector */}
       <div class="sm:mt-6 mt-4 flex flex-col gap-4 ">
