@@ -157,14 +157,7 @@ export const loader = (props: Props, req: Request, ctx: FnCustomContext) => {
     return {};
   }
 
-  const category = page.products
-    .map((p) => p.category)[0];
-
-  const productBannerCategory = category
-    ?.split(">")[
-      category
-        ?.split(">").length - 1
-    ];
+  const productBannerCategory = page.seo?.title;
 
   const banner = banners.find(({ matcher }) =>
     new URLPattern({ pathname: matcher }).test(req.url)
