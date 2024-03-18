@@ -25,7 +25,7 @@ export interface Props {
 }
 
 const Aside = ({ children }: { children: ComponentChildren }) => (
-  <div class="bg-base-100 flex flex-col items-stretch justify-items-stretch sm:h-full divide w-full sm:max-w-xl">
+  <div class="bg-base-100 flex flex-col items-stretch justify-items-stretch h-full divide w-full sm:max-w-xl">
     <Suspense
       fallback={
         <div class="w-screen flex items-center justify-center">
@@ -38,43 +38,10 @@ const Aside = ({ children }: { children: ComponentChildren }) => (
   </div>
 );
 
-const setup = () => {
-  const header = document.querySelector<HTMLElement>("[data-header]");
-  const topBar = document.querySelector<HTMLElement>("[data-top-bar]");
-  const drawer = document.querySelector<HTMLElement>(
-    ".menu-drawer > .drawer-side",
-  );
-
-  if (!header || !topBar || !drawer) return;
-
-  const handleScroll = () => {
-    if (window.scrollY > 40) {
-      drawer.style.height = "calc(100% - 80px)";
-      topBar.style.maxHeight = "0px";
-      return;
-    }
-    drawer.style.height = "calc(100% - 120px)";
-    topBar.style.maxHeight = "44px";
-  };
-
-  addEventListener("scroll", handleScroll);
-  handleScroll();
-
-  return () => {
-    removeEventListener("scroll", handleScroll);
-  };
-};
-
 function Drawers(
   { menu, searchbar, cart, imageBaseUrl, children, platform }: Props,
 ) {
   const { displayCart, displayMenu, displaySearchDrawer } = useUI();
-
-  useEffect(() => {
-    if (IS_BROWSER) {
-      return setup();
-    }
-  }, []);
 
   return (
     <>

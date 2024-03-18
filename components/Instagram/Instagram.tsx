@@ -67,6 +67,7 @@ function Instagram(props: Props) {
                     src={desktop}
                     loading="lazy"
                     class="w-full h-auto object cover rounded-[40px]"
+                    alt={index + " slider Instagram image"}
                   />
                 </Picture>
               </figure>

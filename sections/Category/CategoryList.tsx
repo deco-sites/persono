@@ -87,14 +87,15 @@ function CategoryList(props: Props) {
                       height={268}
                       loading="lazy"
                       class="w-full animateImage"
+                      alt={label + " image"}
                     />
                   </Picture>
                   <div class="absolute left-0 bottom-0 w-full h-full bg-gradient-to-b from-transparent via-transparent to-black bg-opacity-10" />
                 </figure>
 
-                <h3 class="w-full text-center text-base text-white absolute bottom-[52px] left-0 px-2">
+                <p class="w-full text-center text-base text-white absolute bottom-[52px] left-0 px-2">
                   {label}
-                </h3>
+                </p>
               </a>
             </Slider.Item>
           ))}

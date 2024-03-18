@@ -48,38 +48,70 @@ function Alert({ alerts = [], interval = 5 }: Props) {
             index={index}
             class={`carousel-item ${LAYOUT[alert.layout]}`}
           >
-            <a
-              href={alert.link}
-              class={`${
-                alert.link ? "cursor-pointer" : "cursor-default"
-              } text-sm flex justify-center items-center w-screen gap-2 lg:py-2.5 py-2`}
-            >
-              {alert.beforeIcon
-                ? (
-                  <Image
-                    src={alert.beforeIcon.icon}
-                    width={alert.beforeIcon.size}
-                    height={alert.beforeIcon.size}
-                    preload
-                    fetchPriority="high"
-                    aria-hidden="true"
-                  />
-                )
-                : null}
-              {alert.label}
-              {alert.afterIcon
-                ? (
-                  <Image
-                    src={alert.afterIcon.icon}
-                    width={alert.afterIcon.size}
-                    height={alert.afterIcon.size}
-                    preload
-                    fetchPriority="high"
-                    aria-hidden="true"
-                  />
-                )
-                : null}
-            </a>
+            {alert.link
+              ? (
+                <a
+                  href={alert.link}
+                  class={`text-sm flex justify-center items-center w-screen gap-2 lg:py-2.5 py-2`}
+                >
+                  {alert.beforeIcon
+                    ? (
+                      <Image
+                        src={alert.beforeIcon.icon}
+                        width={alert.beforeIcon.size}
+                        height={alert.beforeIcon.size}
+                        preload
+                        fetchPriority="high"
+                        aria-hidden="true"
+                      />
+                    )
+                    : null}
+                  {alert.label}
+                  {alert.afterIcon
+                    ? (
+                      <Image
+                        src={alert.afterIcon.icon}
+                        width={alert.afterIcon.size}
+                        height={alert.afterIcon.size}
+                        preload
+                        fetchPriority="high"
+                        aria-hidden="true"
+                      />
+                    )
+                    : null}
+                </a>
+              )
+              : (
+                <div
+                  class={`text-sm flex justify-center items-center w-screen gap-2 lg:py-2.5 py-2`}
+                >
+                  {alert.beforeIcon
+                    ? (
+                      <Image
+                        src={alert.beforeIcon.icon}
+                        width={alert.beforeIcon.size}
+                        height={alert.beforeIcon.size}
+                        preload
+                        fetchPriority="high"
+                        aria-hidden="true"
+                      />
+                    )
+                    : null}
+                  {alert.label}
+                  {alert.afterIcon
+                    ? (
+                      <Image
+                        src={alert.afterIcon.icon}
+                        width={alert.afterIcon.size}
+                        height={alert.afterIcon.size}
+                        preload
+                        fetchPriority="high"
+                        aria-hidden="true"
+                      />
+                    )
+                    : null}
+                </div>
+              )}
           </Slider.Item>
         ))}
       </Slider>
