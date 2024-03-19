@@ -59,7 +59,11 @@ function MenuItem(
       {hasChildren
         ? (
           <>
-            <input aria-label={item.label + " input"} type="checkbox" class="w-1/4 h-full justify-self-end peer" />
+            <input
+              aria-label={item.label + " input"}
+              type="checkbox"
+              class="w-1/4 h-full justify-self-end peer"
+            />
             <ul class="collapse-content !px-0 divide-y divide-white">
               {item.children?.map((node, index) => (
                 <MenuItem key={index} item={node} child={child + 1} />

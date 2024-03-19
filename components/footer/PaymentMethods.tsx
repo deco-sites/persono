@@ -33,7 +33,11 @@ export default function PaymentMethods(
           </div>
           <div class="flex flex-col md:hidden gap-4">
             <div class="collapse collapse-arrow text-sm">
-              <input aria-label={content.title + " input"} type="checkbox" class="min-h-[0]" />
+              <input
+                aria-label={content.title + " input"}
+                type="checkbox"
+                class="min-h-[0]"
+              />
               <div class="collapse-title font-bold min-h-[0] !p-0 flex gap-2">
                 {content.title && (
                   <h3 class="md:text-lg text-sm">{content.title}</h3>

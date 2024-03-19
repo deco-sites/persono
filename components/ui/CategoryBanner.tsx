@@ -96,6 +96,7 @@ function Banner(props: SectionProps<ReturnType<typeof loader>>) {
             <img
               src={bannerDefault?.image.desktop}
               class="w-full h-full object-cover"
+              alt="banner category default image"
             />
           </Picture>
         </div>
@@ -142,6 +143,7 @@ function Banner(props: SectionProps<ReturnType<typeof loader>>) {
           <img
             src={image.desktop}
             class="w-full h-full object-cover"
+            alt="banner category image"
           />
         </Picture>
       </div>

@@ -138,6 +138,8 @@ function FilterValues({
                 });
                 toggleColorSelected.value = !toggleColorSelected.value;
               }}
+              id="colorToggle"
+              aria-label="Name"
             >
               <AvatarColor
                 color={colors}
@@ -160,6 +162,8 @@ function FilterValues({
                 });
                 toggleSizeSelected.value = !toggleSizeSelected.value;
               }}
+              id="sizeToggle"
+              aria-label="Name"
             >
               <AvatarSize
                 content={item.label}

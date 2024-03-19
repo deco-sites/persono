@@ -59,8 +59,7 @@ function Drawer(props: Props) {
         class={`drawer-side sm:overflow-hidden z-50 start-auto ${
           showHeader ? "bottom-0 top-auto" : "h-full"
         }`}
-
-        style={{height: "calc(100% - 120px)"}}
+        style={{ height: "calc(100% - 120px)" }}
       >
         <label for={id} class="drawer-overlay" aria-label="drawer overlay" />
         {!lazy.value && aside}
