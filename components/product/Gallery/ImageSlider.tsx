@@ -50,7 +50,7 @@ export default function GallerySlider(props: SectionProps<typeof loader>) {
       <div id={id} class="flex flex-col self-center sm:my-10 w-full">
         {images.map((img, index) => (
           <Image
-            class="w-[55rem]"
+            class="w-full"
             style={{ aspectRatio }}
             src={img.url!}
             alt={img.alternateName}

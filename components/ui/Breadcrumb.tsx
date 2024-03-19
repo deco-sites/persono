@@ -3,9 +3,12 @@ import type { BreadcrumbList } from "apps/commerce/types.ts";
 interface Props {
   itemListElement: BreadcrumbList["itemListElement"];
   productsQtt?: number;
+  showBreadcrumbProductQty?: boolean;
 }
 
-function Breadcrumb({ itemListElement = [], productsQtt }: Props) {
+function Breadcrumb(
+  { itemListElement = [], productsQtt, showBreadcrumbProductQty }: Props,
+) {
   const items = itemListElement;
 
   return (
@@ -19,9 +22,9 @@ function Breadcrumb({ itemListElement = [], productsQtt }: Props) {
             </li>
           ))}
       </ul>
-      {productsQtt
-        ? <p class="text-gray-500">({productsQtt} produtos)</p>
-        : null}
+      {productsQtt && showBreadcrumbProductQty && (
+        <p class="text-gray-500">({productsQtt} produtos)</p>
+      )}
     </div>
   );
 }
