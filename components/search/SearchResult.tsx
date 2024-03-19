@@ -1,12 +1,15 @@
 import { SendEventOnView } from "$store/components/Analytics.tsx";
 import { type SectionProps } from "deco/mod.ts";
 import { FnContext } from "deco/types.ts";
-import Filters from "$store/components/search/Filters.tsx";
+import Filters, {
+  FilterEditableProps,
+} from "$store/components/search/Filters.tsx";
 import Icon from "$store/components/ui/Icon.tsx";
 import SearchControls from "$store/islands/SearchControls.tsx";
 import { useId } from "$store/sdk/useId.ts";
 import { useOffer } from "$store/sdk/useOffer.ts";
 import type {
+  Filter,
   FilterToggleValue,
   ProductListingPage,
 } from "apps/commerce/types.ts";
@@ -20,9 +23,8 @@ import {
   NotFound,
 } from "deco-sites/persono/components/product/NotFound.tsx";
 
-import { Device } from "apps/website/matchers/device.ts";
-
 import ActiveFilterTag from "deco-sites/persono/islands/ActiveFIlterTag.tsx";
+import { Size } from "deco-sites/persono/loaders/Layouts/Size.tsx";
 
 export interface Layout {
   /**
@@ -39,10 +41,12 @@ export interface Layout {
 
 export interface Props {
   colors: Color[];
+  sizes: Size[];
   /** @title Integration */
   page: ProductListingPage | null;
   layout?: Layout;
   notFoundSettings?: NotFoundEditableProps;
+  filterSettings?: FilterEditableProps;
 }
 
 function Result({
@@ -50,6 +54,8 @@ function Result({
   layout,
   colors,
   queryTerm,
+  sizes,
+  filterSettings,
 }: Omit<Props, "page"> & { page: ProductListingPage } & {
   queryTerm: string | null;
   device: string;
@@ -77,6 +83,55 @@ function Result({
     }) as unknown as FilterToggleValue[];
   });
 
+  const sortedFilters = filters.sort((a, b) => {
+    const aEndsWithSize = a.key.toLowerCase().endsWith("size");
+    const bEndsWithSize = b.key.toLowerCase().endsWith("size");
+    const aEndsWithColor = a.key.toLowerCase().endsWith("color");
+    const bEndsWithColor = b.key.toLowerCase().endsWith("color");
+
+    if (aEndsWithColor && !bEndsWithColor) {
+      return 1;
+    } else if (aEndsWithSize && !bEndsWithSize) {
+      return 1;
+    } else if (!aEndsWithColor && bEndsWithColor) {
+      return -1;
+    } else if (!aEndsWithSize && bEndsWithSize) {
+      return -1;
+    }
+
+    return 0;
+  });
+
+  const sortedFiltersSizeOrderly = sortedFilters.map((filter) => {
+    if (filter["@type"] == "FilterToggle") {
+      const filtersOrdered = filter.values.sort((a, b) => {
+        if (!sizes) {
+          return 0;
+        }
+
+        const findIndexByName = (label: string) =>
+          sizes.findIndex((size) =>
+            size.name.toLowerCase() === label.toLowerCase()
+          );
+
+        const indexA = findIndexByName(a.label);
+        const indexB = findIndexByName(b.label);
+
+        if (indexA === -1 && indexB !== -1) {
+          return 1;
+        } else if (indexB === -1 && indexA !== -1) {
+          return -1;
+        }
+
+        return indexA - indexB;
+      });
+
+      return { ...filter, values: filtersOrdered };
+    } else {
+      return filter as Filter;
+    }
+  });
+
   return (
     <>
       <div class="container px-4 md:px-4 sm:px-0">
@@ -89,10 +144,12 @@ function Result({
           <span class="text-gray-600">({products.length} produtos)</span>
         </p>
         <SearchControls
+          sizes={sizes}
           colors={colors}
           productsQtt={pageInfo.records}
           sortOptions={sortOptions}
           filters={filters}
+          filterSettings={filterSettings}
           breadcrumb={breadcrumb}
           displayFilter={layout?.variant === "drawer"}
           notDisplay={filters.length == 0 &&
@@ -103,7 +160,12 @@ function Result({
         <div class="flex flex-row sm:mt-6">
           {layout?.variant === "aside" && filters.length > 0 && (
             <aside class="hidden sm:block w-min min-w-[250px]">
-              <Filters colors={colors} filters={filters} />
+              <Filters
+                filterSettings={filterSettings}
+                sizes={sizes}
+                colors={colors}
+                filters={sortedFiltersSizeOrderly}
+              />
             </aside>
           )}
           <div class="flex-grow" id={id}>
@@ -125,7 +187,7 @@ function Result({
               class={`flex items-center justify-center w-8 h-8 border rounded-full ${
                 pageInfo.previousPage?.length == undefined ||
                   pageInfo.previousPage?.length == 0
-                  ? "text-gray-600 opacity-60 bg-white border z-10 sm:flex rounded-full cursor-default"
+                  ? "text-gray-600 opacity-60 bg-white border z-10 sm:flex rounded-full cursor-default  pointer-events-none"
                   : "text-primary"
               }`}
               disabled={pageInfo.nextPage?.length == 0 ||
@@ -146,7 +208,7 @@ function Result({
                   className={`flex justify-center items-center w-8 h-8 font-bold ${
                     pageInfo.previousPage?.length == 0 ||
                       pageInfo.previousPage?.length == undefined
-                      ? "bg-primary text-base-100 rounded-full"
+                      ? "bg-primary text-base-100 rounded-full "
                       : "text-primary"
                   }`}
                   disabled={pageInfo.previousPage?.length == 0 ||
@@ -229,7 +291,7 @@ function Result({
               class={`flex items-center justify-center w-8 h-8 border rounded-full ${
                 pageInfo.nextPage?.length == undefined ||
                   pageInfo.nextPage?.length == 0
-                  ? "text-gray-600 opacity-60 bg-white border z-10 sm:flex rounded-full cursor-default"
+                  ? "text-gray-600 opacity-60 bg-white border z-10 sm:flex rounded-full cursor-default pointer-events-none"
                   : "text-primary "
               }`}
               disabled={pageInfo.nextPage?.length == 0 ||

@@ -28,6 +28,20 @@
 }
 
 @layer components {
+  .animateImage {
+    transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg)
+      rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg);
+    transform-style: preserve-3d;
+    transition-duration: 700ms;
+  }
+
+  .animateImage:hover {
+    transform: translate3d(0px, 0px, 0px) scale3d(1.13, 1.13, 1.13) rotateX(0deg)
+      rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg);
+    will-change: transform;
+    transition-duration: 2700ms;
+  }
+
   .btn {
     width: auto;
     min-width: 36px;

@@ -20,6 +20,7 @@ interface Props {
   variant?: "active" | "disabled" | "default";
   content: string;
   color?: Color[];
+  tipOnTop?: boolean;
 }
 
 const variants = {
@@ -31,25 +32,39 @@ const variants = {
 };
 
 function AvatarColor(
-  { content, variant = "default", color }: Props,
+  { tipOnTop = false, content, variant = "default", color }: Props,
 ) {
   const transformedColors = transformColors(color);
 
   return (
     <div
-      class={`rounded-full w-8 h-8 p-2 group relative bg-cover bg-center ${
-        variants[variant]
+      class={`placeholder text-xs ${
+        !transformedColors[content.toLowerCase()] ? "" : ""
       }`}
-      style={{
-        backgroundColor: transformedColors[content.toLowerCase()]
-          ? transformedColors[content.toLowerCase()][0]
-          : "#fff",
-        backgroundImage: transformedColors[content.toLowerCase()] &&
-            transformedColors[content.toLowerCase()][2].length > 2
-          ? `url("${transformedColors[content.toLowerCase()][2]}")`
-          : null,
-      }}
-    />
+    >
+      <div
+        class={`rounded-full w-8 h-8 p-2 group relative bg-cover bg-center ${
+          variants[variant]
+        }`}
+        style={{
+          backgroundColor: transformedColors[content.toLowerCase()]
+            ? transformedColors[content.toLowerCase()][0]
+            : "#fff",
+          backgroundImage: transformedColors[content.toLowerCase()] &&
+              transformedColors[content.toLowerCase()][2].length > 2
+            ? `url("${transformedColors[content.toLowerCase()][2]}")`
+            : null,
+        }}
+      >
+        <span
+          class={`rounded shadow border z-30 ${
+            tipOnTop ? "bottom-9" : "top-9"
+          } -right-3 absolute whitespace-nowrap px-2 py-1 text-base-content bg-white hidden group-hover:flex`}
+        >
+          {content}
+        </span>
+      </div>
+    </div>
   );
 }
 

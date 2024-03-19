@@ -112,12 +112,15 @@ function ProductCard({
   const { hasDiscountTag, hasNewsTag } = useMemo(() => {
     return {
       hasDiscountTag: {
-        label: tagsCapture("PROMOTION", "TOPLEFT")?.valueReference,
+        label: tagsCapture("PROMOTION", "TOPLEFT")?.valueReference?.replace(
+          "-",
+          "- ",
+        ),
         colors: defaultTags?.discountTag,
       },
       hasNewsTag: {
-        label: tagsCapture("LANCAMENTO", "TOPLEFT")?.valueReference,
-        colors: defaultTags?.discountTag,
+        label: tagsCapture("LANCAMENTO", "TOPLEFT") && "Novidade",
+        colors: defaultTags?.newsTag,
       },
     };
   }, []);
@@ -138,7 +141,7 @@ function ProductCard({
       <a
         key={`${id}-${index}`}
         id={id}
-        class="card card-compact group rounded-[10px] border border-gray-300 text-start w-full overflow-hidden"
+        class="card card-compact group rounded-[10px] border border-gray-300 text-start w-full overflow-hidden hover:border-black"
         data-deco="view-product"
         href={url && relative(url)}
         aria-label="view product"

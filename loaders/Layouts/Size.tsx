@@ -1,5 +1,9 @@
+/**
+ * @title {{{name}}}
+ */
+
 export interface Size {
-  size: string;
+  name: string;
 }
 
 interface Props {
@@ -12,7 +16,7 @@ const loader = ({ sizes }: Props): Size[] => sizes;
 export const Preview = ({ sizes }: Props) => {
   return (
     <div class="h-full w-full grid place-items-center">
-      {sizes.map((c) => <p>{c.size}</p>)}
+      {sizes.map((c) => <p>{c}</p>)}
     </div>
   );
 };
