@@ -81,7 +81,7 @@ function ValueItem({
   const label = currentLabel === "true" ? "Sim" : currentLabel;
 
   return (
-    <div class="flex items-center gap-2">
+    <li class="flex items-center gap-2">
       <input
         aria-checked={toggleInputSelected}
         type="checkbox"
@@ -102,7 +102,7 @@ function ValueItem({
         {label}
       </label>
       {quantity > 0 && <span class="text-sm text-base-300">({quantity})</span>}
-    </div>
+    </li>
   );
 }
 
@@ -129,47 +129,51 @@ function FilterValues({
 
         if (key === "baseColor") {
           return (
-            <button
-              onClick={() => {
-                toggleSelectFilter({
-                  category: key,
-                  rawFiltersToApply,
-                  slug: item.value,
-                });
-                toggleColorSelected.value = !toggleColorSelected.value;
-              }}
-              id="colorToggle"
-              aria-label="Name"
-            >
-              <AvatarColor
-                color={colors}
-                tipOnTop={true}
-                content={item.label}
-                variant={toggleColorSelected.value ? "active" : "default"}
-              />
-            </button>
+            <li>
+              <button
+                onClick={() => {
+                  toggleSelectFilter({
+                    category: key,
+                    rawFiltersToApply,
+                    slug: item.value,
+                  });
+                  toggleColorSelected.value = !toggleColorSelected.value;
+                }}
+                id={item.label + " colorToggle"}
+                aria-label="Name"
+              >
+                <AvatarColor
+                  color={colors}
+                  tipOnTop={true}
+                  content={item.label}
+                  variant={toggleColorSelected.value ? "active" : "default"}
+                />
+              </button>
+            </li>
           );
         }
 
         if (key.toLowerCase().endsWith("size")) {
           return (
-            <button
-              onClick={() => {
-                toggleSelectFilter({
-                  category: key,
-                  rawFiltersToApply,
-                  slug: item.value,
-                });
-                toggleSizeSelected.value = !toggleSizeSelected.value;
-              }}
-              id="sizeToggle"
-              aria-label="Name"
-            >
-              <AvatarSize
-                content={item.label}
-                variant={toggleSizeSelected.value ? "active" : "default"}
-              />
-            </button>
+            <li>
+              <button
+                onClick={() => {
+                  toggleSelectFilter({
+                    category: key,
+                    rawFiltersToApply,
+                    slug: item.value,
+                  });
+                  toggleSizeSelected.value = !toggleSizeSelected.value;
+                }}
+                id={item.label + " sizeToggle"}
+                aria-label="Name"
+              >
+                <AvatarSize
+                  content={item.label}
+                  variant={toggleSizeSelected.value ? "active" : "default"}
+                />
+              </button>
+            </li>
           );
         }
 
@@ -250,18 +254,18 @@ function Filters({ filters, colors, filterSettings }: Props) {
           const label = changedLabel ?? filter.label;
 
           return (
-            <li class="flex flex-col gap-4">
+            <div class="flex flex-col gap-4">
               <span>{label}</span>
               <FilterValues
                 rawFiltersToApply={rawFiltersToApply}
                 colors={colors}
                 {...filter}
               />
-            </li>
+            </div>
           );
         })}
       </li>
-      <div class="flex fixed left-0 bottom-0 w-full px-4 py-2 bg-base-100 justify-between items-center border-t">
+      <li class="flex fixed left-0 bottom-0 w-full px-4 py-2 bg-base-100 justify-between items-center border-t">
         <Button
           onClick={() => {
             const transformedArray = rawFiltersToApply.value
@@ -285,7 +289,7 @@ function Filters({ filters, colors, filterSettings }: Props) {
         >
           Aplicar filtros
         </Button>
-      </div>
+      </li>
     </ul>
   );
 }

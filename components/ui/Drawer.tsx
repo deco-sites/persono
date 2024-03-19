@@ -56,10 +56,12 @@ function Drawer(props: Props) {
       </div>
 
       <aside
-        class={`drawer-side sm:overflow-hidden z-50 start-auto ${
-          showHeader ? "bottom-0 top-auto" : "h-full"
+        class={`drawer-side sm:overflow-hidden z-50 ${
+          showHeader
+            ? "bottom-0 top-auto start-auto"
+            : "h-full start-0 overflow-y-visible"
         }`}
-        style={{ height: "calc(100% - 120px)" }}
+        style={showHeader ? { height: "calc(100% - 120px)" } : ""}
       >
         <label for={id} class="drawer-overlay" aria-label="drawer overlay" />
         {!lazy.value && aside}
