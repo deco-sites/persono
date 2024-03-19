@@ -119,8 +119,8 @@ function ProductCard({
         colors: defaultTags?.discountTag,
       },
       hasNewsTag: {
-        label: tagsCapture("LANCAMENTO", "TOPLEFT")?.valueReference,
-        colors: defaultTags?.discountTag,
+        label: tagsCapture("LANCAMENTO", "TOPLEFT") && "Novidade",
+        colors: defaultTags?.newsTag,
       },
     };
   }, []);
