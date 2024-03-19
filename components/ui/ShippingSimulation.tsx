@@ -144,7 +144,7 @@ function ShippingSimulation({ sku }: Props) {
         <Button
           type="submit"
           loading={loading.value}
-          class=" bg-primary px-5 py-2 text-primary-content hover:bg-primary"
+          class="btn no-animation btn-primary btn-circle px-5 py-2"
         >
           Calcular
         </Button>
