@@ -1,5 +1,5 @@
-import { FnContext } from "deco/types.ts";
 import { SectionProps } from "deco/mod.ts";
+import { FnContext } from "deco/types.ts";
 
 interface ContentDevices {
   mobile: number;
@@ -8,7 +8,7 @@ interface ContentDevices {
 }
 export interface Layout {
   /**
-   * @description Using height in pixels]
+   * @description Using height in pixels
    */
   containerHeight: ContentDevices;
 }
@@ -21,10 +21,10 @@ const ExternalContent = (
   { device, layout, path }: SectionProps<typeof loader>,
 ) => {
   const { containerHeight } = layout;
-  const heightSetting = containerHeight[device];
+
   return (
     <iframe
-      height={heightSetting}
+      height={containerHeight[device]}
       scrolling="no"
       width="100%"
       src={"/secure" + path}
