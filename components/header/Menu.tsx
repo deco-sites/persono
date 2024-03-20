@@ -59,7 +59,11 @@ function MenuItem(
       {hasChildren
         ? (
           <>
-            <input type="checkbox" class="w-1/4 h-full justify-self-end peer" />
+            <input
+              aria-label={item.label + " input"}
+              type="checkbox"
+              class="w-1/4 h-full justify-self-end peer"
+            />
             <ul class="collapse-content !px-0 divide-y divide-white">
               {item.children?.map((node, index) => (
                 <MenuItem key={index} item={node} child={child + 1} />
@@ -103,6 +107,7 @@ function Menu({ items = [], fastLinks = [], socialItems = [] }: Props) {
       </ul>
       <div class="bg-secondary text-secondary-content flex flex-row justify-between items-end flex-wrap pt-5 pb-6 px-4">
         <a
+          aria-label="Deco.cx website"
           href="https://deco.cx/"
           target="_blank"
           class="flex items-center gap-1 text-sm"

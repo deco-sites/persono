@@ -8,7 +8,7 @@ export interface Props {
 
 export function DrawerHeader({ onClose, title }: Props) {
   return (
-    <header class="flex justify-between items-center px-4 py-2 border-b border-[#ccc] w-full">
+    <header class="flex justify-between items-center px-4 py-2 border-b border-gray-100 w-full">
       <h3 class="text-xl font-medium">{title}</h3>
       <Button
         class="btn-ghost btn-circle btn-sm hover:text-primary flex items-center justify-center"

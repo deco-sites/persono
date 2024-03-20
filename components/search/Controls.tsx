@@ -53,6 +53,8 @@ function SearchControls({
               <Button
                 class="btn-ghost mr-5"
                 onClick={() => (open.value = false)}
+                id="text"
+                aria-label="Name"
               >
                 <Icon id="XMark" size={20} strokeWidth={2} />
               </Button>

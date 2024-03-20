@@ -53,7 +53,7 @@ export default function FeatureBlogArticle(props: Props) {
               class="rounded-[40px]"
               sizes="(max-width: 640px) 100vw, 30vw"
               src={image?.desktop}
-              alt={image?.alt}
+              alt={image?.alt ?? title + " image"}
               decoding="async"
               loading="lazy"
             />

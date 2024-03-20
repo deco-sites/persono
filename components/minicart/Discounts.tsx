@@ -46,7 +46,7 @@ export function Discounts(
         <span>- {formatPrice(total / 100, currency, locale)}</span>
       </p>
 
-      <ul class="collapse-content text-[#666] pl-6 !pb-0 pr-0 text-sm flex flex-col gap-3">
+      <ul class="collapse-content text-gray-600 pl-6 !pb-0 pr-0 text-sm flex flex-col gap-3">
         {discounts.map(({ message, value, items = [], type }) => (
           <li class="flex flex-col gap-1 first:pt-3">
             <p class="flex justify-between items-center">

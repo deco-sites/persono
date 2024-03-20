@@ -134,15 +134,18 @@ function Result({
 
   return (
     <>
-      <div class="container px-4 md:px-4 sm:px-0">
-        <p
-          class={`py-4 text-sm flex items-center gap-2 ${
-            filters.length == 0 ? "" : "hidden"
-          }`}
-        >
-          Resultados de pesquisa para "{queryTerm}"{" "}
-          <span class="text-gray-600">({products.length} produtos)</span>
-        </p>
+      <div class="container px-4 sm:px-0">
+        {filters.length == 0
+          ? (
+            <p
+              class={`py-4 text-sm flex items-center gap-2`}
+            >
+              Resultados de pesquisa para "{queryTerm}"{" "}
+              <span class="text-gray-600">({products.length} produtos)</span>
+            </p>
+          )
+          : null}
+
         <SearchControls
           sizes={sizes}
           colors={colors}
@@ -187,7 +190,7 @@ function Result({
               class={`flex items-center justify-center w-8 h-8 border rounded-full ${
                 pageInfo.previousPage?.length == undefined ||
                   pageInfo.previousPage?.length == 0
-                  ? "text-gray-600 opacity-60 bg-white border z-10 sm:flex rounded-full cursor-default  pointer-events-none"
+                  ? "text-gray-600 opacity-60 bg-white border z-10 sm:flex rounded-full cursor-default pointer-events-none"
                   : "text-primary"
               }`}
               disabled={pageInfo.nextPage?.length == 0 ||

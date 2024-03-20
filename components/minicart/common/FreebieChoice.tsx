@@ -30,7 +30,7 @@ export function FreebieChoice({
 }: Props) {
   if (subtotal < target || !selectedSku) {
     return (
-      <li class="flex justify-start items-center gap-4 pb-6 border-b border-[#ccc]">
+      <li class="flex justify-start items-center gap-4 pb-6 border-b border-gray-100">
         <Image
           class="rounded"
           src={image}
@@ -68,7 +68,7 @@ export function FreebieChoice({
               <div
                 tabIndex={0}
                 role="button"
-                class="btn btn-ghost border border-[#ccc] flex flex-nowrap items-center justify-between group px-3 py-2"
+                class="btn btn-ghost border border-gray-100 flex flex-nowrap items-center justify-between group px-3 py-2"
               >
                 <span class="truncate flex-grow text-left font-normal">
                   {selectedSku.title}
@@ -97,7 +97,7 @@ export function FreebieChoice({
             </div>
           )
           : <p class="font-bold md:font-bold">{selectedSku.title}</p>}
-        <p class="text-sm font-bold text-[#666]">Grátis</p>
+        <p class="text-sm font-bold text-gray-600">Grátis</p>
       </div>
     </li>
   );

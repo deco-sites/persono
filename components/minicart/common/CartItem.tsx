@@ -72,7 +72,7 @@ function CartItem(
           <div class="flex items-center gap-2">
             {list !== sale
               ? (
-                <p class="line-through text-[#666] text-xs">
+                <p class="line-through text-gray-600 text-xs">
                   {formatPrice(list / 100, currency, locale)}
                 </p>
               )

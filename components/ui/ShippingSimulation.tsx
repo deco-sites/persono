@@ -57,7 +57,7 @@ function ShippingContent({
           </span>
         </li>
       ))}
-      <span class="text-sm text-[#666] pb-4">
+      <span class="text-sm text-gray-600 pb-4">
         Os prazos de entrega começam a contar a partir da confirmação do
         pagamento e podem variar de acordo com a quantidade de produtos na
         sacola.
@@ -118,7 +118,7 @@ function ShippingSimulation({ sku }: Props) {
 
   return (
     <div class="flex flex-col gap-2">
-      <div class="flex flex-col text-[#666]">
+      <div class="flex flex-col text-gray-600">
         <span class="text-base">
           Informe seu CEP para consultar os prazos de entrega
         </span>
