@@ -80,7 +80,7 @@ export default function GallerySlider(props: SectionProps<typeof loader>) {
                 height={678}
                 // Preload LCP image for better web vitals
                 preload={index === 0}
-                loading={index === 0 ? "lazy" : "eager"}
+                loading={index === 0 ? "eager" : "lazy"}
                 id={`slide${index}`}
                 name={`slide${id}`}
               />
