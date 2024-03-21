@@ -129,7 +129,7 @@ function ProductInfo({
         <span class="text-sm text-gray-600">{installments}</span>
       </div>
       {/* Sku Selector */}
-      <div class="sm:mt-6 mt-4 flex flex-col gap-4">
+      <div class="sm:mt-6 mt-4 flex flex-col gap-4 max-md:hidden">
         <ProductSizeSelector
           category={product.category?.split(
             ">",
@@ -149,7 +149,7 @@ function ProductInfo({
       </div>
       {/* Add to Cart and Favorites button */}
       <div
-        class={`mt-6 sm:mt-10 ${
+        class={`mt-6 sm:mt-10 max-md:hidden ${
           productBenefits?.length == 0 ? "mb-5" : "mb-10"
         } flex flex-col`}
       >
@@ -167,7 +167,7 @@ function ProductInfo({
 
       {/* Benefities */}
 
-      <div class={`${productBenefits?.length == 0 ? "hidden" : ""}`}>
+      <div class={` max-md:hidden ${productBenefits?.length == 0 ? "hidden" : ""}`}>
         <ProductBenefits
           productBenefits={productBenefits}
           adminBenefits={benefits}
@@ -176,7 +176,7 @@ function ProductInfo({
 
       {/* Description card */}
 
-      <div class="mt-6 sm:mt-7 ">
+      <div class="mt-6 sm:mt-7 max-md:hidden ">
         {description && (
           <div class="flex flex-col divide-y border-t">
             {description && (
