@@ -183,7 +183,6 @@ function Footer({
         <div class="flex flex-row justify-between items-center md:py-8 pt-5 pb-4">
           {_logo}
           {_social}
-          {/* <PoweredByDeco /> */}
         </div>
         {copyright
           ? (
