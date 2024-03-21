@@ -1,5 +1,8 @@
+import { IS_BROWSER } from "$fresh/runtime.ts";
+import { signal } from "@preact/signals";
 import { SectionProps } from "deco/mod.ts";
 import { FnContext } from "deco/types.ts";
+import { useEffect } from "preact/hooks";
 
 interface ContentDevices {
   mobile: number;
@@ -17,14 +20,32 @@ export interface Props {
   layout: Layout;
 }
 
+const iframeHeight = signal(0);
+
+const handleHeightMessage = ({ data }: MessageEvent) => {
+  if (data?.type === "iframeHeight") {
+    iframeHeight.value = data.height;
+  }
+};
+
 const ExternalContent = (
   { device, layout, path }: SectionProps<typeof loader>,
 ) => {
   const { containerHeight } = layout;
 
+  useEffect(() => {
+    if (IS_BROWSER) {
+      addEventListener("message", handleHeightMessage);
+
+      return () => {
+        removeEventListener("message", handleHeightMessage);
+      };
+    }
+  }, []);
+
   return (
     <iframe
-      height={containerHeight[device]}
+      height={iframeHeight.value || containerHeight[device]}
       scrolling="no"
       width="100%"
       src={"/secure" + path}
