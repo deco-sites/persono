@@ -129,7 +129,7 @@ function ProductInfo({
         </div>
         <span class="text-sm text-gray-600">{installments}</span>
       </div>
-      <PageFolder>
+      <PageFolder keepVisible={device !== "mobile"} >
       {/* Sku Selector */}
       <div class="sm:mt-6 mt-4  flex-col gap-4 hidden">
         <ProductSizeSelector
