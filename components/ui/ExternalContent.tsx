@@ -1,6 +1,5 @@
 import { FnContext } from "deco/types.ts";
 import { SectionProps } from "deco/mod.ts";
-import { redirect } from "deco/mod.ts";
 
 interface ContentDevices {
   mobile: number;
@@ -9,18 +8,17 @@ interface ContentDevices {
 }
 export interface Layout {
   /**
-   * @description Using height in pixels
+   * @description Using height in pixels]
    */
   containerHeight: ContentDevices;
 }
 
 export interface Props {
-  contentLink: string;
   layout: Layout;
 }
 
 const ExternalContent = (
-  { contentLink, device, layout }: SectionProps<typeof loader>,
+  { device, layout, path }: SectionProps<typeof loader>,
 ) => {
   const { containerHeight } = layout;
   const heightSetting = containerHeight[device];
@@ -29,7 +27,7 @@ const ExternalContent = (
       height={heightSetting}
       scrolling="no"
       width="100%"
-      src={contentLink}
+      src={"/secure" + path}
       frameBorder="0"
     />
   );
@@ -41,16 +39,10 @@ export const loader = (
   ctx: FnContext,
 ) => {
   const url = new URL(req.url);
-  const refer = req.headers.get("referer");
-  const path = url.pathname;
-
-  if (refer) {
-    url.pathname = path.startsWith("/secure") ? path : "/secure" + path;
-    redirect(url.href);
-  }
 
   return {
     device: ctx.device,
+    path: url.pathname,
     ...props,
   };
 };

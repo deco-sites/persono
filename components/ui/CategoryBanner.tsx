@@ -96,6 +96,7 @@ function Banner(props: SectionProps<ReturnType<typeof loader>>) {
             <img
               src={bannerDefault?.image.desktop}
               class="w-full h-full object-cover"
+              alt="banner category default image"
             />
           </Picture>
         </div>
@@ -142,6 +143,7 @@ function Banner(props: SectionProps<ReturnType<typeof loader>>) {
           <img
             src={image.desktop}
             class="w-full h-full object-cover"
+            alt="banner category image"
           />
         </Picture>
       </div>
@@ -157,14 +159,7 @@ export const loader = (props: Props, req: Request, ctx: FnCustomContext) => {
     return {};
   }
 
-  const category = page.products
-    .map((p) => p.category)[0];
-
-  const productBannerCategory = category
-    ?.split(">")[
-      category
-        ?.split(">").length - 1
-    ];
+  const productBannerCategory = page.seo?.title;
 
   const banner = banners.find(({ matcher }) =>
     new URLPattern({ pathname: matcher }).test(req.url)

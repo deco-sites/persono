@@ -546,7 +546,7 @@ export function toProductItems(
     description: productItem.description,
     brand: {
       "@type": "Brand",
-      "@id": productItem.brand.name,
+      "@id": productItem.brand?.name ?? "Persono",
     },
     inProductGroupWithID: productItem.groupKey,
     offers: toAggregateOffer({

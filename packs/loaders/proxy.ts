@@ -9,6 +9,8 @@ const PAGE_SECURE_PATHS = [
   "/secure/perfil/pedidos/*",
   "/secure/perfil/enderecos",
   "/secure/perfil/minha-carteira",
+  "/secure/perfil/trocas-e-devolucoes",
+  "/secure/perfil/trocas-e-devolucoes/*",
   "/secure/login",
   "/redefinir-senha",
 ];

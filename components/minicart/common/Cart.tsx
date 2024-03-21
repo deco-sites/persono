@@ -57,7 +57,7 @@ function Cart({
   const calcTotal = calcSubtotal - totalDiscounts;
 
   return (
-    <div class="flex w-full h-full flex-col justify-center items-center overflow-hidden">
+    <div class="flex w-full h-full flex-col justify-center items-center">
       <DrawerHeader title="Minha sacola" onClose={onClose} />
       {isEmpty
         ? (
@@ -76,7 +76,7 @@ function Cart({
                 </article>
               )
               : null}
-            <p class="flex-grow flex flex-col gap-6 font-medium text-base text-[#666] justify-center">
+            <p class="flex-grow flex flex-col gap-6 font-medium text-base text-gray-600 justify-center">
               Sua sacola está vazia
             </p>
           </div>
@@ -122,10 +122,10 @@ function Cart({
                 </li>
               ))}
             </ul>
-            <footer class="w-full flex flex-col gap-4">
+            <footer class="w-full flex flex-col gap-4 overflow-x-scroll">
               {calcSubtotal !== calcTotal
                 ? (
-                  <div class="flex flex-col gap-4 px-4 pt-4 border-t border-[#ccc]">
+                  <div class="flex flex-col gap-4 px-4 pt-4 border-t border-gray-100">
                     <div class="w-full flex justify-between text-sm">
                       <span>Subtotal</span>
                       <span>
@@ -141,14 +141,14 @@ function Cart({
                   </div>
                 )
                 : null}
-              <div class="border-t border-[#ccc] pt-4 mx-4 flex flex-col justify-end items-end gap-2">
+              <div class="border-t border-gray-100 pt-4 mx-4 flex flex-col justify-end items-end gap-2">
                 <div class="flex justify-between items-start w-full font-medium">
                   <span class="text-xl">Total</span>
                   <span class="text-2xl">
                     {formatPrice(calcTotal / 100, currency, locale)}
                   </span>
                 </div>
-                <span class="text-sm text-[#666]">
+                <span class="text-sm text-gray-600">
                   Frete e descontos serão informados no checkout.
                 </span>
               </div>

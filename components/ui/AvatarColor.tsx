@@ -59,7 +59,7 @@ function AvatarColor(
         <span
           class={`rounded shadow border z-30 ${
             tipOnTop ? "bottom-9" : "top-9"
-          } -right-3 absolute px-2 py-1 text-base-content bg-white hidden group-hover:flex`}
+          } -right-3 absolute whitespace-nowrap px-2 py-1 text-base-content bg-white hidden group-hover:flex`}
         >
           {content}
         </span>
