@@ -25,6 +25,7 @@ import {
 } from "deco-sites/persono/components/product/NotFound.tsx";
 import { FnContext } from "deco/types.ts";
 import ProductInfoCollapse from "deco-sites/persono/islands/ProductInfoCollapse.tsx";
+import { PageFolder } from "deco-sites/persono/islands/PageFolder.tsx";
 
 interface Props {
   colors: Color[];
@@ -128,6 +129,7 @@ function ProductInfo({
         </div>
         <span class="text-sm text-gray-600">{installments}</span>
       </div>
+      <PageFolder>
       {/* Sku Selector */}
       <div class="sm:mt-6 mt-4  flex-col gap-4 hidden">
         <ProductSizeSelector
@@ -176,7 +178,9 @@ function ProductInfo({
 
       {/* Description card */}
 
-      <div class="mt-6 sm:mt-7 hidden ">
+
+
+      <div class="mt-6 sm:mt-7  ">
         {description && (
           <div class="flex flex-col divide-y border-t">
             {description && (
@@ -231,6 +235,8 @@ function ProductInfo({
           </div>
         )}
       </div>
+
+      </PageFolder>
 
       {/* Analytics Event */}
 
