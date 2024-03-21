@@ -55,6 +55,7 @@ export default function GallerySlider(props: SectionProps<typeof loader>) {
             src={img.url!}
             alt={img.alternateName}
             width={678}
+            fetchPriority={index === 0 ?"high":"low"}
             height={678}
             preload={index === 0 ? true : false}
             loading={index === 0 ? "eager" : "lazy"}
