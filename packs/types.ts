@@ -6,6 +6,7 @@ export interface CookieNames {
   ammoTokenCookie: string;
   creationDateCookie: string;
   expirationDaysCookie: string;
+  pixUserCookie: string
 }
 
 export interface AmmoProduct {
