@@ -63,6 +63,7 @@ export interface Props {
     title?: string;
     /** @format textarea */
     description?: string;
+    link?: string;
     form?: NewsletterForm;
   };
   sections?: Section[];
@@ -86,6 +87,7 @@ function Footer({
   newsletter = {
     title: "Newsletter",
     description: "",
+    link: "",
     form: { placeholder: "", buttonText: "", helpText: "" },
   },
   sections = [{

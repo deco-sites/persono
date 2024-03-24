@@ -16,6 +16,7 @@ export interface Props {
     title?: string;
     /** @format textarea */
     description?: string;
+    link?: string;
     form?: Form;
   };
   layout?: {
@@ -69,10 +70,16 @@ function Newsletter({ content, layout = {} }: Props) {
         )}
         {content?.description && (
           <div class="lg:max-w-[400px] w-full text-sm">
-            {content?.description}
+            {content?.description}&nbsp;
+            {content?.link && (    
+              <b class="text-sm underline font-normal">
+                {content?.link}
+              </b>  
+            )}
           </div>
         )}
       </div>
+
       <div class="flex flex-col gap-4 w-full">
         <form
           class="form-control flex flex-row max-lg:w-full flex-nowrap gap-2"
