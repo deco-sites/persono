@@ -71,10 +71,10 @@ function Newsletter({ content, layout = {} }: Props) {
         {content?.description && (
           <div class="lg:max-w-[400px] w-full text-sm">
             {content?.description}&nbsp;
-            {content?.link && (    
+            {content?.link && (
               <b class="text-sm underline font-normal">
                 {content?.link}
-              </b>  
+              </b>
             )}
           </div>
         )}
