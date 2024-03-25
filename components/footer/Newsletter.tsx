@@ -74,7 +74,13 @@ function Newsletter({ content, layout = {} }: Props) {
           <div class="lg:max-w-[400px] w-full text-sm">
             {content?.description}&nbsp;
             {content?.linkTitle && (
-              <a href={content?.link && content?.link.length >=1? content.link  : "/"} target={content?.redirect? "_blank": "_self"} class="text-sm underline font-normal">
+              <a
+                href={content?.link && content?.link.length >= 1
+                  ? content.link
+                  : "/"}
+                target={content?.redirect ? "_blank" : "_self"}
+                class="text-sm underline font-normal"
+              >
                 {content?.linkTitle}
               </a>
             )}
