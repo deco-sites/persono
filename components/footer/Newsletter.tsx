@@ -14,9 +14,11 @@ export interface Form {
 export interface Props {
   content: {
     title?: string;
-    /** @format textarea */
+    /** @format html */
     description?: string;
+    linkTitle?: string;
     link?: string;
+    redirect?: boolean;
     form?: Form;
   };
   layout?: {
@@ -71,10 +73,10 @@ function Newsletter({ content, layout = {} }: Props) {
         {content?.description && (
           <div class="lg:max-w-[400px] w-full text-sm">
             {content?.description}&nbsp;
-            {content?.link && (
-              <b class="text-sm underline font-normal">
-                {content?.link}
-              </b>
+            {content?.linkTitle && (
+              <a href={content?.link && content?.link.length >=1? content.link  : "/"} target={content?.redirect? "_blank": "_self"} class="text-sm underline font-normal">
+                {content?.linkTitle}
+              </a>
             )}
           </div>
         )}

@@ -61,9 +61,11 @@ export interface Props {
   };
   newsletter?: {
     title?: string;
-    /** @format textarea */
+    /** @format html */
     description?: string;
+    linkTitle?: string;
     link?: string;
+    redirect?: boolean;
     form?: NewsletterForm;
   };
   sections?: Section[];
@@ -88,6 +90,7 @@ function Footer({
     title: "Newsletter",
     description: "",
     link: "",
+    redirect: false,
     form: { placeholder: "", buttonText: "", helpText: "" },
   },
   sections = [{
