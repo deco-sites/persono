@@ -12,13 +12,14 @@ interface CookieObject {
 const setCookies = (
   res: Response,
   cookiesObj: CookieObject[],
+  domain: string,
 ) =>
   cookiesObj.map(({ name, value }) =>
     res.headers.append(
       "Set-Cookie",
       `${name}=${value}; Expires=${new Date(
         Date.now() + 365 * 864e5,
-      )}; Path=/; Secure; HttpOnly`,
+      )}; Path=/; Secure; HttpOnly; Domain=${domain}`,
     )
   );
 
@@ -68,7 +69,7 @@ export const handler = async (
     [],
   );
 
-  const hasDeviceCookie = !!cookies[AMMO_DEVICE_ID_HEADER]
+  const hasDeviceCookie = !!cookies[AMMO_DEVICE_ID_HEADER];
 
   if (hasDeviceCookie && !cookiesFromUrl.length) return res;
 
@@ -87,7 +88,7 @@ export const handler = async (
     });
   }
 
-  setCookies(res, cookiesFromUrl);
+  setCookies(res, cookiesFromUrl, url.hostname.split(".").slice(-2).join("."));
 
   return res;
 };
