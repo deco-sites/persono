@@ -78,7 +78,7 @@ function Newsletter({ content, layout = {} }: Props) {
                   ? content.link
                   : "/"}
                 target={content?.redirect ? "_blank" : "_self"}
-                class="text-sm underline font-normal"
+                class="text-sm underline font-bold"
               >
                 {content?.linkTitle}
               </a>
