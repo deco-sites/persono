@@ -105,12 +105,12 @@ function Newsletter({ content, layout = {} }: Props) {
           {!sended.value && (
             <button
               type="submit"
-              class={`btn btn-accent group text-base disabled:bg-base-100 ${
+              class={`btn btn-accent group text-base disabled:bg-white ${
                 loading.value ? "loading text-white" : ""
               }`}
               disabled={inputIsEmpty.value}
             >
-              <span class="group-disabled:text-gray-600">
+              <span class="group-disabled:text-black">
                 {content?.form?.buttonText || "Inscrever"}
               </span>
             </button>
