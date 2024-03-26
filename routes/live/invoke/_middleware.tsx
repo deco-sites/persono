@@ -88,7 +88,9 @@ export const handler = async (
     });
   }
 
-  setCookies(res, cookiesFromUrl, url.hostname.split(".").slice(-2).join("."));
+  const domain = url.origin.includes("localhost") ? "localhost" : ".persono.com.br"
+
+  setCookies(res, cookiesFromUrl, domain);
 
   return res;
 };
