@@ -14,7 +14,7 @@ export interface Form {
 export interface Props {
   content: {
     title?: string;
-    /** @format html */
+    /** @format textarea */
     description?: string;
     linkTitle?: string;
     link?: string;
