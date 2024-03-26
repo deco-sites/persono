@@ -68,7 +68,7 @@ export const handler = async (
     [],
   );
 
-  const hasDeviceCookie = !!cookies[AMMO_DEVICE_ID_HEADER]
+  const hasDeviceCookie = !!cookies[AMMO_DEVICE_ID_HEADER];
 
   if (hasDeviceCookie && !cookiesFromUrl.length) return res;
 
