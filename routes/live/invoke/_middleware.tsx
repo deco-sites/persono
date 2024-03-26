@@ -40,50 +40,54 @@ export const handler = async (
   )) as CookieNames;
 
   const AMMO_DEVICE_ID_HEADER = cookieNames.ammoDeviceIdCookie;
+  const AMMO_TOKEN_HEADER = cookieNames.ammoTokenCookie;
 
-  if (cookies[AMMO_DEVICE_ID_HEADER]) return res;
+  if (cookies[AMMO_TOKEN_HEADER]) return res;
 
   const url = new URL(req.headers.get("referer") ?? req.url);
 
   const TOKENS_URL_HEADER = cookieNames.queryStringTokens;
 
-  const defaultCookieObj: CookieObject = {
-    name: AMMO_DEVICE_ID_HEADER,
-    value: encodeCookie({
-      [AMMO_DEVICE_ID_HEADER]: crypto.randomUUID(),
-      [cookieNames.creationDateCookie]: new Date().getTime().toString(),
-      [cookieNames.expirationDaysCookie]: "-1",
-    }),
-  };
-
-  const cookiesObj = TOKENS_URL_HEADER.reduce<CookieObject[]>(
+  const cookiesFromUrl = TOKENS_URL_HEADER.reduce<CookieObject[]>(
     (acc, { queryStringName, cookieName }) => {
       const rawToken = url.searchParams.get(queryStringName);
-      if (!rawToken) {
-        return acc;
+
+      if (rawToken) {
+        return [...acc, {
+          name: cookieName,
+          value: encodeCookie({
+            [cookieName]: rawToken,
+            [cookieNames.creationDateCookie]: new Date().getTime().toString(),
+            [cookieNames.expirationDaysCookie]: "-1",
+          }),
+        }];
       }
 
-      const newCookie: CookieObject = {
-        name: cookieName,
-        value: encodeCookie({
-          [cookieName]: rawToken,
-          [cookieNames.creationDateCookie]: new Date().getTime().toString(),
-          [cookieNames.expirationDaysCookie]: "-1",
-        }),
-      };
-
-      if (cookieName === AMMO_DEVICE_ID_HEADER) {
-        const index = acc.indexOf(defaultCookieObj);
-        acc[index] = newCookie;
-        return acc;
-      }
-
-      return [...acc, newCookie];
+      return acc;
     },
-    [defaultCookieObj],
+    [],
   );
 
-  setCookies(res, cookiesObj);
+  const hasDeviceCookie = !!cookies[AMMO_DEVICE_ID_HEADER]
+
+  if (hasDeviceCookie && !cookiesFromUrl.length) return res;
+
+  const hasDeviceCookieUrl = cookiesFromUrl.some(({ name }) =>
+    name === AMMO_DEVICE_ID_HEADER
+  );
+
+  if (!hasDeviceCookie && !hasDeviceCookieUrl) {
+    cookiesFromUrl.push({
+      name: AMMO_DEVICE_ID_HEADER,
+      value: encodeCookie({
+        [AMMO_DEVICE_ID_HEADER]: crypto.randomUUID(),
+        [cookieNames.creationDateCookie]: new Date().getTime().toString(),
+        [cookieNames.expirationDaysCookie]: "-1",
+      }),
+    });
+  }
+
+  setCookies(res, cookiesFromUrl);
 
   return res;
 };
