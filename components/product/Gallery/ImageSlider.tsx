@@ -84,6 +84,7 @@ export default function GallerySlider(props: SectionProps<typeof loader>) {
                 loading={index === 0 ? "eager" : "lazy"}
                 id={`slide${index}`}
                 name={`slide${id}`}
+                fetchPriority={index === 0 ? "high" : "auto"}
               />
             </Slider.Item>
           ))}
