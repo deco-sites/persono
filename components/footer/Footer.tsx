@@ -54,20 +54,22 @@ export interface Layout {
   };
 }
 
+interface NewsletterProps {
+  title?: string;
+  /** @format html */
+  description?: string;
+  linkTitle?: string;
+  link?: string;
+  redirect?: boolean;
+  form?: NewsletterForm;
+}
+
 export interface Props {
   logo?: {
     image: ImageWidget;
     description?: string;
   };
-  newsletter?: {
-    title?: string;
-    /** @format html */
-    description?: string;
-    linkTitle?: string;
-    link?: string;
-    redirect?: boolean;
-    form?: NewsletterForm;
-  };
+  newsletter?: NewsletterProps;
   sections?: Section[];
   social?: {
     title?: string;

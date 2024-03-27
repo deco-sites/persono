@@ -10,8 +10,8 @@ export interface CookieNames {
 }
 
 export interface QueryStringToken {
-  queryStringName: string,
-  cookieName: string
+  queryStringName: string;
+  cookieName: string;
 }
 
 export interface AmmoProduct {
