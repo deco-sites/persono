@@ -18,9 +18,15 @@ export function getHeaders(
 
   const headers = new Headers({
     "x-api-key": apiKey,
-    "x-ammo-device-id": deviceId,
-    "x-ammo-token": token,
   });
+
+  if (deviceId) {
+    headers.append("x-ammo-device-id", deviceId);
+  }
+
+  if (token) {
+    headers.append("x-ammo-token", token);
+  }
 
   if (urlenconded) {
     headers.append("Content-Type", "application/x-www-form-urlencoded");
