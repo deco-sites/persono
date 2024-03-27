@@ -36,3 +36,13 @@ export const PROPS_AMMO_API = {
     ],
   },
 };
+
+export const PRICE_TYPES = [
+  "Default",
+  "Range",
+  "FromTo",
+  "NOTUSEInstallments",
+  "NOTUSEJust",
+  "Unavailable",
+  "PDP",
+];
