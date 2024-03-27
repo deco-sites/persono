@@ -398,7 +398,7 @@ const toAggregateOffer = (
     ),
   ];
 
-  if (priceType != "Default" ?? priceType != "Unavailable") {
+  if (priceType !== "Default" ?? priceType != "Unavailable") {
     priceSpecification.push({
       "@type": "UnitPriceSpecification",
       priceType: "https://schema.org/SalePrice",
