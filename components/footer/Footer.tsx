@@ -58,9 +58,6 @@ interface NewsletterProps {
   title?: string;
   /** @format html */
   description?: string;
-  linkTitle?: string;
-  link?: string;
-  redirect?: boolean;
   form?: NewsletterForm;
 }
 
@@ -91,8 +88,6 @@ function Footer({
   newsletter = {
     title: "Newsletter",
     description: "",
-    link: "",
-    redirect: false,
     form: { placeholder: "", buttonText: "", helpText: "" },
   },
   sections = [{
