@@ -19,7 +19,7 @@ const setCookies = (
       "Set-Cookie",
       `${name}=${value}; Expires=${new Date(
         Date.now() + 365 * 864e5,
-      )}; Path=/; Secure; HttpOnly; Domain=${domain}`,
+      )}; Path=/; Secure; Domain=${domain}`,
     )
   );
 
