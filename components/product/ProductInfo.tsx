@@ -101,7 +101,7 @@ function ProductInfo({
     const contentHeight = content?.clientHeight;
 
     if (content && contentHeight) {
-      const top = ((contentHeight / 4) + 80) * -1;
+      const top = ((contentHeight / 2) + 80) * -1;
       content.style.top = `${top}px`;
       content.style.position = "sticky";
     }
