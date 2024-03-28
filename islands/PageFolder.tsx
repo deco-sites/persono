@@ -19,16 +19,13 @@ export const PageFolder = ({ children, keepVisible }: Props) => {
 
   useEffect(() => {
     if (showingContentValue || keepVisible) {
-   
-   removeEventListener("scroll", handleScroll);
+      removeEventListener("scroll", handleScroll);
     } else {
-   
-    addEventListener("scroll", handleScroll);
+      addEventListener("scroll", handleScroll);
     }
 
-  
     return () => {
-     removeEventListener("scroll", handleScroll);
+      removeEventListener("scroll", handleScroll);
     };
   }, [showingContentValue, keepVisible]);
 
