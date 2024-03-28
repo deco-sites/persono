@@ -20,6 +20,14 @@ export interface Props {
   hasRelatedProducts?: boolean;
 }
 
+export function LoadingFallback() {
+  return (
+    <div>
+      <h2>loading...</h2>
+    </div>
+  );
+}
+
 function ProductShelf({
   products,
   title,

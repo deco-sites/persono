@@ -32,3 +32,10 @@ export const getSiteCookies = (cookies: CookieNames) => {
 };
 
 export const encodeCookie = (obj: object) => btoa(JSON.stringify(obj));
+
+export const DEV_simulateSlowApi = (ms: number): Promise<void> =>
+  new Promise((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, ms);
+  });

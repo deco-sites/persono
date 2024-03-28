@@ -3,7 +3,7 @@ import type { Product } from "apps/commerce/types.ts";
 import { AmmoProduct } from "$store/packs/types.ts";
 import { getHeaders } from "$store/packs/utils/headers.ts";
 import { toProduct } from "$store/packs/utils/transform.ts";
-import { typeChecker } from "$store/packs/utils/utils.ts";
+import { DEV_simulateSlowApi, typeChecker } from "$store/packs/utils/utils.ts";
 import type { RequestURLParam } from "apps/website/functions/requestToParam.ts";
 import { getProductItems } from "$store/packs/utils/getProductItems.ts";
 
@@ -54,6 +54,7 @@ const loader = async (
   req: Request,
   ctx: AppContext,
 ): Promise<Product[] | null> => {
+  await DEV_simulateSlowApi(3000);
   const { ammoc, config, imageBaseUrl } = ctx;
   const url = new URL(req.url);
   const headers = getHeaders(req, ctx);
