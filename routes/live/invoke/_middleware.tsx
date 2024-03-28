@@ -12,13 +12,14 @@ interface CookieObject {
 const setCookies = (
   res: Response,
   cookiesObj: CookieObject[],
+  domain: string,
 ) =>
   cookiesObj.map(({ name, value }) =>
     res.headers.append(
       "Set-Cookie",
       `${name}=${value}; Expires=${new Date(
         Date.now() + 365 * 864e5,
-      )}; Path=/; Secure; HttpOnly`,
+      )}; Path=/; Secure; Domain=${domain}`,
     )
   );
 
@@ -87,7 +88,11 @@ export const handler = async (
     });
   }
 
-  setCookies(res, cookiesFromUrl);
+  const domain = url.origin.includes("localhost")
+    ? "localhost"
+    : ".persono.com.br";
+
+  setCookies(res, cookiesFromUrl, domain);
 
   return res;
 };
