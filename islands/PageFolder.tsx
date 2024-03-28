@@ -1,6 +1,6 @@
-import { useEffect, useState } from "preact/compat";
+import { useEffect } from "preact/compat";
 import { ComponentChildren } from "preact";
-import { IS_BROWSER } from "$fresh/runtime.ts";
+import { useSignal } from "@preact/signals";
 
 export interface Props {
   children?: ComponentChildren;
@@ -8,26 +8,31 @@ export interface Props {
 }
 
 export const PageFolder = ({ children, keepVisible }: Props) => {
-  const [showingContent, setCShowingContent] = useState(false);
+  const showingContent = useSignal(false);
+  const showingContentValue = showingContent.value;
+
+  const handleScroll = () => {
+    if (window.scrollY > 0) {
+      showingContent.value = true;
+    }
+  };
 
   useEffect(() => {
-    if (showingContent || keepVisible || !IS_BROWSER) {
-      return;
+    if (showingContentValue || keepVisible) {
+   
+   removeEventListener("scroll", handleScroll);
+    } else {
+   
+    addEventListener("scroll", handleScroll);
     }
 
-    const handleScroll = () => {
-      window.scrollY > 0 && setCShowingContent(true);
-    };
-
-    addEventListener("scroll", handleScroll);
-
-    // Retorna uma função de limpeza que remove o evento de rolagem
+  
     return () => {
-      removeEventListener("scroll", handleScroll);
+     removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [showingContentValue, keepVisible]);
 
-  if (!showingContent && !keepVisible) {
+  if (!showingContentValue && !keepVisible) {
     return null;
   }
 

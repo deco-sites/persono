@@ -107,29 +107,30 @@ function ProductInfo({
         productsQtt={breadcrumb.numberOfItems}
       />
       {/* Code and name */}
-      <div class="sm:mt-6 mt-4 ">
-        <div>
-          {gtin && <span class="text-sm text-gray-600">Cod. {gtin}</span>}
+      <PageFolder keepVisible={device !== "mobile"}>
+        <div class="sm:mt-6 mt-4 ">
+          <div>
+            {gtin && <span class="text-sm text-gray-600">Cod. {gtin}</span>}
+          </div>
+          <h1>
+            <span class="font-medium text-xl sm:text-2xl">{name}</span>
+          </h1>
         </div>
-        <h1>
-          <span class="font-medium text-xl sm:text-2xl">{name}</span>
-        </h1>
-      </div>
-      {/* Prices */}
-      <div class="sm:mt-6 mt-4  ">
-        <div class="flex flex-row gap-2 items-center">
-          {(listPrice ?? 0) > price && (
-            <span class="line-through text-gray-600 text-xs">
-              {formatPrice(listPrice, offers?.priceCurrency)}
+        {/* Prices */}
+        <div class="sm:mt-6 mt-4  ">
+          <div class="flex flex-row gap-2 items-center">
+            {(listPrice ?? 0) > price && (
+              <span class="line-through text-gray-600 text-xs">
+                {formatPrice(listPrice, offers?.priceCurrency)}
+              </span>
+            )}
+            <span class="font-medium text-xl text-black">
+              {formatPrice(price, offers?.priceCurrency)}
             </span>
-          )}
-          <span class="font-medium text-xl text-black">
-            {formatPrice(price, offers?.priceCurrency)}
-          </span>
+          </div>
+          <span class="text-sm text-gray-600">{installments}</span>
         </div>
-        <span class="text-sm text-gray-600">{installments}</span>
-      </div>
-    
+
         {/* Sku Selector */}
         <div class="sm:mt-6 mt-4  flex-col gap-4 ">
           <ProductSizeSelector
@@ -166,7 +167,7 @@ function ProductInfo({
             )
             : <OutOfStock sku={sku} />}
         </div>
-        <PageFolder keepVisible={device !== "mobile"}>
+
         {/* Benefities */}
 
         <div class={`${productBenefits?.length == 0 ? "hidden" : ""}`}>
