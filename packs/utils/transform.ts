@@ -581,6 +581,16 @@ const toImageItem = (
   const imageInfo: ImageObject[] = [];
   const { title } = productItem;
 
+  if (productItem.photoStill) {
+    imageInfo.push({
+      "@type": "ImageObject" as const,
+      url: getImageUrl(imageBaseUrl, productItem.photoStill),
+      additionalType: "image",
+      alternateName: title,
+      disambiguatingDescription: `still`,
+    });
+  }
+
   if (productItem.photoSemiEnvironment) {
     imageInfo.push({
       "@type": "ImageObject" as const,
@@ -599,15 +609,7 @@ const toImageItem = (
       disambiguatingDescription: `panoramics`,
     });
   }
-  if (productItem.photoStill) {
-    imageInfo.push({
-      "@type": "ImageObject" as const,
-      url: getImageUrl(imageBaseUrl, productItem.photoStill),
-      additionalType: "image",
-      alternateName: title,
-      disambiguatingDescription: `still`,
-    });
-  }
+
   if (productItem.youtubeVideo) {
     imageInfo.push({
       "@type": "ImageObject" as const,
