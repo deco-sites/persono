@@ -97,7 +97,7 @@ function ProductInfo({
 
   return (
     <div
-      class="flex flex-col w-full sm:mt-10 px-4 sm:px-0 sm:sticky sm:top-24"
+      class="flex flex-col w-full sm:mt-10 px-4 sm:px-0 sm:sticky sm:top-[calc((100%-120px)*-1)]"
       id={id}
     >
       <Breadcrumb
