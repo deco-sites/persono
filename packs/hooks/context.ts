@@ -2,22 +2,29 @@ import { IS_BROWSER } from "$fresh/runtime.ts";
 import { signal } from "@preact/signals";
 import { withManifest } from "deco/clients/withManifest.ts";
 import type { Manifest } from "../../manifest.gen.ts";
-import { Bag } from "$store/packs/types.ts";
+import { Bag, User, UserInfo } from "$store/packs/types.ts";
 
 interface Context {
   cart: Bag;
+  user: UserInfo | null;
 }
 
 const Runtime = withManifest<Manifest>();
 const loading = signal<boolean>(true);
 const context = {
   cart: signal<Bag | undefined>(undefined),
+  user: signal<User | undefined | null>(null),
 };
+
+interface EnqueueOptions {
+  isInitialLoader?: boolean;
+}
 
 let queue = Promise.resolve();
 let abort = () => {};
 const enqueue = (
   cb: (signal: AbortSignal) => Promise<Partial<Context>> | Partial<Context>,
+  options?: EnqueueOptions,
 ) => {
   abort();
 
@@ -26,13 +33,19 @@ const enqueue = (
 
   queue = queue.then(async () => {
     try {
-      const { cart } = await cb(controller.signal);
+      const { cart, user } = await cb(controller.signal);
 
       if (controller.signal.aborted) {
         throw { name: "AbortError" };
       }
 
       context.cart.value = { ...context.cart!.value, ...cart! };
+
+      // Updating user context just on initial load because the enqueue function
+      // is used for modify the bag and no user is returned when this occurs
+      if (options?.isInitialLoader) {
+        context.user.value = user?.user;
+      }
 
       loading.value = false;
     } catch (error) {
@@ -49,10 +62,13 @@ const enqueue = (
 };
 
 const load = async (signal: AbortSignal) => {
-  const { cart } = await Runtime.invoke(
+  const { cart, user } = await Runtime.invoke(
     {
       cart: {
         key: "deco-sites/persono/loaders/cart.ts",
+      },
+      user: {
+        key: "deco-sites/persono/loaders/userInfo.ts",
       },
     },
     { signal },
@@ -60,11 +76,12 @@ const load = async (signal: AbortSignal) => {
 
   return {
     cart,
+    user,
   };
 };
 
 if (IS_BROWSER) {
-  enqueue(load);
+  enqueue(load, { isInitialLoader: true });
 
   document.addEventListener(
     "visibilitychange",
