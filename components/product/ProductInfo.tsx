@@ -25,6 +25,7 @@ import {
 } from "deco-sites/persono/components/product/NotFound.tsx";
 import { FnContext } from "deco/types.ts";
 import ProductInfoCollapse from "deco-sites/persono/islands/ProductInfoCollapse.tsx";
+import { scriptAsDataURI } from "apps/utils/dataURI.ts";
 
 interface Props {
   colors: Color[];
@@ -95,9 +96,26 @@ function ProductInfo({
     }
   });
 
+  const script = (id: string) => {
+
+      const content = document.getElementById(id);
+      const contentHeight =  content?.clientHeight
+  
+      if ( content && contentHeight ) {
+     
+        const top = ((contentHeight/4)+80)*-1
+        content.style.top = `${top}px`
+        content.style.position = "sticky"    
+    };
+    
+  }
+
+
+
   return (
+    <>
     <div
-      class="flex flex-col w-full sm:mt-10 px-4 sm:px-0 sm:sticky sm:top-[calc((100%-120px)*-1)]"
+      class="flex flex-col w-full sm:mt-10 px-4 sm:px-0"
       id={id}
     >
       <Breadcrumb
@@ -246,6 +264,9 @@ function ProductInfo({
         }}
       />
     </div>
+    
+    {device ==="desktop"&& <script defer src={scriptAsDataURI(script, id)} />}
+     </>
   );
 }
 
