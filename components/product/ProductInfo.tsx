@@ -97,176 +97,173 @@ function ProductInfo({
   });
 
   const script = (id: string) => {
+    const content = document.getElementById(id);
+    const contentHeight = content?.clientHeight;
 
-      const content = document.getElementById(id);
-      const contentHeight =  content?.clientHeight
-  
-      if ( content && contentHeight ) {
-     
-        const top = ((contentHeight/4)+80)*-1
-        content.style.top = `${top}px`
-        content.style.position = "sticky"    
-    };
-    
-  }
-
-
+    if (content && contentHeight) {
+      const top = ((contentHeight / 4) + 80) * -1;
+      content.style.top = `${top}px`;
+      content.style.position = "sticky";
+    }
+  };
 
   return (
     <>
-    <div
-      class="flex flex-col w-full sm:mt-10 px-4 sm:px-0"
-      id={id}
-    >
-      <Breadcrumb
-        itemListElement={breadcrumb.itemListElement}
-        showBreadcrumbProductQty={showBreadcrumbProductQty}
-        productsQtt={breadcrumb.numberOfItems}
-      />
-      {/* Code and name */}
-      <div class="sm:mt-6 mt-4 ">
-        <div>
-          {gtin && <span class="text-sm text-gray-600">Cod. {gtin}</span>}
-        </div>
-        <h1>
-          <span class="font-medium text-xl sm:text-2xl">{name}</span>
-        </h1>
-      </div>
-      {/* Prices */}
-      <div class="sm:mt-6 mt-4  ">
-        <div class="flex flex-row gap-2 items-center">
-          {(listPrice ?? 0) > price && (
-            <span class="line-through text-gray-600 text-xs">
-              {formatPrice(listPrice, offers?.priceCurrency)}
-            </span>
-          )}
-          <span class="font-medium text-xl text-black">
-            {formatPrice(price, offers?.priceCurrency)}
-          </span>
-        </div>
-        <span class="text-sm text-gray-600">{installments}</span>
-      </div>
-      {/* Sku Selector */}
-      <div class="sm:mt-6 mt-4 flex flex-col gap-4">
-        <ProductSizeSelector
-          category={product.category?.split(
-            ">",
-          )[product.category?.split(">").length - 1] ?? ""}
-          sizes={sizes}
-          sizeGuide={sizeGuide}
-          url={url}
-          productsNotAvailable={productsNotAvailable}
-          possibilities={possibilities}
-        />
-        <ProductColorSelector
-          colors={colors}
-          url={url}
-          productsNotAvailable={productsNotAvailable}
-          possibilities={possibilities}
-        />
-      </div>
-      {/* Add to Cart and Favorites button */}
       <div
-        class={`mt-6 sm:mt-10 ${
-          productBenefits?.length == 0 ? "mb-5" : "mb-10"
-        } flex flex-col`}
+        class="flex flex-col w-full sm:mt-10 px-4 sm:px-0"
+        id={id}
       >
-        {availability === "https://schema.org/InStock"
-          ? (
-            <>
-              <AddCartButton
-                eventParams={{ items: [eventItem] }}
-                sku={product.sku}
-              />
-            </>
-          )
-          : <OutOfStock sku={sku} />}
-      </div>
-
-      {/* Benefities */}
-
-      <div class={`${productBenefits?.length == 0 ? "hidden" : ""}`}>
-        <ProductBenefits
-          productBenefits={productBenefits}
-          adminBenefits={benefits}
+        <Breadcrumb
+          itemListElement={breadcrumb.itemListElement}
+          showBreadcrumbProductQty={showBreadcrumbProductQty}
+          productsQtt={breadcrumb.numberOfItems}
         />
-      </div>
-
-      {/* Description card */}
-
-      <div class="mt-6 sm:mt-7 ">
-        {description && (
-          <div class="flex flex-col divide-y border-t">
-            {description && (
-              <ProductInfoCollapse title="Descrição">
-                <p class="text-base font-normal">{description}</p>
-              </ProductInfoCollapse>
+        {/* Code and name */}
+        <div class="sm:mt-6 mt-4 ">
+          <div>
+            {gtin && <span class="text-sm text-gray-600">Cod. {gtin}</span>}
+          </div>
+          <h1>
+            <span class="font-medium text-xl sm:text-2xl">{name}</span>
+          </h1>
+        </div>
+        {/* Prices */}
+        <div class="sm:mt-6 mt-4  ">
+          <div class="flex flex-row gap-2 items-center">
+            {(listPrice ?? 0) > price && (
+              <span class="line-through text-gray-600 text-xs">
+                {formatPrice(listPrice, offers?.priceCurrency)}
+              </span>
             )}
+            <span class="font-medium text-xl text-black">
+              {formatPrice(price, offers?.priceCurrency)}
+            </span>
+          </div>
+          <span class="text-sm text-gray-600">{installments}</span>
+        </div>
+        {/* Sku Selector */}
+        <div class="sm:mt-6 mt-4 flex flex-col gap-4">
+          <ProductSizeSelector
+            category={product.category?.split(
+              ">",
+            )[product.category?.split(">").length - 1] ?? ""}
+            sizes={sizes}
+            sizeGuide={sizeGuide}
+            url={url}
+            productsNotAvailable={productsNotAvailable}
+            possibilities={possibilities}
+          />
+          <ProductColorSelector
+            colors={colors}
+            url={url}
+            productsNotAvailable={productsNotAvailable}
+            possibilities={possibilities}
+          />
+        </div>
+        {/* Add to Cart and Favorites button */}
+        <div
+          class={`mt-6 sm:mt-10 ${
+            productBenefits?.length == 0 ? "mb-5" : "mb-10"
+          } flex flex-col`}
+        >
+          {availability === "https://schema.org/InStock"
+            ? (
+              <>
+                <AddCartButton
+                  eventParams={{ items: [eventItem] }}
+                  sku={product.sku}
+                />
+              </>
+            )
+            : <OutOfStock sku={sku} />}
+        </div>
 
-            <ProductInfoCollapse title="Especificações">
-              <div class="flex flex-col gap-2">
-                {product.isVariantOf?.hasVariant[0].additionalProperty &&
-                  product?.isVariantOf?.hasVariant[0]?.additionalProperty.map(
-                    (ad) =>
-                      ad.propertyID == "TECNICALSPECIFICATION" &&
-                        !ad.description?.startsWith("CUSTOM_")
-                        ? (
-                          <p class="text-base font-normal">
-                            {ad.description}:&ensp;{ad.value}
-                          </p>
-                        )
-                        : null,
-                  )}
-              </div>
-            </ProductInfoCollapse>
+        {/* Benefities */}
 
-            <ProductInfoCollapse title="O que vai na embalagem?">
-              <div class="flex flex-col gap-2">
-                {product.isVariantOf?.hasVariant[0].additionalProperty &&
-                  product?.isVariantOf?.hasVariant[0]?.additionalProperty.map(
-                    (ad) =>
-                      ad.propertyID == "KITITEM"
-                        ? (
-                          <p class="text-base font-normal">
-                            {ad.value}&ensp;{ad.description}
-                          </p>
-                        )
-                        : null,
-                  )}
-              </div>
-            </ProductInfoCollapse>
+        <div class={`${productBenefits?.length == 0 ? "hidden" : ""}`}>
+          <ProductBenefits
+            productBenefits={productBenefits}
+            adminBenefits={benefits}
+          />
+        </div>
 
-            {/* Shipping Simulation */}
+        {/* Description card */}
 
-            <div class="collapse items-start collapse-open">
-              <div class="flex items-center collapse-title text-base after:text-2xl after:text-primary">
-                Calcular frete
-              </div>
-              <div class="collapse-content w-full pr-0">
-                <ShippingSimulation sku={product.sku} />
+        <div class="mt-6 sm:mt-7 ">
+          {description && (
+            <div class="flex flex-col divide-y border-t">
+              {description && (
+                <ProductInfoCollapse title="Descrição">
+                  <p class="text-base font-normal">{description}</p>
+                </ProductInfoCollapse>
+              )}
+
+              <ProductInfoCollapse title="Especificações">
+                <div class="flex flex-col gap-2">
+                  {product.isVariantOf?.hasVariant[0].additionalProperty &&
+                    product?.isVariantOf?.hasVariant[0]?.additionalProperty.map(
+                      (ad) =>
+                        ad.propertyID == "TECNICALSPECIFICATION" &&
+                          !ad.description?.startsWith("CUSTOM_")
+                          ? (
+                            <p class="text-base font-normal">
+                              {ad.description}:&ensp;{ad.value}
+                            </p>
+                          )
+                          : null,
+                    )}
+                </div>
+              </ProductInfoCollapse>
+
+              <ProductInfoCollapse title="O que vai na embalagem?">
+                <div class="flex flex-col gap-2">
+                  {product.isVariantOf?.hasVariant[0].additionalProperty &&
+                    product?.isVariantOf?.hasVariant[0]?.additionalProperty.map(
+                      (ad) =>
+                        ad.propertyID == "KITITEM"
+                          ? (
+                            <p class="text-base font-normal">
+                              {ad.value}&ensp;{ad.description}
+                            </p>
+                          )
+                          : null,
+                    )}
+                </div>
+              </ProductInfoCollapse>
+
+              {/* Shipping Simulation */}
+
+              <div class="collapse items-start collapse-open">
+                <div class="flex items-center collapse-title text-base after:text-2xl after:text-primary">
+                  Calcular frete
+                </div>
+                <div class="collapse-content w-full pr-0">
+                  <ShippingSimulation sku={product.sku} />
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
+
+        {/* Analytics Event */}
+
+        <SendEventOnView
+          id={id}
+          event={{
+            name: "view_item",
+            params: {
+              item_list_id: "product",
+              item_list_name: "Product",
+              items: [eventItem],
+            },
+          }}
+        />
       </div>
 
-      {/* Analytics Event */}
-
-      <SendEventOnView
-        id={id}
-        event={{
-          name: "view_item",
-          params: {
-            item_list_id: "product",
-            item_list_name: "Product",
-            items: [eventItem],
-          },
-        }}
-      />
-    </div>
-    
-    {device ==="desktop"&& <script defer src={scriptAsDataURI(script, id)} />}
-     </>
+      {device === "desktop" && (
+        <script defer src={scriptAsDataURI(script, id)} />
+      )}
+    </>
   );
 }
 
