@@ -51,6 +51,7 @@ function ProductInfo({
 }: SectionProps<typeof loader>) {
   const id = useId();
 
+
   if (page === null) {
     return <NotFound device={device} notFoundSettings={notFoundSettings} />;
   }
@@ -98,10 +99,12 @@ function ProductInfo({
 
   const script = (id: string) => {
     const content = document.getElementById(id);
-    const contentHeight = content?.clientHeight;
+    const windowHeight = innerHeight
+  
+    if (content && windowHeight  ) {
+      const contentHeight = content?.offsetHeight;
 
-    if (content && contentHeight) {
-      const top = ((contentHeight / 2) + 80) * -1;
+      const top = ((contentHeight - windowHeight )) * -1;
       content.style.top = `${top}px`;
       content.style.position = "sticky";
     }
@@ -245,6 +248,8 @@ function ProductInfo({
           )}
         </div>
 
+       
+
         {/* Analytics Event */}
 
         <SendEventOnView
@@ -259,6 +264,8 @@ function ProductInfo({
           }}
         />
       </div>
+
+     
 
       {device === "desktop" && (
         <script defer src={scriptAsDataURI(script, id)} />
