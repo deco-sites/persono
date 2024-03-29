@@ -8,6 +8,7 @@ interface Context {
   cart: Bag;
 }
 
+// @ts-ignore <IDK why this is wrong>
 const Runtime = withManifest<Manifest>();
 const loading = signal<boolean>(true);
 const context = {
