@@ -101,13 +101,14 @@ function ProductInfo({
       class="flex flex-col w-full sm:mt-10 px-4 sm:px-0 sm:sticky sm:top-24"
       id={id}
     >
+       
       <Breadcrumb
         itemListElement={breadcrumb.itemListElement}
         showBreadcrumbProductQty={showBreadcrumbProductQty}
         productsQtt={breadcrumb.numberOfItems}
       />
       {/* Code and name */}
-      <PageFolder keepVisible={device !== "mobile"}>
+    
         <div class="sm:mt-6 mt-4 ">
           <div>
             {gtin && <span class="text-sm text-gray-600">Cod. {gtin}</span>}
@@ -167,6 +168,7 @@ function ProductInfo({
             )
             : <OutOfStock sku={sku} />}
         </div>
+        <PageFolder activate={device !== "desktop"}>
 
         {/* Benefities */}
 

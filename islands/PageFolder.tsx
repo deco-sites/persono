@@ -4,12 +4,14 @@ import { useSignal } from "@preact/signals";
 
 export interface Props {
   children?: ComponentChildren;
-  keepVisible?: boolean;
+  activate?: boolean;
 }
 
-export const PageFolder = ({ children, keepVisible }: Props) => {
+export const PageFolder = ({ children, activate }: Props) => {
   const showingContent = useSignal(false);
   const showingContentValue = showingContent.value;
+
+
 
   const handleScroll = () => {
     if (window.scrollY > 0) {
@@ -18,7 +20,12 @@ export const PageFolder = ({ children, keepVisible }: Props) => {
   };
 
   useEffect(() => {
-    if (showingContentValue || keepVisible) {
+    if(!activate){
+      return 
+    }
+
+
+    if (showingContentValue) {
       removeEventListener("scroll", handleScroll);
     } else {
       addEventListener("scroll", handleScroll);
@@ -27,9 +34,9 @@ export const PageFolder = ({ children, keepVisible }: Props) => {
     return () => {
       removeEventListener("scroll", handleScroll);
     };
-  }, [showingContentValue, keepVisible]);
+  }, [showingContentValue, activate]);
 
-  if (!showingContentValue && !keepVisible) {
+  if (!showingContentValue && activate) {
     return null;
   }
 
