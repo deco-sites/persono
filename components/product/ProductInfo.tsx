@@ -101,7 +101,7 @@ function ProductInfo({
     const content = document.getElementById(id);
     const windowHeight = innerHeight
   
-    if (content && windowHeight  ) {
+    if (content && windowHeight ) {
       const contentHeight = content?.offsetHeight;
 
       const top = ((contentHeight - windowHeight )) * -1;
@@ -248,8 +248,7 @@ function ProductInfo({
           )}
         </div>
 
-       
-
+      
         {/* Analytics Event */}
 
         <SendEventOnView
