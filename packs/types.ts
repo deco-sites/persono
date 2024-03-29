@@ -6,6 +6,12 @@ export interface CookieNames {
   ammoTokenCookie: string;
   creationDateCookie: string;
   expirationDaysCookie: string;
+  queryStringTokens: QueryStringToken[];
+}
+
+export interface QueryStringToken {
+  queryStringName: string;
+  cookieName: string;
 }
 
 export interface AmmoProduct {

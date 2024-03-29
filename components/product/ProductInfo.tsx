@@ -81,6 +81,8 @@ function ProductInfo({
       if (p.identifier?.startsWith("CUSTOM")) return p.value;
     });
 
+  console.log(page.product.isVariantOf?.hasVariant[0]);
+
   const hasVariant = isVariantOf?.hasVariant ?? [];
   const possibilities: GroupedData = useVariantPossibilities(
     hasVariant,

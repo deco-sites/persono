@@ -30,3 +30,5 @@ export const getSiteCookies = (cookies: CookieNames) => {
     AMMO_TOKEN_HEADER: cookies?.ammoTokenCookie,
   };
 };
+
+export const encodeCookie = (obj: object) => btoa(JSON.stringify(obj));
