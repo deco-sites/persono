@@ -40,7 +40,7 @@ const ProductInfoCollapse = ({ title, children }: Props) => {
         <span class="text-2xl text-primary">{openCollapse ? "-" : "+"}</span>
       </button>
       <section
-        class={`w-full flex flex-col transition-height duration-500 ease-linear overflow-hidden`}
+        class={`w-full flex flex-col transition-height duration-700 ease-linear overflow-hidden`}
         style={{ height: `${contentHeight}px` }}
       >
         <div
