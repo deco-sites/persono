@@ -43,9 +43,12 @@ const ProductInfoCollapse = ({ title, children }: Props) => {
         class={`w-full flex flex-col transition-height duration-500 ease-linear overflow-hidden`}
         style={{ height: `${contentHeight}px` }}
       >
-        <div ref={contentRef} class={` ${
-             showContent ? "opacity-100" : "opacity-0 "
-          } transition-opacity duration-700 ease-in-out  px-4 pb-4`}>
+        <div
+          ref={contentRef}
+          class={` ${
+            showContent ? "opacity-100" : "opacity-0 "
+          } transition-opacity duration-700 ease-in-out  px-4 pb-4`}
+        >
           {children}
         </div>
       </section>
@@ -54,7 +57,3 @@ const ProductInfoCollapse = ({ title, children }: Props) => {
 };
 
 export default ProductInfoCollapse;
-
-
-
-
