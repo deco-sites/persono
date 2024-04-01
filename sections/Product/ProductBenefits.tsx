@@ -30,8 +30,6 @@ export default function ProductBenefits({
     [],
   );
 
-  console.log(productBenefits);
-
   return (
     <div class={`max-w-lg`}>
       <h4 class="text-base">Benefícios para o sono</h4>
