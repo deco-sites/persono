@@ -2,18 +2,17 @@ import type { SectionProps } from "deco/types.ts";
 import Icon from "deco-sites/persono/components/ui/Icon.tsx";
 
 export interface Props {
-  sectionMenu: {
-    sectionTitle: string;
-    sectionLink?: string;
-    menuItems: {
-      label: string;
-      href: string;
-    }[];
+  sectionMenu:SectionMenu[]
+}
+
+//@title {{{sectionTitle}}}
+interface SectionMenu{
+  sectionTitle: string;
+  sectionLink?: string;
+  menuItems: {
+    label: string;
+    href: string;
   }[];
-  /**
-   * @default center
-   */
-  desktopButtonAlign?: "center" | "left";
 }
 
 export function loader(ctx: Props, req: Request) {
@@ -27,17 +26,15 @@ export function loader(ctx: Props, req: Request) {
 }
 
 function AsideMenu(
-  { sectionMenu, pathname: currentUrl, desktopButtonAlign }: SectionProps<
+  { sectionMenu, pathname: currentUrl }: SectionProps<
     typeof loader
   >,
 ) {
   const currentSection = sectionMenu.find((sectionItem) =>
-    sectionItem?.menuItems.find((item) => item.href === currentUrl)
+    "/sobre"+sectionItem?.sectionLink === currentUrl
   );
 
-  const currentRoute = currentSection?.menuItems.find((item) =>
-    item.href === currentUrl
-  );
+  const currentRoute = currentSection?.sectionLink;
 
   return (
     <aside class="lg:min-w-[200px]">
@@ -47,7 +44,14 @@ function AsideMenu(
             <div class="mb-2">
               {sectionItem?.sectionLink
                 ? (
-                  <a href={sectionItem?.sectionLink}>
+                  <a
+                    class={`hover:text-primary ${
+                      currentRoute === sectionItem?.sectionLink
+                        ? "text-primary"
+                        : ""
+                    }`}
+                    href={"/sobre" + sectionItem?.sectionLink}
+                  >
                     {sectionItem?.sectionTitle}
                   </a>
                 )
@@ -55,7 +59,7 @@ function AsideMenu(
             </div>
             {sectionItem?.menuItems.map(
               (item, index) => (
-                <div class="flex items-center gap-2 text-sm" key={index}>
+                <div class="flex items-center gap-2 text-sm mb-2" key={index}>
                   <Icon
                     width={16}
                     class="text-[#999]"
@@ -63,7 +67,7 @@ function AsideMenu(
                     id="ArrowRight"
                   />
                   <a
-                    class=""
+                    class="hover:text-primary"
                     href={item.href}
                   >
                     {item.label}
@@ -80,7 +84,7 @@ function AsideMenu(
             tabIndex={0}
             class="btn btn-secondary btn-block justify-between border-none"
           >
-            {currentRoute?.label ?? "Menu"}
+            {currentRoute ?? "Menu"}
             <Icon id="ChevronDown" width={26} height={26} />
           </label>
           <ul class="shadow menu dropdown-content z-10 bg-base-100 mt-5 rounded-box w-full gap-2">
