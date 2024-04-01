@@ -14,7 +14,6 @@ export interface Form {
 export interface Props {
   content: {
     title?: string;
-    /** @format textarea */
     description?: string;
     form?: Form;
   };
@@ -68,11 +67,13 @@ function Newsletter({ content, layout = {} }: Props) {
           </h3>
         )}
         {content?.description && (
-          <div class="lg:max-w-[400px] w-full text-sm">
-            {content?.description}
-          </div>
+          <div
+            class="lg:max-w-[400px] w-full text-sm"
+            dangerouslySetInnerHTML={{ __html: content.description }}
+          />
         )}
       </div>
+
       <div class="flex flex-col gap-4 w-full">
         <form
           class="form-control flex flex-row max-lg:w-full flex-nowrap gap-2"
@@ -91,12 +92,12 @@ function Newsletter({ content, layout = {} }: Props) {
           {!sended.value && (
             <button
               type="submit"
-              class={`btn btn-accent group text-base disabled:bg-base-100 ${
+              class={`btn btn-accent group text-base disabled:bg-white ${
                 loading.value ? "loading text-white" : ""
               }`}
               disabled={inputIsEmpty.value}
             >
-              <span class="group-disabled:text-gray-600">
+              <span class="group-disabled:text-black">
                 {content?.form?.buttonText || "Inscrever"}
               </span>
             </button>
