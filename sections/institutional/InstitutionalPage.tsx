@@ -27,11 +27,11 @@ function InstitutionalPage({
   return (
     <>
       <>
-        <div class="container flex flex-col lg:flex-row w-full mt-20 mb-28">
-          <div class="w-full max-w-[220px]">
+        <div class="container px-8 flex flex-col lg:flex-row w-full mt-20 mb-28">
+          <div class="">
             <AsideComponent {...asideProps} />
           </div>
-          <article class="w-full ml-24">
+          <article class="w-full lg:ml-24">
             <h3 class="text-3xl font-medium mb-10 lg:block max-w-[900px]">
               {acctualSection?.title ?? title}
             </h3>

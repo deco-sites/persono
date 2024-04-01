@@ -2,11 +2,11 @@ import type { SectionProps } from "deco/types.ts";
 import Icon from "deco-sites/persono/components/ui/Icon.tsx";
 
 export interface Props {
-  sectionMenu:SectionMenu[]
+  sectionMenu: SectionMenu[];
 }
 
 //@title {{{sectionTitle}}}
-interface SectionMenu{
+interface SectionMenu {
   sectionTitle: string;
   sectionLink?: string;
   menuItems: {
@@ -31,14 +31,14 @@ function AsideMenu(
   >,
 ) {
   const currentSection = sectionMenu.find((sectionItem) =>
-    "/sobre"+sectionItem?.sectionLink === currentUrl
+    "/sobre" + sectionItem?.sectionLink === currentUrl
   );
 
   const currentRoute = currentSection?.sectionLink;
 
   return (
     <aside class="lg:min-w-[200px]">
-      <ul class="w-full flex flex-col gap-2">
+      <ul class="w-full flex-col gap-2 hidden lg:flex">
         {sectionMenu.map((sectionItem) => (
           <li>
             <div class="mb-2">
@@ -84,23 +84,43 @@ function AsideMenu(
             tabIndex={0}
             class="btn btn-secondary btn-block justify-between border-none"
           >
-            {currentRoute ?? "Menu"}
+            {"Menu"}
             <Icon id="ChevronDown" width={26} height={26} />
           </label>
           <ul class="shadow menu dropdown-content z-10 bg-base-100 mt-5 rounded-box w-full gap-2">
             {sectionMenu.map((sectionItem) => (
               <>
-                <li class="text-primary font-semibold">
-                  {sectionItem?.sectionTitle}
+                <li class="font-semibold">
+                  <div class="">
+                    {sectionItem?.sectionLink
+                      ? (
+                        <a
+                          class={`hover:text-primary ${
+                            currentRoute === sectionItem?.sectionLink
+                              ? "text-primary"
+                              : ""
+                          }`}
+                          href={"/sobre" + sectionItem?.sectionLink}
+                        >
+                          {sectionItem?.sectionTitle}
+                        </a>
+                      )
+                      : sectionItem?.sectionTitle}
+                  </div>
                 </li>
                 {sectionItem?.menuItems.map(
                   (item, index) => (
-                    <li key={index}>
-                      <Icon id="ArrowRight" />
+                    <li class="" key={index}>
                       <a
-                        class=""
+                        class="p-0 flex gap-2 items-center"
                         href={item.href}
                       >
+                        <Icon
+                          width={20}
+                          class="text-[#999] p-0"
+                          height={20}
+                          id="ArrowRight"
+                        />
                         {item.label}
                       </a>
                     </li>
