@@ -59,11 +59,10 @@ function CartItem(
     <div class="flex items-start justify-stretch gap-4">
       <Image
         {...image}
-        style={{ aspectRatio: "108 / 150" }}
         width={108}
         height={150}
-        fit="contain"
-        class="rounded overflow-hidden"
+        fit="cover"
+        class="rounded"
       />
       <div class="flex flex-col flex-grow gap-6">
         <div class="relative flex flex-col gap-1">
