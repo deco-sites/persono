@@ -7,7 +7,7 @@ function NavItem({ item }: { item: SiteNavigationElement }) {
   const image = item?.image;
 
   return (
-    <li class="group flex items-center">
+    <li class="group flex items-center px-4">
       <a href={url} class="pt-3 flex items-center gap-2">
         <span class="group-hover:text-primary uppercase">
           {label}
