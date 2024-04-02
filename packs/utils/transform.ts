@@ -549,7 +549,7 @@ const toProductPageUrl = (productTitle:string, productSKU:string)=>{
 
   const replacedProductTitle = productTitle.toLocaleLowerCase().replaceAll(" ","-")
 
-  return `pr/${replacedProductTitle}/${productSKU}`
+  return `/pr/${replacedProductTitle}/${productSKU}`
 }
 
 export function toProductItems(
