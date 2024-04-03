@@ -31,7 +31,7 @@ function AsideMenu(
   >,
 ) {
   const currentSection = sectionMenu.find((sectionItem) =>
-    "/"+currentUrl.split("/")[1] + sectionItem?.sectionLink === currentUrl
+    "/" + currentUrl.split("/")[1] + sectionItem?.sectionLink === currentUrl
   );
 
   const currentRoute = currentSection?.sectionLink;
@@ -50,7 +50,8 @@ function AsideMenu(
                         ? "text-primary"
                         : ""
                     }`}
-                    href={"/"+currentUrl.split("/")[1] + sectionItem?.sectionLink}
+                    href={"/" + currentUrl.split("/")[1] +
+                      sectionItem?.sectionLink}
                   >
                     {sectionItem?.sectionTitle}
                   </a>
@@ -100,7 +101,8 @@ function AsideMenu(
                               ? "text-primary"
                               : ""
                           }`}
-                          href={"/"+currentUrl.split("/")[1] + sectionItem?.sectionLink}
+                          href={"/" + currentUrl.split("/")[1] +
+                            sectionItem?.sectionLink}
                         >
                           {sectionItem?.sectionTitle}
                         </a>
