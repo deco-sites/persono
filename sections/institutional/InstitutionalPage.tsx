@@ -22,7 +22,13 @@ function InstitutionalPage({
 }: SectionProps<
   typeof loader
 >) {
-  const acctualSection = sections.find((sec) => pathname == sec.url);
+  const pathSlug = pathname.split("/")[pathname.split("/").length - 1];
+
+  console.log(pathSlug)
+
+  const acctualSection = sections.find((sec) =>
+    sec.url === "/"+pathSlug
+  );
 
   return (
     <>
