@@ -11,6 +11,7 @@ import * as $Header_Drawers from "./islands/Header/Drawers.tsx";
 import * as $Header_Searchbar from "./islands/Header/Searchbar.tsx";
 import * as $Newsletter from "./islands/Newsletter.tsx";
 import * as $OutOfStock from "./islands/OutOfStock.tsx";
+import * as $PageFolder from "./islands/PageFolder.tsx";
 import * as $ProductImageZoom from "./islands/ProductImageZoom.tsx";
 import * as $ProductInfoCollapse from "./islands/ProductInfoCollapse.tsx";
 import * as $SearchControls from "./islands/SearchControls.tsx";
@@ -33,6 +34,7 @@ const manifest = {
     "./islands/Header/Searchbar.tsx": $Header_Searchbar,
     "./islands/Newsletter.tsx": $Newsletter,
     "./islands/OutOfStock.tsx": $OutOfStock,
+    "./islands/PageFolder.tsx": $PageFolder,
     "./islands/ProductImageZoom.tsx": $ProductImageZoom,
     "./islands/ProductInfoCollapse.tsx": $ProductInfoCollapse,
     "./islands/SearchControls.tsx": $SearchControls,
