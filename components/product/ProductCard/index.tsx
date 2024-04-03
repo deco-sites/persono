@@ -60,10 +60,6 @@ interface Props {
   isMobile?: boolean;
 }
 
-const relative = (url: string) => {
-  const link = new URL(url);
-  return `${link.pathname}${link.search}`;
-};
 
 function ProductCard({
   product,
@@ -80,6 +76,7 @@ function ProductCard({
   const { price = 0, installments, listPrice = 0 } = useOffer(offers);
   const [front] = images ?? [];
   const id = `product-card-${productID}`;
+
 
   const { hasDiscount, hasMultiplePrices } = useMemo(() => {
     const variantPrices = product.isVariantOf?.hasVariant.map(
@@ -143,7 +140,7 @@ function ProductCard({
         id={id}
         class="card card-compact group rounded-[10px] border border-gray-300 text-start w-full overflow-hidden hover:border-black"
         data-deco="view-product"
-        href={url && relative(url)}
+        href={url}
         aria-label="view product"
       >
         <SendEventOnClick
@@ -151,6 +148,7 @@ function ProductCard({
           event={{
             name: "select_item" as const,
             params: {
+
               item_list_name: itemListName ?? "",
               items: [
                 mapProductToAnalyticsItem({
