@@ -13,7 +13,9 @@ export interface Props {
 
 function ShippingContent({
   simulation,
+  show
 }: {
+  show:boolean
   simulation: Signal<ShippingSimulation | null>;
 }) {
   const methods = simulation.value?.shippingOptions.map((s) => {
@@ -37,7 +39,7 @@ function ShippingContent({
   }
 
   return (
-    <ul class="flex flex-col bg-base-300 text-base-content rounded-[4px] w-full px-4 mt-2">
+    <ul class={`flex flex-col bg-base-300 text-base-content rounded-[4px] w-full px-4 mt-2 ${show?"mb-[10px]":""}`}>
       {methods.map((method, idx) => (
         <li>
           <div class="flex justify-between text-base-content items-center border-base-200 py-4">
@@ -160,7 +162,7 @@ function ShippingSimulation({ sku }: Props) {
         <div>
           {error.value
             ? <Error />
-            : <ShippingContent simulation={simulateResult} />}
+            : <ShippingContent show={!error.value} simulation={simulateResult} />}
         </div>
       </div>
     </div>
