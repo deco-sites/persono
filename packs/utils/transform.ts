@@ -23,7 +23,11 @@ import {
   Sku,
   VMDetails,
 } from "$store/packs/types.ts";
-import { PROPS_AMMO_API, SORT_OPTIONS } from "$store/packs/constants.ts";
+import {
+  PRICE_TYPES,
+  PROPS_AMMO_API,
+  SORT_OPTIONS,
+} from "$store/packs/constants.ts";
 import { getImageUrl, typeChecker } from "$store/packs/utils/utils.ts";
 export type PDPConfig = Pick<Config, "minInstallmentValue" | "maxInstallments">;
 export type VMConfig = Pick<
@@ -80,8 +84,8 @@ export function toProduct(
     ],
     brand: {
       "@type": "Brand",
-      "@id": brand,
-      name: brand,
+      "@id": brand ?? "Persono",
+      name: brand ?? "Persono",
     },
     category: `${segment}>${macroCategory}${
       macroCategory === ammoProduct.category ? "" : `>${ammoProduct.category}`
@@ -359,6 +363,7 @@ const toAggregateOffer = (
     (ammoProduct?.price?.min ?? productItem?.priceTo ?? sku!.price.to) / 100;
   const available = ammoProduct?.available ?? productItem?.available ??
     sku?.available!;
+  const priceType = PRICE_TYPES[ammoProduct?.price?.type ?? 6];
   const possibleInstallmentsQtd =
     Math.floor(lowPrice / (minInstallmentValue / 100)) ||
     1;
@@ -369,6 +374,38 @@ const toAggregateOffer = (
     (_v, i) => +(lowPrice / (i + 1)).toFixed(2),
   );
 
+  const priceSpecification: UnitPriceSpecification[] = [
+    {
+      "@type": "UnitPriceSpecification",
+      priceType: "https://schema.org/ListPrice",
+      price: highPrice,
+    },
+    ...installments.map<UnitPriceSpecification>(
+      (value, i) => {
+        const [description, billingIncrement] = !i
+          ? ["À vista", lowPrice]
+          : [i + 1 + " vezes sem juros", value];
+        return {
+          "@type": "UnitPriceSpecification",
+          priceType: "https://schema.org/SalePrice",
+          priceComponentType: "https://schema.org/Installment",
+          description,
+          billingDuration: i + 1,
+          billingIncrement,
+          price: lowPrice,
+        };
+      },
+    ),
+  ];
+
+  if (priceType !== "Default" ?? priceType != "Unavailable") {
+    priceSpecification.push({
+      "@type": "UnitPriceSpecification",
+      priceType: "https://schema.org/SalePrice",
+      price: lowPrice,
+    });
+  }
+
   return {
     "@type": "AggregateOffer",
     highPrice,
@@ -378,40 +415,14 @@ const toAggregateOffer = (
     offers: [
       {
         "@type": "Offer",
+        additionalType: `${priceType}`,
         availability: available
           ? "https://schema.org/InStock"
           : "https://schema.org/OutOfStock",
         inventoryLevel: { value: sku?.stock },
         price: lowPrice ?? highPrice,
         seller: ammoProduct?.brand ?? "persono",
-        priceSpecification: [
-          {
-            "@type": "UnitPriceSpecification",
-            priceType: "https://schema.org/ListPrice",
-            price: highPrice,
-          },
-          {
-            "@type": "UnitPriceSpecification",
-            priceType: "https://schema.org/SalePrice",
-            price: lowPrice,
-          },
-          ...installments.map<UnitPriceSpecification>(
-            (value, i) => {
-              const [description, billingIncrement] = !i
-                ? ["À vista", lowPrice]
-                : [i + 1 + " vezes sem juros", value];
-              return {
-                "@type": "UnitPriceSpecification",
-                priceType: "https://schema.org/SalePrice",
-                priceComponentType: "https://schema.org/Installment",
-                description,
-                billingDuration: i + 1,
-                billingIncrement,
-                price: lowPrice,
-              };
-            },
-          ),
-        ],
+        priceSpecification,
       },
     ],
   };
@@ -532,12 +543,23 @@ const toAdditionalProperties = (
     ...tagsProperties(),
   ];
 };
+
+
+const toProductPageUrl = (productTitle:string, productSKU:string)=>{
+
+  const replacedProductTitle = productTitle.toLocaleLowerCase().replaceAll(" ","-")
+
+  return `/pr/${replacedProductTitle}/${productSKU}`
+}
+
 export function toProductItems(
   productItem: ProductItem,
   config: VMConfig,
   baseUrl: URL,
   imageBaseUrl: string,
 ): Product {
+
+
   const product: Product = {
     "@type": "Product",
     productID: productItem.productId,
@@ -546,7 +568,8 @@ export function toProductItems(
     description: productItem.description,
     brand: {
       "@type": "Brand",
-      "@id": productItem.brand.name,
+      "@id": productItem.brand?.name ?? "Persono",
+      name: productItem.brand?.name ?? "Persono",
     },
     inProductGroupWithID: productItem.groupKey,
     offers: toAggregateOffer({
@@ -555,7 +578,7 @@ export function toProductItems(
     }),
 
     image: toImageItem(productItem, imageBaseUrl),
-    url: new URL(baseUrl.origin).href,
+    url:toProductPageUrl(productItem.title,productItem.sku),
     category: productItem.macroCategory,
   };
 
@@ -568,6 +591,16 @@ const toImageItem = (
 ): ImageObject[] => {
   const imageInfo: ImageObject[] = [];
   const { title } = productItem;
+
+  if (productItem.photoStill) {
+    imageInfo.push({
+      "@type": "ImageObject" as const,
+      url: getImageUrl(imageBaseUrl, productItem.photoStill),
+      additionalType: "image",
+      alternateName: title,
+      disambiguatingDescription: `still`,
+    });
+  }
 
   if (productItem.photoSemiEnvironment) {
     imageInfo.push({
@@ -587,15 +620,7 @@ const toImageItem = (
       disambiguatingDescription: `panoramics`,
     });
   }
-  if (productItem.photoStill) {
-    imageInfo.push({
-      "@type": "ImageObject" as const,
-      url: getImageUrl(imageBaseUrl, productItem.photoStill),
-      additionalType: "image",
-      alternateName: title,
-      disambiguatingDescription: `still`,
-    });
-  }
+
   if (productItem.youtubeVideo) {
     imageInfo.push({
       "@type": "ImageObject" as const,

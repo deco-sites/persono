@@ -7,7 +7,8 @@ import Breadcrumb from "$store/components/ui/Breadcrumb.tsx";
 import { useSignal } from "@preact/signals";
 import type { ProductListingPage } from "apps/commerce/types.ts";
 import { Color } from "deco-sites/persono/loaders/Layouts/Colors.tsx";
-import { SizeGroup } from "deco-sites/persono/loaders/Layouts/Size.tsx";
+import { Size } from "deco-sites/persono/loaders/Layouts/Size.tsx";
+import { FilterEditableProps } from "deco-sites/persono/components/search/Filters.tsx";
 
 export type Props =
   & Pick<
@@ -19,7 +20,8 @@ export type Props =
     productsQtt?: number;
     colors: Color[];
     notDisplay?: boolean;
-    sizes?: SizeGroup;
+    sizes?: Size[];
+    filterSettings?: FilterEditableProps;
   };
 
 function SearchControls({
@@ -31,6 +33,7 @@ function SearchControls({
   colors,
   notDisplay,
   sizes,
+  filterSettings,
 }: Props) {
   const open = useSignal(false);
 
@@ -50,12 +53,19 @@ function SearchControls({
               <Button
                 class="btn-ghost mr-5"
                 onClick={() => (open.value = false)}
+                id="text"
+                aria-label="Name"
               >
                 <Icon id="XMark" size={20} strokeWidth={2} />
               </Button>
             </div>
             <div class="flex-grow overflow-auto">
-              <Filters sizes={sizes} colors={colors} filters={filters} />
+              <Filters
+                filterSettings={filterSettings}
+                sizes={sizes}
+                colors={colors}
+                filters={filters}
+              />
             </div>
           </div>
         </>

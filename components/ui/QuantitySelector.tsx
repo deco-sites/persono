@@ -19,7 +19,7 @@ function QuantitySelector(
   const increment = () => onChange?.(Math.min(quantity + 1, max));
 
   return (
-    <div class="join border border-[#ccc] hover:border-black rounded-full w-min">
+    <div class="join border border-gray-100 hover:border-black rounded-full w-min">
       <Button
         class="btn-circle btn-ghost w-9 disabled:bg-white disabled:text-[#999] join-item"
         onClick={decrement}

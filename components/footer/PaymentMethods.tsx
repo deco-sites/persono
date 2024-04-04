@@ -1,7 +1,14 @@
 import Icon from "$store/components/ui/Icon.tsx";
 
 export interface PaymentItem {
-  label: "Diners" | "Elo" | "Mastercard" | "Pix" | "Visa";
+  label:
+    | "American"
+    | "Diners"
+    | "Elo"
+    | "Mastercard"
+    | "Pix"
+    | "Visa"
+    | "PagaLeve";
 }
 
 export default function PaymentMethods(
@@ -12,12 +19,14 @@ export default function PaymentMethods(
       {content && content.items && content.items.length > 0 && (
         <>
           <div class="hidden md:flex flex-col gap-4">
-            {content.title && <h3 class="text-lg">{content.title}</h3>}
-            <ul class="flex items-center gap-4 flex-wrap">
+            {content.title && (
+              <h3 class="text-sm font-bold">{content.title}</h3>
+            )}
+            <ul class="flex items-center gap-2 flex-wrap">
               {content.items.map((item) => {
                 return (
                   <li
-                    class="border"
+                    class="border rounded"
                     title={item.label}
                   >
                     <Icon
@@ -33,7 +42,11 @@ export default function PaymentMethods(
           </div>
           <div class="flex flex-col md:hidden gap-4">
             <div class="collapse collapse-arrow text-sm">
-              <input type="checkbox" class="min-h-[0]" />
+              <input
+                aria-label={content.title + " input"}
+                type="checkbox"
+                class="min-h-[0]"
+              />
               <div class="collapse-title font-bold min-h-[0] !p-0 flex gap-2">
                 {content.title && (
                   <h3 class="md:text-lg text-sm">{content.title}</h3>

@@ -20,7 +20,14 @@ export type Section = {
 };
 
 export interface PaymentItem {
-  label: "Diners" | "Elo" | "Mastercard" | "Pix" | "Visa";
+  label:
+    | "American"
+    | "Diners"
+    | "Elo"
+    | "Mastercard"
+    | "Pix"
+    | "PagaLeve"
+    | "Visa";
 }
 
 export interface NewsletterForm {
@@ -47,17 +54,19 @@ export interface Layout {
   };
 }
 
+interface NewsletterProps {
+  title?: string;
+  /** @format html */
+  description?: string;
+  form?: NewsletterForm;
+}
+
 export interface Props {
   logo?: {
     image: ImageWidget;
     description?: string;
   };
-  newsletter?: {
-    title?: string;
-    /** @format textarea */
-    description?: string;
-    form?: NewsletterForm;
-  };
+  newsletter?: NewsletterProps;
   sections?: Section[];
   social?: {
     title?: string;
@@ -176,11 +185,10 @@ function Footer({
         <div class="flex flex-row justify-between items-center md:py-8 pt-5 pb-4">
           {_logo}
           {_social}
-          {/* <PoweredByDeco /> */}
         </div>
         {copyright
           ? (
-            <p class="mt-6 text-xs lg:text-sm">
+            <p class="mt-6 mb-8 text-xs lg:text-sm">
               {copyright}
             </p>
           )

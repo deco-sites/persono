@@ -13,7 +13,9 @@ export interface Props {
 
 function ShippingContent({
   simulation,
+  show
 }: {
+  show:boolean
   simulation: Signal<ShippingSimulation | null>;
 }) {
   const methods = simulation.value?.shippingOptions.map((s) => {
@@ -37,7 +39,7 @@ function ShippingContent({
   }
 
   return (
-    <ul class="flex flex-col bg-base-300 text-base-content rounded-[4px] w-full px-4 mt-2">
+    <ul class={`flex flex-col bg-base-300 text-base-content rounded-[4px] w-full px-4 mt-2 ${show?"mb-[10px]":""}`}>
       {methods.map((method, idx) => (
         <li>
           <div class="flex justify-between text-base-content items-center border-base-200 py-4">
@@ -57,7 +59,7 @@ function ShippingContent({
           </span>
         </li>
       ))}
-      <span class="text-sm text-[#666] pb-4">
+      <span class="text-sm text-gray-600 pb-4">
         Os prazos de entrega começam a contar a partir da confirmação do
         pagamento e podem variar de acordo com a quantidade de produtos na
         sacola.
@@ -118,7 +120,7 @@ function ShippingSimulation({ sku }: Props) {
 
   return (
     <div class="flex flex-col gap-2">
-      <div class="flex flex-col text-[#666]">
+      <div class="flex flex-col text-gray-600">
         <span class="text-base">
           Informe seu CEP para consultar os prazos de entrega
         </span>
@@ -144,7 +146,7 @@ function ShippingSimulation({ sku }: Props) {
         <Button
           type="submit"
           loading={loading.value}
-          class=" bg-primary px-5 py-2 text-primary-content hover:bg-primary"
+          class="btn no-animation btn-primary btn-circle px-5 py-2"
         >
           Calcular
         </Button>
@@ -160,7 +162,7 @@ function ShippingSimulation({ sku }: Props) {
         <div>
           {error.value
             ? <Error />
-            : <ShippingContent simulation={simulateResult} />}
+            : <ShippingContent show={!error.value} simulation={simulateResult} />}
         </div>
       </div>
     </div>

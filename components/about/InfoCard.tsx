@@ -43,6 +43,7 @@ function About({ title, description, image }: Props) {
         <img
           src={desktop}
           class="h-full w-full object-cover"
+          alt={title + " image"}
         />
       </Picture>
     </div>
