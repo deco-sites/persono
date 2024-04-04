@@ -104,7 +104,7 @@ function ProductInfo({
     if (content && windowHeight) {
       const contentHeight = content?.offsetHeight;
 
-      const top = (contentHeight - windowHeight) * -1;
+      const top = (contentHeight - windowHeight + 4) * -1;
       content.style.top = `${top}px`;
       content.style.position = "sticky";
     }
@@ -238,11 +238,11 @@ function ProductInfo({
 
               {/* Shipping Simulation */}
 
-              <div class="collapse items-start collapse-open">
-                <div class="flex items-center collapse-title text-base after:text-2xl after:text-primary">
+              <div class="collapse items-start collapse-open pl-0">
+                <div class="flex  pl-0 items-center collapse-title text-base after:text-2xl after:text-primary">
                   Calcular frete
                 </div>
-                <div class="collapse-content w-full pr-0">
+                <div class="collapse-content w-full pr-0 pl-0">
                   <ShippingSimulation sku={product.sku} />
                 </div>
               </div>
@@ -265,6 +265,7 @@ function ProductInfo({
         />
    
       </PageFolder>
+      <div class="h-3 invisible" />
       </div>
 
       {device === "desktop" && (
