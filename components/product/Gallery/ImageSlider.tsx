@@ -47,7 +47,10 @@ export default function GallerySlider(props: SectionProps<typeof loader>) {
 
   if (props.device == "desktop") {
     return (
-      <div id={id} class="flex flex-col self-center sm:my-10 w-full sm:pt-[6px]">
+      <div
+        id={id}
+        class="flex flex-col self-center sm:my-10 w-full sm:pt-[6px]"
+      >
         {images.map((img, index) => (
           <Image
             class="w-full"
