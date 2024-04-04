@@ -57,14 +57,16 @@ function CartItem(
 
   return (
     <div class="flex items-start justify-stretch gap-4">
+    <div class='W-[108px] h-[150px] bg-[#e6eaeb] flex items-center justify-center'>
       <Image
         {...image}
-        style={{aspectRatio:"108 / 150"}}
+        style={{aspectRatio:"1 / 1"}}
         width={108}
         height={150}
         fit="contain"
-        class="rounded"
+        class="rounded bg-gradient-to-bl"
       />
+      </div>
       <div class="flex flex-col flex-grow gap-6">
         <div class="relative flex flex-col gap-1">
           <p class="text-base">{name}</p>
