@@ -26,6 +26,7 @@ import {
 import { FnContext } from "deco/types.ts";
 import ProductInfoCollapse from "deco-sites/persono/islands/ProductInfoCollapse.tsx";
 import { scriptAsDataURI } from "apps/utils/dataURI.ts";
+import { PageFolder } from "deco-sites/persono/islands/PageFolder.tsx";
 
 interface Props {
   colors: Color[];
@@ -143,8 +144,9 @@ function ProductInfo({
           </div>
           <span class="text-sm text-gray-600">{installments}</span>
         </div>
+
         {/* Sku Selector */}
-        <div class="sm:mt-6 mt-4 flex flex-col gap-4">
+        <div class="sm:mt-6 mt-4  flex-col gap-4 ">
           <ProductSizeSelector
             category={product.category?.split(
               ">",
@@ -164,7 +166,7 @@ function ProductInfo({
         </div>
         {/* Add to Cart and Favorites button */}
         <div
-          class={`mt-6 sm:mt-10 ${
+          class={`mt-6 sm:mt-10  ${
             productBenefits?.length == 0 ? "mb-5" : "mb-10"
           } flex flex-col`}
         >
@@ -179,6 +181,7 @@ function ProductInfo({
             )
             : <OutOfStock sku={sku} />}
         </div>
+        <PageFolder activate={device !== "desktop"}>
 
         {/* Benefities */}
 
@@ -191,7 +194,7 @@ function ProductInfo({
 
         {/* Description card */}
 
-        <div class="mt-6 sm:mt-7 ">
+        <div class="mt-6 sm:mt-7  ">
           {description && (
             <div class="flex flex-col divide-y border-t">
               {description && (
@@ -260,6 +263,8 @@ function ProductInfo({
             },
           }}
         />
+   
+      </PageFolder>
       </div>
 
       {device === "desktop" && (
