@@ -11,7 +11,7 @@ export async function getProductItems(
   offset?: number,
 ): Promise<Product[]> {
   const { ammoc, config, imageBaseUrl } = ctx;
-  const url = new URL(req.url);
+  const _url = new URL(req.url);
   const response = await ammoc
     ["GET /api/search/query-vinhedo-sku"](
       {
@@ -36,7 +36,7 @@ export async function getProductItems(
   }
 
   const productItemsResult = productItems.map((item: ProductItem) =>
-    toProductItems(item, config, url, imageBaseUrl)
+    toProductItems(item, config, imageBaseUrl)
   );
 
   return productItemsResult;

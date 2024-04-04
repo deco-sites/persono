@@ -60,7 +60,6 @@ interface Props {
   isMobile?: boolean;
 }
 
-
 function ProductCard({
   product,
   preload,
@@ -76,7 +75,6 @@ function ProductCard({
   const { price = 0, installments, listPrice = 0 } = useOffer(offers);
   const [front] = images ?? [];
   const id = `product-card-${productID}`;
-
 
   const { hasDiscount, hasMultiplePrices } = useMemo(() => {
     const variantPrices = product.isVariantOf?.hasVariant.map(
@@ -148,7 +146,6 @@ function ProductCard({
           event={{
             name: "select_item" as const,
             params: {
-
               item_list_name: itemListName ?? "",
               items: [
                 mapProductToAnalyticsItem({

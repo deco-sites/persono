@@ -111,12 +111,17 @@ export function toProduct(
 export function toProductListingPage(
   { vmDetails, url, vmConfig, imageBaseUrl }: ProductListingPageProps,
 ): ProductListingPage {
-  const { productCards, meta } = vmDetails;
+  const { productCards, meta, appliedFilters } = vmDetails;
+
+  const lastFilter = appliedFilters[appliedFilters.length - 1];
+  const newTitle = (productCards[0].macroCategory ?? meta.title) +
+    (lastFilter ? " - " + lastFilter.value : "");
+
   return {
     "@type": "ProductListingPage",
     breadcrumb: toBreadcrumbList(url.origin, vmDetails),
     seo: {
-      title: meta.title,
+      title: newTitle,
       description: meta.description,
       canonical: "",
     },
@@ -148,7 +153,9 @@ const toBreadcrumbList = (
   origin: string,
   { breadcrumbs }: VMDetails | AmmoProduct,
 ): BreadcrumbList => {
-  const itemListElement = toItemListElement(breadcrumbs!, origin);
+  const breadcrumbsWithoutArray = breadcrumbs?.filter((b) => !Array.isArray(b));
+
+  const itemListElement = toItemListElement(breadcrumbsWithoutArray!, origin);
   return {
     "@type": "BreadcrumbList",
     itemListElement,
@@ -157,7 +164,7 @@ const toBreadcrumbList = (
 };
 
 const toItemListElement = (
-  breadcrumbs: Breadcrumb[] | [Breadcrumb[]],
+  breadcrumbs: (Breadcrumb | Breadcrumb[])[],
   origin: string,
 ): ListItem[] =>
   breadcrumbs?.flat(1).reduce<ListItem[]>(
@@ -544,22 +551,20 @@ const toAdditionalProperties = (
   ];
 };
 
+const toProductPageUrl = (productTitle: string, productSKU: string) => {
+  const replacedProductTitle = productTitle.toLocaleLowerCase().replaceAll(
+    " ",
+    "-",
+  );
 
-const toProductPageUrl = (productTitle:string, productSKU:string)=>{
-
-  const replacedProductTitle = productTitle.toLocaleLowerCase().replaceAll(" ","-")
-
-  return `/pr/${replacedProductTitle}/${productSKU}`
-}
+  return `/pr/${replacedProductTitle}/${productSKU}`;
+};
 
 export function toProductItems(
   productItem: ProductItem,
   config: VMConfig,
-  baseUrl: URL,
   imageBaseUrl: string,
 ): Product {
-
-
   const product: Product = {
     "@type": "Product",
     productID: productItem.productId,
@@ -578,7 +583,7 @@ export function toProductItems(
     }),
 
     image: toImageItem(productItem, imageBaseUrl),
-    url:toProductPageUrl(productItem.title,productItem.sku),
+    url: toProductPageUrl(productItem.title, productItem.sku),
     category: productItem.macroCategory,
   };
 
