@@ -5,13 +5,12 @@ import { ProductItem } from "$store/packs/types.ts";
 
 export async function getProductItems(
   query: string,
-  req: Request,
+  _req: Request,
   ctx: AppContext,
   limit?: number,
   offset?: number,
 ): Promise<Product[]> {
   const { ammoc, config, imageBaseUrl } = ctx;
-  const url = new URL(req.url);
   const response = await ammoc
     ["GET /api/search/query-vinhedo-sku"](
       {
@@ -36,7 +35,7 @@ export async function getProductItems(
   }
 
   const productItemsResult = productItems.map((item: ProductItem) =>
-    toProductItems(item, config, url, imageBaseUrl)
+    toProductItems(item, config, imageBaseUrl)
   );
 
   return productItemsResult;

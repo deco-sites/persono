@@ -60,11 +60,6 @@ interface Props {
   isMobile?: boolean;
 }
 
-const relative = (url: string) => {
-  const link = new URL(url);
-  return `${link.pathname}${link.search}`;
-};
-
 function ProductCard({
   product,
   preload,
@@ -143,7 +138,7 @@ function ProductCard({
         id={id}
         class="card card-compact group rounded-[10px] border border-gray-300 text-start w-full overflow-hidden hover:border-black"
         data-deco="view-product"
-        href={url && relative(url)}
+        href={url}
         aria-label="view product"
       >
         <SendEventOnClick

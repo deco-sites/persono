@@ -17,11 +17,6 @@ export interface Props {
   searchbar?: SearchbarProps;
   cart?: CartProps;
   imageBaseUrl?: string;
-  /**
-   * @ignore_gen true
-   */
-  children?: ComponentChildren;
-  platform: ReturnType<typeof usePlatform>;
 }
 
 const Aside = ({ children }: { children: ComponentChildren }) => (
@@ -38,10 +33,43 @@ const Aside = ({ children }: { children: ComponentChildren }) => (
   </div>
 );
 
+const setup = () => {
+  const header = document.querySelector<HTMLElement>("[data-header]");
+  const topBar = document.querySelector<HTMLElement>("[data-top-bar]");
+  const drawer = document.querySelector<HTMLElement>(
+    ".menu-drawer > .drawer-side",
+  );
+
+  if (!header || !topBar || !drawer) return;
+
+  const handleScroll = () => {
+    if (globalThis.window.scrollY > 40) {
+      drawer.style.height = "calc(100% - 80px)";
+      topBar.style.maxHeight = "0px";
+      return;
+    }
+    drawer.style.height = "calc(100% - 120px)";
+    topBar.style.maxHeight = "44px";
+  };
+
+  addEventListener("scroll", handleScroll);
+  handleScroll();
+
+  return () => {
+    removeEventListener("scroll", handleScroll);
+  };
+};
+
 function Drawers(
-  { menu, searchbar, cart, imageBaseUrl, children, platform }: Props,
+  { menu, searchbar, cart, imageBaseUrl }: Props,
 ) {
   const { displayCart, displayMenu, displaySearchDrawer } = useUI();
+
+  useEffect(() => {
+    if (IS_BROWSER) {
+      return setup();
+    }
+  }, []);
 
   return (
     <>
