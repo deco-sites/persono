@@ -9,6 +9,7 @@ interface Context {
   user: UserInfo | null;
 }
 
+// @ts-ignore <IDK why this is wrong>
 const Runtime = withManifest<Manifest>();
 const loading = signal<boolean>(true);
 const context = {

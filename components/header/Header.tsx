@@ -68,7 +68,6 @@ function Header({
         searchbar={searchbar}
         imageBaseUrl={imageBaseUrl}
         cart={cart}
-        platform={platform}
       />
     </>
   );
