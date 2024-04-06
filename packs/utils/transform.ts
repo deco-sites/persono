@@ -544,22 +544,21 @@ const toAdditionalProperties = (
   ];
 };
 
+const toProductPageUrl = (productTitle: string, productSKU: string) => {
+  const replacedProductTitle = productTitle.toLocaleLowerCase().replaceAll(
+    " ",
+    "-",
+  );
 
-const toProductPageUrl = (productTitle:string, productSKU:string)=>{
-
-  const replacedProductTitle = productTitle.toLocaleLowerCase().replaceAll(" ","-")
-
-  return `/pr/${replacedProductTitle}/${productSKU}`
-}
+  return `/pr/${replacedProductTitle}/${productSKU}`;
+};
 
 export function toProductItems(
   productItem: ProductItem,
   config: VMConfig,
-  baseUrl: URL,
+  _baseUrl: URL,
   imageBaseUrl: string,
 ): Product {
-
-
   const product: Product = {
     "@type": "Product",
     productID: productItem.productId,
@@ -578,7 +577,7 @@ export function toProductItems(
     }),
 
     image: toImageItem(productItem, imageBaseUrl),
-    url:toProductPageUrl(productItem.title,productItem.sku),
+    url: toProductPageUrl(productItem.title, productItem.sku),
     category: productItem.macroCategory,
   };
 

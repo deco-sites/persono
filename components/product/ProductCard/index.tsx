@@ -60,7 +60,6 @@ interface Props {
   isMobile?: boolean;
 }
 
-
 function ProductCard({
   product,
   preload,
@@ -77,14 +76,14 @@ function ProductCard({
   const [front] = images ?? [];
   const id = `product-card-${productID}`;
 
-
   const { hasDiscount, hasMultiplePrices } = useMemo(() => {
-    const variantPrices = product.isVariantOf?.hasVariant.map(
-      (item) => item.offers?.offers?.[0]?.price,
-    );
+    const variantPrices = {
+      minPrice: product.offers?.offers[0].price,
+      maxPrice: product.offers?.offers[0].priceSpecification[0].price,
+    };
 
-    const hasMultiplePrices =
-      product?.offers?.highPrice !== product?.offers?.lowPrice;
+    const hasMultiplePrices = variantPrices &&
+      variantPrices.minPrice !== variantPrices.maxPrice;
 
     const discount = Math.floor(((listPrice - price) / listPrice) * 100);
 
@@ -145,7 +144,6 @@ function ProductCard({
           event={{
             name: "select_item" as const,
             params: {
-
               item_list_name: itemListName ?? "",
               items: [
                 mapProductToAnalyticsItem({
@@ -176,6 +174,7 @@ function ProductCard({
           hasMultiplePrices={hasMultiplePrices}
           installments={installments}
           listPrice={listPrice}
+          hasMultiplePricesType={product.offers?.offers[0].additionalType}
           price={price}
           productName={name ?? ""}
           priceCurrency={offers?.priceCurrency}

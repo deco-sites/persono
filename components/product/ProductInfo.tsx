@@ -182,90 +182,90 @@ function ProductInfo({
             : <OutOfStock sku={sku} />}
         </div>
         <PageFolder activate={device !== "desktop"}>
+          {/* Benefities */}
 
-        {/* Benefities */}
+          <div class={`${productBenefits?.length == 0 ? "hidden" : ""}`}>
+            <ProductBenefits
+              productBenefits={productBenefits}
+              adminBenefits={benefits}
+            />
+          </div>
 
-        <div class={`${productBenefits?.length == 0 ? "hidden" : ""}`}>
-          <ProductBenefits
-            productBenefits={productBenefits}
-            adminBenefits={benefits}
-          />
-        </div>
+          {/* Description card */}
 
-        {/* Description card */}
+          <div class="mt-6 sm:mt-7  ">
+            {description && (
+              <div class="flex flex-col divide-y border-t">
+                {description && (
+                  <ProductInfoCollapse title="Descrição">
+                    <p class="text-base font-normal">{description}</p>
+                  </ProductInfoCollapse>
+                )}
 
-        <div class="mt-6 sm:mt-7  ">
-          {description && (
-            <div class="flex flex-col divide-y border-t">
-              {description && (
-                <ProductInfoCollapse title="Descrição">
-                  <p class="text-base font-normal">{description}</p>
+                <ProductInfoCollapse title="Especificações">
+                  <div class="flex flex-col gap-2">
+                    {product.isVariantOf?.hasVariant[0].additionalProperty &&
+                      product?.isVariantOf?.hasVariant[0]?.additionalProperty
+                        .map(
+                          (ad) =>
+                            ad.propertyID == "TECNICALSPECIFICATION" &&
+                              !ad.description?.startsWith("CUSTOM_")
+                              ? (
+                                <p class="text-base font-normal">
+                                  {ad.description}:&ensp;{ad.value}
+                                </p>
+                              )
+                              : null,
+                        )}
+                  </div>
                 </ProductInfoCollapse>
-              )}
 
-              <ProductInfoCollapse title="Especificações">
-                <div class="flex flex-col gap-2">
-                  {product.isVariantOf?.hasVariant[0].additionalProperty &&
-                    product?.isVariantOf?.hasVariant[0]?.additionalProperty.map(
-                      (ad) =>
-                        ad.propertyID == "TECNICALSPECIFICATION" &&
-                          !ad.description?.startsWith("CUSTOM_")
-                          ? (
-                            <p class="text-base font-normal">
-                              {ad.description}:&ensp;{ad.value}
-                            </p>
-                          )
-                          : null,
-                    )}
-                </div>
-              </ProductInfoCollapse>
+                <ProductInfoCollapse title="O que vai na embalagem?">
+                  <div class="flex flex-col gap-2">
+                    {product.isVariantOf?.hasVariant[0].additionalProperty &&
+                      product?.isVariantOf?.hasVariant[0]?.additionalProperty
+                        .map(
+                          (ad) =>
+                            ad.propertyID == "KITITEM"
+                              ? (
+                                <p class="text-base font-normal">
+                                  {ad.value}&ensp;{ad.description}
+                                </p>
+                              )
+                              : null,
+                        )}
+                  </div>
+                </ProductInfoCollapse>
 
-              <ProductInfoCollapse title="O que vai na embalagem?">
-                <div class="flex flex-col gap-2">
-                  {product.isVariantOf?.hasVariant[0].additionalProperty &&
-                    product?.isVariantOf?.hasVariant[0]?.additionalProperty.map(
-                      (ad) =>
-                        ad.propertyID == "KITITEM"
-                          ? (
-                            <p class="text-base font-normal">
-                              {ad.value}&ensp;{ad.description}
-                            </p>
-                          )
-                          : null,
-                    )}
-                </div>
-              </ProductInfoCollapse>
+                {/* Shipping Simulation */}
 
-              {/* Shipping Simulation */}
-
-              <div class="collapse items-start collapse-open pl-0">
-                <div class="flex  pl-0 items-center collapse-title text-base after:text-2xl after:text-primary">
-                  Calcular frete
-                </div>
-                <div class="collapse-content w-full pr-0 pl-0">
-                  <ShippingSimulation sku={product.sku} />
+                <div class="collapse items-start collapse-open pl-0">
+                  <div class="flex  pl-0 items-center collapse-title text-base after:text-2xl after:text-primary">
+                    Calcular frete
+                  </div>
+                  <div class="collapse-content w-full pr-0 pl-0">
+                    <ShippingSimulation sku={product.sku} />
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
-        </div>
+            )}
+          </div>
 
-        {/* Analytics Event */}
+          {/* Analytics Event */}
 
-        <SendEventOnView
-          id={id}
-          event={{
-            name: "view_item",
-            params: {
-              item_list_id: "product",
-              item_list_name: "Product",
-              items: [eventItem],
-            },
-          }}
-        />
-   
-      </PageFolder>
-      <div class="h-3 invisible" />
+          <SendEventOnView
+            id={id}
+            event={{
+              name: "view_item",
+              params: {
+                item_list_id: "product",
+                item_list_name: "Product",
+                items: [eventItem],
+              },
+            }}
+          />
+        </PageFolder>
+        <div class="h-3 invisible" />
       </div>
 
       {device === "desktop" && (
