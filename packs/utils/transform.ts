@@ -556,7 +556,6 @@ const toProductPageUrl = (productTitle: string, productSKU: string) => {
 export function toProductItems(
   productItem: ProductItem,
   config: VMConfig,
-  _baseUrl: URL,
   imageBaseUrl: string,
 ): Product {
   const product: Product = {

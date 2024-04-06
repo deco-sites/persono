@@ -5,6 +5,7 @@ import { withManifest } from "deco/clients/withManifest.ts";
 import type { Manifest } from "$store/manifest.gen.ts";
 
 const { cart, loading } = storeState;
+// @ts-ignore <IDK why this is wrong>
 const Runtime = withManifest<Manifest>();
 
 const mapItemsToAnalyticsItems = (

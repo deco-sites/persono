@@ -12,7 +12,7 @@ export const PageFolder = ({ children, activate }: Props) => {
   const showingContentValue = showingContent.value;
 
   const handleScroll = () => {
-    if (window.scrollY > 0) {
+    if (globalThis.scrollY > 0) {
       showingContent.value = true;
     }
   };

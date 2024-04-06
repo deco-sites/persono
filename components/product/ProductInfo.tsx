@@ -111,85 +111,77 @@ function ProductInfo({
   };
 
   return (
-    <>
-      <div
-        class="flex flex-col w-full sm:mt-10 px-4 sm:px-0"
-        id={id}
-      >
-        <Breadcrumb
-          itemListElement={breadcrumb.itemListElement}
-          showBreadcrumbProductQty={showBreadcrumbProductQty}
-          productsQtt={breadcrumb.numberOfItems}
-        />
-        {/* Code and name */}
-        <div class="sm:mt-6 mt-4 ">
-          <div>
-            {gtin && <span class="text-sm text-gray-600">Cod. {gtin}</span>}
-          </div>
-          <h1>
-            <span class="font-medium text-xl sm:text-2xl">{name}</span>
-          </h1>
+    <div
+      class="flex flex-col w-full sm:mt-10 px-4 sm:px-0"
+      id={`${id}-product-info`}
+    >
+      <Breadcrumb
+        itemListElement={breadcrumb.itemListElement}
+        showBreadcrumbProductQty={showBreadcrumbProductQty}
+        productsQtt={breadcrumb.numberOfItems}
+      />
+      {/* Code and name */}
+      <div class="sm:mt-6 mt-4 ">
+        <div>
+          {gtin && <span class="text-sm text-gray-600">Cod. {gtin}</span>}
         </div>
-        {/* Prices */}
-        <div class="sm:mt-6 mt-4  ">
-          <div class="flex flex-row gap-2 items-center">
-            {(listPrice ?? 0) > price && (
-              <span class="line-through text-gray-600 text-xs">
-                {formatPrice(listPrice, offers?.priceCurrency)}
-              </span>
-            )}
-            <span class="font-medium text-xl text-black">
-              {formatPrice(price, offers?.priceCurrency)}
+        <h1>
+          <span class="font-medium text-xl sm:text-2xl">{name}</span>
+        </h1>
+      </div>
+      {/* Prices */}
+      <div class="sm:mt-6 mt-4  ">
+        <div class="flex flex-row gap-2 items-center">
+          {(listPrice ?? 0) > price && (
+            <span class="line-through text-gray-600 text-xs">
+              {formatPrice(listPrice, offers?.priceCurrency)}
             </span>
-          </div>
-          <span class="text-sm text-gray-600">{installments}</span>
+          )}
+          <span class="font-medium text-xl text-black">
+            {formatPrice(price, offers?.priceCurrency)}
+          </span>
         </div>
+        <span class="text-sm text-gray-600">{installments}</span>
+      </div>
 
-        {/* Sku Selector */}
-        <div class="sm:mt-6 mt-4  flex-col gap-4 ">
-          <ProductSizeSelector
-            category={product.category?.split(
-              ">",
-            )[product.category?.split(">").length - 1] ?? ""}
-            sizes={sizes}
-            sizeGuide={sizeGuide}
-            url={url}
-            productsNotAvailable={productsNotAvailable}
-            possibilities={possibilities}
-          />
-          <ProductColorSelector
-            colors={colors}
-            url={url}
-            productsNotAvailable={productsNotAvailable}
-            possibilities={possibilities}
-          />
-        </div>
-        {/* Add to Cart and Favorites button */}
-        <div
-          class={`mt-6 sm:mt-10  ${
-            productBenefits?.length == 0 ? "mb-5" : "mb-10"
-          } flex flex-col`}
-        >
-          {availability === "https://schema.org/InStock"
-            ? (
-              <>
-                <AddCartButton
-                  eventParams={{ items: [eventItem] }}
-                  sku={product.sku}
-                />
-              </>
-            )
-            : <OutOfStock sku={sku} />}
-        </div>
-        <PageFolder activate={device !== "desktop"}>
-          {/* Benefities */}
-
-          <div class={`${productBenefits?.length == 0 ? "hidden" : ""}`}>
-            <ProductBenefits
-              productBenefits={productBenefits}
-              adminBenefits={benefits}
-            />
-          </div>
+      {/* Sku Selector */}
+      <div class="sm:mt-6 mt-4  flex-col gap-4 ">
+        <ProductSizeSelector
+          category={product.category?.split(
+            ">",
+          )[product.category?.split(">").length - 1] ?? ""}
+          sizes={sizes}
+          sizeGuide={sizeGuide}
+          url={url}
+          productsNotAvailable={productsNotAvailable}
+          possibilities={possibilities}
+        />
+        <ProductColorSelector
+          colors={colors}
+          url={url}
+          productsNotAvailable={productsNotAvailable}
+          possibilities={possibilities}
+        />
+      </div>
+      {/* Add to Cart and Favorites button */}
+      <div
+        class={`mt-6 sm:mt-10  ${
+          productBenefits?.length == 0 ? "mb-5" : "mb-10"
+        } flex flex-col`}
+      >
+        {availability === "https://schema.org/InStock"
+          ? (
+            <>
+              <AddCartButton
+                eventParams={{ items: [eventItem] }}
+                sku={product.sku}
+              />
+            </>
+          )
+          : <OutOfStock sku={sku} />}
+      </div>
+      <PageFolder activate={device !== "desktop"}>
+        {/* Benefities */}
 
           {/* Description card */}
 
@@ -253,25 +245,24 @@ function ProductInfo({
 
           {/* Analytics Event */}
 
-          <SendEventOnView
-            id={id}
-            event={{
-              name: "view_item",
-              params: {
-                item_list_id: "product",
-                item_list_name: "Product",
-                items: [eventItem],
-              },
-            }}
-          />
-        </PageFolder>
-        <div class="h-3 invisible" />
-      </div>
+        <SendEventOnView
+          id={id}
+          event={{
+            name: "view_item",
+            params: {
+              item_list_id: "product",
+              item_list_name: "Product",
+              items: [eventItem],
+            },
+          }}
+        />
+      </PageFolder>
+      <div class="h-3 invisible" />
 
       {device === "desktop" && (
         <script defer src={scriptAsDataURI(script, id)} />
       )}
-    </>
+    </div>
   );
 }
 
