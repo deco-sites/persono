@@ -3,7 +3,7 @@ import { Signal, useSignal } from "@preact/signals";
 import { useCallback } from "preact/hooks";
 import Button from "$store/components/ui/Button.tsx";
 import { formatPrice } from "$store/sdk/format.ts";
-import { ShippingSimulation } from "$store/packs/types.ts";
+import { ShippingSimulation as Simulation } from "$store/packs/types.ts";
 import { TargetedEvent } from "https://esm.sh/v128/preact@10.18.1/compat/src/index.js";
 import { invoke } from "deco-sites/persono/runtime.ts";
 
@@ -13,8 +13,10 @@ export interface Props {
 
 function ShippingContent({
   simulation,
+  show,
 }: {
-  simulation: Signal<ShippingSimulation | null>;
+  show: boolean;
+  simulation: Signal<Simulation | null>;
 }) {
   const methods = simulation.value?.shippingOptions.map((s) => {
     return {
@@ -37,7 +39,11 @@ function ShippingContent({
   }
 
   return (
-    <ul class="flex flex-col bg-base-300 text-base-content rounded-[4px] w-full px-4 mt-2">
+    <ul
+      class={`flex flex-col bg-base-300 text-base-content rounded-[4px] w-full px-4 mt-2 ${
+        show ? "mb-[10px]" : ""
+      }`}
+    >
       {methods.map((method, idx) => (
         <li>
           <div class="flex justify-between text-base-content items-center border-base-200 py-4">
@@ -78,7 +84,7 @@ function ShippingSimulation({ sku }: Props) {
   const loading = useSignal(false);
   const error = useSignal(false);
   const cep = useSignal("");
-  const simulateResult = useSignal<ShippingSimulation | null>(null);
+  const simulateResult = useSignal<Simulation | null>(null);
 
   const handleSimulation = useCallback(
     async (e: TargetedEvent<HTMLFormElement, Event>) => {
@@ -93,7 +99,7 @@ function ShippingSimulation({ sku }: Props) {
         simulateResult.value = (await invoke({
           key: "deco-sites/persono/loaders/shippingSimulation.ts",
           props: { postalCode, sku: sku },
-        })) as ShippingSimulation | null;
+        })) as Simulation | null;
         error.value = false;
       } catch (e) {
         error.value = true;
@@ -158,9 +164,12 @@ function ShippingSimulation({ sku }: Props) {
       </a>
       <div>
         <div>
-          {error.value
-            ? <Error />
-            : <ShippingContent simulation={simulateResult} />}
+          {error.value ? <Error /> : (
+            <ShippingContent
+              show={!error.value}
+              simulation={simulateResult}
+            />
+          )}
         </div>
       </div>
     </div>

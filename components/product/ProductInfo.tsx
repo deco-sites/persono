@@ -25,6 +25,7 @@ import {
 } from "deco-sites/persono/components/product/NotFound.tsx";
 import { FnContext } from "deco/types.ts";
 import ProductInfoCollapse from "deco-sites/persono/islands/ProductInfoCollapse.tsx";
+import { scriptAsDataURI } from "apps/utils/dataURI.ts";
 import { PageFolder } from "deco-sites/persono/islands/PageFolder.tsx";
 
 interface Props {
@@ -96,10 +97,23 @@ function ProductInfo({
     }
   });
 
+  const script = (id: string) => {
+    const content = document.getElementById(id);
+    const windowHeight = innerHeight;
+
+    if (content && windowHeight) {
+      const contentHeight = content?.offsetHeight;
+
+      const top = (contentHeight - windowHeight + 4) * -1;
+      content.style.top = `${top}px`;
+      content.style.position = "sticky";
+    }
+  };
+
   return (
     <div
-      class="flex flex-col w-full sm:mt-10 px-4 sm:px-0 sm:sticky sm:top-24"
-      id={id}
+      class="flex flex-col w-full sm:mt-10 px-4 sm:px-0"
+      id={`${id}-product-info`}
     >
       <Breadcrumb
         itemListElement={breadcrumb.itemListElement}
@@ -107,7 +121,6 @@ function ProductInfo({
         productsQtt={breadcrumb.numberOfItems}
       />
       {/* Code and name */}
-
       <div class="sm:mt-6 mt-4 ">
         <div>
           {gtin && <span class="text-sm text-gray-600">Cod. {gtin}</span>}
@@ -223,32 +236,37 @@ function ProductInfo({
 
               {/* Shipping Simulation */}
 
-              <div class="collapse items-start collapse-open">
-                <div class="flex items-center collapse-title text-base after:text-2xl after:text-primary">
+              <div class="collapse items-start collapse-open pl-0">
+                <div class="flex  pl-0 items-center collapse-title text-base after:text-2xl after:text-primary">
                   Calcular frete
                 </div>
-                <div class="collapse-content w-full pr-0">
+                <div class="collapse-content w-full pr-0 pl-0">
                   <ShippingSimulation sku={product.sku} />
                 </div>
               </div>
             </div>
           )}
         </div>
+
+        {/* Analytics Event */}
+
+        <SendEventOnView
+          id={id}
+          event={{
+            name: "view_item",
+            params: {
+              item_list_id: "product",
+              item_list_name: "Product",
+              items: [eventItem],
+            },
+          }}
+        />
       </PageFolder>
+      <div class="h-3 invisible" />
 
-      {/* Analytics Event */}
-
-      <SendEventOnView
-        id={id}
-        event={{
-          name: "view_item",
-          params: {
-            item_list_id: "product",
-            item_list_name: "Product",
-            items: [eventItem],
-          },
-        }}
-      />
+      {device === "desktop" && (
+        <script defer src={scriptAsDataURI(script, id)} />
+      )}
     </div>
   );
 }
