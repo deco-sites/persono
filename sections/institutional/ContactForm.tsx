@@ -5,8 +5,8 @@ export interface Props {
   /**
    * @description Content will be rendered as markdown.
    */
-   /** @format html */
-  content?: string
+  /** @format html */
+  content?: string;
   serviceInfo?: {
     title: string;
     /**
@@ -41,7 +41,13 @@ function ContactForm({
   return (
     <div class="pb-12 lg:pb-20">
       <div class="flex flex-col">
-        {content && <div dangerouslySetInnerHTML={{__html: content.replace(/<p>|<\/p>/g, "\n")}} />}
+        {content && (
+          <div
+            dangerouslySetInnerHTML={{
+              __html: content.replace(/<p>|<\/p>/g, "\n"),
+            }}
+          />
+        )}
 
         <div class="lg:flex lg:gap-[10px]">
           <div class="lg:w-full">

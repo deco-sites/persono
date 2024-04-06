@@ -28,7 +28,7 @@ export function loader(ctx: Props, req: Request) {
   return {
     ...ctx,
     pathname,
-    currentRoute
+    currentRoute,
   };
 }
 

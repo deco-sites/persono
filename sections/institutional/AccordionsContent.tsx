@@ -21,8 +21,10 @@ function AccordionsContent({ sections }: Props) {
       {sections?.map((section) => (
         <>
           {section?.sectionText && (
-              <div
-              dangerouslySetInnerHTML={{__html: section.sectionText?.replace(/<p>|<\/p>/g, "\n")}}
+            <div
+              dangerouslySetInnerHTML={{
+                __html: section.sectionText?.replace(/<p>|<\/p>/g, "\n"),
+              }}
             />
           )}
           {section?.accordions?.map(

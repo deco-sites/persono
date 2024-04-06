@@ -16,8 +16,10 @@ export function AccordionItem({ title, content }: Props) {
       </div>
       <div class="collapse-content px-0 !pb-0">
         <div class="pt-5">
-        <div
-            dangerouslySetInnerHTML={{__html: content.replace(/<p>|<\/p>/g, "\n")}}
+          <div
+            dangerouslySetInnerHTML={{
+              __html: content.replace(/<p>|<\/p>/g, "\n"),
+            }}
           />
         </div>
       </div>
