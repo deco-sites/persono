@@ -1,16 +1,16 @@
-import type { HTML } from "deco-sites/std/components/types.ts";
-import Markdown from "deco-sites/std/components/Markdown.tsx";
 import { AccordionItem } from "./AccordionItem.tsx";
 
 export interface Props {
   sections: {
-    sectionText?: HTML;
+    /** @format html */
+    sectionText?: string;
     accordions: {
       label: string;
       /**
        * @description Content will be rendered as markdown.
        */
-      content: HTML;
+      /** @format html */
+      content: string;
     }[];
   }[];
 }
@@ -21,7 +21,9 @@ function AccordionsContent({ sections }: Props) {
       {sections?.map((section) => (
         <>
           {section?.sectionText && (
-            <Markdown text={section?.sectionText.replace(/<p>|<\/p>/g, "\n")} />
+              <div
+              dangerouslySetInnerHTML={{__html: section.sectionText?.replace(/<p>|<\/p>/g, "\n")}}
+            />
           )}
           {section?.accordions?.map(
             (item, index) => (

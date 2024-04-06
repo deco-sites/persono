@@ -1,11 +1,9 @@
-import Markdown from "deco-sites/std/components/Markdown.tsx";
-import type { HTML } from "deco-sites/std/components/types.ts";
-
 export interface Props {
   /**
    * @description Content will be rendered as markdown.
    */
-  content: HTML;
+  /** @format html */
+  content: string;
   title: string;
 }
 
@@ -18,8 +16,8 @@ export function AccordionItem({ title, content }: Props) {
       </div>
       <div class="collapse-content px-0 !pb-0">
         <div class="pt-5">
-          <Markdown
-            text={content.replace(/<p>|<\/p>/g, "\n")}
+        <div
+            dangerouslySetInnerHTML={{__html: content.replace(/<p>|<\/p>/g, "\n")}}
           />
         </div>
       </div>

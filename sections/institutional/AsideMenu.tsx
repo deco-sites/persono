@@ -19,23 +19,24 @@ export function loader(ctx: Props, req: Request) {
   const url = new URL(req.url);
   const { pathname } = url;
 
-  return {
-    ...ctx,
-    pathname,
-  };
-}
-
-function AsideMenu(
-  { sectionMenu, pathname: currentUrl }: SectionProps<
-    typeof loader
-  >,
-) {
-  const currentSection = sectionMenu.find((sectionItem) =>
-    "/" + currentUrl.split("/")[1] + sectionItem?.sectionLink === currentUrl
+  const currentSection = ctx.sectionMenu.find((sectionItem) =>
+    "/" + pathname.split("/")[1] + sectionItem?.sectionLink === pathname
   );
 
   const currentRoute = currentSection?.sectionLink;
 
+  return {
+    ...ctx,
+    pathname,
+    currentRoute
+  };
+}
+
+function AsideMenu(
+  { sectionMenu, pathname: currentUrl, currentRoute }: SectionProps<
+    typeof loader
+  >,
+) {
   return (
     <aside class="lg:min-w-[200px]">
       <ul class="w-full flex-col gap-2 hidden lg:flex">
