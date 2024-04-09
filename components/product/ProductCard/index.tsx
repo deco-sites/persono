@@ -76,10 +76,13 @@ function ProductCard({
   const [front] = images ?? [];
   const id = `product-card-${productID}`;
 
+  const productSalesPrice = product.offers?.offers[0].priceSpecification.find(p=> p.priceType === "https://schema.org/SalePrice")
+  const productListPrice = product.offers?.offers[0].priceSpecification.find(p=> p.priceType === "https://schema.org/ListPrice")
+
   const { hasDiscount, hasMultiplePrices } = useMemo(() => {
     const variantPrices = {
-      minPrice: product.offers?.offers[0].price,
-      maxPrice: product.offers?.offers[0].priceSpecification[0].price,
+      minPrice: productSalesPrice?.price,
+      maxPrice: productListPrice?.price
     };
 
     const hasMultiplePrices = variantPrices &&
