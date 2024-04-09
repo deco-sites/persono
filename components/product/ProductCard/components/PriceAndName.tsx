@@ -2,7 +2,7 @@ import { formatPrice } from "deco-sites/persono/sdk/format.ts";
 
 interface Props {
   hasMultiplePrices?: boolean;
-  hasMultiplePricesType?: string;
+  labelOffer?: string;
   hasDiscount: boolean;
   productName: string;
   listPrice: number;
@@ -12,10 +12,17 @@ interface Props {
   search?: boolean;
 }
 
+function formatLabelOffer(label: string | undefined, price: string | null): string {
+  if (!label) return "";
+  return label.replace(/\${([^}]+)}/g, (match, group) => {
+      return price !== null ? String(price) : ""; 
+  });
+}
+
 export const PriceAndName = ({
   hasDiscount,
   hasMultiplePrices,
-  hasMultiplePricesType,
+  labelOffer,
   listPrice,
   price,
   productName,
@@ -23,12 +30,8 @@ export const PriceAndName = ({
   priceCurrency = "BRL",
   search,
 }: Props) => {
-  const offersTypes: Record<string, string> = {
-    Range: "a partir de",
-    FromTo: "de por",
-    Unavailable: "indisponivel",
-    NOTUSEInstallments: "",
-  };
+
+  const labelOfferWithPrice = formatLabelOffer(labelOffer,formatPrice(listPrice, priceCurrency))
 
   return (
     <div class="flex-auto flex flex-col p-4 ">
@@ -50,10 +53,8 @@ export const PriceAndName = ({
                   !hasMultiplePrices && hasDiscount ? "line-through" : ""
                 }`}
               >
-                {hasMultiplePrices && hasMultiplePricesType
-                  ? offersTypes[hasMultiplePricesType] === "de por"
-                    ? "de " + formatPrice(listPrice, priceCurrency) + " por"
-                    : offersTypes[hasMultiplePricesType]
+                {hasMultiplePrices && labelOfferWithPrice
+                  ? labelOfferWithPrice
                   : formatPrice(listPrice, priceCurrency)}
               </p>
             )}

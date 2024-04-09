@@ -6,10 +6,12 @@ import { ProductCardImage } from "./components/ProductCardImage.tsx";
 import { SendEventOnClick } from "deco-sites/persono/components/Analytics.tsx";
 import { mapProductToAnalyticsItem } from "apps/commerce/utils/productToAnalyticsItem.ts";
 import { generateColorObject } from "deco-sites/persono/components/product/ProductCard/utils.ts";
+import { PriceLabel } from "deco-sites/persono/loaders/product/productCardLabelOffer.tsx";
 
 export interface Layout {
   customTagColors?: CustomTagColor[];
   defaultTags?: DefaultTagsColors;
+  priceLabel: PriceLabel[];
 }
 
 export interface ColorConfig {
@@ -70,7 +72,7 @@ function ProductCard({
   hasRelatedProducts,
   isMobile,
 }: Props) {
-  const { customTagColors, defaultTags } = layout ?? {};
+  const { customTagColors, defaultTags, priceLabel } = layout ?? {};
   const { url, productID, name, image: images, offers } = product;
   const { price = 0, installments, listPrice = 0 } = useOffer(offers);
   const [front] = images ?? [];
@@ -100,6 +102,12 @@ function ProductCard({
       discount,
     };
   }, [product, listPrice, price]);
+
+  const labelOfferType = priceLabel?.find((p) =>
+    product.offers?.offers[0].additionalType == p.offerType
+  );
+
+  console.log(labelOfferType);
 
   const tagsCapture = (value: string, identifier: string) =>
     product.additionalProperty?.find(
@@ -181,7 +189,7 @@ function ProductCard({
           hasMultiplePrices={hasMultiplePrices}
           installments={installments}
           listPrice={listPrice}
-          hasMultiplePricesType={product.offers?.offers[0].additionalType}
+          labelOffer={labelOfferType?.label}
           price={price}
           productName={name ?? ""}
           priceCurrency={offers?.priceCurrency}
