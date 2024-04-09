@@ -28,7 +28,7 @@ function Instagram(props: Props) {
       {
         mobile: "",
         desktop: "",
-        href:"",
+        href: "",
       },
     ],
   } = props;
