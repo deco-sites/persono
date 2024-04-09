@@ -30,11 +30,13 @@ interface Props {
 
   sizes?: Size[];
   filterSettings?: FilterEditableProps;
+  basePath?: string
 }
 
-const getUrl = () => {
+const getUrl = (basePath?: string) => {
   if (IS_BROWSER) {
-    const url = window.location.href;
+    const origin = window.location.origin;
+    const url = new URL(basePath ?? "", origin).href
     return url;
   }
   return "";
@@ -204,7 +206,7 @@ function FilterValues({
   );
 }
 
-function Filters({ filters, colors, filterSettings }: Props) {
+function Filters({ filters, colors, filterSettings, basePath }: Props) {
   const rawFiltersToApply = useSignal<Record<string, string>[]>([{}]);
   const { label: hiddenFilters = [], renameFilters = [] } = filterSettings ??
     {};
@@ -227,7 +229,7 @@ function Filters({ filters, colors, filterSettings }: Props) {
       slugs: string[];
     }[];
   }) {
-    const url = getUrl();
+    const url = getUrl(basePath);
     const response = await invoke["deco-sites/persono"].loaders.url({
       filters: transformedArray,
       origin: url,
