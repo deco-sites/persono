@@ -23,17 +23,15 @@ export function loader(ctx: Props, req: Request) {
     "/" + pathname.split("/")[1] + sectionItem?.sectionLink === pathname
   );
 
-  const currentRoute = currentSection?.sectionLink;
-
   return {
     ...ctx,
     pathname,
-    currentRoute,
+    currentSection,
   };
 }
 
 function AsideMenu(
-  { sectionMenu, pathname: currentUrl, currentRoute }: SectionProps<
+  { sectionMenu, pathname: currentUrl, currentSection }: SectionProps<
     typeof loader
   >,
 ) {
@@ -47,7 +45,7 @@ function AsideMenu(
                 ? (
                   <a
                     class={`hover:text-primary ${
-                      currentRoute === sectionItem?.sectionLink
+                      currentSection?.sectionLink === sectionItem?.sectionLink
                         ? "text-primary"
                         : ""
                     }`}
@@ -80,16 +78,13 @@ function AsideMenu(
           </li>
         ))}
       </ul>
-      <div class="lg:hidden w-full pb-5">
-        <div class="dropdown w-full text-sm font-normal">
-          <label
-            tabIndex={0}
-            class="btn btn-secondary btn-block justify-between border-none"
-          >
-            {"Menu"}
+      <div class="lg:hidden w-full sm:pb-5 pb-8">
+        <details class="dropdown w-full text-sm font-normal static">
+          <summary class="btn text-sm font-normal w-full btn-secondary justify-between border-none">
+            {currentSection?.sectionTitle}
             <Icon id="ChevronDown" width={26} height={26} />
-          </label>
-          <ul class="shadow menu dropdown-content z-10 bg-base-100 mt-5 rounded-box w-full gap-2">
+          </summary>
+          <ul class="menu dropdown-content z-10 bg-base-100 mt-5 rounded-box w-full gap-2 left-0 px-8 h-[100vh]">
             {sectionMenu.map((sectionItem) => (
               <>
                 <li class="font-semibold">
@@ -98,7 +93,8 @@ function AsideMenu(
                       ? (
                         <a
                           class={`hover:text-primary ${
-                            currentRoute === sectionItem?.sectionLink
+                            currentSection?.sectionLink ===
+                                sectionItem?.sectionLink
                               ? "text-primary"
                               : ""
                           }`}
@@ -132,7 +128,7 @@ function AsideMenu(
               </>
             ))}
           </ul>
-        </div>
+        </details>
       </div>
     </aside>
   );
