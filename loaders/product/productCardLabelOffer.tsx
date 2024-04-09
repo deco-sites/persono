@@ -1,14 +1,14 @@
 export interface PriceLabel {
-    /** @title Offer type */
-    /** @description Ex: Range */
-    offerType: string
-     /** @title Label*/
-     /** @description Ex: A partir de ${minPrice} */
-    label: string
-  }
+  /** @title Offer type */
+  /** @description Ex: Range */
+  offerType: string;
+  /** @title Label*/
+  /** @description Ex: A partir de ${minPrice} */
+  label: string;
+}
 
 interface Props {
-    priceLabels: PriceLabel[];
+  priceLabels: PriceLabel[];
 }
 
 /** @title Product card offers price labels */

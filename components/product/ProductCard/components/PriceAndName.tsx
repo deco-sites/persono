@@ -12,10 +12,13 @@ interface Props {
   search?: boolean;
 }
 
-function formatLabelOffer(label: string | undefined, price: string | null): string {
+function formatLabelOffer(
+  label: string | undefined,
+  price: string | null,
+): string {
   if (!label) return "";
   return label.replace(/\${([^}]+)}/g, (match, group) => {
-      return price !== null ? String(price) : ""; 
+    return price !== null ? String(price) : "";
   });
 }
 
@@ -30,8 +33,10 @@ export const PriceAndName = ({
   priceCurrency = "BRL",
   search,
 }: Props) => {
-
-  const labelOfferWithPrice = formatLabelOffer(labelOffer,formatPrice(listPrice, priceCurrency))
+  const labelOfferWithPrice = formatLabelOffer(
+    labelOffer,
+    formatPrice(listPrice, priceCurrency),
+  );
 
   return (
     <div class="flex-auto flex flex-col p-4 ">
