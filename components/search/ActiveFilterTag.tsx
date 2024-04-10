@@ -1,10 +1,11 @@
 import { FilterToggleValue } from "apps/commerce/types.ts";
 import Icon from "deco-sites/persono/components/ui/Icon.tsx";
-import { IS_BROWSER } from "$fresh/runtime.ts";
 import { invoke } from "deco-sites/persono/runtime.ts";
+import { redirectWithFilters } from "deco-sites/persono/components/search/utils.ts";
 
 export interface Props {
   appliedFilters: { filters: FilterToggleValue; type: string }[];
+  basePath?: string;
 }
 
 interface GroupedDataItem {
@@ -17,44 +18,17 @@ interface DataItem {
   type: string;
 }
 
-const getUrl = () => {
-  if (IS_BROWSER) {
-    const url = window.location.href;
-    return url;
-  }
-  return "";
-};
-
-async function callUrl({
-  transformedArray,
-}: {
-  transformedArray: {
-    type: string;
-    slugs: string[];
-  }[];
-}) {
-  const url = getUrl();
-  const response = await invoke["deco-sites/persono"].loaders.url({
-    filters: transformedArray,
-    origin: url,
-  });
-
-  if (!response || !response.url) {
-    window.location.href = url;
-    return null;
-  }
-  window.location.href = response.url;
-}
-
 function deleteFilter({
   appliedFilters,
   clickedFilter,
+  basePath,
 }: {
   appliedFilters: { filters: FilterToggleValue; type: string }[];
   clickedFilter: {
     filters: FilterToggleValue;
     type: string;
   };
+  basePath?: string;
 }) {
   const rawNewAppliedFilters = appliedFilters.filter(
     (f) => f.filters.value !== clickedFilter.filters.value,
@@ -75,10 +49,10 @@ function deleteFilter({
     [],
   );
 
-  callUrl({ transformedArray: newAppliedFilters });
+  redirectWithFilters({ transformedArray: newAppliedFilters, basePath });
 }
 
-export default function ActiveFilterTag({ appliedFilters }: Props) {
+export default function ActiveFilterTag({ appliedFilters, basePath }: Props) {
   return (
     <div
       class={`${
@@ -93,6 +67,7 @@ export default function ActiveFilterTag({ appliedFilters }: Props) {
             deleteFilter({
               appliedFilters: appliedFilters,
               clickedFilter: af,
+              basePath,
             });
           }}
         >

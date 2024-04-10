@@ -11,9 +11,8 @@ import AvatarColor from "deco-sites/persono/components/ui/AvatarColor.tsx";
 import { Color } from "deco-sites/persono/loaders/Layouts/Colors.tsx";
 import Button from "deco-sites/persono/components/ui/Button.tsx";
 import { Signal, useSignal } from "@preact/signals";
-import { invoke } from "deco-sites/persono/runtime.ts";
-import { IS_BROWSER } from "$fresh/runtime.ts";
 import { Size } from "deco-sites/persono/loaders/Layouts/Size.tsx";
+import { redirectWithFilters } from "deco-sites/persono/components/search/utils.ts";
 
 export interface FilterEditableProps {
   /**  @title Hidden Filters */
@@ -30,17 +29,8 @@ interface Props {
 
   sizes?: Size[];
   filterSettings?: FilterEditableProps;
-  basePath?: string
+  basePath?: string;
 }
-
-const getUrl = (basePath?: string) => {
-  if (IS_BROWSER) {
-    const origin = window.location.origin;
-    const url = new URL(basePath ?? "", origin).href
-    return url;
-  }
-  return "";
-};
 
 const toggleSelectFilter = ({
   rawFiltersToApply,
@@ -221,27 +211,6 @@ function Filters({ filters, colors, filterSettings, basePath }: Props) {
     }
   });
 
-  async function callUrl({
-    transformedArray,
-  }: {
-    transformedArray: {
-      type: string;
-      slugs: string[];
-    }[];
-  }) {
-    const url = getUrl(basePath);
-    const response = await invoke["deco-sites/persono"].loaders.url({
-      filters: transformedArray,
-      origin: url,
-    });
-
-    if (!response || !response.url) {
-      window.location.href = url;
-      return null;
-    }
-    window.location.href = response.url;
-  }
-
   return (
     <ul class="relative flex flex-col gap-6 p-4">
       <li class="flex flex-col gap-4 mb-20">
@@ -285,7 +254,7 @@ function Filters({ filters, colors, filterSettings, basePath }: Props) {
                 return result;
               }, [] as { type: string; slugs: string[] }[])
               .filter((item) => item.slugs.length > 0);
-            callUrl({ transformedArray });
+            redirectWithFilters({ transformedArray, basePath });
           }}
           class="rounded-full btn-primary w-full text-base-100"
         >
