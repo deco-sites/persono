@@ -183,13 +183,6 @@ function ProductInfo({
       <PageFolder activate={device !== "desktop"}>
         {/* Benefities */}
 
-        <div class={`${productBenefits?.length == 0 ? "hidden" : ""}`}>
-          <ProductBenefits
-            productBenefits={productBenefits}
-            adminBenefits={benefits}
-          />
-        </div>
-
         {/* Description card */}
 
         <div class="mt-6 sm:mt-7  ">
@@ -204,33 +197,35 @@ function ProductInfo({
               <ProductInfoCollapse title="Especificações">
                 <div class="flex flex-col gap-2">
                   {product.isVariantOf?.hasVariant[0].additionalProperty &&
-                    product?.isVariantOf?.hasVariant[0]?.additionalProperty.map(
-                      (ad) =>
-                        ad.propertyID == "TECNICALSPECIFICATION" &&
-                          !ad.description?.startsWith("CUSTOM_")
-                          ? (
-                            <p class="text-base font-normal">
-                              {ad.description}:&ensp;{ad.value}
-                            </p>
-                          )
-                          : null,
-                    )}
+                    product?.isVariantOf?.hasVariant[0]?.additionalProperty
+                      .map(
+                        (ad) =>
+                          ad.propertyID == "TECNICALSPECIFICATION" &&
+                            !ad.description?.startsWith("CUSTOM_")
+                            ? (
+                              <p class="text-base font-normal">
+                                {ad.description}:&ensp;{ad.value}
+                              </p>
+                            )
+                            : null,
+                      )}
                 </div>
               </ProductInfoCollapse>
 
               <ProductInfoCollapse title="O que vai na embalagem?">
                 <div class="flex flex-col gap-2">
                   {product.isVariantOf?.hasVariant[0].additionalProperty &&
-                    product?.isVariantOf?.hasVariant[0]?.additionalProperty.map(
-                      (ad) =>
-                        ad.propertyID == "KITITEM"
-                          ? (
-                            <p class="text-base font-normal">
-                              {ad.value}&ensp;{ad.description}
-                            </p>
-                          )
-                          : null,
-                    )}
+                    product?.isVariantOf?.hasVariant[0]?.additionalProperty
+                      .map(
+                        (ad) =>
+                          ad.propertyID == "KITITEM"
+                            ? (
+                              <p class="text-base font-normal">
+                                {ad.value}&ensp;{ad.description}
+                              </p>
+                            )
+                            : null,
+                      )}
                 </div>
               </ProductInfoCollapse>
 
