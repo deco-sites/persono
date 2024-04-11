@@ -54,7 +54,7 @@ function Header({
       <header class="h-[120px]" data-header>
         <div class="fixed top-0 left-0 w-full z-30 ">
           <Alert alerts={alerts} />
-          <div class="border-b border-t border-base-300 bg-base-100 w-full relative">
+          <div class="border-t border-base-300 bg-base-100 w-full relative">
             <Navbar
               items={items}
               searchbar={searchbar && { ...searchbar }}
@@ -68,7 +68,6 @@ function Header({
         searchbar={searchbar}
         imageBaseUrl={imageBaseUrl}
         cart={cart}
-        platform={platform}
       />
     </>
   );

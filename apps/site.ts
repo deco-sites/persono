@@ -115,6 +115,7 @@ export default function Site({
 }
 
 export type Storefront = ReturnType<typeof Site>;
+// @ts-ignore <IDK why this is wrong>
 export type AppMiddlewareContext = AMC<Storefront>;
 //@ts-ignore to avoid AC error
 export type AppContext = AC<Storefront>;

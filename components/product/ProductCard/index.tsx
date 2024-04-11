@@ -6,10 +6,12 @@ import { ProductCardImage } from "./components/ProductCardImage.tsx";
 import { SendEventOnClick } from "deco-sites/persono/components/Analytics.tsx";
 import { mapProductToAnalyticsItem } from "apps/commerce/utils/productToAnalyticsItem.ts";
 import { generateColorObject } from "deco-sites/persono/components/product/ProductCard/utils.ts";
+import { PriceLabel } from "deco-sites/persono/loaders/product/productCardLabelOffer.tsx";
 
 export interface Layout {
   customTagColors?: CustomTagColor[];
   defaultTags?: DefaultTagsColors;
+  priceLabel: PriceLabel[];
 }
 
 export interface ColorConfig {
@@ -60,11 +62,6 @@ interface Props {
   isMobile?: boolean;
 }
 
-const relative = (url: string) => {
-  const link = new URL(url);
-  return `${link.pathname}${link.search}`;
-};
-
 function ProductCard({
   product,
   preload,
@@ -75,22 +72,27 @@ function ProductCard({
   hasRelatedProducts,
   isMobile,
 }: Props) {
-  const { customTagColors, defaultTags } = layout ?? {};
+  const { customTagColors, defaultTags, priceLabel } = layout ?? {};
   const { url, productID, name, image: images, offers } = product;
   const { price = 0, installments, listPrice = 0 } = useOffer(offers);
   const [front] = images ?? [];
   const id = `product-card-${productID}`;
 
+  const productSalesPrice = product.offers?.offers[0].priceSpecification.find(
+    (p) => p.priceType === "https://schema.org/SalePrice",
+  );
+  const productListPrice = product.offers?.offers[0].priceSpecification.find(
+    (p) => p.priceType === "https://schema.org/ListPrice",
+  );
+
   const { hasDiscount, hasMultiplePrices } = useMemo(() => {
-    const variantPrices = product.isVariantOf?.hasVariant.map(
-      (item) => item.offers?.offers?.[0]?.price,
-    );
+    const variantPrices = {
+      minPrice: productSalesPrice?.price,
+      maxPrice: productListPrice?.price,
+    };
 
     const hasMultiplePrices = variantPrices &&
-      variantPrices?.length > 1 &&
-      variantPrices.some(
-        (price) => price !== Math.min(...(variantPrices as number[])),
-      );
+      variantPrices.minPrice !== variantPrices.maxPrice;
 
     const discount = Math.floor(((listPrice - price) / listPrice) * 100);
 
@@ -100,6 +102,10 @@ function ProductCard({
       discount,
     };
   }, [product, listPrice, price]);
+
+  const labelOfferType = priceLabel?.find((p) =>
+    product.offers?.offers[0].additionalType == p.offerType
+  );
 
   const tagsCapture = (value: string, identifier: string) =>
     product.additionalProperty?.find(
@@ -143,7 +149,7 @@ function ProductCard({
         id={id}
         class="card card-compact group rounded-[10px] border border-gray-300 text-start w-full overflow-hidden hover:border-black"
         data-deco="view-product"
-        href={url && relative(url)}
+        href={url}
         aria-label="view product"
       >
         <SendEventOnClick
@@ -181,6 +187,7 @@ function ProductCard({
           hasMultiplePrices={hasMultiplePrices}
           installments={installments}
           listPrice={listPrice}
+          labelOffer={labelOfferType?.label}
           price={price}
           productName={name ?? ""}
           priceCurrency={offers?.priceCurrency}

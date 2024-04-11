@@ -11,19 +11,16 @@ export const PageFolder = ({ children, activate }: Props) => {
   const showingContent = useSignal(false);
   const showingContentValue = showingContent.value;
 
-
-
   const handleScroll = () => {
-    if (window.scrollY > 0) {
+    if (globalThis.scrollY > 0) {
       showingContent.value = true;
     }
   };
 
   useEffect(() => {
-    if(!activate){
-      return 
+    if (!activate) {
+      return;
     }
-
 
     if (showingContentValue) {
       removeEventListener("scroll", handleScroll);

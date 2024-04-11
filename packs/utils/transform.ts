@@ -543,10 +543,19 @@ const toAdditionalProperties = (
     ...tagsProperties(),
   ];
 };
+
+const toProductPageUrl = (productTitle: string, productSKU: string) => {
+  const replacedProductTitle = productTitle.toLocaleLowerCase().replaceAll(
+    " ",
+    "-",
+  );
+
+  return `/pr/${replacedProductTitle}/${productSKU}`;
+};
+
 export function toProductItems(
   productItem: ProductItem,
   config: VMConfig,
-  baseUrl: URL,
   imageBaseUrl: string,
 ): Product {
   const product: Product = {
@@ -567,7 +576,7 @@ export function toProductItems(
     }),
 
     image: toImageItem(productItem, imageBaseUrl),
-    url: new URL(baseUrl.origin).href,
+    url: toProductPageUrl(productItem.title, productItem.sku),
     category: productItem.macroCategory,
   };
 

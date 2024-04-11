@@ -8,6 +8,7 @@ import { Picture, Source } from "apps/website/components/Picture.tsx";
 export interface Post {
   mobile: ImageWidget;
   desktop: ImageWidget;
+  href?: string;
 }
 
 export interface Props {
@@ -27,6 +28,7 @@ function Instagram(props: Props) {
       {
         mobile: "",
         desktop: "",
+        href: "",
       },
     ],
   } = props;
@@ -42,35 +44,40 @@ function Instagram(props: Props) {
       <div>
         <Slider class="flex carousel carousel-start gap-6 lg:justify-between">
           {list.map((
-            { mobile, desktop },
+            { mobile, desktop, href },
             index,
           ) => (
             <Slider.Item
               index={index}
               class="flex flex-col gap-12 first-of-type:pl-6 sm:first-of-type:pl-0 carousel-item w-2/3 lg:w-[calc(25%-40px)] sm:w-[calc(33.3%-13px)]"
             >
-              <figure>
-                <Picture>
-                  <Source
-                    media="(max-width: 768px)"
-                    src={mobile}
-                    width={220}
-                    height={268}
-                  />
-                  <Source
-                    media="(min-width: 768px)"
-                    src={desktop}
-                    width={280}
-                    height={350}
-                  />
-                  <img
-                    src={desktop}
-                    loading="lazy"
-                    class="w-full h-auto object cover rounded-[40px]"
-                    alt={index + " slider Instagram image"}
-                  />
-                </Picture>
-              </figure>
+              <a
+                href={href}
+                class="overflow-hidden"
+              >
+                <figure>
+                  <Picture>
+                    <Source
+                      media="(max-width: 768px)"
+                      src={mobile}
+                      width={220}
+                      height={268}
+                    />
+                    <Source
+                      media="(min-width: 768px)"
+                      src={desktop}
+                      width={280}
+                      height={350}
+                    />
+                    <img
+                      src={desktop}
+                      loading="lazy"
+                      class="w-full h-auto object cover rounded-[40px]"
+                      alt={index + " slider Instagram image"}
+                    />
+                  </Picture>
+                </figure>
+              </a>
             </Slider.Item>
           ))}
         </Slider>
