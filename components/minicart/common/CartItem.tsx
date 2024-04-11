@@ -57,15 +57,15 @@ function CartItem(
 
   return (
     <div class="flex items-start justify-stretch gap-4">
-    <div class='W-[108px] h-[150px] bg-gray-400 flex items-center justify-center'>
-      <Image
-        {...image}
-        style={{aspectRatio:"1 / 1"}}
-        width={108}
-        height={150}
-        fit="contain"
-        class="rounded bg-gradient-to-bl"
-      />
+      <div class="W-[108px] h-[150px] bg-gray-400 flex items-center justify-center">
+        <Image
+          {...image}
+          style={{ aspectRatio: "1 / 1" }}
+          width={108}
+          height={150}
+          fit="contain"
+          class="rounded bg-gradient-to-bl"
+        />
       </div>
       <div class="flex flex-col flex-grow gap-6">
         <div class="relative flex flex-col gap-1">
