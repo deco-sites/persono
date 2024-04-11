@@ -35,7 +35,6 @@ function AsideMenu(
     typeof loader
   >,
 ) {
-
   return (
     <aside class="lg:min-w-[200px]">
       <ul class="w-full flex-col gap-2 hidden lg:flex">
@@ -83,7 +82,12 @@ function AsideMenu(
         <details class="dropdown w-full text-sm font-normal static group ">
           <summary class="btn text-sm font-normal w-full btn-secondary justify-between border-none">
             {currentSection?.sectionTitle}
-            <Icon id="ChevronDown" class="group-open:rotate-180" width={26} height={26} />
+            <Icon
+              id="ChevronDown"
+              class="group-open:rotate-180"
+              width={26}
+              height={26}
+            />
           </summary>
           <ul class="menu dropdown-content z-10 bg-base-100 mt-5 rounded-box w-full gap-2 left-0 px-8">
             {sectionMenu.map((sectionItem) => (
