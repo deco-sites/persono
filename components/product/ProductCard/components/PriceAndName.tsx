@@ -53,19 +53,19 @@ export const PriceAndName = ({
   priceCurrency = "BRL",
   search,
 }: Props) => {
-  let labelOfferWithPrice 
+  let labelOfferWithPrice;
 
   if (labelOffer && labelOffer.match(/\${listPrice}/)) {
     labelOfferWithPrice = formatListPriceLabelOffer(
       labelOffer,
       formatPrice(listPrice, priceCurrency),
     );
-  }else if(labelOffer && labelOffer.match(/\${minPrice}/)){
+  } else if (labelOffer && labelOffer.match(/\${minPrice}/)) {
     labelOfferWithPrice = formatMinPriceLabelOffer(
       labelOffer,
       formatPrice(price, priceCurrency),
     );
-  }else if(labelOffer && labelOffer.match(/\${salesPrice}/)){
+  } else if (labelOffer && labelOffer.match(/\${salesPrice}/)) {
     labelOfferWithPrice = formatSalesPriceLabelOffer(
       labelOffer,
       formatPrice(price, priceCurrency),
