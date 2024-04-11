@@ -107,8 +107,6 @@ function ProductCard({
     product.offers?.offers[0].additionalType == p.offerType
   );
 
-  console.log(labelOfferType);
-
   const tagsCapture = (value: string, identifier: string) =>
     product.additionalProperty?.find(
       (item) =>
