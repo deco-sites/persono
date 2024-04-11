@@ -52,6 +52,8 @@ function ProductInfo({
 }: SectionProps<typeof loader>) {
   const id = useId();
 
+  const productInfoSectionId = `${id}-product-info`
+
   if (page === null) {
     return <NotFound device={device} notFoundSettings={notFoundSettings} />;
   }
@@ -101,7 +103,12 @@ function ProductInfo({
     const content = document.getElementById(id);
     const windowHeight = innerHeight;
 
+  
+   
+
     if (content && windowHeight) {
+
+    
       const contentHeight = content?.offsetHeight;
 
       const top = (contentHeight - windowHeight + 4) * -1;
@@ -113,7 +120,7 @@ function ProductInfo({
   return (
     <div
       class="flex flex-col w-full sm:mt-10 px-4 sm:px-0"
-      id={`${id}-product-info`}
+      id={productInfoSectionId}
     >
       <Breadcrumb
         itemListElement={breadcrumb.itemListElement}
@@ -260,7 +267,7 @@ function ProductInfo({
       <div class="h-3 invisible" />
 
       {device === "desktop" && (
-        <script defer src={scriptAsDataURI(script, id)} />
+        <script defer src={scriptAsDataURI(script, productInfoSectionId)} />
       )}
     </div>
   );
