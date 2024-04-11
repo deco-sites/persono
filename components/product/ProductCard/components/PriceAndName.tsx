@@ -12,7 +12,27 @@ interface Props {
   search?: boolean;
 }
 
-function formatLabelOffer(
+function formatListPriceLabelOffer(
+  label: string | undefined,
+  price: string | null,
+): string {
+  if (!label) return "";
+  return label.replace(/\${([^}]+)}/g, (match, group) => {
+    return price !== null ? String(price) : "";
+  });
+}
+
+function formatMinPriceLabelOffer(
+  label: string | undefined,
+  price: string | null,
+): string {
+  if (!label) return "";
+  return label.replace(/\${([^}]+)}/g, (match, group) => {
+    return price !== null ? String(price) : "";
+  });
+}
+
+function formatSalesPriceLabelOffer(
   label: string | undefined,
   price: string | null,
 ): string {
@@ -33,10 +53,24 @@ export const PriceAndName = ({
   priceCurrency = "BRL",
   search,
 }: Props) => {
-  const labelOfferWithPrice = formatLabelOffer(
-    labelOffer,
-    formatPrice(listPrice, priceCurrency),
-  );
+  let labelOfferWithPrice 
+
+  if (labelOffer && labelOffer.match(/\${listPrice}/)) {
+    labelOfferWithPrice = formatListPriceLabelOffer(
+      labelOffer,
+      formatPrice(listPrice, priceCurrency),
+    );
+  }else if(labelOffer && labelOffer.match(/\${minPrice}/)){
+    labelOfferWithPrice = formatMinPriceLabelOffer(
+      labelOffer,
+      formatPrice(price, priceCurrency),
+    );
+  }else if(labelOffer && labelOffer.match(/\${salesPrice}/)){
+    labelOfferWithPrice = formatSalesPriceLabelOffer(
+      labelOffer,
+      formatPrice(price, priceCurrency),
+    );
+  }
 
   return (
     <div class="flex-auto flex flex-col p-4 ">
