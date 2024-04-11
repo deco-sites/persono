@@ -31,10 +31,11 @@ export function loader(ctx: Props, req: Request) {
 }
 
 function AsideMenu(
-  { sectionMenu, pathname: currentUrl, currentSection }: SectionProps<
+  { sectionMenu, pathname, currentSection }: SectionProps<
     typeof loader
   >,
 ) {
+
   return (
     <aside class="lg:min-w-[200px]">
       <ul class="w-full flex-col gap-2 hidden lg:flex">
@@ -49,7 +50,7 @@ function AsideMenu(
                         ? "text-primary"
                         : ""
                     }`}
-                    href={"/" + currentUrl.split("/")[1] +
+                    href={"/" + pathname.split("/")[1] +
                       sectionItem?.sectionLink}
                   >
                     {sectionItem?.sectionTitle}
@@ -78,13 +79,13 @@ function AsideMenu(
           </li>
         ))}
       </ul>
-      <div class="lg:hidden w-full sm:pb-5 pb-8">
-        <details class="dropdown w-full text-sm font-normal static">
+      <div class="lg:hidden w-full sm:pb-5 pb-8 ">
+        <details class="dropdown w-full text-sm font-normal static group ">
           <summary class="btn text-sm font-normal w-full btn-secondary justify-between border-none">
             {currentSection?.sectionTitle}
-            <Icon id="ChevronDown" width={26} height={26} />
+            <Icon id="ChevronDown" class="group-open:rotate-180" width={26} height={26} />
           </summary>
-          <ul class="menu dropdown-content z-10 bg-base-100 mt-5 rounded-box w-full gap-2 left-0 px-8 h-[100vh]">
+          <ul class="menu dropdown-content z-10 bg-base-100 mt-5 rounded-box w-full gap-2 left-0 px-8">
             {sectionMenu.map((sectionItem) => (
               <>
                 <li class="font-semibold">
@@ -98,7 +99,7 @@ function AsideMenu(
                               ? "text-primary"
                               : ""
                           }`}
-                          href={"/" + currentUrl.split("/")[1] +
+                          href={"/" + pathname.split("/")[1] +
                             sectionItem?.sectionLink}
                         >
                           {sectionItem?.sectionTitle}
