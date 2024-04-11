@@ -75,7 +75,9 @@ export default function ActiveFilterTag({ appliedFilters, basePath }: Props) {
             style={{ minWidth: "86px" }}
             class="py-1 gap-2 bg-black rounded-full px-3 flex flex-wrap justify-between items-center text-white"
           >
-            {af.filters.label}
+            {af.type.startsWith("is")
+              ? af.filters.value[0].toUpperCase() + af.filters.value.slice(1)
+              : af.filters.label}
             <Icon id="XMark" size={16} strokeWidth={2}></Icon>
           </span>
         </button>
