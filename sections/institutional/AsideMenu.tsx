@@ -89,10 +89,10 @@ function AsideMenu(
               height={26}
             />
           </summary>
-          <ul class="menu dropdown-content z-10 bg-base-100 mt-5 rounded-box w-full gap-2 left-0 px-8">
+          <ul class="menu dropdown-content z-10 bg-base-100 mt-5 rounded-box w-full gap-2 left-0 px-8 h-full">
             {sectionMenu.map((sectionItem) => (
               <>
-                <li class="font-semibold">
+                <li class=" sm:text-md text-base">
                   <div class="">
                     {sectionItem?.sectionLink
                       ? (
@@ -116,7 +116,7 @@ function AsideMenu(
                   (item, index) => (
                     <li class="" key={index}>
                       <a
-                        class="p-0 flex gap-2 items-center"
+                        class="sm:ml-0 ml-1 flex gap-2 items-center"
                         href={item.href}
                       >
                         <Icon
