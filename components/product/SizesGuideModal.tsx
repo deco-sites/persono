@@ -9,7 +9,10 @@ export function SizesGuideModal({ sizes, segment }: Props) {
   return (
     <>
       <input type="checkbox" id="my_modal_6" class="modal-toggle" />
-      <div class="modal" role="dialog">
+      <div
+        class="modal tall:mt-0 medium:mt-[calc(10vh+2rem)] small:mt-[calc(10vh+3rem)]"
+        role="dialog"
+      >
         <div class="modal-box flex flex-col rounded-lg py-0 px-4">
           <div class="flex justify-between items-center py-2 border-b">
             <h3 class="font-medium text-xl">Guia de tamanhos</h3>
