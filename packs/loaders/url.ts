@@ -33,7 +33,7 @@ const loader = (
 ): LoaderResult | null => {
   const { filters, origin } = props;
   const url = new URL(origin ?? req.url);
-  const vm = url.pathname.match("\/vm\/([^\/]+)");
+  const vm = url.pathname;
 
   if (!vm) {
     return null;
@@ -48,7 +48,7 @@ const loader = (
       ],
     };
   }, {
-    path: ["vm", vm[1]],
+    path: [vm.startsWith("/") ? vm.substring(1) : vm],
     searchParams: [],
   });
 

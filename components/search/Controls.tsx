@@ -65,6 +65,7 @@ function SearchControls({
                 sizes={sizes}
                 colors={colors}
                 filters={filters}
+                basePath={breadcrumb?.url}
               />
             </div>
           </div>
