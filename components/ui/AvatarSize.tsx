@@ -26,7 +26,7 @@ function AvatarSize({ content, variant = "default" }: Props) {
   return (
     <div class="placeholder text-xs ">
       <div
-        class={`rounded-full py-2 px-4 ${selectedVariants[variant]} ${
+        class={`rounded-full py-2 px-4 border ${selectedVariants[variant]} ${
           variants[variant]
         }`}
       >
