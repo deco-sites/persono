@@ -54,6 +54,7 @@ function Instagram(props: Props) {
               <a
                 href={href}
                 class="overflow-hidden"
+                target="_blank"
               >
                 <figure>
                   <Picture>
