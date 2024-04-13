@@ -10,7 +10,7 @@ export interface HighlightTagProps {
   hasCustomTag?: { color: string; label: string };
   hasNewsTag?: DefaultTags;
   hasDiscountTag?: DefaultTags;
-  hasOutOfStockTag?: DefaultTags
+  hasOutOfStockTag?: DefaultTags;
 }
 
 interface Props extends HighlightTagProps {
@@ -18,7 +18,7 @@ interface Props extends HighlightTagProps {
   imageAlt?: string;
   imageSrc: string;
   search?: boolean;
-  outOfStock?:boolean
+  outOfStock?: boolean;
 }
 
 export const ProductCardImage = ({
@@ -30,8 +30,8 @@ export const ProductCardImage = ({
   search,
   customTagColor,
   hasCustomTag,
- hasOutOfStockTag,
-  outOfStock
+  hasOutOfStockTag,
+  outOfStock,
 }: Props) => {
   const showHighlightTag = !!hasNewsTag || !!hasDiscountTag || !!hasCustomTag;
 
@@ -40,11 +40,8 @@ export const ProductCardImage = ({
     hasCustomTag,
     hasNewsTag,
     hasDiscountTag,
-    hasOutOfStockTag
+    hasOutOfStockTag,
   };
-
-
-
 
   return (
     <figure class="relative">
@@ -55,7 +52,9 @@ export const ProductCardImage = ({
           alt={imageAlt}
           width={search ? 230 : 287}
           height={search ? 230 : 287}
-          class={`bg-base-100 ${outOfStock?'opacity-60':''}  col-span-full row-span-full w-full animateImage cursor-pointer object-cover z-10`}
+          class={`bg-base-100 ${
+            outOfStock ? "opacity-60" : ""
+          }  col-span-full row-span-full w-full animateImage cursor-pointer object-cover z-10`}
           sizes="(max-width: 640px) 50vw, 20vw"
           preload={preload}
           loading={preload ? "eager" : "lazy"}
@@ -71,11 +70,10 @@ export const HighlightTag = ({
   hasCustomTag,
   hasNewsTag,
   hasDiscountTag,
-  hasOutOfStockTag
+  hasOutOfStockTag,
 }: HighlightTagProps) => {
-
-
-  const {colors:outOfStockColor,label:outOfStockLabel} = hasOutOfStockTag ??{}
+  const { colors: outOfStockColor, label: outOfStockLabel } =
+    hasOutOfStockTag ?? {};
   // News tag
   const { label: newsTagLabel, colors: newsTagColors } = hasNewsTag ?? {};
 
@@ -89,12 +87,12 @@ export const HighlightTag = ({
 
   const customTagColors = customTagColor?.[custonTagColorIdentifier ?? ""];
 
-  const taglabel = outOfStockLabel ?? newsTagLabel ?? discountTagLabel ?? customTagLabel;
+  const taglabel = outOfStockLabel ?? newsTagLabel ?? discountTagLabel ??
+    customTagLabel;
 
   const tagStyleColorSettings = useMemo(() => {
-
-    if(outOfStockColor && outOfStockLabel ){
-        return {
+    if (outOfStockColor && outOfStockLabel) {
+      return {
         backgroundColor: outOfStockColor.backgroundColor,
         color: outOfStockColor.textColor,
       };
