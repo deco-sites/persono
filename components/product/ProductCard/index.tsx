@@ -79,11 +79,14 @@ function ProductCard({
   const id = `product-card-${productID}`;
 
   const productSalesPrice = product.offers?.offers[0].priceSpecification.find(
-    (p) => p.priceType === "https://schema.org/SalePrice",
+    (p) => p.priceType === "https://schema.org/SalePrice"
   );
   const productListPrice = product.offers?.offers[0].priceSpecification.find(
-    (p) => p.priceType === "https://schema.org/ListPrice",
+    (p) => p.priceType === "https://schema.org/ListPrice"
   );
+
+  const outOfStock =
+    offers?.offers[0].availability === "https://schema.org/OutOfStock";
 
   const { hasDiscount, hasMultiplePrices } = useMemo(() => {
     const variantPrices = {
@@ -91,8 +94,8 @@ function ProductCard({
       maxPrice: productListPrice?.price,
     };
 
-    const hasMultiplePrices = variantPrices &&
-      variantPrices.minPrice !== variantPrices.maxPrice;
+    const hasMultiplePrices =
+      variantPrices && variantPrices.minPrice !== variantPrices.maxPrice;
 
     const discount = Math.floor(((listPrice - price) / listPrice) * 100);
 
@@ -103,8 +106,8 @@ function ProductCard({
     };
   }, [product, listPrice, price]);
 
-  const labelOfferType = priceLabel?.find((p) =>
-    product.offers?.offers[0].additionalType == p.offerType
+  const labelOfferType = priceLabel?.find(
+    (p) => product.offers?.offers[0].additionalType == p.offerType
   );
 
   const tagsCapture = (value: string, identifier: string) =>
@@ -112,15 +115,38 @@ function ProductCard({
       (item) =>
         item.propertyID === "TAG" &&
         item.identifier === identifier &&
-        item.value === value,
+        item.value === value
     );
 
+  const hasOutOfStockTag = useMemo(() => {
+    if (!outOfStock) {
+
+      return 
+      
+    }
+
+    return  {
+      label: "Esgotado",
+      colors: {
+        backgroundColor: "#666666",
+
+        textColor: "#FFFFFF",
+      },
+    };
+
+  
+  }, [outOfStock]);
+
   const { hasDiscountTag, hasNewsTag } = useMemo(() => {
+
+
+    
+
     return {
       hasDiscountTag: {
         label: tagsCapture("PROMOTION", "TOPLEFT")?.valueReference?.replace(
           "-",
-          "- ",
+          "- "
         ),
         colors: defaultTags?.discountTag,
       },
@@ -132,8 +158,8 @@ function ProductCard({
   }, []);
 
   const hasCustomTag = useMemo(() => {
-    const { description, valueReference } = tagsCapture("CUSTOM", "CUSTOM") ??
-      {};
+    const { description, valueReference } =
+      tagsCapture("CUSTOM", "CUSTOM") ?? {};
 
     if (description && valueReference) {
       return { color: description, label: valueReference };
@@ -171,6 +197,8 @@ function ProductCard({
         />
 
         <ProductCardImage
+          outOfStock={outOfStock}
+          hasOutOfStockTag={hasOutOfStockTag}
           customTagColor={customTagColor}
           hasCustomTag={hasCustomTag}
           search={search}
@@ -182,6 +210,7 @@ function ProductCard({
         />
 
         <PriceAndName
+          outOfStock={outOfStock}
           search={search || (hasRelatedProducts && isMobile)}
           hasDiscount={hasDiscount}
           hasMultiplePrices={hasMultiplePrices}
@@ -194,7 +223,7 @@ function ProductCard({
         />
       </a>
     ),
-    [product],
+    [product]
   );
 }
 

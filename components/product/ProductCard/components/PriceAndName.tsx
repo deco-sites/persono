@@ -10,6 +10,7 @@ interface Props {
   priceCurrency?: string;
   installments: string | null;
   search?: boolean;
+  outOfStock?:boolean
 }
 
 function formatListPriceLabelOffer(
@@ -52,6 +53,7 @@ export const PriceAndName = ({
   installments,
   priceCurrency = "BRL",
   search,
+  outOfStock
 }: Props) => {
   let labelOfferWithPrice;
 
@@ -73,7 +75,7 @@ export const PriceAndName = ({
   }
 
   return (
-    <div class="flex-auto flex flex-col p-4 ">
+    <div class={`flex-auto flex flex-col p-4 ${outOfStock?'opacity-60':''}`}  >
       <h2
         class=" line-clamp-2 h-10 text-sm lg:text-lg font-normal  text-black mb-2"
         dangerouslySetInnerHTML={{ __html: productName ?? "" }}
