@@ -57,7 +57,7 @@ function CartItem(
 
   return (
     <div class="flex items-start justify-stretch gap-4">
-      <div class="W-[108px] h-[150px] bg-gray-400 flex items-center justify-center">
+      <div class="w-[108px] h-[150px] bg-gray-400 flex items-center justify-center">
         <Image
           {...image}
           style={{ aspectRatio: "1 / 1" }}
@@ -69,7 +69,7 @@ function CartItem(
       </div>
       <div class="flex flex-col flex-grow gap-6">
         <div class="relative flex flex-col gap-1">
-          <p class="text-base">{name}</p>
+          <p class="text-base0 w-full max-w-[223px]">{name}</p>
           <p class="text-sm capitalize">Tamanho {size.toLowerCase()}</p>
           <div class="flex items-center gap-2">
             {list !== sale
