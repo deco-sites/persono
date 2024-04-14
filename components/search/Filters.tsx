@@ -11,9 +11,8 @@ import AvatarColor from "deco-sites/persono/components/ui/AvatarColor.tsx";
 import { Color } from "deco-sites/persono/loaders/Layouts/Colors.tsx";
 import Button from "deco-sites/persono/components/ui/Button.tsx";
 import { Signal, useSignal } from "@preact/signals";
-import { invoke } from "deco-sites/persono/runtime.ts";
-import { IS_BROWSER } from "$fresh/runtime.ts";
 import { Size } from "deco-sites/persono/loaders/Layouts/Size.tsx";
+import { redirectWithFilters } from "deco-sites/persono/components/search/utils.ts";
 
 export interface FilterEditableProps {
   /**  @title Hidden Filters */
@@ -30,15 +29,8 @@ interface Props {
 
   sizes?: Size[];
   filterSettings?: FilterEditableProps;
+  basePath?: string;
 }
-
-const getUrl = () => {
-  if (IS_BROWSER) {
-    const url = window.location.href;
-    return url;
-  }
-  return "";
-};
 
 const toggleSelectFilter = ({
   rawFiltersToApply,
@@ -204,7 +196,7 @@ function FilterValues({
   );
 }
 
-function Filters({ filters, colors, filterSettings }: Props) {
+function Filters({ filters, colors, filterSettings, basePath }: Props) {
   const rawFiltersToApply = useSignal<Record<string, string>[]>([{}]);
   const { label: hiddenFilters = [], renameFilters = [] } = filterSettings ??
     {};
@@ -218,27 +210,6 @@ function Filters({ filters, colors, filterSettings }: Props) {
       });
     }
   });
-
-  async function callUrl({
-    transformedArray,
-  }: {
-    transformedArray: {
-      type: string;
-      slugs: string[];
-    }[];
-  }) {
-    const url = getUrl();
-    const response = await invoke["deco-sites/persono"].loaders.url({
-      filters: transformedArray,
-      origin: url,
-    });
-
-    if (!response || !response.url) {
-      window.location.href = url;
-      return null;
-    }
-    window.location.href = response.url;
-  }
 
   return (
     <ul class="relative flex flex-col gap-6 p-4">
@@ -283,7 +254,7 @@ function Filters({ filters, colors, filterSettings }: Props) {
                 return result;
               }, [] as { type: string; slugs: string[] }[])
               .filter((item) => item.slugs.length > 0);
-            callUrl({ transformedArray });
+            redirectWithFilters({ transformedArray, basePath });
           }}
           class="rounded-full btn-primary w-full text-base-100"
         >

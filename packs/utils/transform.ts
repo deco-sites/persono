@@ -146,13 +146,15 @@ export function toProductDetailsPage(
 
 const toBreadcrumbList = (
   origin: string,
-  { breadcrumbs }: VMDetails | AmmoProduct,
+  details: VMDetails | AmmoProduct,
 ): BreadcrumbList => {
-  const itemListElement = toItemListElement(breadcrumbs!, origin);
+  const itemListElement = toItemListElement(details.breadcrumbs!, origin);
+  const base = details as VMDetails;
   return {
     "@type": "BreadcrumbList",
     itemListElement,
     numberOfItems: itemListElement.length,
+    url: base?.basePath ?? undefined,
   };
 };
 
