@@ -16,6 +16,11 @@ export default {
     },
     container: { center: true },
     extend: {
+      screens: {
+        "tall": { "raw": "(max-height: 1000px)" },
+        "medium": { "raw": "(max-height: 800px)" },
+        "small": { "raw": "(max-height: 500px)" },
+      },
       colors: {
         "gray-600": "#666666",
         "gray-100": "#CCCCCC",
