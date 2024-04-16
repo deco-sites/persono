@@ -1,4 +1,5 @@
 import { formatPrice } from "deco-sites/persono/sdk/format.ts";
+import { LABEL_OFFER_MATCHERS } from "deco-sites/persono/components/product/ProductCard/utils.ts";
 
 interface Props {
   hasMultiplePrices?: boolean;
@@ -13,7 +14,7 @@ interface Props {
   outOfStock?: boolean;
 }
 
-function formatListPriceLabelOffer(
+function formatLabelOffer(
   label: string | undefined,
   price: string | null,
 ): string {
@@ -23,24 +24,13 @@ function formatListPriceLabelOffer(
   });
 }
 
-function formatMinPriceLabelOffer(
-  label: string | undefined,
-  price: string | null,
-): string {
-  if (!label) return "";
-  return label.replace(/\${([^}]+)}/g, (match, group) => {
-    return price !== null ? String(price) : "";
-  });
-}
-
-function formatSalesPriceLabelOffer(
-  label: string | undefined,
-  price: string | null,
-): string {
-  if (!label) return "";
-  return label.replace(/\${([^}]+)}/g, (match, group) => {
-    return price !== null ? String(price) : "";
-  });
+function matchLabelOffer(labelOffer: string) {
+  return LABEL_OFFER_MATCHERS.reduce((prev, matcher) => {
+    if (prev === true) {
+      return prev;
+    }
+    return !!labelOffer.match(matcher);
+  }, false);
 }
 
 export const PriceAndName = ({
@@ -55,24 +45,9 @@ export const PriceAndName = ({
   search,
   outOfStock,
 }: Props) => {
-  let labelOfferWithPrice;
-
-  if (labelOffer && labelOffer.match(/\${listPrice}/)) {
-    labelOfferWithPrice = formatListPriceLabelOffer(
-      labelOffer,
-      formatPrice(listPrice, priceCurrency),
-    );
-  } else if (labelOffer && labelOffer.match(/\${minPrice}/)) {
-    labelOfferWithPrice = formatMinPriceLabelOffer(
-      labelOffer,
-      formatPrice(price, priceCurrency),
-    );
-  } else if (labelOffer && labelOffer.match(/\${salesPrice}/)) {
-    labelOfferWithPrice = formatSalesPriceLabelOffer(
-      labelOffer,
-      formatPrice(price, priceCurrency),
-    );
-  }
+  const labelOfferWithPrice = labelOffer && matchLabelOffer(labelOffer)
+    ? formatLabelOffer(labelOffer, formatPrice(price, priceCurrency))
+    : undefined;
 
   return (
     <div
@@ -90,15 +65,16 @@ export const PriceAndName = ({
           } justify-start`}
         >
           <div class="h-5">
-            {(hasMultiplePrices || hasDiscount) && (
+            {(labelOfferWithPrice || hasDiscount) && (
               <p
                 class={`text-gray-600 font-normal text-xs ${
-                  !hasMultiplePrices && hasDiscount ? "line-through" : ""
+                  !labelOfferWithPrice && !hasMultiplePrices && hasDiscount
+                    ? "line-through"
+                    : ""
                 }`}
               >
-                {hasMultiplePrices && labelOfferWithPrice
-                  ? labelOfferWithPrice
-                  : formatPrice(listPrice, priceCurrency)}
+                {labelOfferWithPrice ??
+                  formatPrice(listPrice, priceCurrency)}
               </p>
             )}
           </div>
