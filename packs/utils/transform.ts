@@ -114,11 +114,11 @@ export function toProductListingPage(
   const { productCards, meta, appliedFilters } = vmDetails;
 
   const lastFilter = appliedFilters[appliedFilters.length - 1];
-  const newTitle =
-    (Array.isArray(vmDetails.breadcrumbs[1])
-      ? meta.title
-      : vmDetails.breadcrumbs[1].name) +
-    (lastFilter ? " - " + lastFilter.value : "");
+  const newTitle = !Array.isArray(vmDetails.breadcrumbs[2])
+    ? vmDetails.breadcrumbs[2].name
+    : lastFilter
+    ? lastFilter.value
+    : meta.title;
 
   return {
     "@type": "ProductListingPage",
