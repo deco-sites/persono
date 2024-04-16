@@ -19,9 +19,3 @@ export const generateColorObject = (customTagColors?: CustomTagColor[]) => {
 
   return colorObject;
 };
-
-export const LABEL_OFFER_MATCHERS = [
-  /\${listPrice}/,
-  /\${minPrice}/,
-  /\${salesPrice}/,
-];

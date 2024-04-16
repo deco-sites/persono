@@ -1,5 +1,4 @@
 import { formatPrice } from "deco-sites/persono/sdk/format.ts";
-import { LABEL_OFFER_MATCHERS } from "deco-sites/persono/components/product/ProductCard/utils.ts";
 
 interface Props {
   hasMultiplePrices?: boolean;
@@ -14,24 +13,14 @@ interface Props {
   outOfStock?: boolean;
 }
 
-function formatLabelOffer(
-  label: string | undefined,
+const formatLabelOffer = (
   price: string | null,
-): string {
-  if (!label) return "";
-  return label.replace(/\${([^}]+)}/g, (match, group) => {
-    return price !== null ? String(price) : "";
-  });
-}
-
-function matchLabelOffer(labelOffer: string) {
-  return LABEL_OFFER_MATCHERS.reduce((prev, matcher) => {
-    if (prev === true) {
-      return prev;
-    }
-    return !!labelOffer.match(matcher);
-  }, false);
-}
+  label?: string,
+) =>
+  label?.replace(
+    /\${([^}]+)}/g,
+    (_, _group) => price ? `${price}` : "",
+  ) ?? "";
 
 export const PriceAndName = ({
   hasDiscount,
@@ -45,8 +34,8 @@ export const PriceAndName = ({
   search,
   outOfStock,
 }: Props) => {
-  const labelOfferWithPrice = labelOffer && matchLabelOffer(labelOffer)
-    ? formatLabelOffer(labelOffer, formatPrice(price, priceCurrency))
+  const labelOfferWithPrice = labelOffer && !!labelOffer.match(/\${.+Price}/)
+    ? formatLabelOffer(formatPrice(price, priceCurrency), labelOffer)
     : undefined;
 
   return (
@@ -54,7 +43,7 @@ export const PriceAndName = ({
       class={`flex-auto flex flex-col p-4 ${outOfStock ? "opacity-60" : ""}`}
     >
       <h2
-        class=" line-clamp-2 h-10 text-sm lg:text-lg font-normal  text-black mb-2"
+        class="line-clamp-2 h-10 text-sm lg:text-lg font-normal  text-black mb-2"
         dangerouslySetInnerHTML={{ __html: productName ?? "" }}
       />
 
