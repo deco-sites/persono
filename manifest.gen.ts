@@ -21,15 +21,16 @@ import * as $$$4 from "./loaders/Layouts/Size.tsx";
 import * as $$$5 from "./loaders/Layouts/SizeGuide.tsx";
 import * as $$$6 from "./loaders/List/Sections.tsx";
 import * as $$$16 from "./loaders/newsletter.ts";
-import * as $$$17 from "./loaders/product/productDetails.ts";
-import * as $$$18 from "./loaders/product/productList.ts";
-import * as $$$19 from "./loaders/product/productListingPage.ts";
-import * as $$$20 from "./loaders/product/productSearchPage.ts";
-import * as $$$21 from "./loaders/proxy.ts";
-import * as $$$22 from "./loaders/shippingSimulation.ts";
-import * as $$$23 from "./loaders/suggestions.ts";
-import * as $$$24 from "./loaders/url.ts";
-import * as $$$25 from "./loaders/userInfo.ts";
+import * as $$$17 from "./loaders/product/productCardLabelOffer.tsx";
+import * as $$$18 from "./loaders/product/productDetails.ts";
+import * as $$$19 from "./loaders/product/productList.ts";
+import * as $$$20 from "./loaders/product/productListingPage.ts";
+import * as $$$21 from "./loaders/product/productSearchPage.ts";
+import * as $$$22 from "./loaders/proxy.ts";
+import * as $$$23 from "./loaders/shippingSimulation.ts";
+import * as $$$24 from "./loaders/suggestions.ts";
+import * as $$$25 from "./loaders/url.ts";
+import * as $$$26 from "./loaders/userInfo.ts";
 import * as $$$$$$0 from "./sections/About/InfoCard.tsx";
 import * as $$$$$$1 from "./sections/About/ProductCharacteristics.tsx";
 import * as $$$$$$2 from "./sections/Animation/Animation.tsx";
@@ -48,6 +49,13 @@ import * as $$$$$$14 from "./sections/Images/Carousel.tsx";
 import * as $$$$$$15 from "./sections/Images/FeatureBlogArticle.tsx";
 import * as $$$$$$16 from "./sections/Images/ImageGallery.tsx";
 import * as $$$$$$17 from "./sections/Instagram/Instagram.tsx";
+import * as $$$$$$40 from "./sections/institutional/AccordionItem.tsx";
+import * as $$$$$$41 from "./sections/institutional/AccordionsContent.tsx";
+import * as $$$$$$42 from "./sections/institutional/AsideMenu.tsx";
+import * as $$$$$$43 from "./sections/institutional/CardsContent.tsx";
+import * as $$$$$$44 from "./sections/institutional/ContactForm.tsx";
+import * as $$$$$$45 from "./sections/institutional/InstitutionalPage.tsx";
+import * as $$$$$$46 from "./sections/institutional/TextContent.tsx";
 import * as $$$$$$18 from "./sections/Layout/Container.tsx";
 import * as $$$$$$19 from "./sections/Layout/Flex.tsx";
 import * as $$$$$$20 from "./sections/Layout/Grid.tsx";
@@ -90,15 +98,16 @@ const manifest = {
     "deco-sites/persono/loaders/Layouts/SizeGuide.tsx": $$$5,
     "deco-sites/persono/loaders/List/Sections.tsx": $$$6,
     "deco-sites/persono/loaders/newsletter.ts": $$$16,
-    "deco-sites/persono/loaders/product/productDetails.ts": $$$17,
-    "deco-sites/persono/loaders/product/productList.ts": $$$18,
-    "deco-sites/persono/loaders/product/productListingPage.ts": $$$19,
-    "deco-sites/persono/loaders/product/productSearchPage.ts": $$$20,
-    "deco-sites/persono/loaders/proxy.ts": $$$21,
-    "deco-sites/persono/loaders/shippingSimulation.ts": $$$22,
-    "deco-sites/persono/loaders/suggestions.ts": $$$23,
-    "deco-sites/persono/loaders/url.ts": $$$24,
-    "deco-sites/persono/loaders/userInfo.ts": $$$25,
+    "deco-sites/persono/loaders/product/productCardLabelOffer.tsx": $$$17,
+    "deco-sites/persono/loaders/product/productDetails.ts": $$$18,
+    "deco-sites/persono/loaders/product/productList.ts": $$$19,
+    "deco-sites/persono/loaders/product/productListingPage.ts": $$$20,
+    "deco-sites/persono/loaders/product/productSearchPage.ts": $$$21,
+    "deco-sites/persono/loaders/proxy.ts": $$$22,
+    "deco-sites/persono/loaders/shippingSimulation.ts": $$$23,
+    "deco-sites/persono/loaders/suggestions.ts": $$$24,
+    "deco-sites/persono/loaders/url.ts": $$$25,
+    "deco-sites/persono/loaders/userInfo.ts": $$$26,
   },
   "sections": {
     "deco-sites/persono/sections/About/InfoCard.tsx": $$$$$$0,
@@ -119,6 +128,13 @@ const manifest = {
     "deco-sites/persono/sections/Images/FeatureBlogArticle.tsx": $$$$$$15,
     "deco-sites/persono/sections/Images/ImageGallery.tsx": $$$$$$16,
     "deco-sites/persono/sections/Instagram/Instagram.tsx": $$$$$$17,
+    "deco-sites/persono/sections/institutional/AccordionItem.tsx": $$$$$$40,
+    "deco-sites/persono/sections/institutional/AccordionsContent.tsx": $$$$$$41,
+    "deco-sites/persono/sections/institutional/AsideMenu.tsx": $$$$$$42,
+    "deco-sites/persono/sections/institutional/CardsContent.tsx": $$$$$$43,
+    "deco-sites/persono/sections/institutional/ContactForm.tsx": $$$$$$44,
+    "deco-sites/persono/sections/institutional/InstitutionalPage.tsx": $$$$$$45,
+    "deco-sites/persono/sections/institutional/TextContent.tsx": $$$$$$46,
     "deco-sites/persono/sections/Layout/Container.tsx": $$$$$$18,
     "deco-sites/persono/sections/Layout/Flex.tsx": $$$$$$19,
     "deco-sites/persono/sections/Layout/Grid.tsx": $$$$$$20,

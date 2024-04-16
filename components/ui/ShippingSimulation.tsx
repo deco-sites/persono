@@ -3,7 +3,7 @@ import { Signal, useSignal } from "@preact/signals";
 import { useCallback } from "preact/hooks";
 import Button from "$store/components/ui/Button.tsx";
 import { formatPrice } from "$store/sdk/format.ts";
-import { ShippingSimulation } from "$store/packs/types.ts";
+import { ShippingSimulation as Simulation } from "$store/packs/types.ts";
 import { TargetedEvent } from "https://esm.sh/v128/preact@10.18.1/compat/src/index.js";
 import { invoke } from "deco-sites/persono/runtime.ts";
 
@@ -16,7 +16,7 @@ function ShippingContent({
   show,
 }: {
   show: boolean;
-  simulation: Signal<ShippingSimulation | null>;
+  simulation: Signal<Simulation | null>;
 }) {
   const methods = simulation.value?.shippingOptions.map((s) => {
     return {
@@ -84,7 +84,7 @@ function ShippingSimulation({ sku }: Props) {
   const loading = useSignal(false);
   const error = useSignal(false);
   const cep = useSignal("");
-  const simulateResult = useSignal<ShippingSimulation | null>(null);
+  const simulateResult = useSignal<Simulation | null>(null);
 
   const handleSimulation = useCallback(
     async (e: TargetedEvent<HTMLFormElement, Event>) => {
@@ -99,7 +99,7 @@ function ShippingSimulation({ sku }: Props) {
         simulateResult.value = (await invoke({
           key: "deco-sites/persono/loaders/shippingSimulation.ts",
           props: { postalCode, sku: sku },
-        })) as ShippingSimulation | null;
+        })) as Simulation | null;
         error.value = false;
       } catch (e) {
         error.value = true;

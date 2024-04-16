@@ -11,6 +11,7 @@ interface Props {
   possibilities: GroupedData;
   productsNotAvailable: string[];
   category: string;
+  device: string;
 }
 
 type Possibilities = { name: string; value: string; url: string; sku: string };
@@ -22,6 +23,7 @@ function VariantSizeSelector({
   sizes,
   category,
   sizeGuide,
+  device,
 }: Props) {
   const sizePossibilities: Possibilities[] = [];
   let color = "";
@@ -111,7 +113,11 @@ function VariantSizeSelector({
           >
             Guia de tamanhos
           </label>
-          <SizesGuideModal sizes={categorySizes} segment={category} />
+          <SizesGuideModal
+            device={device}
+            sizes={categorySizes}
+            segment={category}
+          />
         </div>
       </ul>
     </div>

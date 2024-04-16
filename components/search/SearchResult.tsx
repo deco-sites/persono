@@ -158,7 +158,10 @@ function Result({
           notDisplay={filters.length == 0 &&
             breadcrumb?.itemListElement.length == 0}
         />
-        <ActiveFilterTag appliedFilters={appliedFilters} />
+        <ActiveFilterTag
+          appliedFilters={appliedFilters}
+          basePath={breadcrumb?.url}
+        />
 
         <div class="flex flex-row sm:mt-6">
           {layout?.variant === "aside" && filters.length > 0 && (
@@ -168,6 +171,7 @@ function Result({
                 sizes={sizes}
                 colors={colors}
                 filters={sortedFiltersSizeOrderly}
+                basePath={breadcrumb?.url}
               />
             </aside>
           )}
