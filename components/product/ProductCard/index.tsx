@@ -85,6 +85,9 @@ function ProductCard({
     (p) => p.priceType === "https://schema.org/ListPrice",
   );
 
+  const outOfStock =
+    offers?.offers[0].availability === "https://schema.org/OutOfStock";
+
   const { hasDiscount, hasMultiplePrices } = useMemo(() => {
     const variantPrices = {
       minPrice: productSalesPrice?.price,
@@ -103,8 +106,8 @@ function ProductCard({
     };
   }, [product, listPrice, price]);
 
-  const labelOfferType = priceLabel?.find((p) =>
-    product.offers?.offers[0].additionalType == p.offerType
+  const labelOfferType = priceLabel?.find(
+    (p) => product.offers?.offers[0].additionalType == p.offerType,
   );
 
   const tagsCapture = (value: string, identifier: string) =>
@@ -114,6 +117,21 @@ function ProductCard({
         item.identifier === identifier &&
         item.value === value,
     );
+
+  const hasOutOfStockTag = useMemo(() => {
+    if (!outOfStock) {
+      return;
+    }
+
+    return {
+      label: "Esgotado",
+      colors: {
+        backgroundColor: "#666666",
+
+        textColor: "#FFFFFF",
+      },
+    };
+  }, [outOfStock]);
 
   const { hasDiscountTag, hasNewsTag } = useMemo(() => {
     return {
@@ -171,6 +189,8 @@ function ProductCard({
         />
 
         <ProductCardImage
+          outOfStock={outOfStock}
+          hasOutOfStockTag={hasOutOfStockTag}
           customTagColor={customTagColor}
           hasCustomTag={hasCustomTag}
           search={search}
@@ -182,6 +202,7 @@ function ProductCard({
         />
 
         <PriceAndName
+          outOfStock={outOfStock}
           search={search || (hasRelatedProducts && isMobile)}
           hasDiscount={hasDiscount}
           hasMultiplePrices={hasMultiplePrices}
