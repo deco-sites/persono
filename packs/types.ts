@@ -1116,6 +1116,11 @@ export interface InstallmentConfig {
   maxInstallments: number;
   minInstallmentValue: number;
 }
+
+export interface VinhedoSkuAPI {
+  data: VinhedoSku[]
+}
+
 export interface VinhedoSku {
   type: string;
   label: string;
@@ -1190,6 +1195,7 @@ export interface ProductItem {
   attributes: Attributes;
   bedSize: string;
   stocks: Stock[];
+  priceType?: number
 }
 
 export interface BrandItem {
