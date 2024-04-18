@@ -2,6 +2,7 @@ import { formatPrice } from "deco-sites/persono/sdk/format.ts";
 
 interface Props {
   hasMultiplePrices?: boolean;
+  labelOffer?: string;
   hasDiscount: boolean;
   productName: string;
   listPrice: number;
@@ -9,22 +10,41 @@ interface Props {
   priceCurrency?: string;
   installments: string | null;
   search?: boolean;
+  outOfStock?: boolean;
 }
+
+const formatLabelOffer = (
+  price: string | null,
+  label?: string,
+) =>
+  label?.replace(
+    /\${([^}]+)}/g,
+    (_, _group) => price ? `${price}` : "",
+  ) ?? "";
 
 export const PriceAndName = ({
   hasDiscount,
   hasMultiplePrices,
+  labelOffer,
   listPrice,
   price,
   productName,
   installments,
   priceCurrency = "BRL",
   search,
+  outOfStock,
 }: Props) => {
+  const matchLabelOffer = !!labelOffer?.match(/\${listPrice}/);
+  const labelOfferWithPrice = labelOffer && matchLabelOffer
+    ? formatLabelOffer(formatPrice(listPrice, priceCurrency), labelOffer)
+    : labelOffer;
+
   return (
-    <div class="flex-auto flex flex-col p-4 ">
+    <div
+      class={`flex-auto flex flex-col p-4 ${outOfStock ? "opacity-60" : ""}`}
+    >
       <h2
-        class=" line-clamp-2 h-10 text-sm lg:text-lg font-normal  text-black mb-2"
+        class="line-clamp-2 h-10 text-sm lg:text-lg font-normal  text-black mb-2"
         dangerouslySetInnerHTML={{ __html: productName ?? "" }}
       />
 
@@ -35,15 +55,18 @@ export const PriceAndName = ({
           } justify-start`}
         >
           <div class="h-5">
-            {(hasMultiplePrices || hasDiscount) && (
+            {(labelOfferWithPrice || hasDiscount) && (
               <p
                 class={`text-gray-600 font-normal text-xs ${
-                  !hasMultiplePrices && hasDiscount ? "line-through" : ""
+                  hasDiscount &&
+                    hasMultiplePrices &&
+                    (matchLabelOffer || !labelOffer)
+                    ? "line-through"
+                    : ""
                 }`}
               >
-                {hasMultiplePrices
-                  ? "a partir de"
-                  : formatPrice(listPrice, priceCurrency)}
+                {labelOfferWithPrice ??
+                  formatPrice(listPrice, priceCurrency)}
               </p>
             )}
           </div>

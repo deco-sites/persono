@@ -146,13 +146,15 @@ export function toProductDetailsPage(
 
 const toBreadcrumbList = (
   origin: string,
-  { breadcrumbs }: VMDetails | AmmoProduct,
+  details: VMDetails | AmmoProduct,
 ): BreadcrumbList => {
-  const itemListElement = toItemListElement(breadcrumbs!, origin);
+  const itemListElement = toItemListElement(details.breadcrumbs!, origin);
+  const base = details as VMDetails;
   return {
     "@type": "BreadcrumbList",
     itemListElement,
     numberOfItems: itemListElement.length,
+    url: base?.basePath ?? undefined,
   };
 };
 
@@ -363,7 +365,8 @@ const toAggregateOffer = (
     (ammoProduct?.price?.min ?? productItem?.priceTo ?? sku!.price.to) / 100;
   const available = ammoProduct?.available ?? productItem?.available ??
     sku?.available!;
-  const priceType = PRICE_TYPES[ammoProduct?.price?.type ?? 6];
+  const priceType =
+    PRICE_TYPES[ammoProduct?.price?.type ?? productItem?.priceType ?? 6];
   const possibleInstallmentsQtd =
     Math.floor(lowPrice / (minInstallmentValue / 100)) ||
     1;
@@ -543,10 +546,19 @@ const toAdditionalProperties = (
     ...tagsProperties(),
   ];
 };
+
+const toProductPageUrl = (productTitle: string, productSKU: string) => {
+  const replacedProductTitle = productTitle.toLocaleLowerCase().replaceAll(
+    " ",
+    "-",
+  );
+
+  return `/pr/${replacedProductTitle}/${productSKU}`;
+};
+
 export function toProductItems(
   productItem: ProductItem,
   config: VMConfig,
-  baseUrl: URL,
   imageBaseUrl: string,
 ): Product {
   const product: Product = {
@@ -567,7 +579,7 @@ export function toProductItems(
     }),
 
     image: toImageItem(productItem, imageBaseUrl),
-    url: new URL(baseUrl.origin).href,
+    url: toProductPageUrl(productItem.title, productItem.sku),
     category: productItem.macroCategory,
   };
 
@@ -580,6 +592,16 @@ const toImageItem = (
 ): ImageObject[] => {
   const imageInfo: ImageObject[] = [];
   const { title } = productItem;
+
+  if (productItem.photoStill) {
+    imageInfo.push({
+      "@type": "ImageObject" as const,
+      url: getImageUrl(imageBaseUrl, productItem.photoStill),
+      additionalType: "image",
+      alternateName: title,
+      disambiguatingDescription: `still`,
+    });
+  }
 
   if (productItem.photoSemiEnvironment) {
     imageInfo.push({
@@ -599,15 +621,7 @@ const toImageItem = (
       disambiguatingDescription: `panoramics`,
     });
   }
-  if (productItem.photoStill) {
-    imageInfo.push({
-      "@type": "ImageObject" as const,
-      url: getImageUrl(imageBaseUrl, productItem.photoStill),
-      additionalType: "image",
-      alternateName: title,
-      disambiguatingDescription: `still`,
-    });
-  }
+
   if (productItem.youtubeVideo) {
     imageInfo.push({
       "@type": "ImageObject" as const,

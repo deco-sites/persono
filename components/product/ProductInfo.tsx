@@ -25,6 +25,8 @@ import {
 } from "deco-sites/persono/components/product/NotFound.tsx";
 import { FnContext } from "deco/types.ts";
 import ProductInfoCollapse from "deco-sites/persono/islands/ProductInfoCollapse.tsx";
+import { scriptAsDataURI } from "apps/utils/dataURI.ts";
+import { PageFolder } from "deco-sites/persono/islands/PageFolder.tsx";
 
 interface Props {
   colors: Color[];
@@ -49,6 +51,8 @@ function ProductInfo({
   sizeGuide,
 }: SectionProps<typeof loader>) {
   const id = useId();
+
+  const productInfoSectionId = `${id}-product-info`;
 
   if (page === null) {
     return <NotFound device={device} notFoundSettings={notFoundSettings} />;
@@ -95,10 +99,23 @@ function ProductInfo({
     }
   });
 
+  const script = (id: string) => {
+    const content = document.getElementById(id);
+    const windowHeight = innerHeight;
+
+    if (content && windowHeight) {
+      const contentHeight = content?.offsetHeight;
+
+      const top = (contentHeight - windowHeight + 4) * -1;
+      content.style.top = `${top}px`;
+      content.style.position = "sticky";
+    }
+  };
+
   return (
     <div
-      class="flex flex-col w-full sm:mt-10 px-4 sm:px-0 sm:sticky sm:top-24"
-      id={id}
+      class="flex flex-col w-full sm:mt-10 px-4 sm:px-0"
+      id={productInfoSectionId}
     >
       <Breadcrumb
         itemListElement={breadcrumb.itemListElement}
@@ -128,8 +145,9 @@ function ProductInfo({
         </div>
         <span class="text-sm text-gray-600">{installments}</span>
       </div>
+
       {/* Sku Selector */}
-      <div class="sm:mt-6 mt-4 flex flex-col gap-4">
+      <div class="sm:mt-6 mt-4  flex-col gap-4 ">
         <ProductSizeSelector
           category={product.category?.split(
             ">",
@@ -139,6 +157,7 @@ function ProductInfo({
           url={url}
           productsNotAvailable={productsNotAvailable}
           possibilities={possibilities}
+          device={device}
         />
         <ProductColorSelector
           colors={colors}
@@ -149,7 +168,7 @@ function ProductInfo({
       </div>
       {/* Add to Cart and Favorites button */}
       <div
-        class={`mt-6 sm:mt-10 ${
+        class={`mt-6 sm:mt-10  ${
           productBenefits?.length == 0 ? "mb-5" : "mb-10"
         } flex flex-col`}
       >
@@ -164,87 +183,88 @@ function ProductInfo({
           )
           : <OutOfStock sku={sku} />}
       </div>
+      <PageFolder activate={device !== "desktop"}>
+        {/* Benefities */}
 
-      {/* Benefities */}
+        {/* Description card */}
 
-      <div class={`${productBenefits?.length == 0 ? "hidden" : ""}`}>
-        <ProductBenefits
-          productBenefits={productBenefits}
-          adminBenefits={benefits}
-        />
-      </div>
+        <div class="mt-6 sm:mt-7  ">
+          {description && (
+            <div class="flex flex-col divide-y border-t">
+              {description && (
+                <ProductInfoCollapse title="Descrição">
+                  <p class="text-base font-normal">{description}</p>
+                </ProductInfoCollapse>
+              )}
 
-      {/* Description card */}
-
-      <div class="mt-6 sm:mt-7 ">
-        {description && (
-          <div class="flex flex-col divide-y border-t">
-            {description && (
-              <ProductInfoCollapse title="Descrição">
-                <p class="text-base font-normal">{description}</p>
+              <ProductInfoCollapse title="Especificações">
+                <div class="flex flex-col gap-2">
+                  {product.isVariantOf?.hasVariant[0].additionalProperty &&
+                    product?.isVariantOf?.hasVariant[0]?.additionalProperty
+                      .map(
+                        (ad) =>
+                          ad.propertyID == "TECNICALSPECIFICATION" &&
+                            !ad.description?.startsWith("CUSTOM_")
+                            ? (
+                              <p class="text-base font-normal">
+                                {ad.description}:&ensp;{ad.value}
+                              </p>
+                            )
+                            : null,
+                      )}
+                </div>
               </ProductInfoCollapse>
-            )}
 
-            <ProductInfoCollapse title="Especificações">
-              <div class="flex flex-col gap-2">
-                {product.isVariantOf?.hasVariant[0].additionalProperty &&
-                  product?.isVariantOf?.hasVariant[0]?.additionalProperty.map(
-                    (ad) =>
-                      ad.propertyID == "TECNICALSPECIFICATION" &&
-                        !ad.description?.startsWith("CUSTOM_")
-                        ? (
-                          <p class="text-base font-normal">
-                            {ad.description}:&ensp;{ad.value}
-                          </p>
-                        )
-                        : null,
-                  )}
-              </div>
-            </ProductInfoCollapse>
+              <ProductInfoCollapse title="O que vai na embalagem?">
+                <div class="flex flex-col gap-2">
+                  {product.isVariantOf?.hasVariant[0].additionalProperty &&
+                    product?.isVariantOf?.hasVariant[0]?.additionalProperty
+                      .map(
+                        (ad) =>
+                          ad.propertyID == "KITITEM"
+                            ? (
+                              <p class="text-base font-normal">
+                                {ad.value}&ensp;{ad.description}
+                              </p>
+                            )
+                            : null,
+                      )}
+                </div>
+              </ProductInfoCollapse>
 
-            <ProductInfoCollapse title="O que vai na embalagem?">
-              <div class="flex flex-col gap-2">
-                {product.isVariantOf?.hasVariant[0].additionalProperty &&
-                  product?.isVariantOf?.hasVariant[0]?.additionalProperty.map(
-                    (ad) =>
-                      ad.propertyID == "KITITEM"
-                        ? (
-                          <p class="text-base font-normal">
-                            {ad.value}&ensp;{ad.description}
-                          </p>
-                        )
-                        : null,
-                  )}
-              </div>
-            </ProductInfoCollapse>
+              {/* Shipping Simulation */}
 
-            {/* Shipping Simulation */}
-
-            <div class="collapse items-start collapse-open">
-              <div class="flex items-center collapse-title text-base after:text-2xl after:text-primary">
-                Calcular frete
-              </div>
-              <div class="collapse-content w-full pr-0">
-                <ShippingSimulation sku={product.sku} />
+              <div class="collapse items-start collapse-open pl-0">
+                <div class="flex  pl-0 items-center collapse-title text-base after:text-2xl after:text-primary">
+                  Calcular frete
+                </div>
+                <div class="collapse-content w-full pr-0 pl-0">
+                  <ShippingSimulation sku={product.sku} />
+                </div>
               </div>
             </div>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
 
-      {/* Analytics Event */}
+        {/* Analytics Event */}
 
-      <SendEventOnView
-        id={id}
-        event={{
-          name: "view_item",
-          params: {
-            item_list_id: "product",
-            item_list_name: "Product",
-            items: [eventItem],
-          },
-        }}
-      />
+        <SendEventOnView
+          id={id}
+          event={{
+            name: "view_item",
+            params: {
+              item_list_id: "product",
+              item_list_name: "Product",
+              items: [eventItem],
+            },
+          }}
+        />
+      </PageFolder>
+      <div class="h-3 invisible" />
+
+      {device === "desktop" && (
+        <script defer src={scriptAsDataURI(script, productInfoSectionId)} />
+      )}
     </div>
   );
 }

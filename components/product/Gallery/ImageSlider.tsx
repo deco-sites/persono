@@ -47,12 +47,16 @@ export default function GallerySlider(props: SectionProps<typeof loader>) {
 
   if (props.device == "desktop") {
     return (
-      <div id={id} class="flex flex-col self-center sm:my-10 w-full">
+      <div
+        id={id}
+        class="flex flex-col self-center sm:my-10 w-full sm:pt-[6px]"
+      >
         {images.map((img, index) => (
           <Image
             class="w-full"
             style={{ aspectRatio }}
             src={img.url!}
+            fetchPriority={index === 0 ? "high" : "auto"}
             alt={img.alternateName}
             width={678}
             height={678}
@@ -83,6 +87,7 @@ export default function GallerySlider(props: SectionProps<typeof loader>) {
                 loading={index === 0 ? "eager" : "lazy"}
                 id={`slide${index}`}
                 name={`slide${id}`}
+                fetchPriority={index === 0 ? "high" : "auto"}
               />
             </Slider.Item>
           ))}
