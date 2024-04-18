@@ -1118,7 +1118,7 @@ export interface InstallmentConfig {
 }
 
 export interface VinhedoSkuAPI {
-  data: VinhedoSku[]
+  data: VinhedoSku[];
 }
 
 export interface VinhedoSku {
@@ -1195,7 +1195,7 @@ export interface ProductItem {
   attributes: Attributes;
   bedSize: string;
   stocks: Stock[];
-  priceType?: number
+  priceType?: number;
 }
 
 export interface BrandItem {

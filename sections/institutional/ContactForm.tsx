@@ -1,13 +1,13 @@
-import type { HTML } from "deco-sites/std/components/types.ts";
 import Button from "$store/components/ui/Button.tsx";
-import Markdown from "deco-sites/std/components/Markdown.tsx";
 import Icon from "deco-sites/persono/components/ui/Icon.tsx";
+import Markdown from "deco-sites/std/components/Markdown.tsx";
 
 export interface Props {
   /**
    * @description Content will be rendered as markdown.
+   * @format rich-text
    */
-  content?: HTML;
+  content?: string;
   serviceInfo?: {
     title: string;
     /**
