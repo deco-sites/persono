@@ -10,12 +10,12 @@ import {
 
 interface ActionProps {
   /**
-   * @format html
+   * @format rich-text
    */
   title?: string;
 
   /**
-   * @format html
+   * @format rich-text
    */
   subTitle?: string;
 

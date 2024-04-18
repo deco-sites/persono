@@ -373,7 +373,8 @@ const toAggregateOffer = (
     (ammoProduct?.price?.min ?? productItem?.priceTo ?? sku!.price.to) / 100;
   const available = ammoProduct?.available ?? productItem?.available ??
     sku?.available!;
-  const priceType = PRICE_TYPES[ammoProduct?.price?.type ?? 6];
+  const priceType =
+    PRICE_TYPES[ammoProduct?.price?.type ?? productItem?.priceType ?? 6];
   const possibleInstallmentsQtd =
     Math.floor(lowPrice / (minInstallmentValue / 100)) ||
     1;

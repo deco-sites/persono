@@ -2,13 +2,13 @@ import Header from "$store/components/ui/SectionHeader.tsx";
 
 export interface Question {
   question: string;
-  /** @format html */
+  /** @format rich-text */
   answer: string;
 }
 
 export interface Contact {
   title?: string;
-  /** @format html */
+  /** @format rich-text */
   description?: string;
   link?: {
     text: string;

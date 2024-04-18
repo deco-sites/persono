@@ -13,35 +13,14 @@ interface Props {
   outOfStock?: boolean;
 }
 
-function formatListPriceLabelOffer(
-  label: string | undefined,
+const formatLabelOffer = (
   price: string | null,
-): string {
-  if (!label) return "";
-  return label.replace(/\${([^}]+)}/g, (match, group) => {
-    return price !== null ? String(price) : "";
-  });
-}
-
-function formatMinPriceLabelOffer(
-  label: string | undefined,
-  price: string | null,
-): string {
-  if (!label) return "";
-  return label.replace(/\${([^}]+)}/g, (match, group) => {
-    return price !== null ? String(price) : "";
-  });
-}
-
-function formatSalesPriceLabelOffer(
-  label: string | undefined,
-  price: string | null,
-): string {
-  if (!label) return "";
-  return label.replace(/\${([^}]+)}/g, (match, group) => {
-    return price !== null ? String(price) : "";
-  });
-}
+  label?: string,
+) =>
+  label?.replace(
+    /\${([^}]+)}/g,
+    (_, _group) => price ? `${price}` : "",
+  ) ?? "";
 
 export const PriceAndName = ({
   hasDiscount,
@@ -55,31 +34,17 @@ export const PriceAndName = ({
   search,
   outOfStock,
 }: Props) => {
-  let labelOfferWithPrice;
-
-  if (labelOffer && labelOffer.match(/\${listPrice}/)) {
-    labelOfferWithPrice = formatListPriceLabelOffer(
-      labelOffer,
-      formatPrice(listPrice, priceCurrency),
-    );
-  } else if (labelOffer && labelOffer.match(/\${minPrice}/)) {
-    labelOfferWithPrice = formatMinPriceLabelOffer(
-      labelOffer,
-      formatPrice(price, priceCurrency),
-    );
-  } else if (labelOffer && labelOffer.match(/\${salesPrice}/)) {
-    labelOfferWithPrice = formatSalesPriceLabelOffer(
-      labelOffer,
-      formatPrice(price, priceCurrency),
-    );
-  }
+  const matchLabelOffer = !!labelOffer?.match(/\${listPrice}/);
+  const labelOfferWithPrice = labelOffer && matchLabelOffer
+    ? formatLabelOffer(formatPrice(listPrice, priceCurrency), labelOffer)
+    : labelOffer;
 
   return (
     <div
       class={`flex-auto flex flex-col p-4 ${outOfStock ? "opacity-60" : ""}`}
     >
       <h2
-        class=" line-clamp-2 h-10 text-sm lg:text-lg font-normal  text-black mb-2"
+        class="line-clamp-2 h-10 text-sm lg:text-lg font-normal  text-black mb-2"
         dangerouslySetInnerHTML={{ __html: productName ?? "" }}
       />
 
@@ -90,15 +55,18 @@ export const PriceAndName = ({
           } justify-start`}
         >
           <div class="h-5">
-            {(hasMultiplePrices || hasDiscount) && (
+            {(labelOfferWithPrice || hasDiscount) && (
               <p
                 class={`text-gray-600 font-normal text-xs ${
-                  !hasMultiplePrices && hasDiscount ? "line-through" : ""
+                  hasDiscount &&
+                    hasMultiplePrices &&
+                    (matchLabelOffer || !labelOffer)
+                    ? "line-through"
+                    : ""
                 }`}
               >
-                {hasMultiplePrices && labelOfferWithPrice
-                  ? labelOfferWithPrice
-                  : formatPrice(listPrice, priceCurrency)}
+                {labelOfferWithPrice ??
+                  formatPrice(listPrice, priceCurrency)}
               </p>
             )}
           </div>

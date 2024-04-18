@@ -1,11 +1,11 @@
 import Markdown from "deco-sites/std/components/Markdown.tsx";
-import type { HTML } from "deco-sites/std/components/types.ts";
 
 export interface Props {
   /**
    * @description Content will be rendered as markdown.
+   * @format rich-textø
    */
-  content: HTML;
+  content: string;
   title: string;
 }
 
