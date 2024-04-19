@@ -34,34 +34,33 @@ interface Props {
   basePath?: string;
 }
 
-type FilterItem = { type: string; slugs: string[] };
-
 const applyFilters = (
   { rawFiltersToApply, basePath }: {
-    basePath?: string;
     rawFiltersToApply: Record<string, string>[];
+    basePath?: string;
   },
-) => {
-  const transformedArray = rawFiltersToApply.reduce(
-    (result, item) => {
-      if (Object.keys(item).length > 0) {
-        const existingItemIndex: number = result.findIndex((r: FilterItem) =>
-          r.type === item.type
-        );
+) =>
+  redirectWithFilters({
+    transformedArray: rawFiltersToApply.reduce(
+      (result, item) => {
+        if (Object.keys(item).length > 0) {
+          const existingItemIndex = result.findIndex(({ type }) =>
+            type === item.type
+          );
 
-        if (existingItemIndex !== -1) {
-          result[existingItemIndex].slugs.push(...item.slugs);
-        } else {
-          result.push({ type: item.type, slugs: [...item.slugs] });
+          if (existingItemIndex === -1) {
+            result.push({ type: item.type, slugs: [item.slugs] });
+            return result;
+          }
+          result[existingItemIndex].slugs.push(item.slugs);
         }
-      }
 
-      return result;
-    },
-    [] as { type: string; slugs: string[] }[],
-  );
-  redirectWithFilters({ transformedArray, basePath });
-};
+        return result;
+      },
+      [] as { type: string; slugs: string[] }[],
+    ),
+    basePath,
+  });
 
 const toggleSelectFilter = ({
   rawFiltersToApply,
@@ -77,8 +76,6 @@ const toggleSelectFilter = ({
   const filterIndex = rawFiltersToApply.findIndex(
     (filter) => filter.type === category && filter.slugs === slug,
   );
-
-  console.log(filterIndex);
 
   if (filterIndex !== -1) {
     const tempArray = rawFiltersToApply;
