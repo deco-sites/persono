@@ -1,16 +1,17 @@
-import type { HTML } from "deco-sites/std/components/types.ts";
 import Markdown from "deco-sites/std/components/Markdown.tsx";
 import { AccordionItem } from "./AccordionItem.tsx";
 
 export interface Props {
   sections: {
-    sectionText?: HTML;
+    /** @format rich-text */
+    sectionText?: string;
     accordions: {
       label: string;
       /**
        * @description Content will be rendered as markdown.
+       * @format rich-text
        */
-      content: HTML;
+      content: string;
     }[];
   }[];
 }

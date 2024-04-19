@@ -34,9 +34,10 @@ export const PriceAndName = ({
   search,
   outOfStock,
 }: Props) => {
-  const labelOfferWithPrice = labelOffer && !!labelOffer.match(/\${.+Price}/)
-    ? formatLabelOffer(formatPrice(price, priceCurrency), labelOffer)
-    : undefined;
+  const matchLabelOffer = !!labelOffer?.match(/\${listPrice}/);
+  const labelOfferWithPrice = labelOffer && matchLabelOffer
+    ? formatLabelOffer(formatPrice(listPrice, priceCurrency), labelOffer)
+    : labelOffer;
 
   return (
     <div
@@ -57,7 +58,9 @@ export const PriceAndName = ({
             {(labelOfferWithPrice || hasDiscount) && (
               <p
                 class={`text-gray-600 font-normal text-xs ${
-                  !labelOfferWithPrice && !hasMultiplePrices && hasDiscount
+                  hasDiscount &&
+                    hasMultiplePrices &&
+                    (matchLabelOffer || !labelOffer)
                     ? "line-through"
                     : ""
                 }`}
