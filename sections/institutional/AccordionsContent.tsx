@@ -18,7 +18,7 @@ export interface Props {
 
 function AccordionsContent({ sections }: Props) {
   return (
-    <div class="flex flex-col gap-5 pb-12 lg:pb-20">
+    <div class="flex flex-col pb-12 lg:pb-20 border-t">
       {sections?.map((section) => (
         <>
           {section?.sectionText && (
