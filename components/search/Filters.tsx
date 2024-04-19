@@ -34,27 +34,32 @@ interface Props {
   basePath?: string;
 }
 
+type FilterItem = { type: string; slugs: string[] }
+
 const applyFilters = (
   { rawFiltersToApply, basePath }: {
-    basePath: string | undefined;
+    basePath?: string;
     rawFiltersToApply: Record<string, string>[];
   },
 ) => {
-  const transformedArray = rawFiltersToApply
-    .reduce((result, item) => {
+  const transformedArray = rawFiltersToApply.reduce(
+    (result, item) => {
       if (Object.keys(item).length > 0) {
-        const existingItem = result.find((r) => r.type === item.type);
+        const existingItemIndex: number = result.findIndex((r: FilterItem) =>
+          r.type === item.type
+        );
 
-        if (existingItem) {
-          existingItem.slugs.push(item.slugs);
+        if (existingItemIndex !== -1) {
+          result[existingItemIndex].slugs.push(...item.slugs);
         } else {
-          result.push({ type: item.type, slugs: [item.slugs] });
+          result.push({ type: item.type, slugs: [...item.slugs] });
         }
       }
 
       return result;
-    }, [] as { type: string; slugs: string[] }[])
-    .filter((item) => item.slugs.length > 0);
+    },
+    [] as { type: string; slugs: string[] }[]
+  );
   redirectWithFilters({ transformedArray, basePath });
 };
 
@@ -73,8 +78,10 @@ const toggleSelectFilter = ({
     (filter) => filter.type === category && filter.slugs === slug,
   );
 
+  console.log(filterIndex)
+
   if (filterIndex !== -1) {
-    const tempArray = [...rawFiltersToApply];
+    const tempArray = rawFiltersToApply;
     tempArray.splice(filterIndex, 1);
     setRawFiltersToApply(tempArray);
   } else {
@@ -106,7 +113,7 @@ function ValueItem({
   const toggleInputSelected = useSignal<boolean>(selected);
   const label = currentLabel === "true" ? "Sim" : currentLabel;
 
-  if (clearFilter.value == true) {
+  if (clearFilter.value === true) {
     toggleInputSelected.value = false;
   }
 
@@ -180,6 +187,7 @@ function FilterValues({
                     setRawFiltersToApply,
                   });
                   toggleColorSelected.value = !toggleColorSelected.value;
+                  clearFilter.value = false;
                 }}
                 id={item.label + " colorToggle"}
                 aria-label="Name"
@@ -207,6 +215,7 @@ function FilterValues({
                     setRawFiltersToApply,
                   });
                   toggleSizeSelected.value = !toggleSizeSelected.value;
+                  clearFilter.value = false;
                 }}
                 id={item.label + " sizeToggle"}
                 aria-label="Name"
