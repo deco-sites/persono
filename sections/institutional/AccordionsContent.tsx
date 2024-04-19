@@ -1,4 +1,4 @@
-import { AccordionItem } from "./AccordionItem.tsx";
+import AccordionItem from "./AccordionItem.tsx";
 
 export interface Props {
   sections: {
