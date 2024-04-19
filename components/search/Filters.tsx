@@ -34,7 +34,7 @@ interface Props {
   basePath?: string;
 }
 
-type FilterItem = { type: string; slugs: string[] }
+type FilterItem = { type: string; slugs: string[] };
 
 const applyFilters = (
   { rawFiltersToApply, basePath }: {
@@ -58,7 +58,7 @@ const applyFilters = (
 
       return result;
     },
-    [] as { type: string; slugs: string[] }[]
+    [] as { type: string; slugs: string[] }[],
   );
   redirectWithFilters({ transformedArray, basePath });
 };
@@ -78,7 +78,7 @@ const toggleSelectFilter = ({
     (filter) => filter.type === category && filter.slugs === slug,
   );
 
-  console.log(filterIndex)
+  console.log(filterIndex);
 
   if (filterIndex !== -1) {
     const tempArray = rawFiltersToApply;
