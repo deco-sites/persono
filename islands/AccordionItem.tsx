@@ -56,7 +56,8 @@ export default function AccordionItem({ title, content }: Props) {
           } transition-opacity duration-700 ease-in-out`}
           dangerouslySetInnerHTML={{
             __html: content.replace(/<p>|<\/p>/g, "\n"),
-          }}/>
+          }}
+        />
       </section>
     </div>
   );
