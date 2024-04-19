@@ -4,6 +4,7 @@ import Icon from "deco-sites/persono/components/ui/Icon.tsx";
 export interface Props {
   /**
    * @description Content will be rendered as markdown.
+   * @format rich-text
    */
   /** @format html */
   content?: string;

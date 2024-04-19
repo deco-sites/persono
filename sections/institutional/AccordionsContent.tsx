@@ -8,6 +8,7 @@ export interface Props {
       label: string;
       /**
        * @description Content will be rendered as markdown.
+       * @format rich-text
        */
       /** @format html */
       content: string;
