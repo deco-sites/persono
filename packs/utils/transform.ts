@@ -111,20 +111,15 @@ export function toProduct(
 export function toProductListingPage(
   { vmDetails, url, vmConfig, imageBaseUrl }: ProductListingPageProps,
 ): ProductListingPage {
-  const { productCards, meta, appliedFilters } = vmDetails;
+  const { productCards, meta, breadcrumbs } = vmDetails;
 
-  const lastFilter = appliedFilters[appliedFilters.length - 1];
-  const newTitle = !Array.isArray(vmDetails.breadcrumbs[2])
-    ? vmDetails.breadcrumbs[2].name
-    : lastFilter
-    ? lastFilter.value
-    : meta.title;
+  const cleanedBreadcrumbs = sanitizeBreadcrumbs(breadcrumbs);
 
   return {
     "@type": "ProductListingPage",
     breadcrumb: toBreadcrumbList(url.origin, vmDetails),
     seo: {
-      title: newTitle,
+      title: cleanedBreadcrumbs[cleanedBreadcrumbs.length - 1].name,
       description: meta.description,
       canonical: "",
     },
@@ -156,7 +151,10 @@ const toBreadcrumbList = (
   origin: string,
   details: VMDetails | AmmoProduct,
 ): BreadcrumbList => {
-  const itemListElement = toItemListElement(details.breadcrumbs!, origin);
+  const itemListElement = toItemListElement(
+    sanitizeBreadcrumbs(details.breadcrumbs!),
+    origin,
+  );
   const base = details as VMDetails;
   return {
     "@type": "BreadcrumbList",
@@ -167,10 +165,10 @@ const toBreadcrumbList = (
 };
 
 const toItemListElement = (
-  breadcrumbs: (Breadcrumb | Breadcrumb[])[],
+  breadcrumbs: Breadcrumb[],
   origin: string,
 ): ListItem[] =>
-  breadcrumbs?.flat(1).reduce<ListItem[]>(
+  breadcrumbs.flat(1).reduce<ListItem[]>(
     (acc, { path, name, position, hasSibling }) => {
       const item = path ? new URL(new URL(path).pathname, origin).href : "";
       const newItem: ListItem = {
@@ -653,3 +651,12 @@ const toImageItem = (
   }
   return imageInfo;
 };
+
+const sanitizeBreadcrumbs = (breadcrumbs: Breadcrumb[]) =>
+  breadcrumbs.reduce((acc, b, i) => {
+    if (Array.isArray(b)) {
+      breadcrumbs.splice(i);
+      return acc;
+    }
+    return [...acc, b];
+  }, [] as Breadcrumb[]);
