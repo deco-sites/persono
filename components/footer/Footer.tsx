@@ -33,7 +33,7 @@ export interface PaymentItem {
 export interface NewsletterForm {
   placeholder?: string;
   buttonText?: string;
-  /** @format html */
+  /** @format rich-text */
   helpText?: string;
 }
 
@@ -56,7 +56,7 @@ export interface Layout {
 
 interface NewsletterProps {
   title?: string;
-  /** @format html */
+  /** @format rich-text */
   description?: string;
   form?: NewsletterForm;
 }

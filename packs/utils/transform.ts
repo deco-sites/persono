@@ -111,12 +111,15 @@ export function toProduct(
 export function toProductListingPage(
   { vmDetails, url, vmConfig, imageBaseUrl }: ProductListingPageProps,
 ): ProductListingPage {
-  const { productCards, meta } = vmDetails;
+  const { productCards, meta, breadcrumbs } = vmDetails;
+
+  const cleanedBreadcrumbs = sanitizeBreadcrumbs(breadcrumbs);
+
   return {
     "@type": "ProductListingPage",
     breadcrumb: toBreadcrumbList(url.origin, vmDetails),
     seo: {
-      title: meta.title,
+      title: cleanedBreadcrumbs[cleanedBreadcrumbs.length - 1].name,
       description: meta.description,
       canonical: "",
     },
@@ -146,21 +149,26 @@ export function toProductDetailsPage(
 
 const toBreadcrumbList = (
   origin: string,
-  { breadcrumbs }: VMDetails | AmmoProduct,
+  details: VMDetails | AmmoProduct,
 ): BreadcrumbList => {
-  const itemListElement = toItemListElement(breadcrumbs!, origin);
+  const itemListElement = toItemListElement(
+    sanitizeBreadcrumbs(details.breadcrumbs!),
+    origin,
+  );
+  const base = details as VMDetails;
   return {
     "@type": "BreadcrumbList",
     itemListElement,
     numberOfItems: itemListElement.length,
+    url: base?.basePath ?? undefined,
   };
 };
 
 const toItemListElement = (
-  breadcrumbs: Breadcrumb[] | [Breadcrumb[]],
+  breadcrumbs: Breadcrumb[],
   origin: string,
 ): ListItem[] =>
-  breadcrumbs?.flat(1).reduce<ListItem[]>(
+  breadcrumbs.flat(1).reduce<ListItem[]>(
     (acc, { path, name, position, hasSibling }) => {
       const item = path ? new URL(new URL(path).pathname, origin).href : "";
       const newItem: ListItem = {
@@ -363,7 +371,8 @@ const toAggregateOffer = (
     (ammoProduct?.price?.min ?? productItem?.priceTo ?? sku!.price.to) / 100;
   const available = ammoProduct?.available ?? productItem?.available ??
     sku?.available!;
-  const priceType = PRICE_TYPES[ammoProduct?.price?.type ?? 6];
+  const priceType =
+    PRICE_TYPES[ammoProduct?.price?.type ?? productItem?.priceType ?? 6];
   const possibleInstallmentsQtd =
     Math.floor(lowPrice / (minInstallmentValue / 100)) ||
     1;
@@ -642,3 +651,12 @@ const toImageItem = (
   }
   return imageInfo;
 };
+
+const sanitizeBreadcrumbs = (breadcrumbs: Breadcrumb[]) =>
+  breadcrumbs.reduce((acc, b, i) => {
+    if (Array.isArray(b)) {
+      breadcrumbs.splice(i);
+      return acc;
+    }
+    return [...acc, b];
+  }, [] as Breadcrumb[]);

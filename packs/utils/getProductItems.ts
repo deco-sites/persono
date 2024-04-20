@@ -1,7 +1,7 @@
 import { AppContext } from "$store/apps/site.ts";
 import type { Product } from "apps/commerce/types.ts";
 import { toProductItems } from "./transform.ts";
-import { ProductItem } from "$store/packs/types.ts";
+import { ProductItem, VinhedoSkuAPI } from "$store/packs/types.ts";
 
 export async function getProductItems(
   query: string,
@@ -22,21 +22,27 @@ export async function getProductItems(
       {},
     );
 
-  const { data } = await response.json();
+  const { data } = await response.json() as VinhedoSkuAPI;
 
   if (!data || data.length === 0) {
     return [];
   }
 
   const productItems = data[0].productItems;
+  const productCards = data[0].productCards;
 
   if (!productItems || productItems.length === 0) {
     return [];
   }
 
-  const productItemsResult = productItems.map((item: ProductItem) =>
-    toProductItems(item, config, imageBaseUrl)
-  );
+  const productItemsResult = productItems.map((item: ProductItem) => {
+    const card = productCards.find(({ sku }) => sku === item.sku);
+    return toProductItems(
+      { ...item, priceType: card?.price.type },
+      config,
+      imageBaseUrl,
+    );
+  });
 
   return productItemsResult;
 }

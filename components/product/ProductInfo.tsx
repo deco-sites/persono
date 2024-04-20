@@ -157,6 +157,7 @@ function ProductInfo({
           url={url}
           productsNotAvailable={productsNotAvailable}
           possibilities={possibilities}
+          device={device}
         />
         <ProductColorSelector
           colors={colors}

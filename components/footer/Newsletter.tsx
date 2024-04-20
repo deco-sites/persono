@@ -7,7 +7,7 @@ import Icon from "$store/components/ui/Icon.tsx";
 export interface Form {
   placeholder?: string;
   buttonText?: string;
-  /** @format html */
+  /** @format rich-text */
   helpText?: string;
 }
 
