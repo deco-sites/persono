@@ -52,6 +52,10 @@ function deleteFilter({
   redirectWithFilters({ transformedArray: newAppliedFilters, basePath });
 }
 
+function clearFilters({ basePath }: { basePath: string | undefined }) {
+  redirectWithFilters({ transformedArray: [], basePath });
+}
+
 export default function ActiveFilterTag({ appliedFilters, basePath }: Props) {
   return (
     <div
@@ -82,6 +86,12 @@ export default function ActiveFilterTag({ appliedFilters, basePath }: Props) {
           </span>
         </button>
       ))}
+      <button
+        class="font-bold text-sm"
+        onClick={() => clearFilters({ basePath })}
+      >
+        Limpar filtros
+      </button>
     </div>
   );
 }
