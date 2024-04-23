@@ -184,7 +184,6 @@ function ProductInfo({
           : <OutOfStock sku={sku} />}
       </div>
       <PageFolder activate={device !== "desktop"}>
-        
         {/* Benefities */}
 
         <div class={`${productBenefits?.length == 0 ? "hidden" : ""}`}>
