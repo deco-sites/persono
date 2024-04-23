@@ -1,12 +1,12 @@
 import Button from "$store/components/ui/Button.tsx";
 import Icon from "deco-sites/persono/components/ui/Icon.tsx";
-import Markdown from "deco-sites/std/components/Markdown.tsx";
 
 export interface Props {
   /**
    * @description Content will be rendered as markdown.
    * @format rich-text
    */
+  /** @format html */
   content?: string;
   serviceInfo?: {
     title: string;
@@ -42,7 +42,13 @@ function ContactForm({
   return (
     <div class="pb-12 lg:pb-20">
       <div class="flex flex-col">
-        {content && <Markdown text={content.replace(/<p>|<\/p>/g, "\n")} />}
+        {content && (
+          <div
+            dangerouslySetInnerHTML={{
+              __html: content.replace(/<p>|<\/p>/g, "\n"),
+            }}
+          />
+        )}
 
         <div class="lg:flex lg:gap-[10px]">
           <div class="lg:w-full">

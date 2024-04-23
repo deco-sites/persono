@@ -1,7 +1,6 @@
 {
   "imports": {
     "deco-sites/persono/": "./",
-    "deco-sites/std/": "https://denopkg.com/deco-sites/std@1.25.1/",
     "$store/": "./",
     "deco/": "https://denopkg.com/deco-cx/deco@1.61.3/",
     "apps/": "https://denopkg.com/deco-cx/apps@0.36.7/",

@@ -1,9 +1,8 @@
-import Markdown from "deco-sites/std/components/Markdown.tsx";
-import { AccordionItem } from "./AccordionItem.tsx";
+import AccordionItem from "./AccordionItem.tsx";
 
 export interface Props {
   sections: {
-    /** @format rich-text */
+    /** @format html */
     sectionText?: string;
     accordions: {
       label: string;
@@ -11,6 +10,7 @@ export interface Props {
        * @description Content will be rendered as markdown.
        * @format rich-text
        */
+      /** @format html */
       content: string;
     }[];
   }[];
@@ -18,11 +18,15 @@ export interface Props {
 
 function AccordionsContent({ sections }: Props) {
   return (
-    <div class="flex flex-col gap-5 pb-12 lg:pb-20">
+    <div class="flex flex-col pb-12 lg:pb-20 border-t">
       {sections?.map((section) => (
         <>
           {section?.sectionText && (
-            <Markdown text={section?.sectionText.replace(/<p>|<\/p>/g, "\n")} />
+            <div
+              dangerouslySetInnerHTML={{
+                __html: section.sectionText?.replace(/<p>|<\/p>/g, "\n"),
+              }}
+            />
           )}
           {section?.accordions?.map(
             (item, index) => (
