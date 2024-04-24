@@ -13,7 +13,7 @@ interface Props {
 
 function CartButton({ loading, currency, total, items }: Props) {
   const { displayCart, displayMenu } = useUI();
-  const totalItems = items.length;
+  const totalItems = items.reduce((acc, item) => acc + item.quantity, 0);
 
   const onClick = () => {
     sendEvent({

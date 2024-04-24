@@ -186,6 +186,13 @@ function ProductInfo({
       <PageFolder activate={device !== "desktop"}>
         {/* Benefities */}
 
+        <div class={`${productBenefits?.length == 0 ? "hidden" : ""}`}>
+          <ProductBenefits
+            productBenefits={productBenefits}
+            adminBenefits={benefits}
+          />
+        </div>
+
         {/* Description card */}
 
         <div class="mt-6 sm:mt-7  ">

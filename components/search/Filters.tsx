@@ -318,7 +318,7 @@ function Filters({ filters, colors, filterSettings, basePath }: Props) {
           }}
           class="rounded-full btn-primary w-full text-base-100"
         >
-          Aplicar filtros
+          Aplicar
         </Button>
         <Button
           onClick={() => {
