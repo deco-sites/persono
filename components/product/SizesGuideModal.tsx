@@ -17,9 +17,7 @@ export function SizesGuideModal(
       <div
         class={`modal ${
           device == "desktop"
-            ? `${
-              segment == "Pijama" ? "tall:mt-[calc(9vh+0rem)]" : "tall:mt-0"
-            } medium:mt-[calc(10vh+2rem)] small:mt-[calc(10vh+3rem)]`
+            ? " tall:mt-0 medium:mt-[calc(10vh+2rem)] small:mt-[calc(10vh+3rem)]"
             : ""
         }`}
         role="dialog"
