@@ -77,9 +77,13 @@ function VariantSizeSelector({
   // deno-lint-ignore prefer-const
   let pijamaValues: pijamaSizes[] = [];
 
-  if(category.startsWith("Pijama") || category.endsWith("Pijama")){
+  if (category.startsWith("Pijama") || category.endsWith("Pijama")) {
     categorySizes?.map((s) => {
-      return pijamaValues.push({ size: s.name, valueMobile: s.value.split("/"), valueDesktop:s.value });
+      return pijamaValues.push({
+        size: s.name,
+        valueMobile: s.value.split("/"),
+        valueDesktop: s.value,
+      });
     });
   }
 
