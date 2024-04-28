@@ -14,6 +14,12 @@ interface Props {
   device: string;
 }
 
+export type pijamaSizes = {
+  size: string;
+  valueMobile: Array<string>;
+  valueDesktop: string;
+};
+
 type Possibilities = { name: string; value: string; url: string; sku: string };
 
 function VariantSizeSelector({
@@ -68,12 +74,14 @@ function VariantSizeSelector({
     .flat()
     .map(({ name, value }) => ({ name, value }));
 
-  const newCategorySize = sortedSizeArray.map((item) => {
-    const match = sizes.find((a1Item) =>
-      a1Item.name.toLowerCase() === item.name.toLowerCase()
-    );
-    return match ? { ...match } : null;
-  }).filter((item) => item !== null) as { name: string; value: string }[];
+  // deno-lint-ignore prefer-const
+  let pijamaValues: pijamaSizes[] = [];
+
+  if(category.startsWith("Pijama") || category.endsWith("Pijama")){
+    categorySizes?.map((s) => {
+      return pijamaValues.push({ size: s.name, valueMobile: s.value.split("/"), valueDesktop:s.value });
+    });
+  }
 
   return (
     <div class="flex flex-col gap-4">
@@ -116,6 +124,7 @@ function VariantSizeSelector({
           <SizesGuideModal
             device={device}
             sizes={categorySizes}
+            pijamaSizes={pijamaValues}
             segment={category}
           />
         </div>
