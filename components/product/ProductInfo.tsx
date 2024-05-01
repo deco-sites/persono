@@ -51,6 +51,7 @@ function ProductInfo({
   sizeGuide,
 }: SectionProps<typeof loader>) {
   const id = useId();
+  const externalSectionId = useId();
 
   const productInfoSectionId = `${id}-product-info`;
 
@@ -99,173 +100,210 @@ function ProductInfo({
     }
   });
 
-  const script = (id: string) => {
+  const script = (id: string, externalSectionId: string) => {
     const content = document.getElementById(id);
-    const windowHeight = innerHeight;
+    const externalContainer = document.getElementById(externalSectionId);
 
-    if (content && windowHeight) {
-      const contentHeight = content?.offsetHeight;
+    // Verifica se os elementos necessários existem
+    if (!content || !externalContainer) return;
 
-      const top = (contentHeight - windowHeight + 4) * -1;
-      content.style.top = `${top}px`;
-      content.style.position = "sticky";
-    }
+    const windowHeight = window.innerHeight;
+    const contentHeight = content.offsetHeight || 0;
+    const top = (contentHeight - windowHeight + 4) * -1;
+    let lastScrollTop = 0;
+
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const validation1 =
+        scrollY - externalContainer.clientHeight + contentHeight / 2 > 0;
+      const validation2 = scrollY - contentHeight / 2 < 0;
+
+      if (content.style.top === `${80}px` && scrollY < lastScrollTop) {
+        lastScrollTop = scrollY <= 0 ? 0 : scrollY;
+        return;
+      }
+
+      if (validation1) {
+        content.style.position = "sticky";
+        content.style.top = `${80}px`;
+      } else if (validation2) {
+        content.style.position = "sticky";
+        content.style.top = `${top}px`;
+      }
+
+      lastScrollTop = scrollY <= 0 ? 0 : scrollY;
+    };
+
+    addEventListener("scroll", handleScroll);
+
+    return () => {
+      removeEventListener("scroll", handleScroll);
+    };
   };
 
   return (
-    <div
-      class="flex flex-col w-full sm:mt-10 px-4 sm:px-0"
-      id={productInfoSectionId}
-    >
-      <Breadcrumb
-        itemListElement={breadcrumb.itemListElement}
-        showBreadcrumbProductQty={showBreadcrumbProductQty}
-        productsQtt={breadcrumb.numberOfItems}
-      />
-      {/* Code and name */}
-      <div class="sm:mt-6 mt-4 ">
-        <div>
-          {gtin && <span class="text-sm text-gray-600">Cod. {gtin}</span>}
-        </div>
-        <h1>
-          <span class="font-medium text-xl sm:text-2xl">{name}</span>
-        </h1>
-      </div>
-      {/* Prices */}
-      <div class="sm:mt-6 mt-4  ">
-        <div class="flex flex-row gap-2 items-center">
-          {(listPrice ?? 0) > price && (
-            <span class="line-through text-gray-600 text-xs">
-              {formatPrice(listPrice, offers?.priceCurrency)}
-            </span>
-          )}
-          <span class="font-medium text-xl text-black">
-            {formatPrice(price, offers?.priceCurrency)}
-          </span>
-        </div>
-        <span class="text-sm text-gray-600">{installments}</span>
-      </div>
-
-      {/* Sku Selector */}
-      <div class="sm:mt-6 mt-4  flex-col gap-4 ">
-        <ProductSizeSelector
-          category={product.category?.split(
-            ">",
-          )[product.category?.split(">").length - 1] ?? ""}
-          sizes={sizes}
-          sizeGuide={sizeGuide}
-          url={url}
-          productsNotAvailable={productsNotAvailable}
-          possibilities={possibilities}
-          device={device}
-        />
-        <ProductColorSelector
-          colors={colors}
-          url={url}
-          productsNotAvailable={productsNotAvailable}
-          possibilities={possibilities}
-        />
-      </div>
-      {/* Add to Cart and Favorites button */}
+    <section class="w-full h-full" id={externalSectionId}>
       <div
-        class={`mt-6 sm:mt-10  ${
-          productBenefits?.length == 0 ? "mb-5" : "mb-10"
-        } flex flex-col`}
+        class="flex flex-col w-full sm:mt-10 px-4 sm:px-0 my-10"
+        id={productInfoSectionId}
       >
-        {availability === "https://schema.org/InStock"
-          ? (
-            <>
-              <AddCartButton
-                eventParams={{ items: [eventItem] }}
-                sku={product.sku}
-              />
-            </>
-          )
-          : <OutOfStock sku={sku} />}
-      </div>
-      <PageFolder activate={device !== "desktop"}>
-        {/* Benefities */}
+        <Breadcrumb
+          itemListElement={breadcrumb.itemListElement}
+          showBreadcrumbProductQty={showBreadcrumbProductQty}
+          productsQtt={breadcrumb.numberOfItems}
+        />
+        {/* Code and name */}
+        <div class="sm:mt-6 mt-4 ">
+          <div>
+            {gtin && <span class="text-sm text-gray-600">Cod. {gtin}</span>}
+          </div>
+          <h1>
+            <span class="font-medium text-xl sm:text-2xl">{name}</span>
+          </h1>
+        </div>
+        {/* Prices */}
+        <div class="sm:mt-6 mt-4  ">
+          <div class="flex flex-row gap-2 items-center">
+            {(listPrice ?? 0) > price && (
+              <span class="line-through text-gray-600 text-xs">
+                {formatPrice(listPrice, offers?.priceCurrency)}
+              </span>
+            )}
+            <span class="font-medium text-xl text-black">
+              {formatPrice(price, offers?.priceCurrency)}
+            </span>
+          </div>
+          <span class="text-sm text-gray-600">{installments}</span>
+        </div>
 
-        {/* Description card */}
+        {/* Sku Selector */}
+        <div class="sm:mt-6 mt-4  flex-col gap-4 ">
+          <ProductSizeSelector
+            category={product.category?.split(
+              ">",
+            )[product.category?.split(">").length - 1] ?? ""}
+            sizes={sizes}
+            sizeGuide={sizeGuide}
+            url={url}
+            productsNotAvailable={productsNotAvailable}
+            possibilities={possibilities}
+            device={device}
+          />
+          <ProductColorSelector
+            colors={colors}
+            url={url}
+            productsNotAvailable={productsNotAvailable}
+            possibilities={possibilities}
+          />
+        </div>
+        {/* Add to Cart and Favorites button */}
+        <div
+          class={`mt-6 sm:mt-10  ${
+            productBenefits?.length == 0 ? "mb-5" : "mb-10"
+          } flex flex-col`}
+        >
+          {availability === "https://schema.org/InStock"
+            ? (
+              <>
+                <AddCartButton
+                  eventParams={{ items: [eventItem] }}
+                  sku={product.sku}
+                />
+              </>
+            )
+            : <OutOfStock sku={sku} />}
+        </div>
+        <PageFolder activate={device !== "desktop"}>
+          {/* Benefities */}
 
-        <div class="mt-6 sm:mt-7  ">
-          {description && (
-            <div class="flex flex-col divide-y border-t">
-              {description && (
-                <ProductInfoCollapse title="Descrição">
-                  <p class="text-base font-normal">{description}</p>
+          {/* Description card */}
+
+          <div class="mt-6 sm:mt-7  ">
+            {description && (
+              <div class="flex flex-col divide-y border-t">
+                {description && (
+                  <ProductInfoCollapse title="Descrição">
+                    <p class="text-base font-normal">{description}</p>
+                  </ProductInfoCollapse>
+                )}
+
+                <ProductInfoCollapse title="Especificações">
+                  <div class="flex flex-col gap-2">
+                    {product.isVariantOf?.hasVariant[0].additionalProperty &&
+                      product?.isVariantOf?.hasVariant[0]?.additionalProperty
+                        .map(
+                          (ad) =>
+                            ad.propertyID == "TECNICALSPECIFICATION" &&
+                              !ad.description?.startsWith("CUSTOM_")
+                              ? (
+                                <p class="text-base font-normal">
+                                  {ad.description}:&ensp;{ad.value}
+                                </p>
+                              )
+                              : null,
+                        )}
+                  </div>
                 </ProductInfoCollapse>
-              )}
 
-              <ProductInfoCollapse title="Especificações">
-                <div class="flex flex-col gap-2">
-                  {product.isVariantOf?.hasVariant[0].additionalProperty &&
-                    product?.isVariantOf?.hasVariant[0]?.additionalProperty
-                      .map(
-                        (ad) =>
-                          ad.propertyID == "TECNICALSPECIFICATION" &&
-                            !ad.description?.startsWith("CUSTOM_")
-                            ? (
-                              <p class="text-base font-normal">
-                                {ad.description}:&ensp;{ad.value}
-                              </p>
-                            )
-                            : null,
-                      )}
-                </div>
-              </ProductInfoCollapse>
+                <ProductInfoCollapse title="O que vai na embalagem?">
+                  <div class="flex flex-col gap-2">
+                    {product.isVariantOf?.hasVariant[0].additionalProperty &&
+                      product?.isVariantOf?.hasVariant[0]?.additionalProperty
+                        .map(
+                          (ad) =>
+                            ad.propertyID == "KITITEM"
+                              ? (
+                                <p class="text-base font-normal">
+                                  {ad.value}&ensp;{ad.description}
+                                </p>
+                              )
+                              : null,
+                        )}
+                  </div>
+                </ProductInfoCollapse>
 
-              <ProductInfoCollapse title="O que vai na embalagem?">
-                <div class="flex flex-col gap-2">
-                  {product.isVariantOf?.hasVariant[0].additionalProperty &&
-                    product?.isVariantOf?.hasVariant[0]?.additionalProperty
-                      .map(
-                        (ad) =>
-                          ad.propertyID == "KITITEM"
-                            ? (
-                              <p class="text-base font-normal">
-                                {ad.value}&ensp;{ad.description}
-                              </p>
-                            )
-                            : null,
-                      )}
-                </div>
-              </ProductInfoCollapse>
+                {/* Shipping Simulation */}
 
-              {/* Shipping Simulation */}
-
-              <div class="collapse items-start collapse-open pl-0">
-                <div class="flex  pl-0 items-center collapse-title text-base after:text-2xl after:text-primary">
-                  Calcular frete
-                </div>
-                <div class="collapse-content w-full pr-0 pl-0">
-                  <ShippingSimulation sku={product.sku} />
+                <div class="collapse items-start collapse-open pl-0">
+                  <div class="flex  pl-0 items-center collapse-title text-base after:text-2xl after:text-primary">
+                    Calcular frete
+                  </div>
+                  <div class="collapse-content w-full pr-0 pl-0">
+                    <ShippingSimulation sku={product.sku} />
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
-        </div>
+            )}
+          </div>
 
-        {/* Analytics Event */}
+          {/* Analytics Event */}
 
-        <SendEventOnView
-          id={id}
-          event={{
-            name: "view_item",
-            params: {
-              item_list_id: "product",
-              item_list_name: "Product",
-              items: [eventItem],
-            },
-          }}
-        />
-      </PageFolder>
-      <div class="h-3 invisible" />
+          <SendEventOnView
+            id={id}
+            event={{
+              name: "view_item",
+              params: {
+                item_list_id: "product",
+                item_list_name: "Product",
+                items: [eventItem],
+              },
+            }}
+          />
+        </PageFolder>
+        <div class="h-3 invisible" />
 
-      {device === "desktop" && (
-        <script defer src={scriptAsDataURI(script, productInfoSectionId)} />
-      )}
-    </div>
+        {device === "desktop" && (
+          <script
+            defer
+            src={scriptAsDataURI(
+              script,
+              productInfoSectionId,
+              externalSectionId,
+            )}
+          />
+        )}
+      </div>
+    </section>
   );
 }
 
