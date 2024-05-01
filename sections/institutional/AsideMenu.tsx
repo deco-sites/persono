@@ -19,23 +19,22 @@ export function loader(ctx: Props, req: Request) {
   const url = new URL(req.url);
   const { pathname } = url;
 
+  const currentSection = ctx.sectionMenu.find((sectionItem) =>
+    "/" + pathname.split("/")[1] + sectionItem?.sectionLink === pathname
+  );
+
   return {
     ...ctx,
     pathname,
+    currentSection,
   };
 }
 
 function AsideMenu(
-  { sectionMenu, pathname: currentUrl }: SectionProps<
+  { sectionMenu, pathname, currentSection }: SectionProps<
     typeof loader
   >,
 ) {
-  const currentSection = sectionMenu.find((sectionItem) =>
-    "/" + currentUrl.split("/")[1] + sectionItem?.sectionLink === currentUrl
-  );
-
-  const currentRoute = currentSection?.sectionLink;
-
   return (
     <aside class="lg:min-w-[200px]">
       <ul class="w-full flex-col gap-2 hidden lg:flex">
@@ -46,11 +45,11 @@ function AsideMenu(
                 ? (
                   <a
                     class={`hover:text-primary ${
-                      currentRoute === sectionItem?.sectionLink
+                      currentSection?.sectionLink === sectionItem?.sectionLink
                         ? "text-primary"
                         : ""
                     }`}
-                    href={"/" + currentUrl.split("/")[1] +
+                    href={"/" + pathname.split("/")[1] +
                       sectionItem?.sectionLink}
                   >
                     {sectionItem?.sectionTitle}
@@ -79,29 +78,32 @@ function AsideMenu(
           </li>
         ))}
       </ul>
-      <div class="lg:hidden w-full pb-5">
-        <div class="dropdown w-full text-sm font-normal">
-          <label
-            tabIndex={0}
-            class="btn btn-secondary btn-block justify-between border-none"
-          >
-            {"Menu"}
-            <Icon id="ChevronDown" width={26} height={26} />
-          </label>
-          <ul class="shadow menu dropdown-content z-10 bg-base-100 mt-5 rounded-box w-full gap-2">
+      <div class="lg:hidden w-full sm:pb-5 pb-8 ">
+        <details class="dropdown w-full text-sm font-normal static group ">
+          <summary class="btn text-sm font-normal w-full btn-secondary justify-between border-none">
+            {currentSection?.sectionTitle}
+            <Icon
+              id="ChevronDown"
+              class="group-open:rotate-180"
+              width={26}
+              height={26}
+            />
+          </summary>
+          <ul class="menu dropdown-content z-10 bg-base-100 mt-5 rounded-box w-full gap-2 left-0 px-8 h-full">
             {sectionMenu.map((sectionItem) => (
               <>
-                <li class="font-semibold">
+                <li class=" sm:text-md text-base">
                   <div class="">
                     {sectionItem?.sectionLink
                       ? (
                         <a
                           class={`hover:text-primary ${
-                            currentRoute === sectionItem?.sectionLink
+                            currentSection?.sectionLink ===
+                                sectionItem?.sectionLink
                               ? "text-primary"
                               : ""
                           }`}
-                          href={"/" + currentUrl.split("/")[1] +
+                          href={"/" + pathname.split("/")[1] +
                             sectionItem?.sectionLink}
                         >
                           {sectionItem?.sectionTitle}
@@ -114,7 +116,7 @@ function AsideMenu(
                   (item, index) => (
                     <li class="" key={index}>
                       <a
-                        class="p-0 flex gap-2 items-center"
+                        class="sm:ml-0 ml-1 flex gap-2 items-center"
                         href={item.href}
                       >
                         <Icon
@@ -131,7 +133,7 @@ function AsideMenu(
               </>
             ))}
           </ul>
-        </div>
+        </details>
       </div>
     </aside>
   );

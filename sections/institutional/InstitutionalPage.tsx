@@ -29,12 +29,12 @@ function InstitutionalPage({
   return (
     <>
       <>
-        <div class="container px-8 flex flex-col lg:flex-row w-full mt-20 mb-28">
+        <div class="container px-8 flex flex-col lg:flex-row w-full mt-8 sm:mt-20 mb-28">
           <div class="">
             <AsideComponent {...asideProps} />
           </div>
           <article class="w-full lg:ml-24">
-            <h3 class="text-3xl font-medium mb-10 lg:block max-w-[900px]">
+            <h3 class="text-2xl sm:text-3xl sm:mb-10 mb-6 lg:block max-w-[900px]">
               {acctualSection?.title ?? title}
             </h3>
             {acctualSection?.section.map(({ Component, props }) => (

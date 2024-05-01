@@ -24,33 +24,49 @@ function CardsContent({ cards }: Props) {
   return (
     <div class="flex flex-wrap gap-[30px] pb-12">
       {cards.map((card) => (
-        <div class="card card-bordered border-2 border-neutral-100 w-[360px]">
-          <div class="card-body p-4">
-            <div class="flex items-center gap-[10px] min-h-12 text-primary">
-              <Icon id={card.heading.icon ?? "MapPin"} width={24} height={24} />
-              <h6 class="font-medium max-w-[87%] break-words">
+        <div class="card card-bordered rounded-lg border-2 border-neutral-100 w-[360px]">
+          <div class="card-body gap-4 p-6">
+            <div class="flex items-center gap-2 text-primary">
+              {card.heading.icon
+                ? (
+                  <Icon
+                    class=""
+                    id={card.heading.icon ?? ""}
+                    width={24}
+                    height={24}
+                  />
+                )
+                : null}
+              <h6 class="max-w-[87%] break-words text-base">
                 {card.heading.title}
               </h6>
             </div>
-            <div class="flex flex-col gap-[2px] text-sm text-black">
+            <div class="flex flex-col gap-1 text-sm text-black">
               <span class="font-bold">{card.content.subtitle}</span>
               {card.content.paragraphs &&
                 card.content.paragraphs.map((paragraph) => (
                   <p class="break-words">{paragraph}</p>
                 ))}
-            </div>
-            <div class="flex flex-col gap-[6px] items-start font-bold text-base-content">
-              {card.links.map((link) => (
-                <a href={link.url} class="flex items-center gap-[10px] text-sm">
-                  <Icon
-                    id={link.icon ?? "Phone"}
-                    width={18}
-                    height={18}
-                    strokeWidth={2}
-                  />
-                  <span>{link.label}</span>
-                </a>
-              ))}
+              <div class="flex flex-col gap-1 items-start font-bold text-base-content">
+                {card.links.map((link) => (
+                  <a
+                    href={link.url}
+                    class="flex items-center gap-2 text-sm"
+                  >
+                    {link.icon
+                      ? (
+                        <Icon
+                          id={link.icon}
+                          width={18}
+                          height={18}
+                          strokeWidth={2}
+                        />
+                      )
+                      : null}
+                    <span>{link.label}</span>
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
         </div>

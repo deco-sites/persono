@@ -25,7 +25,7 @@ export interface AmmoProduct {
   cashback?: string;
 
   //Only from PDP props
-  breadcrumbs?: Breadcrumb[] | [Breadcrumb[]];
+  breadcrumbs?: Breadcrumb[];
   bundle?: Bundle;
   active?: boolean;
   description?: string;
@@ -150,7 +150,7 @@ export interface VMDetails {
   productCards: AmmoProduct[];
   skusTotal: number;
   sidebar: Sidebar[];
-  breadcrumbs: Breadcrumb[] | [Breadcrumb[]];
+  breadcrumbs: Breadcrumb[];
   miniVms: string[]; //unknown
 }
 
@@ -1116,6 +1116,11 @@ export interface InstallmentConfig {
   maxInstallments: number;
   minInstallmentValue: number;
 }
+
+export interface VinhedoSkuAPI {
+  data: VinhedoSku[];
+}
+
 export interface VinhedoSku {
   type: string;
   label: string;
@@ -1190,6 +1195,7 @@ export interface ProductItem {
   attributes: Attributes;
   bedSize: string;
   stocks: Stock[];
+  priceType?: number;
 }
 
 export interface BrandItem {

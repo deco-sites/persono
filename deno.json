@@ -1,10 +1,9 @@
 {
   "imports": {
     "deco-sites/persono/": "./",
-    "deco-sites/std/": "https://denopkg.com/deco-sites/std@1.24.2/",
     "$store/": "./",
-    "deco/": "https://denopkg.com/deco-cx/deco@1.54.2/",
-    "apps/": "https://denopkg.com/deco-cx/apps@0.33.8/",
+    "deco/": "https://denopkg.com/deco-cx/deco@1.61.3/",
+    "apps/": "https://denopkg.com/deco-cx/apps@0.36.7/",
     "$fresh/": "https://deno.land/x/fresh@1.6.1/",
     "preact": "https://esm.sh/preact@10.18.1",
     "preact/": "https://esm.sh/preact@10.18.1/",
