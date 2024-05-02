@@ -50,8 +50,7 @@ export function SizesGuideModal(
             </div>
           </>
         )
-        : 
-        (
+        : (
           <>
             <input type="checkbox" id="my_modal_6" class="modal-toggle" />
             <div

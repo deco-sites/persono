@@ -59,10 +59,9 @@ function VariantSizeSelector({
 
     return indexA - indexB;
   });
-  
 
   const lowerCategory = category.toLowerCase();
-  
+
   const categorySizes = sizeGuide
     .filter((s) => s.category.toLowerCase() === lowerCategory)
     .flatMap(({ size }) => size.map(({ name, value }) => ({ name, value })));
