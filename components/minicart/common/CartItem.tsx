@@ -24,9 +24,9 @@ export interface Item {
 }
 
 export interface CartItemEditableProps {
-    /** @format color */
-    backgroundColor?:string
-    blendMode?:boolean
+  /** @format color */
+  backgroundColor?: string;
+  blendMode?: boolean;
 }
 
 export interface Props {
@@ -35,7 +35,7 @@ export interface Props {
   currency: string;
   onUpdateQuantity: (quantity: number, sku: string) => Promise<void>;
   itemToAnalyticsItem: (sku: string) => AnalyticsItem | null | undefined;
-  imageContainerSettings?:CartItemEditableProps
+  imageContainerSettings?: CartItemEditableProps;
 }
 
 function CartItem(
@@ -45,13 +45,14 @@ function CartItem(
     currency,
     onUpdateQuantity,
     itemToAnalyticsItem,
-    imageContainerSettings
+    imageContainerSettings,
   }: Props,
 ) {
   const { image, name, size, price: { sale, list }, quantity } = item;
   const [loading, setLoading] = useState(false);
 
-  const {backgroundColor="#e6eaeb",blendMode} =  imageContainerSettings??{}
+  const { backgroundColor = "#e6eaeb", blendMode } = imageContainerSettings ??
+    {};
 
   const withLoading = useCallback(
     <A,>(cb: (args: A) => Promise<void>) => async (e: A) => {
@@ -67,7 +68,13 @@ function CartItem(
 
   return (
     <div class="flex items-start justify-stretch gap-4">
-      <div style={{backgroundColor,mixBlendMode:blendMode?"multiply":"normal"}} class="w-[108px] h-[150px] flex items-center justify-center">
+      <div
+        style={{
+          backgroundColor,
+          mixBlendMode: blendMode ? "multiply" : "normal",
+        }}
+        class="w-[108px] h-[150px] flex items-center justify-center"
+      >
         <Image
           {...image}
           style={{ aspectRatio: "1 / 1" }}

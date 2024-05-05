@@ -9,7 +9,7 @@ export interface EditableProps {
   /** @description Use discount type to despise this discount */
   hiddenDiscounts?: string[];
   freeShipping?: FreeShippingProps;
-  imageContainerSettings?:CartItemEditableProps
+  imageContainerSettings?: CartItemEditableProps;
 }
 
 export interface Props extends EditableProps {
@@ -22,7 +22,7 @@ function Cart({
   freeShipping,
   onClose,
   imageBaseUrl,
-  imageContainerSettings
+  imageContainerSettings,
 }: Props) {
   const { cart, loading, addItems, mapItemsToAnalyticsItems } = useCart();
   const { items = [], total = 0, discounts = [] } = cart.value ?? {};
