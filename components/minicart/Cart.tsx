@@ -3,11 +3,13 @@ import { EditableProps as FreeShippingProps } from "deco-sites/persono/component
 import { CartFreebie } from "deco-sites/persono/components/minicart/common/FreebieChoice.tsx";
 import { useCart } from "deco-sites/persono/packs/hooks/useCart.ts";
 import { getImageUrl } from "$store/packs/utils/utils.ts";
+import { CartItemEditableProps } from "deco-sites/persono/components/minicart/common/CartItem.tsx";
 
 export interface EditableProps {
   /** @description Use discount type to despise this discount */
   hiddenDiscounts?: string[];
   freeShipping?: FreeShippingProps;
+  imageContainerSettings?:CartItemEditableProps
 }
 
 export interface Props extends EditableProps {
@@ -20,6 +22,7 @@ function Cart({
   freeShipping,
   onClose,
   imageBaseUrl,
+  imageContainerSettings
 }: Props) {
   const { cart, loading, addItems, mapItemsToAnalyticsItems } = useCart();
   const { items = [], total = 0, discounts = [] } = cart.value ?? {};
@@ -75,6 +78,7 @@ function Cart({
       locale="pt-BR"
       checkoutHref="/checkout-s"
       currency="BRL"
+      imageContainerSettings={imageContainerSettings}
     />
   );
 }
