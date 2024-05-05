@@ -5,7 +5,7 @@ interface Props {
   segment: string | undefined;
   sizes?: SizeGuide[];
   device: string;
-  showMobile: Signal<boolean>
+  showMobile: Signal<boolean>;
 }
 
 export function SizesGuideModal(
@@ -52,31 +52,36 @@ export function SizesGuideModal(
     );
   } else {
     return (
-          <div class="bg-white sm:h-auto h-full w-full rounded-none flex flex-col sm:rounded-lg py-0 px-4">
-            <div class="flex justify-between items-center py-2 border-b">
-              <h3 class="font-medium text-xl">Guia de tamanhos</h3>
-              <div class=" mt-0">
-                <label onClick={()=>{showMobile.value = false}} class="btn btn-sm btn-circle btn-ghost">
-                  ✕
-                </label>
+      <div class="bg-white sm:h-auto h-full w-full rounded-none flex flex-col sm:rounded-lg py-0 px-4">
+        <div class="flex justify-between items-center py-2 border-b">
+          <h3 class="font-medium text-xl">Guia de tamanhos</h3>
+          <div class=" mt-0">
+            <label
+              onClick={() => {
+                showMobile.value = false;
+              }}
+              class="btn btn-sm btn-circle btn-ghost"
+            >
+              ✕
+            </label>
+          </div>
+        </div>
+        <p class="pt-4 pb-8 text-sm text-gray-600">
+          Escolha de acordo com o tamanho do(a) {segment ?? "produto"}
+        </p>
+        <div class="flex flex-col divide-y mb-14">
+          {sizes?.map((s) => (
+            <div class="flex py-4 text-base justify-between">
+              <span>{s.name}</span>
+              <div class="flex flex-col gap-3">
+                {s.value.split("/").map((sizeSplited) => (
+                  <span class="text-gray-600">{sizeSplited}</span>
+                ))}
               </div>
             </div>
-            <p class="pt-4 pb-8 text-sm text-gray-600">
-              Escolha de acordo com o tamanho do(a) {segment ?? "produto"}
-            </p>
-            <div class="flex flex-col divide-y mb-14">
-              {sizes?.map((s) => (
-                <div class="flex py-4 text-base justify-between">
-                  <span>{s.name}</span>
-                  <div class="flex flex-col gap-3">
-                    {s.value.split("/").map((sizeSplited) => (
-                      <span class="text-gray-600">{sizeSplited}</span>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+          ))}
+        </div>
+      </div>
     );
   }
 }

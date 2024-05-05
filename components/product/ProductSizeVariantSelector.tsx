@@ -106,7 +106,9 @@ function VariantSizeSelector({
             class={`btn justify-start underline btn-link p-0 text-black text-sm font-normal ${
               categorySizes.length <= 0 ? "hidden" : ""
             }`}
-            onClick={()=>{showMobile.value = true}}
+            onClick={() => {
+              showMobile.value = true;
+            }}
           >
             Guia de tamanhos
           </label>
