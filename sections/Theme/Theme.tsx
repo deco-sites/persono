@@ -269,7 +269,6 @@ function Section({
   ]
     .map(([name, value]) => ({ name, value }));
 
-
   return (
     <>
       <SiteTheme
