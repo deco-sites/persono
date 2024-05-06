@@ -9,7 +9,11 @@ import {
 } from "deco-sites/persono/components/minicart/common/FreebieChoice.tsx";
 
 import { Discount } from "deco-sites/persono/packs/types.ts";
-import CartItem, { Item, Props as ItemProps } from "./CartItem.tsx";
+import CartItem, {
+  CartItemEditableProps,
+  Item,
+  Props as ItemProps,
+} from "./CartItem.tsx";
 import FreeShippingProgressBar from "./FreeShippingProgressBar.tsx";
 import { DrawerHeader } from "deco-sites/persono/components/ui/DrawerHeader.tsx";
 
@@ -29,6 +33,7 @@ interface Props {
   onClose: () => void;
   onUpdateQuantity: ItemProps["onUpdateQuantity"];
   itemToAnalyticsItem: ItemProps["itemToAnalyticsItem"];
+  imageContainerSettings?: CartItemEditableProps;
 }
 
 function Cart({
@@ -44,6 +49,7 @@ function Cart({
   freeShippingTextTemplate,
   freeShippingCompletedText,
   checkoutHref,
+  imageContainerSettings,
   itemToAnalyticsItem,
   onUpdateQuantity,
   onClose,
@@ -113,6 +119,7 @@ function Cart({
               {items.map((item, index) => (
                 <li key={index}>
                   <CartItem
+                    imageContainerSettings={imageContainerSettings}
                     item={item}
                     locale={locale}
                     currency={currency}
