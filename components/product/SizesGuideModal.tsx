@@ -16,7 +16,9 @@ export function SizesGuideModal(
       <>
         <input type="checkbox" id="my_modal_6" class="modal-toggle" />
         <div
-          class={`modal ${segment?.includes("Pijama")? "tall:mt-[calc(7vh)]" : "mt-0" } medium:mt-[calc(10vh+2rem)] small:mt-[calc(10vh+3rem)]`}
+          class={`modal ${
+            segment?.includes("Pijama") ? "tall:mt-[calc(7vh)]" : "mt-0"
+          } medium:mt-[calc(10vh+2rem)] small:mt-[calc(10vh+3rem)]`}
           role="dialog"
         >
           <div class="sm:modal-box bg-white sm:h-auto h-full w-full rounded-none flex flex-col sm:rounded-lg py-0 px-4">
