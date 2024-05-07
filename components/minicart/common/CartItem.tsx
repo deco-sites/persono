@@ -73,7 +73,7 @@ function CartItem(
           backgroundColor,
           mixBlendMode: blendMode ? "multiply" : "normal",
         }}
-        class="w-[108px] h-[150px] flex items-center justify-center"
+        class="w-[108px] h-[150px] flex items-center justify-center rounded"
       >
         <Image
           {...image}
