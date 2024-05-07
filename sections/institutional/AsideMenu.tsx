@@ -79,8 +79,10 @@ function AsideMenu(
         ))}
       </ul>
       <div class="lg:hidden w-full sm:pb-5 pb-8 ">
-        <details class="dropdown w-full text-sm font-normal static group ">
-          <summary class="btn text-sm font-normal w-full btn-secondary justify-between border-none">
+        <details class="dropdown w-full text-sm font-normal static group open:left-0 open:px-8 open:fixed">
+          {/* Overlay div */}
+          <div class="h-[100vh] fixed bg-base-100 w-full z-10 group-open:flex hidden top-4 left-0" />
+          <summary class="btn text-sm font-normal relative z-20 w-full btn-secondary justify-between border-none">
             {currentSection?.sectionTitle}
             <Icon
               id="ChevronDown"
@@ -89,7 +91,7 @@ function AsideMenu(
               height={26}
             />
           </summary>
-          <ul class="menu dropdown-content z-10 bg-base-100 mt-5 rounded-box w-full gap-2 left-0 px-8 h-full">
+          <ul class="menu flex-nowrap dropdown-content z-10 bg-base-100 mt-5 rounded-box w-full gap-2 left-0 px-8 h-full">
             {sectionMenu.map((sectionItem) => (
               <>
                 <li class=" sm:text-md text-base">
