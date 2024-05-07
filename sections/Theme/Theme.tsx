@@ -130,6 +130,12 @@ export interface Props {
   buttonStyle?: Button;
   otherStyles?: Miscellaneous;
   font?: Font;
+  /**
+   * @title StatusBar color (iOS)
+   * @format color
+   * @default #fffffe
+   */
+  statusBarColor?: string;
 }
 
 type Theme =
@@ -243,6 +249,7 @@ function Section({
   otherStyles,
   font,
   colorScheme,
+  statusBarColor,
 }: Props) {
   const theme = {
     ...defaultTheme,
@@ -263,11 +270,17 @@ function Section({
     .map(([name, value]) => ({ name, value }));
 
   return (
-    <SiteTheme
-      fonts={font ? [font] : undefined}
-      variables={variables}
-      colorScheme={colorScheme}
-    />
+    <>
+      <SiteTheme
+        fonts={font ? [font] : undefined}
+        variables={variables}
+        colorScheme={colorScheme}
+      />
+      <meta
+        name="theme-color"
+        content={statusBarColor}
+      />
+    </>
   );
 }
 
