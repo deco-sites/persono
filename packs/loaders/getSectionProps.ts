@@ -14,7 +14,6 @@ const loader = async (
   const resolvables: Record<string, Resolvable> = await get({
     __resolveType: "resolvables",
   });
-
   const sectionsProps = sectionsIds.reduce((sections, id) => {
     const props = resolvables[id];
     if (!props) {
