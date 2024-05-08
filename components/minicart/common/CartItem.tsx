@@ -23,12 +23,19 @@ export interface Item {
   };
 }
 
+export interface CartItemEditableProps {
+  /** @format color */
+  backgroundColor?: string;
+  blendMode?: boolean;
+}
+
 export interface Props {
   item: Item;
   locale: string;
   currency: string;
   onUpdateQuantity: (quantity: number, sku: string) => Promise<void>;
   itemToAnalyticsItem: (sku: string) => AnalyticsItem | null | undefined;
+  imageContainerSettings?: CartItemEditableProps;
 }
 
 function CartItem(
@@ -38,10 +45,14 @@ function CartItem(
     currency,
     onUpdateQuantity,
     itemToAnalyticsItem,
+    imageContainerSettings,
   }: Props,
 ) {
   const { image, name, size, price: { sale, list }, quantity } = item;
   const [loading, setLoading] = useState(false);
+
+  const { backgroundColor = "#e6eaeb", blendMode } = imageContainerSettings ??
+    {};
 
   const withLoading = useCallback(
     <A,>(cb: (args: A) => Promise<void>) => async (e: A) => {
@@ -57,14 +68,20 @@ function CartItem(
 
   return (
     <div class="flex items-start justify-stretch gap-4">
-      <div class="w-[108px] h-[150px] bg-gray-400 flex items-center justify-center">
+      <div
+        style={{
+          backgroundColor,
+          mixBlendMode: blendMode ? "multiply" : "normal",
+        }}
+        class="w-[108px] h-[150px] flex items-center justify-center rounded"
+      >
         <Image
           {...image}
           style={{ aspectRatio: "1 / 1" }}
           width={108}
           height={150}
           fit="contain"
-          class="rounded bg-gradient-to-bl"
+          class="rounded bg-gradient-to-bl "
         />
       </div>
       <div class="flex flex-col flex-grow gap-6">

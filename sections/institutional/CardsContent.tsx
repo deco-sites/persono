@@ -27,12 +27,16 @@ function CardsContent({ cards }: Props) {
         <div class="card card-bordered rounded-lg border-2 border-neutral-100 w-[360px]">
           <div class="card-body gap-4 p-6">
             <div class="flex items-center gap-2 text-primary">
-              <Icon
-                class=""
-                id={card.heading.icon ?? "MapPin"}
-                width={24}
-                height={24}
-              />
+              {card.heading.icon
+                ? (
+                  <Icon
+                    class=""
+                    id={card.heading.icon ?? ""}
+                    width={24}
+                    height={24}
+                  />
+                )
+                : null}
               <h6 class="max-w-[87%] break-words text-base">
                 {card.heading.title}
               </h6>
@@ -49,12 +53,16 @@ function CardsContent({ cards }: Props) {
                     href={link.url}
                     class="flex items-center gap-2 text-sm"
                   >
-                    <Icon
-                      id={link.icon ?? "Phone"}
-                      width={18}
-                      height={18}
-                      strokeWidth={2}
-                    />
+                    {link.icon
+                      ? (
+                        <Icon
+                          id={link.icon}
+                          width={18}
+                          height={18}
+                          strokeWidth={2}
+                        />
+                      )
+                      : null}
                     <span>{link.label}</span>
                   </a>
                 ))}
