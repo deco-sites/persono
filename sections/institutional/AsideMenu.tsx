@@ -79,7 +79,7 @@ function AsideMenu(
         ))}
       </ul>
       <div class="lg:hidden w-full sm:pb-5 pb-8 ">
-        <details class="dropdown w-full text-sm font-normal static group open:left-0 open:px-8 open:fixed z-10">
+        <details class="dropdown w-full h-[70%] overflow-y-scroll text-sm font-normal static group open:left-0 open:px-8 open:fixed z-10">
           {/* Overlay div */}
           <div class="h-[100vh] fixed bg-base-100 w-full z-10 group-open:flex hidden top-4 left-0" />
           <summary class="btn text-sm font-normal relative z-20 w-full btn-secondary justify-between border-none">
