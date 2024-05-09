@@ -79,7 +79,11 @@ function AsideMenu(
           </li>
         ))}
       </ul>
-      <AsideMenuMobile currentSection={currentSection} pathname={pathname} sectionMenu={sectionMenu}/>
+      <AsideMenuMobile
+        currentSection={currentSection}
+        pathname={pathname}
+        sectionMenu={sectionMenu}
+      />
     </aside>
   );
 }

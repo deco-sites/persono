@@ -44,7 +44,7 @@ function AsideMenuMobile(
   }, [showContent]);
 
   return (
-    <div class={`${openCollapse? "" : "mb-8"}`}>
+    <div class={`${openCollapse ? "" : "mb-8"}`}>
       <div
         class={`fixed w-full h-full bg-white transition-[max-height] duration-300 ease-linear left-0 top-0 z-10 flex ${
           openCollapse ? "max-h-screen" : "max-h-0"
