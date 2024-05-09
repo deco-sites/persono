@@ -65,7 +65,7 @@ export function SizesGuideModal(
             }}
             class="btn btn-sm btn-circle btn-ghost"
           >
-            <Icon width={20} height={20} id="XMark"/>
+            <Icon width={20} height={20} id="XMark" />
           </label>
         </div>
       </div>
