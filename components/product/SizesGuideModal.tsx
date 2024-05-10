@@ -25,9 +25,9 @@ export function SizesGuideModal(
           <div
             class={`${
               segment?.includes("Pijama")
-                ? "tall:mt-[calc(13vh)] medium:mt-[calc(10vh+2rem)] small:mt-[calc(10vh+3rem)]"
+                ? "tall:mt-[calc(13vh)] medium:mt-[calc(13vh+6rem)] small:mt-[calc(10vh+7rem)]"
                 : "mt-0"
-            }  sm:modal-box bg-white sm:h-auto h-full w-full rounded-none flex flex-col sm:rounded-lg !py-0 !px-4 overflow-y-scroll`}
+            } max-h-[85vh] sm:modal-box bg-white sm:h-auto h-full w-full rounded-none flex flex-col sm:rounded-lg !py-0 !px-4 overflow-y-scroll`}
           >
             <div class="flex justify-between items-center py-2 border-b">
               <h3 class="font-medium text-xl">Guia de tamanhos</h3>
