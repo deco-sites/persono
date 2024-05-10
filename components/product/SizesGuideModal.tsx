@@ -27,7 +27,7 @@ export function SizesGuideModal(
               segment?.includes("Pijama")
                 ? "tall:mt-[calc(13vh)] medium:mt-[calc(10vh+2rem)] small:mt-[calc(10vh+3rem)]"
                 : "mt-0"
-            }  sm:modal-box bg-white sm:h-auto h-full w-full rounded-none flex flex-col sm:rounded-lg py-0 px-4`}
+            }  sm:modal-box bg-white sm:h-auto h-full w-full rounded-none flex flex-col sm:rounded-lg py-0 px-4 overflow-y-scroll`}
           >
             <div class="flex justify-between items-center py-2 border-b">
               <h3 class="font-medium text-xl">Guia de tamanhos</h3>
@@ -63,7 +63,7 @@ export function SizesGuideModal(
     );
   }
   return (
-    <div class="bg-white sm:h-auto h-full w-full rounded-none flex flex-col sm:rounded-lg py-0 px-4">
+    <div class="bg-white sm:h-auto h-full w-full rounded-none flex flex-col sm:rounded-lg py-0 px-4 overflow-y-scroll">
       <div class="flex justify-between items-center py-2 border-b">
         <h3 class="font-medium text-xl">Guia de tamanhos</h3>
         <div class=" mt-0">
