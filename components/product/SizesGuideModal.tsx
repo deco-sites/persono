@@ -1,36 +1,44 @@
 import { SizeGuide } from "deco-sites/persono/loaders/Layouts/SizeGuide.tsx";
 import { Signal } from "@preact/signals";
 import Icon from "deco-sites/persono/components/ui/Icon.tsx";
+import Modal from "deco-sites/persono/components/ui/Modal.tsx";
+import { StateUpdater } from "https://esm.sh/v128/preact@10.18.1/hooks/src/index.js";
 
 interface Props {
   segment: string | undefined;
   sizes?: SizeGuide[];
   device: string;
-  showMobile: Signal<boolean>;
+  isOpen: Signal<boolean>;
 }
 
 export function SizesGuideModal(
-  { sizes, segment, device, showMobile }: Props,
+  { sizes, segment, device, isOpen }: Props,
 ) {
   if (device === "desktop") {
     return (
       <>
-        <input type="checkbox" id="my_modal_6" class="modal-toggle" />
-        <div
-          class={`modal ${
-            segment?.includes("Pijama") ? "tall:mt-[calc(7vh)]" : "mt-0"
-          } medium:mt-[calc(10vh+2rem)] small:mt-[calc(10vh+3rem)]`}
-          role="dialog"
+        <Modal
+          loading="lazy"
+          open={isOpen.value}
+          onClose={() => isOpen.value = false}
         >
-          <div class="sm:modal-box bg-white sm:h-auto h-full w-full rounded-none flex flex-col sm:rounded-lg py-0 px-4">
+          <div
+            class={`${
+              segment?.includes("Pijama")
+                ? "tall:mt-[calc(13vh)] medium:mt-[calc(10vh+2rem)] small:mt-[calc(10vh+3rem)]"
+                : "mt-0"
+            }  sm:modal-box bg-white sm:h-auto h-full w-full rounded-none flex flex-col sm:rounded-lg py-0 px-4`}
+          >
             <div class="flex justify-between items-center py-2 border-b">
               <h3 class="font-medium text-xl">Guia de tamanhos</h3>
               <div class="modal-action mt-0">
                 <label
-                  for="my_modal_6"
+                  onClick={() => {
+                    isOpen.value = false;
+                  }}
                   class="btn btn-sm btn-circle btn-ghost"
                 >
-                  ✕
+                  <Icon width={20} height={20} id="XMark" />
                 </label>
               </div>
             </div>
@@ -50,7 +58,7 @@ export function SizesGuideModal(
               ))}
             </div>
           </div>
-        </div>
+        </Modal>
       </>
     );
   }
@@ -61,7 +69,7 @@ export function SizesGuideModal(
         <div class=" mt-0">
           <label
             onClick={() => {
-              showMobile.value = false;
+              isOpen.value = false;
             }}
             class="btn btn-sm btn-circle btn-ghost"
           >
