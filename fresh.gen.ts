@@ -15,9 +15,9 @@ import * as $OutOfStock from "./islands/OutOfStock.tsx";
 import * as $PageFolder from "./islands/PageFolder.tsx";
 import * as $ProductImageZoom from "./islands/ProductImageZoom.tsx";
 import * as $ProductInfoCollapse from "./islands/ProductInfoCollapse.tsx";
-import * as $ProductSizeVariantSelector from "./islands/ProductSizeVariantSelector.tsx";
 import * as $SearchControls from "./islands/SearchControls.tsx";
 import * as $ShippingSimulation from "./islands/ShippingSimulation.tsx";
+import * as $SizeGuideModalButton from "./islands/SizeGuideModalButton.tsx";
 import * as $SliderJS from "./islands/SliderJS.tsx";
 import * as $Sort from "./islands/Sort.tsx";
 import * as $WishlistButton from "./islands/WishlistButton.tsx";
@@ -40,9 +40,9 @@ const manifest = {
     "./islands/PageFolder.tsx": $PageFolder,
     "./islands/ProductImageZoom.tsx": $ProductImageZoom,
     "./islands/ProductInfoCollapse.tsx": $ProductInfoCollapse,
-    "./islands/ProductSizeVariantSelector.tsx": $ProductSizeVariantSelector,
     "./islands/SearchControls.tsx": $SearchControls,
     "./islands/ShippingSimulation.tsx": $ShippingSimulation,
+    "./islands/SizeGuideModalButton.tsx": $SizeGuideModalButton,
     "./islands/SliderJS.tsx": $SliderJS,
     "./islands/Sort.tsx": $Sort,
     "./islands/WishlistButton.tsx": $WishlistButton,

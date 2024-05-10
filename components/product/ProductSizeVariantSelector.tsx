@@ -2,10 +2,7 @@ import AvatarSize from "$store/components/ui/AvatarSize.tsx";
 import type { GroupedData } from "$store/sdk/useVariantPossiblities.ts";
 import { Size } from "deco-sites/persono/loaders/Layouts/Size.tsx";
 import { SizeGuideGroup } from "deco-sites/persono/loaders/Layouts/SizeGuide.tsx";
-import { SizesGuideModal } from "deco-sites/persono/components/product/SizesGuideModal.tsx";
-import Drawers from "deco-sites/persono/components/header/Drawers.tsx";
-import Drawer from "deco-sites/persono/components/ui/Drawer.tsx";
-import { useSignal } from "@preact/signals";
+import SizeGuideModalButton from "deco-sites/persono/islands/SizeGuideModalButton.tsx";
 
 export interface Props {
   url: string | undefined;
@@ -69,8 +66,6 @@ function VariantSizeSelector({
     .filter((s) => s.category.toLowerCase() === lowerCategory)
     .flatMap(({ size }) => size.map(({ name, value }) => ({ name, value })));
 
-  const showMobile = useSignal<boolean>(false);
-
   return (
     <div class="flex flex-col gap-4">
       <ul class="flex flex-col gap-2">
@@ -100,42 +95,11 @@ function VariantSizeSelector({
               </ul>
             ))}
           </div>
-
-          <label
-            for="my_modal_6"
-            class={`btn justify-start underline btn-link p-0 text-black text-sm font-normal ${
-              categorySizes.length <= 0 ? "hidden" : ""
-            }`}
-            onClick={() => {
-              showMobile.value = true;
-            }}
-          >
-            Guia de tamanhos
-          </label>
-          {device === "desktop"
-            ? (
-              <SizesGuideModal
-                device={device}
-                sizes={categorySizes}
-                segment={category}
-                showMobile={showMobile}
-              />
-            )
-            : (
-              <Drawer
-                class=""
-                onClose={() => showMobile.value = false}
-                open={showMobile.value}
-                aside={
-                  <SizesGuideModal
-                    device={device}
-                    sizes={categorySizes}
-                    segment={category}
-                    showMobile={showMobile}
-                  />
-                }
-              />
-            )}
+          <SizeGuideModalButton
+            category={category}
+            categorySizes={categorySizes}
+            device={device}
+          />
         </div>
       </ul>
     </div>
