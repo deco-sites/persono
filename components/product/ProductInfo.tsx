@@ -6,7 +6,7 @@ import { formatPrice } from "$store/sdk/format.ts";
 import { useId } from "$store/sdk/useId.ts";
 import { ProductDetailsPage } from "apps/commerce/types.ts";
 import { mapProductToAnalyticsItem } from "apps/commerce/utils/productToAnalyticsItem.ts";
-import ProductSizeSelector from "./ProductSizeVariantSelector.tsx";
+import ProductSizeSelector from "$store/components/product/ProductSizeVariantSelector.tsx";
 import ProductColorSelector from "./ProductColorVariantSelector.tsx";
 import ProductBenefits from "../../sections/Product/ProductBenefits.tsx";
 import { useOfferWithoutTaxes } from "deco-sites/persono/sdk/useOfferWithoutTaxes.ts";
