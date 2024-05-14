@@ -2,9 +2,9 @@ import AvatarSize from "$store/components/ui/AvatarSize.tsx";
 import type { GroupedData } from "$store/sdk/useVariantPossiblities.ts";
 import { Size } from "deco-sites/persono/loaders/Layouts/Size.tsx";
 import { SizeGuideGroup } from "deco-sites/persono/loaders/Layouts/SizeGuide.tsx";
-import { SizesGuideModal } from "deco-sites/persono/components/product/SizesGuideModal.tsx";
+import SizeGuideModalButton from "deco-sites/persono/islands/SizeGuideModalButton.tsx";
 
-interface Props {
+export interface Props {
   url: string | undefined;
   sizes: Size[];
   sizeGuide: SizeGuideGroup[];
@@ -60,20 +60,11 @@ function VariantSizeSelector({
     return indexA - indexB;
   });
 
-  const rawCategorySizes = sizeGuide.filter((s) =>
-    s.category.toLowerCase() == category.toLowerCase()
-  );
+  const lowerCategory = category.toLowerCase();
 
-  const categorySizes = rawCategorySizes.map((item) => item.size)
-    .flat()
-    .map(({ name, value }) => ({ name, value }));
-
-  const newCategorySize = sortedSizeArray.map((item) => {
-    const match = sizes.find((a1Item) =>
-      a1Item.name.toLowerCase() === item.name.toLowerCase()
-    );
-    return match ? { ...match } : null;
-  }).filter((item) => item !== null) as { name: string; value: string }[];
+  const categorySizes = sizeGuide
+    .filter((s) => s.category.toLowerCase() === lowerCategory)
+    .flatMap(({ size }) => size.map(({ name, value }) => ({ name, value })));
 
   return (
     <div class="flex flex-col gap-4">
@@ -104,19 +95,10 @@ function VariantSizeSelector({
               </ul>
             ))}
           </div>
-
-          <label
-            for="my_modal_6"
-            class={`btn justify-start underline btn-link p-0 text-black text-sm font-normal ${
-              categorySizes.length <= 0 ? "hidden" : ""
-            }`}
-          >
-            Guia de tamanhos
-          </label>
-          <SizesGuideModal
+          <SizeGuideModalButton
+            category={category}
+            categorySizes={categorySizes}
             device={device}
-            sizes={categorySizes}
-            segment={category}
           />
         </div>
       </ul>
