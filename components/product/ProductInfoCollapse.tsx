@@ -44,14 +44,14 @@ const ProductInfoCollapse = (
         <span class="text-2xl text-primary">{openCollapse ? "-" : "+"}</span>
       </button>
       <section
-        class={`w-full flex flex-col transition-[max-height] duration-500  ease-linear ${
+        class={`w-full flex flex-col transition-[max-height] duration-500 ease-in-out ${
           openCollapse ? "max-h-screen " : "max-h-0 "
         } overflow-hidden`}
       >
         <div
           class={` px-4 pb-4 ${
             showContent ? "opacity-100" : "opacity-0 "
-          } transition-opacity duration-700 ease-in-out`}
+          } transition-opacity duration-500 ease-linear`}
         >
           {children}
         </div>
