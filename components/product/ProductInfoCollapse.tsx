@@ -51,7 +51,7 @@ const ProductInfoCollapse = (
         <div
           class={` px-4 pb-4 ${
             showContent ? "opacity-100" : "opacity-0 "
-          } transition-opacity duration-500 ease-linear`}
+          } transition-opacity duration-700 ease-out`}
         >
           {children}
         </div>
