@@ -16,7 +16,7 @@ const AccordionItem = (
       <button
         onClick={() => {
           setOpenCollapse(!openCollapse);
-          setShowContent(!showContent)
+          setShowContent(!showContent);
         }}
         class="flex w-full p-4 items-center justify-between pl-0  "
       >
@@ -35,7 +35,6 @@ const AccordionItem = (
           dangerouslySetInnerHTML={{
             __html: content.replace(/<p>|<\/p>/g, "\n"),
           }}
-        
         />
       </section>
     </div>
