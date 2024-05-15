@@ -1,4 +1,5 @@
-import AccordionItem from "./AccordionItem.tsx";
+import AccordionItem from "deco-sites/persono/islands/AccordionItem.tsx";
+
 
 export interface Props {
   sections: {
