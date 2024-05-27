@@ -27,7 +27,7 @@ const AccordionItem = ({ title, content }: Props) => {
         class="flex w-full p-4 items-center justify-between pl-0"
       >
         <span class="w-full text-start text-base font-normal">{title}</span>
-        <span class="text-2xl text-primary">{openCollapse ? "-" : "+"}</span>
+        <span class="text-2xl text-primary pl-4">{openCollapse ? "-" : "+"}</span>
       </button>
       <section
         id={title}

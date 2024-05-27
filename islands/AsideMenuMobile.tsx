@@ -5,6 +5,7 @@ export interface Props {
   sectionMenu: SectionMenu[];
   currentSection: SectionMenu | undefined;
   pathname: string;
+  currentSubMenuItemLabel: string | undefined
 }
 
 //@title {{{sectionTitle}}}
@@ -18,11 +19,10 @@ interface SectionMenu {
 }
 
 function AsideMenuMobile(
-  { sectionMenu, pathname, currentSection }: Props,
+  { sectionMenu, pathname, currentSection, currentSubMenuItemLabel }: Props,
 ) {
   const [openCollapse, setOpenCollapse] = useState(false);
   const [showContent, setShowContent] = useState(false);
-
   useEffect(() => {
     if (openCollapse) {
       const timeoutId = setTimeout(() => {
@@ -43,6 +43,8 @@ function AsideMenuMobile(
     }
   }, [showContent]);
 
+  const title = currentSection?.sectionTitle ?? currentSubMenuItemLabel
+
   return (
     <div class={`${openCollapse ? "" : "mb-8"}`}>
       <div
@@ -59,7 +61,7 @@ function AsideMenuMobile(
           class="flex justify-between w-full text-white px-3 py-2 bg-black rounded-full"
           onClick={() => setOpenCollapse(!openCollapse)}
         >
-          {currentSection?.sectionTitle}
+          {title}
           <Icon
             id="ChevronDown"
             class={`${openCollapse ? "rotate-180" : ""}`}

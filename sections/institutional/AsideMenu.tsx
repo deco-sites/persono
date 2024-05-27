@@ -24,15 +24,20 @@ export function loader(ctx: Props, req: Request) {
     "/" + pathname.split("/")[1] + sectionItem?.sectionLink === pathname
   );
 
+  const currentSubMenuItem = ctx.sectionMenu.flatMap((sectionItem) =>
+    sectionItem.menuItems
+  ).find((sub) => pathname === sub.href);
+
   return {
     ...ctx,
     pathname,
     currentSection,
+    currentSubMenuItem,
   };
 }
 
 function AsideMenu(
-  { sectionMenu, pathname, currentSection }: SectionProps<
+  { sectionMenu, pathname, currentSection, currentSubMenuItem }: SectionProps<
     typeof loader
   >,
 ) {
@@ -83,6 +88,7 @@ function AsideMenu(
         currentSection={currentSection}
         pathname={pathname}
         sectionMenu={sectionMenu}
+        currentSubMenuItemLabel={currentSubMenuItem?.label}
       />
     </aside>
   );
