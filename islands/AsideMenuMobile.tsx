@@ -5,7 +5,7 @@ export interface Props {
   sectionMenu: SectionMenu[];
   currentSection: SectionMenu | undefined;
   pathname: string;
-  currentSubMenuItemLabel: string | undefined
+  currentSubMenuItemLabel: string | undefined;
 }
 
 //@title {{{sectionTitle}}}
@@ -43,7 +43,7 @@ function AsideMenuMobile(
     }
   }, [showContent]);
 
-  const title = currentSection?.sectionTitle ?? currentSubMenuItemLabel
+  const title = currentSection?.sectionTitle ?? currentSubMenuItemLabel;
 
   return (
     <div class={`${openCollapse ? "" : "mb-8"}`}>
