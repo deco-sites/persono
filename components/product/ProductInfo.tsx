@@ -103,31 +103,32 @@ function ProductInfo({
   const script = (id: string, externalSectionId: string) => {
     const content = document.getElementById(id);
     const externalContainer = document.getElementById(externalSectionId);
-  
+
     if (!content || !externalContainer) return;
-  
+
     let lastScrollTop = 0;
     let lastScrollDirection = "";
     let lastSideVisible = "";
     let lastContentHeight = 0;
-  
+
     const isElementInViewport = (el: HTMLElement) => {
       const rect = el.getBoundingClientRect();
       const menuHeight = 80;
       return {
         topVisible: rect.top >= menuHeight && rect.top < window.innerHeight,
-        bottomVisible: rect.bottom >= menuHeight && rect.bottom < window.innerHeight,
+        bottomVisible: rect.bottom >= menuHeight &&
+          rect.bottom < window.innerHeight,
       };
     };
-  
+
     const handleScroll = () => {
       const windowHeight = window.innerHeight;
       const contentHeight = content.offsetHeight || 0;
-  
+
       if (lastContentHeight !== contentHeight) {
         lastContentHeight = contentHeight;
       }
-       
+
       const top = (lastContentHeight - windowHeight + 4) * -1;
 
       const scrollY = window.scrollY;
@@ -136,54 +137,59 @@ function ProductInfo({
       const { top: contentTop } = content.getBoundingClientRect();
       const { bottomVisible, topVisible } = isElementInViewport(content);
       const distanceFromTop = externalTop - contentTop;
-  
+
       if (content.style.position === "sticky") {
         externalContainer.style.paddingTop = `0px`;
       }
-  
-      if (scrollDirection === "down" && bottomVisible && !topVisible && 
-          (lastScrollDirection !== "up" || lastSideVisible === "bottomVisible")) {
+
+      if (
+        scrollDirection === "down" && bottomVisible && !topVisible &&
+        (lastScrollDirection !== "up" || lastSideVisible === "bottomVisible")
+      ) {
         content.style.top = `${top}px`;
         content.style.position = "sticky";
         lastScrollDirection = "down";
         lastSideVisible = "bottomVisible";
-      } 
-      
+      }
+
       if (scrollDirection === "up" && bottomVisible && !topVisible) {
         content.style.position = "relative";
         content.style.top = "0px";
         externalContainer.style.paddingTop = `${-distanceFromTop}px`;
         lastScrollDirection = "up";
         lastSideVisible = "bottomVisible";
-      } 
-      
+      }
+
       if (topVisible && scrollDirection === "down") {
         content.style.position = "relative";
         content.style.top = "0px";
         externalContainer.style.paddingTop = `${-distanceFromTop}px`;
         lastScrollDirection = "down";
         lastSideVisible = "topVisible";
-      } 
-      
-      if ((lastScrollDirection === "up" && topVisible && lastSideVisible === "bottomVisible") ||
-                 (lastScrollDirection !== scrollDirection && topVisible && lastSideVisible === "topVisible")) {
+      }
+
+      if (
+        (lastScrollDirection === "up" && topVisible &&
+          lastSideVisible === "bottomVisible") ||
+        (lastScrollDirection !== scrollDirection && topVisible &&
+          lastSideVisible === "topVisible")
+      ) {
         content.style.top = "80px";
         content.style.position = "sticky";
         externalContainer.style.paddingTop = `0px`;
         lastScrollDirection = "up";
         lastSideVisible = "topVisible";
       }
-  
+
       lastScrollTop = Math.max(scrollY, 0);
     };
-  
-   addEventListener("scroll", handleScroll);
-  
+
+    addEventListener("scroll", handleScroll);
+
     return () => {
-     removeEventListener("scroll", handleScroll);
+      removeEventListener("scroll", handleScroll);
     };
   };
-  
 
   return (
     <section class="w-full h-full" id={externalSectionId}>
