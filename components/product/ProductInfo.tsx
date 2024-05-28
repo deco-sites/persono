@@ -110,7 +110,7 @@ function ProductInfo({
     let lastScrollDirection = "";
     let lastSideVisible = "";
     let lastContentHeight = 0;
-    let topChanged =false
+    let topChanged = false;
 
     // Function to check if an element is visible in the viewport
     const isElementInViewport = (el: HTMLElement) => {
@@ -143,7 +143,7 @@ function ProductInfo({
       // Update content height if it has changed
       if (lastContentHeight !== contentHeight) {
         lastContentHeight = contentHeight;
-        topChanged = true
+        topChanged = true;
       }
 
       const top = (lastContentHeight - windowHeight + 4) * -1;
@@ -153,11 +153,6 @@ function ProductInfo({
       const { top: contentTop } = content.getBoundingClientRect();
       const { bottomVisible, topVisible } = isElementInViewport(content);
       const distanceFromTop = externalTop - contentTop;
-
-
-
-      
-
 
       // Reset the external container's paddingTop if content is sticky
       if (content.style.position === "sticky") {
@@ -181,10 +176,10 @@ function ProductInfo({
 
       const shouldSetStickyWhenScrollingDown =
         isScrollingDownAndBottomVisible &&
-        (lastScrollDirection !== "up" || lastSideVisible === "bottomVisible")
+        (lastScrollDirection !== "up" || lastSideVisible === "bottomVisible");
 
       // Case: Scrolling down and the bottom of the content is visible, but the content height  changed
-      if(topChanged && scrollDirection ==="down"){
+      if (topChanged && scrollDirection === "down") {
         externalContainer.style.paddingTop = `${-distanceFromTop}px`;
       }
 
@@ -193,7 +188,7 @@ function ProductInfo({
         setSticky(top);
         lastScrollDirection = "down";
         lastSideVisible = "bottomVisible";
-        topChanged=false
+        topChanged = false;
       } // Case: Scrolling up and the bottom of the content is visible, but the top is not
       else if (isScrollingUpAndBottomVisible) {
         setRelative(-distanceFromTop);
