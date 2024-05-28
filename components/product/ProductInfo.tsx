@@ -100,7 +100,6 @@ function ProductInfo({
     }
   });
 
-
   // Script to dynamic visualization of product info
   const script = (id: string, externalSectionId: string) => {
     const content = document.getElementById(id);
