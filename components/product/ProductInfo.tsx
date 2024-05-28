@@ -51,6 +51,7 @@ function ProductInfo({
   sizeGuide,
 }: SectionProps<typeof loader>) {
   const id = useId();
+  const externalSectionId = useId();
 
   const productInfoSectionId = `${id}-product-info`;
 
@@ -99,180 +100,299 @@ function ProductInfo({
     }
   });
 
-  const script = (id: string) => {
+  // Script to dynamic visualization of product info
+  const script = (id: string, externalSectionId: string) => {
     const content = document.getElementById(id);
-    const windowHeight = innerHeight;
+    const externalContainer = document.getElementById(externalSectionId);
 
-    if (content && windowHeight) {
-      const contentHeight = content?.offsetHeight;
+    if (!content || !externalContainer) return;
 
-      const top = (contentHeight - windowHeight + 4) * -1;
+    let lastScrollTop = 0;
+    let lastScrollDirection = "";
+    let lastSideVisible = "";
+    let lastContentHeight = 0;
+    let heightContentChanged = false;
+
+    // Function to check if an element is visible in the viewport
+    const isElementInViewport = (el: HTMLElement) => {
+      const rect = el.getBoundingClientRect();
+      const menuHeight = 80;
+      return {
+        topVisible: rect.top >= menuHeight && rect.top < window.innerHeight,
+        bottomVisible: rect.bottom >= menuHeight &&
+          rect.bottom < window.innerHeight,
+      };
+    };
+
+    // Function to set the content to "sticky" position
+    const setSticky = (top: number) => {
       content.style.top = `${top}px`;
       content.style.position = "sticky";
-    }
+    };
+
+    // Function to set the content to "relative" position
+    const setRelative = (paddingTop: number) => {
+      content.style.position = "relative";
+      content.style.top = "0px";
+      externalContainer.style.paddingTop = `${paddingTop}px`;
+    };
+
+    const handleScroll = () => {
+      const windowHeight = window.innerHeight;
+      const contentHeight = content.offsetHeight || 0;
+
+      // Update content height if it has changed
+      if (lastContentHeight !== contentHeight) {
+        lastContentHeight = contentHeight;
+        heightContentChanged = true;
+      }
+
+      const top = (lastContentHeight - windowHeight + 4) * -1;
+      const scrollY = window.scrollY;
+      const scrollDirection = scrollY > lastScrollTop ? "down" : "up";
+      const { top: externalTop } = externalContainer.getBoundingClientRect();
+      const { top: contentTop } = content.getBoundingClientRect();
+      const { bottomVisible, topVisible } = isElementInViewport(content);
+      const distanceFromTop = externalTop - contentTop;
+
+      // Constants for scroll conditions
+      const isScrollingDownAndBottomVisible = scrollDirection === "down" &&
+        bottomVisible && !topVisible;
+      const isScrollingUpAndBottomVisible = scrollDirection === "up" &&
+        bottomVisible && !topVisible;
+      const isScrollingDownAndTopVisible = topVisible &&
+        scrollDirection === "down";
+      const isSwitchingToUpDirectionAndTopVisible =
+        (lastScrollDirection === "up" && topVisible &&
+          lastSideVisible === "bottomVisible") ||
+        (lastScrollDirection !== scrollDirection && topVisible &&
+          lastSideVisible === "topVisible");
+
+      // Constant for combined condition
+      const shouldSetStickyWhenScrollingDown =
+        isScrollingDownAndBottomVisible &&
+        (lastScrollDirection !== "up" || lastSideVisible === "bottomVisible");
+
+      // Update external container's paddingTop if content height changed
+      if (heightContentChanged) {
+        externalContainer.style.paddingTop = `${-distanceFromTop}px`;
+      }
+
+      // Reset the external container's paddingTop if top is visible and content height changed
+      if (
+        topVisible && externalContainer.style.paddingTop !== "0px" &&
+        lastSideVisible === "bottomVisible"
+      ) {
+        externalContainer.style.paddingTop = "0px";
+      }
+
+      // Case: Scrolling down and the bottom of the content is visible, but the top is not
+      if (shouldSetStickyWhenScrollingDown || heightContentChanged) {
+        setSticky(top);
+        lastScrollDirection = "down";
+        lastSideVisible = "bottomVisible";
+        heightContentChanged = false;
+      } // Case: Scrolling up and the bottom of the content is visible, but the top is not
+      else if (isScrollingUpAndBottomVisible) {
+        setRelative(-distanceFromTop);
+        lastScrollDirection = "up";
+        lastSideVisible = "bottomVisible";
+      } // Case: Scrolling down and the top of the content is visible
+      else if (isScrollingDownAndTopVisible) {
+        setRelative(-distanceFromTop);
+        lastScrollDirection = "down";
+        lastSideVisible = "topVisible";
+      } // Case: Switching to up direction and the top of the content is visible
+      else if (isSwitchingToUpDirectionAndTopVisible) {
+        setSticky(80);
+        lastScrollDirection = "up";
+        lastSideVisible = "topVisible";
+      }
+
+      // Update the last scroll position
+      lastScrollTop = Math.max(scrollY, 0);
+    };
+
+    // Add the scroll event listener to the window
+    addEventListener("scroll", handleScroll);
+
+    // Return a cleanup function to remove the event listener
+    return () => {
+      removeEventListener("scroll", handleScroll);
+    };
   };
 
   return (
-    <div
-      class="flex flex-col w-full sm:mt-10 px-4 sm:px-0"
-      id={productInfoSectionId}
-    >
-      <Breadcrumb
-        itemListElement={breadcrumb.itemListElement}
-        showBreadcrumbProductQty={showBreadcrumbProductQty}
-        productsQtt={breadcrumb.numberOfItems}
-      />
-      {/* Code and name */}
-      <div class="sm:mt-6 mt-4 ">
-        <div>
-          {gtin && <span class="text-sm text-gray-600">Cod. {gtin}</span>}
-        </div>
-        <h1>
-          <span class="font-medium text-xl sm:text-2xl">{name}</span>
-        </h1>
-      </div>
-      {/* Prices */}
-      <div class="sm:mt-6 mt-4  ">
-        <div class="flex flex-row gap-2 items-center">
-          {(listPrice ?? 0) > price && (
-            <span class="line-through text-gray-600 text-xs">
-              {formatPrice(listPrice, offers?.priceCurrency)}
-            </span>
-          )}
-          <span class="font-medium text-xl text-black">
-            {formatPrice(price, offers?.priceCurrency)}
-          </span>
-        </div>
-        <span class="text-sm text-gray-600">{installments}</span>
-      </div>
-
-      {/* Sku Selector */}
-      <div class="sm:mt-6 mt-4  flex-col gap-4 ">
-        <ProductSizeSelector
-          category={product.category?.split(
-            ">",
-          )[product.category?.split(">").length - 1] ?? ""}
-          sizes={sizes}
-          sizeGuide={sizeGuide}
-          url={url}
-          productsNotAvailable={productsNotAvailable}
-          possibilities={possibilities}
-          device={device}
-        />
-        <ProductColorSelector
-          colors={colors}
-          url={url}
-          productsNotAvailable={productsNotAvailable}
-          possibilities={possibilities}
-        />
-      </div>
-      {/* Add to Cart and Favorites button */}
+    <section class="w-full h-full" id={externalSectionId}>
       <div
-        class={`mt-6 sm:mt-10  ${
-          productBenefits?.length == 0 ? "mb-5" : "mb-10"
-        } flex flex-col`}
+        class="flex flex-col w-full sm:pt-10 px-4 sm:px-0 "
+        id={productInfoSectionId}
       >
-        {availability === "https://schema.org/InStock"
-          ? (
-            <>
-              <AddCartButton
-                eventParams={{ items: [eventItem] }}
-                sku={product.sku}
-              />
-            </>
-          )
-          : <OutOfStock sku={sku} />}
-      </div>
-      <PageFolder activate={device !== "desktop"}>
-        {/* Benefities */}
+        <Breadcrumb
+          itemListElement={breadcrumb.itemListElement}
+          showBreadcrumbProductQty={showBreadcrumbProductQty}
+          productsQtt={breadcrumb.numberOfItems}
+        />
+        {/* Code and name */}
+        <div class="sm:mt-6 mt-4 ">
+          <div>
+            {gtin && <span class="text-sm text-gray-600">Cod. {gtin}</span>}
+          </div>
+          <h1>
+            <span class="font-medium text-xl sm:text-2xl">{name}</span>
+          </h1>
+        </div>
+        {/* Prices */}
+        <div class="sm:mt-6 mt-4  ">
+          <div class="flex flex-row gap-2 items-center">
+            {(listPrice ?? 0) > price && (
+              <span class="line-through text-gray-600 text-xs">
+                {formatPrice(listPrice, offers?.priceCurrency)}
+              </span>
+            )}
+            <span class="font-medium text-xl text-black">
+              {formatPrice(price, offers?.priceCurrency)}
+            </span>
+          </div>
+          <span class="text-sm text-gray-600">{installments}</span>
+        </div>
 
-        <div class={`${productBenefits?.length == 0 ? "hidden" : ""}`}>
-          <ProductBenefits
-            productBenefits={productBenefits}
-            adminBenefits={benefits}
+        {/* Sku Selector */}
+        <div class="sm:mt-6 mt-4  flex-col gap-4 ">
+          <ProductSizeSelector
+            category={product.category?.split(
+              ">",
+            )[product.category?.split(">").length - 1] ?? ""}
+            sizes={sizes}
+            sizeGuide={sizeGuide}
+            url={url}
+            productsNotAvailable={productsNotAvailable}
+            possibilities={possibilities}
+            device={device}
+          />
+          <ProductColorSelector
+            colors={colors}
+            url={url}
+            productsNotAvailable={productsNotAvailable}
+            possibilities={possibilities}
           />
         </div>
+        {/* Add to Cart and Favorites button */}
+        <div
+          class={`mt-6 sm:mt-10  ${
+            productBenefits?.length == 0 ? "mb-5" : "mb-10"
+          } flex flex-col`}
+        >
+          {availability === "https://schema.org/InStock"
+            ? (
+              <>
+                <AddCartButton
+                  eventParams={{ items: [eventItem] }}
+                  sku={product.sku}
+                />
+              </>
+            )
+            : <OutOfStock sku={sku} />}
+        </div>
+        <PageFolder activate={device !== "desktop"}>
+          {/* Benefities */}
+          <div class={`${productBenefits?.length == 0 ? "hidden" : ""}`}>
+            <ProductBenefits
+              productBenefits={productBenefits}
+              adminBenefits={benefits}
+            />
+          </div>
 
-        {/* Description card */}
+          {/* Description card */}
 
-        <div class="mt-6 sm:mt-7  ">
-          {description && (
-            <div class="flex flex-col divide-y border-t">
-              {description && (
-                <ProductInfoCollapse title="Descrição">
-                  <p class="text-base font-normal">{description}</p>
+          {/* Description card */}
+
+          <div class="mt-6 sm:mt-7  ">
+            {description && (
+              <div class="flex flex-col divide-y border-t">
+                {description && (
+                  <ProductInfoCollapse title="Descrição">
+                    <p class="text-base font-normal">{description}</p>
+                  </ProductInfoCollapse>
+                )}
+
+                <ProductInfoCollapse title="Especificações">
+                  <div class="flex flex-col gap-2">
+                    {product.isVariantOf?.hasVariant[0].additionalProperty &&
+                      product?.isVariantOf?.hasVariant[0]?.additionalProperty
+                        .map(
+                          (ad) =>
+                            ad.propertyID == "TECNICALSPECIFICATION" &&
+                              !ad.description?.startsWith("CUSTOM_")
+                              ? (
+                                <p class="text-base font-normal">
+                                  {ad.description}:&ensp;{ad.value}
+                                </p>
+                              )
+                              : null,
+                        )}
+                  </div>
                 </ProductInfoCollapse>
-              )}
 
-              <ProductInfoCollapse title="Especificações">
-                <div class="flex flex-col gap-2">
-                  {product.isVariantOf?.hasVariant[0].additionalProperty &&
-                    product?.isVariantOf?.hasVariant[0]?.additionalProperty
-                      .map(
-                        (ad) =>
-                          ad.propertyID == "TECNICALSPECIFICATION" &&
-                            !ad.description?.startsWith("CUSTOM_")
-                            ? (
-                              <p class="text-base font-normal">
-                                {ad.description}:&ensp;{ad.value}
-                              </p>
-                            )
-                            : null,
-                      )}
-                </div>
-              </ProductInfoCollapse>
+                <ProductInfoCollapse title="O que vai na embalagem?">
+                  <div class="flex flex-col gap-2">
+                    {product.isVariantOf?.hasVariant[0].additionalProperty &&
+                      product?.isVariantOf?.hasVariant[0]?.additionalProperty
+                        .map(
+                          (ad) =>
+                            ad.propertyID == "KITITEM"
+                              ? (
+                                <p class="text-base font-normal">
+                                  {ad.value}&ensp;{ad.description}
+                                </p>
+                              )
+                              : null,
+                        )}
+                  </div>
+                </ProductInfoCollapse>
 
-              <ProductInfoCollapse title="O que vai na embalagem?">
-                <div class="flex flex-col gap-2">
-                  {product.isVariantOf?.hasVariant[0].additionalProperty &&
-                    product?.isVariantOf?.hasVariant[0]?.additionalProperty
-                      .map(
-                        (ad) =>
-                          ad.propertyID == "KITITEM"
-                            ? (
-                              <p class="text-base font-normal">
-                                {ad.value}&ensp;{ad.description}
-                              </p>
-                            )
-                            : null,
-                      )}
-                </div>
-              </ProductInfoCollapse>
+                {/* Shipping Simulation */}
 
-              {/* Shipping Simulation */}
-
-              <div class="collapse items-start collapse-open pl-0">
-                <div class="flex  pl-0 items-center collapse-title text-base after:text-2xl after:text-primary">
-                  Calcular frete
-                </div>
-                <div class="collapse-content w-full pr-0 pl-0">
-                  <ShippingSimulation sku={product.sku} />
+                <div class="collapse items-start collapse-open pl-0">
+                  <div class="flex  pl-0 items-center collapse-title text-base after:text-2xl after:text-primary">
+                    Calcular frete
+                  </div>
+                  <div class="collapse-content w-full pr-0 pl-0">
+                    <ShippingSimulation sku={product.sku} />
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
-        </div>
+            )}
+          </div>
 
-        {/* Analytics Event */}
+          {/* Analytics Event */}
 
-        <SendEventOnView
-          id={id}
-          event={{
-            name: "view_item",
-            params: {
-              item_list_id: "product",
-              item_list_name: "Product",
-              items: [eventItem],
-            },
-          }}
-        />
-      </PageFolder>
-      <div class="h-3 invisible" />
+          <SendEventOnView
+            id={id}
+            event={{
+              name: "view_item",
+              params: {
+                item_list_id: "product",
+                item_list_name: "Product",
+                items: [eventItem],
+              },
+            }}
+          />
+        </PageFolder>
+        <div class="h-3 invisible" />
 
-      {device === "desktop" && (
-        <script defer src={scriptAsDataURI(script, productInfoSectionId)} />
-      )}
-    </div>
+        {device === "desktop" && (
+          <script
+            defer
+            src={scriptAsDataURI(
+              script,
+              productInfoSectionId,
+              externalSectionId,
+            )}
+          />
+        )}
+      </div>
+    </section>
   );
 }
 
