@@ -100,47 +100,105 @@ function ProductInfo({
     }
   });
 
-  const script = (id: string, externalSectionId: string) => {
-    const content = document.getElementById(id);
-    const externalContainer = document.getElementById(externalSectionId);
+ 
 
-    // Verifica se os elementos necessários existem
-    if (!content || !externalContainer) return;
 
-    const windowHeight = window.innerHeight;
-    const contentHeight = content.offsetHeight || 0;
-    const top = (contentHeight - windowHeight + 4) * -1;
-    let lastScrollTop = 0;
+/////
 
-    const handleScroll = () => {
+
+const script = (id:string, externalSectionId:string) => {
+  const content = document.getElementById(id);
+  const externalContainer = document.getElementById(externalSectionId);
+
+  if (!content || !externalContainer) return;
+
+
+  let lastScrollTop = 0;
+  let currentTopDistanceSet = false;
+  let lastScrollDirection = "";
+  let lastSideVisible = "";
+  let setTopConfig = false;
+
+  const handleScroll = () => {
+      const windowHeight = window.innerHeight;
+      const contentHeight = content.offsetHeight || 0;
+      const top = (contentHeight - windowHeight + 4) * -1;
+
       const scrollY = window.scrollY;
-      const validation1 =
-        scrollY - externalContainer.clientHeight + contentHeight / 2 > 0;
-      const validation2 = scrollY - contentHeight / 2 < 0;
+      const scrollDirection = scrollY > lastScrollTop ? "bottom" : "top";
 
-      if (content.style.top === `${80}px` && scrollY < lastScrollTop) {
-        lastScrollTop = scrollY <= 0 ? 0 : scrollY;
-        return;
+      const { top: externalTop, bottom: externalBottom } = externalContainer.getBoundingClientRect();
+      const { top: contentTop, bottom: contentBottom } = content.getBoundingClientRect();
+
+      const distanceFromTop = externalTop - contentTop;
+      const distanceFromBottom = externalBottom - contentBottom;
+
+      const isElementInViewport = (el:HTMLElement) => {
+          const rect = el.getBoundingClientRect();
+          const menuHeight = 0;
+          return {
+              topVisible: rect.top >= menuHeight && rect.top < window.innerHeight,
+              bottomVisible: rect.bottom >= menuHeight && rect.bottom < window.innerHeight
+          };
+      };
+
+      const { bottomVisible, topVisible } = isElementInViewport(content);
+
+      if ((distanceFromBottom === 40 && bottomVisible) || distanceFromBottom <= 0) {
+          content.style.top = `${top}px`;
+          content.style.position = `sticky`;
+          content.style.marginTop = `40px`;
+          lastSideVisible = "bottomVisible";
       }
 
-      if (validation1) {
-        content.style.position = "sticky";
-        content.style.top = `${80}px`;
-      } else if (validation2) {
-        content.style.position = "sticky";
-        content.style.top = `${top}px`;
+      if (scrollDirection === "bottom" && bottomVisible && !topVisible) {
+          content.style.top = `${top}px`;
+          content.style.position = `sticky`;
       }
 
-      lastScrollTop = scrollY <= 0 ? 0 : scrollY;
-    };
+      if (lastScrollDirection === "top" && topVisible && lastSideVisible === "bottomVisible") {
+          currentTopDistanceSet = false;
+          setTopConfig = true;
+      }
 
-    addEventListener("scroll", handleScroll);
+      if (scrollDirection === "top" && bottomVisible && !topVisible && !currentTopDistanceSet) {
+          currentTopDistanceSet = true;
+          lastScrollDirection = "top";
+          lastSideVisible = "bottomVisible";
+          content.style.marginTop = `${distanceFromTop * -1}px`;
+          content.style.position = `relative`;
+          content.style.top = `0px`;
+      }
 
-    return () => {
-      removeEventListener("scroll", handleScroll);
-    };
+      if (setTopConfig && topVisible && lastScrollDirection === "top" && scrollDirection === "bottom") {
+          content.style.marginTop = `${distanceFromTop * -1}px`;
+          content.style.position = `relative`;
+          content.style.top = `0px`;
+          lastScrollDirection = "bottom";
+          setTopConfig = false;
+      }
+
+      if (setTopConfig && topVisible) {
+          content.style.top = `40px`;
+          content.style.position = `sticky`;
+          content.style.marginTop = `40px`;
+          lastScrollDirection = "top";
+          lastSideVisible = "topVisible";
+      }
+
+      lastScrollTop = Math.max(scrollY, 0);
   };
 
+  window.addEventListener("scroll", handleScroll);
+
+  return () => {
+      window.removeEventListener("scroll", handleScroll);
+  };
+};
+
+
+
+  
   return (
     <section class="w-full h-full" id={externalSectionId}>
       <div
