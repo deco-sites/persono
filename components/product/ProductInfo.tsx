@@ -103,104 +103,92 @@ function ProductInfo({
   const script = (id: string, externalSectionId: string) => {
     const content = document.getElementById(id);
     const externalContainer = document.getElementById(externalSectionId);
-
+  
     if (!content || !externalContainer) return;
-
+  
     let lastScrollTop = 0;
     let lastScrollDirection = "";
     let lastSideVisible = "";
     let lastContentHeight = 0;
-
-    const handleScroll = () => {
-      const isElementInViewport = (el: HTMLElement) => {
-        const rect = el.getBoundingClientRect();
-        const menuHeight = 80;
-        return {
-          topVisible: rect.top >= menuHeight && rect.top < window.innerHeight,
-          bottomVisible: rect.bottom >= menuHeight &&
-            rect.bottom < window.innerHeight,
-        };
+  
+    const isElementInViewport = (el: HTMLElement) => {
+      const rect = el.getBoundingClientRect();
+      const menuHeight = 80;
+      return {
+        topVisible: rect.top >= menuHeight && rect.top < window.innerHeight,
+        bottomVisible: rect.bottom >= menuHeight && rect.bottom < window.innerHeight,
       };
+    };
+  
+    const handleScroll = () => {
       const windowHeight = window.innerHeight;
       const contentHeight = content.offsetHeight || 0;
-
+  
       if (lastContentHeight !== contentHeight) {
         lastContentHeight = contentHeight;
       }
-
+       
       const top = (lastContentHeight - windowHeight + 4) * -1;
+
       const scrollY = window.scrollY;
-      const scrollDirection = scrollY > lastScrollTop ? "bottom" : "top";
+      const scrollDirection = scrollY > lastScrollTop ? "down" : "up";
       const { top: externalTop } = externalContainer.getBoundingClientRect();
       const { top: contentTop } = content.getBoundingClientRect();
       const { bottomVisible, topVisible } = isElementInViewport(content);
       const distanceFromTop = externalTop - contentTop;
-
-      if (content.style.position === `sticky`) {
-        externalContainer.style.paddingTop = `${0}px`;
+  
+      if (content.style.position === "sticky") {
+        externalContainer.style.paddingTop = `0px`;
       }
-
-      if (
-        scrollDirection === "bottom" && bottomVisible && !topVisible &&
-          lastScrollDirection !== "top" ||
-        lastScrollDirection !== scrollDirection && bottomVisible &&
-          lastSideVisible === "bottomVisible"
-      ) {
+  
+      if (scrollDirection === "down" && bottomVisible && !topVisible && 
+          (lastScrollDirection !== "up" || lastSideVisible === "bottomVisible")) {
         content.style.top = `${top}px`;
-        content.style.position = `sticky`;
-        lastScrollDirection = "bottom";
+        content.style.position = "sticky";
+        lastScrollDirection = "down";
         lastSideVisible = "bottomVisible";
-      }
-
-      if (
-        scrollDirection === "top" && bottomVisible && !topVisible &&
-        lastScrollDirection !== "top"
-      ) {
-        lastScrollDirection = "top";
+      } 
+      
+      if (scrollDirection === "up" && bottomVisible && !topVisible) {
+        content.style.position = "relative";
+        content.style.top = "0px";
+        externalContainer.style.paddingTop = `${-distanceFromTop}px`;
+        lastScrollDirection = "up";
         lastSideVisible = "bottomVisible";
-        externalContainer.style.paddingTop = `${distanceFromTop * -1}px`;
-        content.style.position = `relative`;
-        content.style.top = `0px`;
-      }
-
-      if (
-        topVisible && lastScrollDirection === "top" &&
-        scrollDirection === "bottom"
-      ) {
-        externalContainer.style.paddingTop = `${distanceFromTop * -1}px`;
-        content.style.position = `relative`;
-        content.style.top = `0px`;
-        lastScrollDirection = "bottom";
+      } 
+      
+      if (topVisible && scrollDirection === "down") {
+        content.style.position = "relative";
+        content.style.top = "0px";
+        externalContainer.style.paddingTop = `${-distanceFromTop}px`;
+        lastScrollDirection = "down";
+        lastSideVisible = "topVisible";
+      } 
+      
+      if ((lastScrollDirection === "up" && topVisible && lastSideVisible === "bottomVisible") ||
+                 (lastScrollDirection !== scrollDirection && topVisible && lastSideVisible === "topVisible")) {
+        content.style.top = "80px";
+        content.style.position = "sticky";
+        externalContainer.style.paddingTop = `0px`;
+        lastScrollDirection = "up";
         lastSideVisible = "topVisible";
       }
-
-      if (
-        lastScrollDirection === "top" && topVisible &&
-          lastSideVisible === "bottomVisible" ||
-        lastScrollDirection !== scrollDirection && topVisible &&
-          lastSideVisible === "topVisible"
-      ) {
-        content.style.top = `80px`;
-        content.style.position = `sticky`;
-        lastScrollDirection = "top";
-        externalContainer.style.paddingTop = `${0}px`;
-        lastSideVisible = "topVisible";
-      }
-
+  
       lastScrollTop = Math.max(scrollY, 0);
     };
-
-    addEventListener("scroll", handleScroll);
-
+  
+   addEventListener("scroll", handleScroll);
+  
     return () => {
-      removeEventListener("scroll", handleScroll);
+     removeEventListener("scroll", handleScroll);
     };
   };
+  
 
   return (
     <section class="w-full h-full" id={externalSectionId}>
       <div
-        class="flex flex-col w-full sm:mt-10 px-4 sm:px-0 my-10"
+        class="flex flex-col w-full sm:pt-10 px-4 sm:px-0 "
         id={productInfoSectionId}
       >
         <Breadcrumb
