@@ -103,93 +103,107 @@ function ProductInfo({
   const script = (id: string, externalSectionId: string) => {
     const content = document.getElementById(id);
     const externalContainer = document.getElementById(externalSectionId);
-
+  
     if (!content || !externalContainer) return;
-
+  
     let lastScrollTop = 0;
     let lastScrollDirection = "";
     let lastSideVisible = "";
     let lastContentHeight = 0;
-
+  
+    // Function to check if an element is visible in the viewport
     const isElementInViewport = (el: HTMLElement) => {
       const rect = el.getBoundingClientRect();
       const menuHeight = 80;
       return {
         topVisible: rect.top >= menuHeight && rect.top < window.innerHeight,
-        bottomVisible: rect.bottom >= menuHeight &&
-          rect.bottom < window.innerHeight,
+        bottomVisible: rect.bottom >= menuHeight && rect.bottom < window.innerHeight,
       };
     };
-
+  
+    // Function to set the content to "sticky" position
+    const setSticky = (top: number) => {
+      content.style.top = `${top}px`;
+      content.style.position = "sticky";
+    };
+  
+    // Function to set the content to "relative" position
+    const setRelative = (paddingTop: number) => {
+      content.style.position = "relative";
+      content.style.top = "0px";
+      externalContainer.style.paddingTop = `${paddingTop}px`;
+    };
+  
     const handleScroll = () => {
       const windowHeight = window.innerHeight;
       const contentHeight = content.offsetHeight || 0;
-
+  
+      // Update content height if it has changed
       if (lastContentHeight !== contentHeight) {
         lastContentHeight = contentHeight;
       }
-
+  
       const top = (lastContentHeight - windowHeight + 4) * -1;
-
       const scrollY = window.scrollY;
       const scrollDirection = scrollY > lastScrollTop ? "down" : "up";
       const { top: externalTop } = externalContainer.getBoundingClientRect();
       const { top: contentTop } = content.getBoundingClientRect();
       const { bottomVisible, topVisible } = isElementInViewport(content);
       const distanceFromTop = externalTop - contentTop;
-
+  
+      // Reset the external container's paddingTop if content is sticky
       if (content.style.position === "sticky") {
-        externalContainer.style.paddingTop = `0px`;
+        externalContainer.style.paddingTop = "0px";
       }
-
-      if (
-        scrollDirection === "down" && bottomVisible && !topVisible &&
-        (lastScrollDirection !== "up" || lastSideVisible === "bottomVisible")
-      ) {
-        content.style.top = `${top}px`;
-        content.style.position = "sticky";
+  
+      // Constants for scroll conditions
+      const isScrollingDownAndBottomVisible = scrollDirection === "down" && bottomVisible && !topVisible;
+      const isScrollingUpAndBottomVisible = scrollDirection === "up" && bottomVisible && !topVisible;
+      const isScrollingDownAndTopVisible = topVisible && scrollDirection === "down";
+      const isSwitchingToUpDirectionAndTopVisible = 
+        (lastScrollDirection === "up" && topVisible && lastSideVisible === "bottomVisible") ||
+        (lastScrollDirection !== scrollDirection && topVisible && lastSideVisible === "topVisible");
+  
+      // Constant for combined condition
+      const shouldSetStickyWhenScrollingDown = isScrollingDownAndBottomVisible && (lastScrollDirection !== "up" || lastSideVisible === "bottomVisible");
+  
+      // Case: Scrolling down and the bottom of the content is visible, but the top is not
+      if (shouldSetStickyWhenScrollingDown) {
+        setSticky(top);
         lastScrollDirection = "down";
         lastSideVisible = "bottomVisible";
-      }
-
-      if (scrollDirection === "up" && bottomVisible && !topVisible) {
-        content.style.position = "relative";
-        content.style.top = "0px";
-        externalContainer.style.paddingTop = `${-distanceFromTop}px`;
+      } 
+      // Case: Scrolling up and the bottom of the content is visible, but the top is not
+      else if (isScrollingUpAndBottomVisible) {
+        setRelative(-distanceFromTop);
         lastScrollDirection = "up";
         lastSideVisible = "bottomVisible";
-      }
-
-      if (topVisible && scrollDirection === "down") {
-        content.style.position = "relative";
-        content.style.top = "0px";
-        externalContainer.style.paddingTop = `${-distanceFromTop}px`;
+      } 
+      // Case: Scrolling down and the top of the content is visible
+      else if (isScrollingDownAndTopVisible) {
+        setRelative(-distanceFromTop);
         lastScrollDirection = "down";
         lastSideVisible = "topVisible";
-      }
-
-      if (
-        (lastScrollDirection === "up" && topVisible &&
-          lastSideVisible === "bottomVisible") ||
-        (lastScrollDirection !== scrollDirection && topVisible &&
-          lastSideVisible === "topVisible")
-      ) {
-        content.style.top = "80px";
-        content.style.position = "sticky";
-        externalContainer.style.paddingTop = `0px`;
+      } 
+      // Case: Switching to up direction and the top of the content is visible
+      else if (isSwitchingToUpDirectionAndTopVisible) {
+        setSticky(80);
         lastScrollDirection = "up";
         lastSideVisible = "topVisible";
       }
-
+  
+      // Update the last scroll position
       lastScrollTop = Math.max(scrollY, 0);
     };
-
+  
+  
     addEventListener("scroll", handleScroll);
-
     return () => {
-      removeEventListener("scroll", handleScroll);
+     removeEventListener("scroll", handleScroll);
     };
   };
+  
+  
 
   return (
     <section class="w-full h-full" id={externalSectionId}>
