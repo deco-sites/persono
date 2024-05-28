@@ -5,8 +5,8 @@
     "scope": "/",
     "start_url": "/",
     "id": "/?source=pwa",
-    "name": "Fashion by Deco",
-    "short_name": "Fashion",
+    "name": "Persono",
+    "short_name": "Persono",
     "orientation": "portrait",
     "icons": [
         {
@@ -30,5 +30,5 @@
             "type": "image/png"
         }
     ],
-    "description": "Latest fashion trends in Rio"
+    "description": "Persono"
 }
