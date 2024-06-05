@@ -1,5 +1,6 @@
 import type { SectionProps } from "deco/types.ts";
 import Icon from "deco-sites/persono/components/ui/Icon.tsx";
+import AsideMenuMobile from "deco-sites/persono/islands/AsideMenuMobile.tsx";
 
 export interface Props {
   sectionMenu: SectionMenu[];
@@ -23,15 +24,20 @@ export function loader(ctx: Props, req: Request) {
     "/" + pathname.split("/")[1] + sectionItem?.sectionLink === pathname
   );
 
+  const currentSubMenuItem = ctx.sectionMenu.flatMap((sectionItem) =>
+    sectionItem.menuItems
+  ).find((sub) => pathname === sub.href);
+
   return {
     ...ctx,
     pathname,
     currentSection,
+    currentSubMenuItem,
   };
 }
 
 function AsideMenu(
-  { sectionMenu, pathname, currentSection }: SectionProps<
+  { sectionMenu, pathname, currentSection, currentSubMenuItem }: SectionProps<
     typeof loader
   >,
 ) {
@@ -78,63 +84,12 @@ function AsideMenu(
           </li>
         ))}
       </ul>
-      <div class="lg:hidden w-full sm:pb-5 pb-8 ">
-        <details class="dropdown w-full text-sm font-normal static group ">
-          <summary class="btn text-sm font-normal w-full btn-secondary justify-between border-none">
-            {currentSection?.sectionTitle}
-            <Icon
-              id="ChevronDown"
-              class="group-open:rotate-180"
-              width={26}
-              height={26}
-            />
-          </summary>
-          <ul class="menu dropdown-content z-10 bg-base-100 mt-5 rounded-box w-full gap-2 left-0 px-8 h-full">
-            {sectionMenu.map((sectionItem) => (
-              <>
-                <li class=" sm:text-md text-base">
-                  <div class="">
-                    {sectionItem?.sectionLink
-                      ? (
-                        <a
-                          class={`hover:text-primary ${
-                            currentSection?.sectionLink ===
-                                sectionItem?.sectionLink
-                              ? "text-primary"
-                              : ""
-                          }`}
-                          href={"/" + pathname.split("/")[1] +
-                            sectionItem?.sectionLink}
-                        >
-                          {sectionItem?.sectionTitle}
-                        </a>
-                      )
-                      : sectionItem?.sectionTitle}
-                  </div>
-                </li>
-                {sectionItem?.menuItems.map(
-                  (item, index) => (
-                    <li class="" key={index}>
-                      <a
-                        class="sm:ml-0 ml-1 flex gap-2 items-center"
-                        href={item.href}
-                      >
-                        <Icon
-                          width={20}
-                          class="text-[#999] p-0"
-                          height={20}
-                          id="ArrowRight"
-                        />
-                        {item.label}
-                      </a>
-                    </li>
-                  ),
-                )}
-              </>
-            ))}
-          </ul>
-        </details>
-      </div>
+      <AsideMenuMobile
+        currentSection={currentSection}
+        pathname={pathname}
+        sectionMenu={sectionMenu}
+        currentSubMenuItemLabel={currentSubMenuItem?.label}
+      />
     </aside>
   );
 }
