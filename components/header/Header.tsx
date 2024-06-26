@@ -52,7 +52,7 @@ function Header({
   return (
     <>
       <header class="h-[120px]" data-header>
-        <div class="fixed top-0 left-0 w-full z-30 ">
+        <div class="fixed top-0 left-0 z-30 ">
           <Alert alerts={alerts} />
           <div class="border-t border-b sm:border-b-0 border-base-300 bg-base-100 w-full relative">
             <Navbar

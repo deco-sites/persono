@@ -14,7 +14,7 @@ export default function Benefits(props: Props) {
   const listOfBenefits = props.benefits?.map((benefit, idx) => {
     return (
       <div
-        class={`flex sm:flex-row lg:flex-col sm:justify-center gap-4 w-full first:pt-0 last:pb-0 h-full max-lg:py-6 lg:pr-8 lg:border-r lg:last:border-r-0 lg:pb-0`}
+        class={`flex sm:flex-row lg:flex-col lg:justify-center gap-4 w-full first:pt-0 last:pb-0 h-full max-lg:py-6 lg:pr-8 lg:border-r lg:last:border-r-0 lg:pb-0 pt-4 pb-4`}
       >
         <Image
           src={benefit.icon}
@@ -37,9 +37,9 @@ export default function Benefits(props: Props) {
 
   return (
     <>
-      <div class="flex w-full container px-6 pb-[62px] pt-6 lg:py-20 sm:px-0">
+      <div class="flex flex-col md:flex-row w-full container px-6 pb-[62px] pt-6 lg:py-20 md:px-0">
         <Header />
-        <div class="flex max-lg:flex-col sm:justify-center sm:items-center w-full border border-gray-100 lg:gap-9 p-6 lg:p-10 rounded divide-y lg:divide-y-0 divide-gray-100">
+        <div class="flex flex-col md:flex-row sm:justify-center sm:items-center w-full border border-gray-100 lg:gap-9 p-6 lg:p-10 rounded divide-y lg:divide-y-0 divide-gray-100">
           {listOfBenefits}
         </div>
       </div>
