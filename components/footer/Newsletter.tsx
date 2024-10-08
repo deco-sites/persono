@@ -22,8 +22,7 @@ export interface Props {
   };
 }
 
-function Newsletter({ content, layout = {} }: Props) {
-  const { tiled = false } = layout;
+function Newsletter({ content }: Props) {
   const loading = useSignal(false);
   const sended = useSignal(false);
   const sendable = useSignal(false);

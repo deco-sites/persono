@@ -1,7 +1,6 @@
-import { context } from "deco/mod.ts";
 import { grid, VNode } from "../../constants.tsx";
 import { clx } from "../../sdk/clx.ts";
-
+import { context } from "@deco/deco";
 interface Props {
   children?: VNode[] | null;
   layout?: {
@@ -69,12 +68,10 @@ interface Props {
     };
   };
 }
-
 function Grid({ layout, children }: Props) {
   const items = !context.isDeploy && !children?.length
     ? new Array(12).fill(0).map(() => <ItemPreview />)
     : children;
-
   return (
     <div
       class={clx(
@@ -97,7 +94,6 @@ function Grid({ layout, children }: Props) {
     </div>
   );
 }
-
 const ItemPreview = () => (
   <div class="card w-48 h-48 bg-base-100 shadow">
     <div class="card-body items-center justify-center text-base-300 text-sm">
@@ -105,5 +101,4 @@ const ItemPreview = () => (
     </div>
   </div>
 );
-
 export default Grid;

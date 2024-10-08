@@ -1,16 +1,11 @@
 import SearchResult, {
   Props as SearchResultProps,
 } from "$store/components/search/SearchResult.tsx";
-import { FnContext } from "deco/types.ts";
-
-import { SectionProps } from "deco/mod.ts";
-
+import { type FnContext, type SectionProps } from "@deco/deco";
 export type Props = SearchResultProps;
-
 function WishlistGallery(props: SectionProps<typeof loader>) {
   const { page } = props;
   const isEmpty = !page || page.products.length === 0;
-
   if (isEmpty) {
     return (
       <div class="container mx-4 sm:mx-auto">
@@ -24,10 +19,8 @@ function WishlistGallery(props: SectionProps<typeof loader>) {
       </div>
     );
   }
-
   return <SearchResult {...props} />;
 }
-
 export const loader = (props: Props, _req: Request, ctx: FnContext) => {
   const device = ctx.device;
   return {
@@ -36,5 +29,4 @@ export const loader = (props: Props, _req: Request, ctx: FnContext) => {
     ...props,
   };
 };
-
 export default WishlistGallery;

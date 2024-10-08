@@ -1,31 +1,26 @@
-import { Section } from "deco/blocks/section.ts";
-import type { SectionProps } from "deco/types.ts";
-
+import { type Section } from "@deco/deco/blocks";
+import { type SectionProps } from "@deco/deco";
 export interface Props {
   title: string;
   asideMenu: Section;
   sections: Page[];
 }
-
 // @title {{{title}}}
 interface Page {
   section: Section[];
   title: string;
   url: string;
 }
-
-function InstitutionalPage({
-  pathname,
-  asideMenu: { Component: AsideComponent, props: asideProps },
-  sections,
-  title,
-}: SectionProps<
-  typeof loader
->) {
+function InstitutionalPage(
+  {
+    pathname,
+    asideMenu: { Component: AsideComponent, props: asideProps },
+    sections,
+    title,
+  }: SectionProps<typeof loader>,
+) {
   const pathSlug = pathname.split("/")[pathname.split("/").length - 1];
-
   const acctualSection = sections.find((sec) => sec.url === "/" + pathSlug);
-
   return (
     <>
       <>
@@ -46,15 +41,12 @@ function InstitutionalPage({
     </>
   );
 }
-
 export function loader(ctx: Props, req: Request) {
   const url = new URL(req.url);
   const { pathname } = url;
-
   return {
     ...ctx,
     pathname,
   };
 }
-
 export default InstitutionalPage;

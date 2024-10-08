@@ -7,10 +7,8 @@ import ProductCard, {
   Layout as CardLayout,
 } from "deco-sites/persono/components/product/ProductCard/index.tsx";
 import Header from "$store/components/ui/SectionHeader.tsx";
-
-import { SectionProps } from "deco/mod.ts";
 import { FnCustomContext } from "deco-sites/persono/packs/types.ts";
-
+import { type SectionProps } from "@deco/deco";
 export interface Props {
   title?: string;
   products: Product[] | null;
@@ -19,23 +17,15 @@ export interface Props {
   cardLayout?: CardLayout;
   hasRelatedProducts?: boolean;
 }
-
-function ProductShelf({
-  products,
-  title,
-  device,
-  itemListName,
-  cardLayout,
-  hasRelatedProducts,
-}: SectionProps<typeof loader>) {
+function ProductShelf(
+  { products, title, device, itemListName, cardLayout, hasRelatedProducts }:
+    SectionProps<typeof loader>,
+) {
   const id = useId();
-
   const isMobile = device === "mobile";
-
   if (!products || products.length === 0) {
     return null;
   }
-
   return (
     <div class="w-full container">
       <div class="pt-10">
@@ -72,20 +62,12 @@ function ProductShelf({
 
         <div class="hidden relative sm:block z-10 col-start-1 row-start-3">
           <Slider.PrevButton class="justify-center btn btn-circle btn-accent text-primary disabled:bg-white border border-neutra z-10 absolute left-[-18px] top-[calc(50%-18px)] hidden sm:flex rounded-full cursor-pointer">
-            <Icon
-              size={20}
-              id="ChevronLeft"
-              strokeWidth={2}
-            />
+            <Icon size={20} id="ChevronLeft" strokeWidth={2} />
           </Slider.PrevButton>
         </div>
         <div class="hidden relative sm:block z-10 col-start-3 row-start-3">
           <Slider.NextButton class="justify-center btn btn-circle btn-accent text-primary disabled:bg-white border border-neutra z-10 absolute right-[-18px] top-[calc(50%-18px)] hidden sm:flex rounded-full cursor-pointer">
-            <Icon
-              size={20}
-              id="ChevronRight"
-              strokeWidth={2}
-            />
+            <Icon size={20} id="ChevronRight" strokeWidth={2} />
           </Slider.NextButton>
         </div>
 
@@ -94,7 +76,6 @@ function ProductShelf({
     </div>
   );
 }
-
 export const loader = (props: Props, _req: Request, ctx: FnCustomContext) => {
   const device = ctx.device;
   return {
@@ -102,5 +83,4 @@ export const loader = (props: Props, _req: Request, ctx: FnCustomContext) => {
     ...props,
   };
 };
-
 export default ProductShelf;

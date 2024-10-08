@@ -2,7 +2,6 @@ import { IS_BROWSER } from "$fresh/runtime.ts";
 import type { Props as MenuProps } from "$store/components/header/Menu.tsx";
 import type { EditableProps as SearchbarProps } from "$store/components/search/Searchbar.tsx";
 import Drawer from "$store/components/ui/Drawer.tsx";
-import { usePlatform } from "$store/sdk/usePlatform.tsx";
 import { useUI } from "$store/sdk/useUI.ts";
 import type { EditableProps as CartProps } from "deco-sites/persono/components/minicart/Cart.tsx";
 import type { ComponentChildren } from "preact";

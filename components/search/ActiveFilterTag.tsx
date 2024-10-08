@@ -1,6 +1,5 @@
 import { FilterToggleValue } from "apps/commerce/types.ts";
 import Icon from "deco-sites/persono/components/ui/Icon.tsx";
-import { invoke } from "deco-sites/persono/runtime.ts";
 import { redirectWithFilters } from "deco-sites/persono/components/search/utils.ts";
 
 export interface Props {

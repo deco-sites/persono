@@ -1,5 +1,4 @@
 import { Color } from "deco-sites/persono/loaders/Layouts/Colors.tsx";
-import Image from "apps/website/components/Image.tsx";
 
 type TransformedColors = {
   [key: string]: string[];

@@ -266,7 +266,7 @@ function Filters({ filters, colors, filterSettings, basePath }: Props) {
   const clearFilter = useSignal<boolean>(false);
 
   useEffect(() => {
-    filters.map((item, idx) => {
+    filters.map((item, _idx) => {
       if (isToggle(item)) {
         item?.values.map((v) => {
           if (v.selected == true) {

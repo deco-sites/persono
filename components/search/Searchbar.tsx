@@ -7,14 +7,12 @@ import { useUI } from "$store/sdk/useUI.ts";
 import { Product, Suggestion } from "apps/commerce/types.ts";
 import { SuggestionResult } from "deco-sites/persono/components/search/SuggestionResult.tsx";
 import { DrawerHeader } from "deco-sites/persono/components/ui/DrawerHeader.tsx";
-import { Resolved } from "deco/engine/core/resolver.ts";
 import { useEffect, useRef } from "preact/compat";
-
+import { type Resolved } from "@deco/deco";
 interface Link {
   label: string;
   href: string;
 }
-
 export interface EditableProps {
   /**
    * @title Placeholder
@@ -34,7 +32,6 @@ export interface EditableProps {
    * @default q
    */
   name?: string;
-
   /**
    * @title Featured Info
    * @description This data will be displayed on the first render of Search Bar
@@ -45,24 +42,18 @@ export interface EditableProps {
     productsTitle?: string;
     products: Product[] | null;
   };
-
   /**
    * @title Featured Info
    * @description This data will be displayed on the first render of Search Bar
    */
-
   /** @description used for analytics event on suggestion product */
-
   itemListName?: string;
-
   /** @title Suggestions Integration   */
   loader: Resolved<Suggestion | null>;
 }
-
 export interface Props extends EditableProps {
   withHeader?: boolean;
 }
-
 function Searchbar({
   placeholder = "What are you looking for?",
   action = "/s",
@@ -83,7 +74,6 @@ function Searchbar({
   const { setQuery, payload, loading, called, query } = useSuggestions(loader);
   const { products: payloadProducts = [], searches: payloadSearches = [] } =
     payload.value ?? {};
-
   const { products, searches } = called.value
     ? {
       products: payloadProducts,
@@ -98,7 +88,6 @@ function Searchbar({
     };
   const hasProducts = Boolean(products.length);
   const hasTerms = Boolean(searches.length);
-
   useEffect(() => {
     if (
       displaySearchPopup.value === true ||
@@ -107,7 +96,6 @@ function Searchbar({
       setTimeout(() => searchInputRef.current?.focus(), 500);
     }
   }, [displaySearchPopup.value, displaySearchDrawer.value]);
-
   return (
     <div
       class="container lg:gap-8 gap-6 overflow-y-auto lg:overflow-y-hidden flex flex-col lg:py-6 pb-4"
@@ -148,14 +136,12 @@ function Searchbar({
             name={name}
             onInput={(e) => {
               const value = e.currentTarget.value;
-
               if (value) {
                 sendEvent({
                   name: "search",
                   params: { search_term: value },
                 });
               }
-
               setQuery(value);
             }}
             placeholder={placeholder}
@@ -228,5 +214,4 @@ function Searchbar({
     </div>
   );
 }
-
 export default Searchbar;

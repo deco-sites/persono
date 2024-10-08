@@ -1,11 +1,9 @@
 import { LoaderContext } from "deco/types.ts";
 import { Manifest } from "deco-sites/persono/manifest.gen.ts";
-import type { Resolvable } from "deco/engine/core/resolver.ts";
-
+import { type Resolvable } from "@deco/deco";
 export interface Props {
   sectionsIds: string[];
 }
-
 const loader = async (
   { sectionsIds }: Props,
   _: Request,
@@ -19,11 +17,8 @@ const loader = async (
     if (!props) {
       return sections;
     }
-
     return { ...sections, [id]: props };
   }, {});
-
   return sectionsProps;
 };
-
 export default loader;

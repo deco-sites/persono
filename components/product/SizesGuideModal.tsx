@@ -2,7 +2,6 @@ import { SizeGuide } from "deco-sites/persono/loaders/Layouts/SizeGuide.tsx";
 import { Signal } from "@preact/signals";
 import Icon from "deco-sites/persono/components/ui/Icon.tsx";
 import Modal from "deco-sites/persono/components/ui/Modal.tsx";
-import { StateUpdater } from "https://esm.sh/v128/preact@10.18.1/hooks/src/index.js";
 
 interface Props {
   segment: string | undefined;

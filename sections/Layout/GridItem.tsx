@@ -1,7 +1,6 @@
-import { Section } from "deco/blocks/section.ts";
 import { clx } from "../../sdk/clx.ts";
 import { grid } from "../../constants.tsx";
-
+import { type Section } from "@deco/deco/blocks";
 interface Props {
   children: Section;
   layout?: {
@@ -23,7 +22,6 @@ interface Props {
     };
   };
 }
-
 function GridItem({ children, layout }: Props) {
   return (
     <div
@@ -48,5 +46,4 @@ function GridItem({ children, layout }: Props) {
     </div>
   );
 }
-
 export default GridItem;

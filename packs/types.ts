@@ -1,6 +1,5 @@
 import { Props as SiteProps } from "$store/apps/site.ts";
-import { FnContext as DefaultFnContext } from "deco/types.ts";
-
+import { type FnContext as DefaultFnContext } from "@deco/deco";
 export interface CookieNames {
   ammoDeviceIdCookie: string;
   ammoTokenCookie: string;
@@ -8,12 +7,10 @@ export interface CookieNames {
   expirationDaysCookie: string;
   queryStringTokens: QueryStringToken[];
 }
-
 export interface QueryStringToken {
   queryStringName: string;
   cookieName: string;
 }
-
 export interface AmmoProduct {
   //Default
   brand: string;
@@ -23,7 +20,6 @@ export interface AmmoProduct {
   segment: string;
   title: string;
   cashback?: string;
-
   //Only from PDP props
   breadcrumbs?: Breadcrumb[];
   bundle?: Bundle;
@@ -38,7 +34,6 @@ export interface AmmoProduct {
   sizeType?: string;
   skus?: Sku[];
   template?: string;
-
   //Only from PLP and PL props
   available?: boolean;
   hoverImage?: string;
@@ -49,36 +44,30 @@ export interface AmmoProduct {
   tags?: Tags;
   url?: string;
 }
-
 export interface EmotionalAttributes {
   id: string;
   name: string;
   value: string;
 }
-
 export interface RelatedFilters {
   color: LinkAndLabel[];
   size: LinkAndLabel[];
   category: LinkAndLabel[];
 }
-
 export interface LinkAndLabel {
   link: string;
   label: string;
 }
-
 export interface Breadcrumb {
   name: string;
   path?: string;
   position: number;
   hasSibling?: boolean;
 }
-
 export interface Bundle {
   componentAmount: number;
   hasSingleComponent: boolean;
 }
-
 export interface Sku {
   available: boolean;
   color: Color;
@@ -98,48 +87,40 @@ export interface Sku {
   url: string;
   youtubeVideo?: string;
 }
-
 // HEAD
 export interface KitItem {
   dimensions: string;
   name: string;
   quantity: string;
 }
-
 export interface SkuPrice {
   from: number;
   to: number;
 }
-
 export interface Specification {
   id: string;
   label: string;
   value: string;
 }
-
 export interface Stock {
   distributorId: string;
   stock: number;
 }
-
 export interface Tags {
   bottom?: TagProps;
   topLeft?: TagProps;
   custom?: TagProps;
 }
-
 export interface TagProps {
   type: string;
   value?: string;
   color?: string;
 }
-
 export interface PriceList {
   max: number;
   min: number;
   type: number;
 }
-
 export interface VMDetails {
   //RETURN OF AN ENDPOINT
   filtersOrdered: string[];
@@ -153,13 +134,11 @@ export interface VMDetails {
   breadcrumbs: Breadcrumb[];
   miniVms: string[]; //unknown
 }
-
 export interface VMDetailsRedirect {
   //RETURN OF AN ENDPOINT
   type: "redirect";
   location: string;
 }
-
 export interface Meta {
   index: boolean;
   title: string;
@@ -169,42 +148,35 @@ export interface Meta {
   sidebarText?: string;
   footerText?: string;
 }
-
 export interface HeaderColors {
   foregroundColor?: string;
   backgroundColorFrom?: string;
   backgroundColorTo?: string;
 }
-
 export interface Sidebar {
   filterType: string;
   filterLabel: string;
   valuePrefix?: string;
   values: Value[];
 }
-
 export interface Value {
   type: string;
   slug: string;
   value: string;
 }
-
 export interface Recommendations {
   //RETURN OF AN ENDPOINT
   data: Data;
   meta: Meta;
 }
-
 export interface Data {
   products: AmmoProduct[];
 }
-
 export interface ProductDetails {
   //RETURN OF AN ENDPOINT
   data: AmmoProduct;
   meta: Meta;
 }
-
 export interface Bag {
   id: string;
   address: string;
@@ -225,26 +197,22 @@ export interface Bag {
   childBags: unknown[];
   withDeliverySplit: boolean;
 }
-
 export interface Discount {
   type: string;
   message: string;
   value: number;
   items?: DiscountItem[];
 }
-
 export interface DiscountItem {
   amount: number;
   id: string;
   title: string;
   value: number;
 }
-
 export interface Session {
   deviceId: string;
   bagId: string;
 }
-
 export interface Freebie {
   eligible: boolean;
   active: boolean;
@@ -256,7 +224,6 @@ export interface Freebie {
   valueToReach: number;
   selectedFreebie: string;
 }
-
 export interface FreebieItem {
   title: string;
   image: string;
@@ -264,7 +231,6 @@ export interface FreebieItem {
   sku: string;
   vmLink: string;
 }
-
 export interface Item {
   id: string;
   productId: string;
@@ -336,12 +302,10 @@ export interface Brand {
   name: string;
   logo: string;
 }
-
 export interface BagItems {
   sku: string;
   amount: number;
 }
-
 export interface Config {
   freeShipping: number;
   maxInstallments: number;
@@ -403,36 +367,29 @@ export interface Config {
   inviteCampaign: InviteCampaign;
   occasions: Occasions;
 }
-
 export interface SellerIds {
   mmartan: string;
   artex: string;
 }
-
 export interface SearchTypeLabels {
   product: string;
   weddingRegistry: string;
 }
-
 export interface PaymentMethodTypes {
   creditCard: string;
   slip: string;
 }
-
 export interface PriceFormats {
   range: string;
   single: string;
   simple: string;
 }
-
 export interface SizeTypes {
   bed: string;
 }
-
 export interface ProductSegmentIds {
   bed: string;
 }
-
 export interface BedSizeValues {
   twin: string;
   twinXl: string;
@@ -442,7 +399,6 @@ export interface BedSizeValues {
   king: string;
   kid: string;
 }
-
 export interface HomeComponentTypes {
   bigBanner: string;
   doubleBanner: string;
@@ -451,7 +407,6 @@ export interface HomeComponentTypes {
   categorySlider: string;
   mosaic: string;
 }
-
 export interface WrItemStatuses {
   unavailable: string;
   availableForPurchase: string;
@@ -460,33 +415,27 @@ export interface WrItemStatuses {
   awaitingShipment: string;
   awaitingPayment: string;
 }
-
 export interface LoggedUserTypes {
   oms: string;
 }
-
 export interface ResolveRouteIncludeTypes {
   data: string;
   pageInfo: string;
 }
-
 export interface BagDiscountTypes {
   omsFreeShipping: string;
   paymentSlip: string;
   coupon: string;
 }
-
 export interface VmBannerTypes {
   top: string;
   bottom: string;
 }
-
 export interface UserPingDefaults {
   "google.com": SocialMedia;
   "facebook.com": SocialMedia;
   "instagram.com": SocialMedia;
 }
-
 export interface SocialMedia {
   utmSource: string;
   utmMedium: string;
@@ -496,12 +445,10 @@ export interface Seller {
   title: string;
   socialLinks: SocialLinks;
 }
-
 export interface SocialLinks {
   facebook: string;
   instagram: string;
 }
-
 export interface Features {
   giftCard: boolean;
   bedSizeGuide: boolean;
@@ -546,23 +493,19 @@ export interface Features {
   omniCampaigns: OmniCampaigns;
   freeShippingOutlist: FreeShippingOutlist;
 }
-
 export interface NewsletterFirstPurchaseCoupon {
   enabled: boolean;
 }
-
 export interface SignUp {
   allowSignUpWithCpfOrCnpj: boolean;
   mainDocumentType: string;
 }
-
 export interface NewsletterFirstPurchaseCouponOptions {
   popupCloseIconColor: string;
   emailPopup: PopupContent;
   successSubscriptionPopup: PopupContent;
   newsletterBar: NewsletterBar;
 }
-
 export interface PopupContent {
   desktopImage: string;
   mobileImage: string;
@@ -571,7 +514,6 @@ export interface PopupContent {
   inputBackgroundColor: string;
   inputTextColor: string;
 }
-
 export interface NewsletterBar {
   desktopImage: string;
   mobileImage: string;
@@ -579,7 +521,6 @@ export interface NewsletterBar {
   isCloseButtonExpanded: boolean;
   closeIconColor: string;
 }
-
 export interface LoyaltyProgram {
   loyaltyProgramEnabled: boolean;
   defaultCashbackValue: number;
@@ -593,7 +534,6 @@ export interface LoyaltyProgram {
   description: string;
   minAvailableDate: string;
 }
-
 export interface MemberGetMemberCampaign {
   referrerBonus: number;
   benefitType: string;
@@ -601,22 +541,18 @@ export interface MemberGetMemberCampaign {
   minOrderValue: number;
   validTo: string;
 }
-
 export interface BlackFriday {
   blackFridayDate: string;
 }
-
 export interface FreeShippingCampaign {
   minBagValue: number;
   shippingMethodName: string;
   appliableShippingCategories: string[];
 }
-
 export interface Seo {
   dynamicRendering: DynamicRendering;
   arborescence: Arborescence;
 }
-
 export interface DynamicRendering {
   active: boolean;
   enabledOnlyForSpecificSku: boolean;
@@ -624,39 +560,32 @@ export interface DynamicRendering {
   ips: string[];
   userAgents: string[];
 }
-
 export interface Arborescence {
   availableForMigration: string[];
 }
-
 export interface OmniCampaigns {
   active: boolean;
   enabledCampaignTypes: string[];
 }
-
 export interface FreeShippingOutlist {
   outlist: string[];
   isEnabled: boolean;
   checkoutText: string;
   showBagConditionsText: boolean;
 }
-
 export interface BirthdayDiscountBigBanner {
   id: string;
   images: Images;
   callToAction: CallToAction;
 }
-
 export interface Images {
   small: Image;
   large: Image;
 }
-
 export interface CallToAction {
   text: string;
   link: Link;
 }
-
 export interface Link {
   type: string;
   url: string;
@@ -664,24 +593,20 @@ export interface Link {
   name: string;
   _target: string;
 }
-
 export interface BirthdayDiscountVmBanner {
   images: Images;
   title: string;
 }
-
 export interface SearchType {
   type: string;
   title: string;
   placeholder: string;
 }
-
 export interface OpportunityTag {
   id: string;
   color: string;
   priority: number;
 }
-
 export interface ContactSubjectTypes {
   question: string;
   compliment: string;
@@ -689,7 +614,6 @@ export interface ContactSubjectTypes {
   franchisee: string;
   bugReport: string;
 }
-
 export interface SurpriseBonus {
   startDate: string;
   endDate: string;
@@ -698,39 +622,32 @@ export interface SurpriseBonus {
   activationType: string;
   activationValue: number;
 }
-
 export interface DiscountOpportunity {
   mask: Mask;
   cutValue: number;
   minDiscountValue: number;
 }
-
 export interface Mask {
   single: Single;
   range: Range;
 }
-
 export interface Single {
   exact: string;
   rounded: string;
 }
-
 export interface Range {
   exact: string;
   "rounded-start-end": string;
   "rounded-start": string;
   "rounded-end": string;
 }
-
 export interface GoogleAuthenticationCredentials {
   clientId: string;
 }
-
 export interface RecaptchaShared {
   siteKey: string;
   enabled: boolean;
 }
-
 export interface OrderReturns {
   isFeatureEnabled: boolean;
   eligibleDays: number;
@@ -741,7 +658,6 @@ export interface OrderReturns {
   deadlineForContactingInDays: number;
   isUserDataFormEnabled: boolean;
 }
-
 export interface Reasons {
   abandonment: string;
   malfunction: string;
@@ -752,7 +668,6 @@ export interface Reasons {
   purchased_wrong_prodct: string;
   others: string;
 }
-
 export interface PersonoPdpRelease {
   waitingListReleaseDate: string;
   saleReleaseDate: string;
@@ -762,7 +677,6 @@ export interface PersonoPdpRelease {
   packs: string[];
   content: Content;
 }
-
 export interface PersonoDtexPdpRelease {
   waitingListReleaseDate: string;
   saleReleaseDate: string;
@@ -772,7 +686,6 @@ export interface PersonoDtexPdpRelease {
   packs: string[];
   content: Content;
 }
-
 export interface Content {
   presentation: Presentation;
   quotes: Quotes;
@@ -785,13 +698,11 @@ export interface Content {
   warranty: Warranty;
   social: Social;
 }
-
 export interface Presentation {
   subtitle: string;
   title: string;
   sections: Section[];
 }
-
 export interface Section {
   key: string;
   dir: string;
@@ -801,41 +712,34 @@ export interface Section {
   group?: Group;
   download?: Download;
 }
-
 export interface Title {
   text: string;
   icon?: string;
   subtitle?: string;
 }
-
 export interface Description {
   text?: string;
   mt: number;
 }
-
 export interface Group {
   direction: string;
   fixWidth: boolean;
   items: Item[];
 }
-
 export interface Item {
   key: string;
   icon: string;
   width: number;
   title: string;
 }
-
 export interface Download {
   text: string;
   items: Item[];
 }
-
 export interface Quotes {
   title: string;
   items: QuoteItem[];
 }
-
 export interface QuoteItem {
   stars: number;
   text: string;
@@ -843,12 +747,10 @@ export interface QuoteItem {
   achievements: number;
   label: string;
 }
-
 export interface Detail {
   title: string;
   items: DetailItem[];
 }
-
 export interface DetailItem {
   isLtr: boolean;
   showMask: boolean;
@@ -860,13 +762,11 @@ export interface DetailItem {
   ml?: number;
   list?: string[];
 }
-
 export interface Image {
   url: string;
   width: number;
   height: number;
 }
-
 export interface ImageInfo {
   mobile: string;
   tablet: string;
@@ -876,82 +776,68 @@ export interface ImageInfo {
   hasMobile: boolean;
   domain: string;
 }
-
 export interface DesktopText {
   title?: string;
   image: ImageInfo;
   description?: string;
 }
-
 export interface Differentials {
   title: string;
   items: DifferentialItem[];
 }
-
 export interface DifferentialItem {
   title: string;
   persono: boolean;
   other_apps: boolean;
 }
-
 export interface AboutSleep {
   title: string;
   description: string;
   items: AboutSleepItem[];
 }
-
 export interface AboutSleepItem {
   key: string;
   icon: string;
   title: string;
   description: string;
 }
-
 export interface Package {
   title: string;
   items: PackageItem[];
 }
-
 export interface PackageItem {
   key: number;
   title: string;
   quantity: number;
 }
-
 export interface TechnicalSpecs {
   title: string;
   items: TechnicalSpecsItem[];
 }
-
 export interface TechnicalSpecsItem {
   key: string;
   title: string;
   items: TechnicalSpecItem[];
 }
-
 export interface TechnicalSpecItem {
   key: string;
   title: string;
   description: string;
 }
-
 export interface Faq {
   title: string;
   items: FaqItem[];
 }
-
 export interface FaqItem {
   question: string;
   answer: string;
 }
-
 export interface Warranty {
   key: string;
   icon: string;
   title: string;
   description: string;
 }
-
 export interface Social {
   key: string;
   icon: string;
@@ -959,14 +845,12 @@ export interface Social {
   description: string;
   items: SocialItem[];
 }
-
 export interface SocialItem {
   key: string;
   title: string;
   link: Link;
   icon: string;
 }
-
 export interface PersonoSupportFirmPdpRelease {
   waitingListReleaseDate: string;
   saleReleaseDate: string;
@@ -974,7 +858,6 @@ export interface PersonoSupportFirmPdpRelease {
   sku: string;
   showBeforeWaitingListReleaseDate: boolean;
 }
-
 export interface PersonoSupportMediumPdpRelease {
   waitingListReleaseDate: string;
   saleReleaseDate: string;
@@ -982,7 +865,6 @@ export interface PersonoSupportMediumPdpRelease {
   sku: string;
   showBeforeWaitingListReleaseDate: boolean;
 }
-
 export interface PersonoNasaPdpRelease {
   waitingListReleaseDate: string;
   saleReleaseDate: string;
@@ -992,7 +874,6 @@ export interface PersonoNasaPdpRelease {
   packs: string[];
   content: Content;
 }
-
 export interface PersonoAdaptPdpRelease {
   waitingListReleaseDate: string;
   saleReleaseDate: string;
@@ -1002,7 +883,6 @@ export interface PersonoAdaptPdpRelease {
   packs: string[];
   content: Content;
 }
-
 export interface InviteCampaign {
   id: string;
   hash: string;
@@ -1018,24 +898,20 @@ export interface InviteCampaign {
   expiresAt: string;
   createdAt: string;
 }
-
 export interface Occasions {
   blackFriday: Duration;
   blackFridayFinalDays: Duration;
   christmas: Duration;
 }
-
 export interface Duration {
   start: string;
   end: string;
 }
-
 export interface ShippingSimulation {
   addressForPostalCode: AddressForPostalCode;
   shippingOptions: ShippingOption[];
   Bag: Bag;
 }
-
 export interface AddressForPostalCode {
   postalCode: string;
   state: string;
@@ -1046,7 +922,6 @@ export interface AddressForPostalCode {
   createdAt: string;
   deletedAt: string;
 }
-
 export interface ShippingOption {
   shippingMethod: ShippingMethod;
   cost: number;
@@ -1054,7 +929,6 @@ export interface ShippingOption {
   minBusinessDaysUntilDelivery: number;
   maxBusinessDaysUntilDelivery: number;
 }
-
 export interface ShippingMethod {
   id: string;
   name: string;
@@ -1065,14 +939,12 @@ export interface ShippingMethod {
   category: string;
   active: boolean;
 }
-
 export interface UserInfo {
   user: User;
   lifeTimeValue: number;
   token: string;
   birthdayDiscountPeriod: BirthdayDiscountPeriod;
 }
-
 export interface User {
   id: string;
   crossSiteUserId: string;
@@ -1103,24 +975,20 @@ export interface User {
   addresses: string;
   loyaltyProgramMemberSince: string;
 }
-
 export interface BirthdayDiscountPeriod {
   isEligible: boolean;
   startAt: string;
   endAt: string;
   nextPeriodAt: string;
 }
-
 export type FnCustomContext = SiteProps & DefaultFnContext;
 export interface InstallmentConfig {
   maxInstallments: number;
   minInstallmentValue: number;
 }
-
 export interface VinhedoSkuAPI {
   data: VinhedoSku[];
 }
-
 export interface VinhedoSku {
   type: string;
   label: string;
@@ -1129,7 +997,6 @@ export interface VinhedoSku {
   weddingItems: string[];
   productCards: ProductCard[];
 }
-
 export interface ProductItem {
   bundle: string;
   ERPTitle: string;
@@ -1197,7 +1064,6 @@ export interface ProductItem {
   stocks: Stock[];
   priceType?: number;
 }
-
 export interface BrandItem {
   id: number;
   initials: string;
@@ -1211,13 +1077,11 @@ export interface BrandItem {
   updatedAt: string;
   deletedAt: string;
 }
-
 export interface KitItem {
   name: string;
   quantity: string;
   dimensions: string;
 }
-
 export interface Attributes {
   baseColor: string;
   brandName: string;
@@ -1236,12 +1100,10 @@ export interface Attributes {
   composition: string;
   threads: string;
 }
-
 export interface Stock {
   distributorId: string;
   stock: number;
 }
-
 export interface ProductCard {
   id: string;
   url: string;
@@ -1259,25 +1121,20 @@ export interface ProductCard {
   tags: Tags;
   available: boolean;
 }
-
 export interface Price {
   min: number;
   max: number;
   type: number;
 }
-
 export interface AutoComplete {
   data: Term[];
 }
-
 export interface Term {
   term: string;
 }
-
 export interface SkuSubscribe {
   data: SkuSubscribeData;
 }
-
 export interface SkuSubscribeData {
   id: string;
   sku: string;
@@ -1287,17 +1144,14 @@ export interface SkuSubscribeData {
   updatedAt: string;
   createdAt: string;
 }
-
 export interface Newsleter {
   data: NewsletterData;
 }
-
 export interface NewsletterData {
   id: string;
   email: string;
   newsletterCouponCode: string;
 }
-
 export interface VMFilters {
   /**
    * @title Tipo

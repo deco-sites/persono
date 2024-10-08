@@ -2,16 +2,14 @@ import { useId } from "$store/sdk/useId.ts";
 import { ProductDetailsPage } from "apps/commerce/types.ts";
 import Image from "apps/website/components/Image.tsx";
 import { FnCustomContext } from "deco-sites/persono/packs/types.ts";
-import { SectionProps } from "deco/mod.ts";
 import Slider from "deco-sites/persono/components/ui/Slider.tsx";
 import SliderJS from "deco-sites/persono/islands/SliderJS.tsx";
 import { useMemo } from "preact/compat";
-
+import { type SectionProps } from "@deco/deco";
 export interface Props {
   /** @title Integration */
   page: ProductDetailsPage | null;
 }
-
 /**
  * @title Product Image Slider
  * @description Creates a three columned grid on destkop, one for the dots preview, one for the image slider and the other for product info
@@ -20,18 +18,11 @@ export interface Props {
  */
 export default function GallerySlider(props: SectionProps<typeof loader>) {
   const id = useId();
-
   if (props.page === null) {
     return null;
   }
-
-  const {
-    page: {
-      product: { image: defaultImages = [] },
-    },
-  } = props;
+  const { page: { product: { image: defaultImages = [] } } } = props;
   const aspectRatio = `1/1`;
-
   // Change the first image
   const images = useMemo(() => {
     if (defaultImages.length > 1) {
@@ -41,10 +32,8 @@ export default function GallerySlider(props: SectionProps<typeof loader>) {
       newImages[1] = firstImage;
       return newImages;
     }
-
     return defaultImages;
   }, [defaultImages]);
-
   if (props.device == "desktop") {
     return (
       <div
@@ -67,7 +56,6 @@ export default function GallerySlider(props: SectionProps<typeof loader>) {
       </div>
     );
   }
-
   return (
     <div id={id} class="flex flex-col-reverse w-full">
       {/* Image Slider */}
@@ -96,7 +84,7 @@ export default function GallerySlider(props: SectionProps<typeof loader>) {
 
       {/* Dots */}
       <ul class="carousel carousel-center gap-2 items-center flex justify-center my-5">
-        {images.map((img, index) => (
+        {images.map((_img, index) => (
           <li class="carousel-item">
             <button
               data-dot={index}
@@ -112,10 +100,8 @@ export default function GallerySlider(props: SectionProps<typeof loader>) {
     </div>
   );
 }
-
 export const loader = (props: Props, _req: Request, ctx: FnCustomContext) => {
   const device = ctx.device;
-
   return {
     ...props,
     device: device || "desktop",

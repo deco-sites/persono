@@ -1,11 +1,8 @@
 import { Picture, Source } from "apps/website/components/Picture.tsx";
-import type { SectionProps } from "deco/types.ts";
 import type { ImageWidget } from "apps/admin/widgets.ts";
-import { Logo } from "deco-sites/persono/components/ui/Logo.tsx";
 import { ProductListingPage } from "apps/commerce/types.ts";
-import NotFound from "deco-sites/persono/sections/Product/NotFound.tsx";
 import { FnCustomContext } from "deco-sites/persono/packs/types.ts";
-
+import { type SectionProps } from "@deco/deco";
 /**
  * @titleBy matcher
  */
@@ -25,7 +22,6 @@ export interface Banner {
     alt?: string;
   };
 }
-
 export interface bannerDefault {
   /** @description Banner title text color*/
   color: "primary" | "secondary" | "accent" | "black" | "white";
@@ -38,7 +34,6 @@ export interface bannerDefault {
     alt?: string;
   };
 }
-
 export interface Props {
   /** @title Banners */
   banners: Banner[];
@@ -46,10 +41,8 @@ export interface Props {
   bannerDefault: bannerDefault;
   page: ProductListingPage | null;
 }
-
 function Banner(props: SectionProps<ReturnType<typeof loader>>) {
   const { banner, productBannerCategory, bannerDefault, device } = props;
-
   const COLOR = {
     primary: "text-primary-content",
     secondary: "text-secondary-content",
@@ -57,7 +50,6 @@ function Banner(props: SectionProps<ReturnType<typeof loader>>) {
     black: "text-black",
     white: "text-white",
   } as const;
-
   if (!banner) {
     return (
       <div class="w-full bg-base-300">
@@ -103,9 +95,7 @@ function Banner(props: SectionProps<ReturnType<typeof loader>>) {
       </div>
     );
   }
-
   const { title, image, color } = banner;
-
   return (
     <div class="w-full bg-base-300">
       <div class="flex items-center justify-between mb-0 sm:mb-16 relative">
@@ -150,21 +140,16 @@ function Banner(props: SectionProps<ReturnType<typeof loader>>) {
     </div>
   );
 }
-
 export const loader = (props: Props, req: Request, ctx: FnCustomContext) => {
   const { banners, page, bannerDefault } = props;
   const device = ctx.device;
-
   if (!page) {
     return {};
   }
-
   const productBannerCategory = page.seo?.title;
-
   const banner = banners.find(({ matcher }) =>
     new URLPattern({ pathname: matcher }).test(req.url)
   );
-
   return {
     banner,
     productBannerCategory,
@@ -172,5 +157,4 @@ export const loader = (props: Props, req: Request, ctx: FnCustomContext) => {
     device: device || "desktop",
   };
 };
-
 export default Banner;

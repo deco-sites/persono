@@ -15,7 +15,6 @@ import { Color } from "deco-sites/persono/loaders/Layouts/Colors.tsx";
 import { Size } from "deco-sites/persono/loaders/Layouts/Size.tsx";
 import { SizeGuideGroup } from "deco-sites/persono/loaders/Layouts/SizeGuide.tsx";
 import { Benefits } from "../../loaders/Layouts/Benefits.tsx";
-import { Resolved, SectionProps } from "deco/mod.ts";
 import type { GroupedData } from "$store/sdk/useVariantPossiblities.ts";
 import { useVariantPossibilities } from "$store/sdk/useVariantPossiblities.ts";
 import { ShippingSimulation as ShippingSimulationLoader } from "deco-sites/persono/packs/types.ts";
@@ -23,11 +22,10 @@ import {
   type EditableProps as NotFoundProps,
   NotFound,
 } from "deco-sites/persono/components/product/NotFound.tsx";
-import { FnContext } from "deco/types.ts";
 import ProductInfoCollapse from "deco-sites/persono/islands/ProductInfoCollapse.tsx";
 import { scriptAsDataURI } from "apps/utils/dataURI.ts";
 import { PageFolder } from "deco-sites/persono/islands/PageFolder.tsx";
-
+import { type FnContext, type Resolved, type SectionProps } from "@deco/deco";
 interface Props {
   colors: Color[];
   sizes: Size[];
@@ -39,122 +37,105 @@ interface Props {
   notFoundSettings?: NotFoundProps;
   showBreadcrumbProductQty?: boolean;
 }
-
-function ProductInfo({
-  page,
-  colors,
-  sizes,
-  benefits,
-  notFoundSettings,
-  device,
-  showBreadcrumbProductQty,
-  sizeGuide,
-}: SectionProps<typeof loader>) {
+function ProductInfo(
+  {
+    page,
+    colors,
+    sizes,
+    benefits,
+    notFoundSettings,
+    device,
+    showBreadcrumbProductQty,
+    sizeGuide,
+  }: SectionProps<typeof loader>,
+) {
   const id = useId();
   const externalSectionId = useId();
-
   const productInfoSectionId = `${id}-product-info`;
-
   if (page === null) {
     return <NotFound device={device} notFoundSettings={notFoundSettings} />;
   }
-
   const { breadcrumbList, product } = page;
   const { offers, name = "", gtin, isVariantOf, url, sku } = product;
   const description = product.description || isVariantOf?.description;
-  const {
-    price = 0,
-    listPrice,
-    installments,
-    availability,
-  } = useOfferWithoutTaxes(offers);
+  const { price = 0, listPrice, installments, availability } =
+    useOfferWithoutTaxes(offers);
   const breadcrumb = {
     ...breadcrumbList,
     itemListElement: breadcrumbList?.itemListElement.slice(0, -1),
     numberOfItems: breadcrumbList.numberOfItems - 1,
   };
-
   const eventItem = mapProductToAnalyticsItem({
     product,
     breadcrumbList: breadcrumb,
     price,
     listPrice,
   });
-
   const productBenefits = product.isVariantOf?.hasVariant[0].additionalProperty
     ?.filter((p) => {
-      if (p.identifier?.startsWith("CUSTOM")) return p.value;
+      if (p.identifier?.startsWith("CUSTOM")) {
+        return p.value;
+      }
     });
-
   const hasVariant = isVariantOf?.hasVariant ?? [];
   const possibilities: GroupedData = useVariantPossibilities(
     hasVariant,
     isVariantOf,
   );
-
   const productsNotAvailable: string[] = [""];
-
   hasVariant.map((p) => {
     if (p.offers?.offers[0].availability === "https://schema.org/OutOfStock") {
       productsNotAvailable.push(p.sku);
     }
   });
-
   // Script to dynamic visualization of product info
   const script = (id: string, externalSectionId: string) => {
     const content = document.getElementById(id);
     const externalContainer = document.getElementById(externalSectionId);
-
-    if (!content || !externalContainer) return;
-
+    if (!content || !externalContainer) {
+      return;
+    }
     let lastScrollTop = 0;
     let lastScrollDirection = "";
     let lastSideVisible = "";
     let lastContentHeight = 0;
     let heightContentChanged = false;
-
     // Function to check if an element is visible in the viewport
     const isElementInViewport = (el: HTMLElement) => {
       const rect = el.getBoundingClientRect();
       const menuHeight = 80;
       return {
-        topVisible: rect.top >= menuHeight && rect.top < window.innerHeight,
+        topVisible: rect.top >= menuHeight && rect.top < globalThis.innerHeight,
         bottomVisible: rect.bottom >= menuHeight &&
-          rect.bottom < window.innerHeight,
+          rect.bottom < globalThis.innerHeight,
       };
     };
-
     // Function to set the content to "sticky" position
     const setSticky = (top: number) => {
       content.style.top = `${top}px`;
       content.style.position = "sticky";
     };
-
     // Function to set the content to "relative" position
     const setRelative = (paddingTop: number) => {
       content.style.position = "relative";
       content.style.top = "0px";
       externalContainer.style.paddingTop = `${paddingTop}px`;
     };
-
     const handleScroll = () => {
-      const windowHeight = window.innerHeight;
+      const windowHeight = globalThis.innerHeight;
       const contentHeight = content.offsetHeight || 0;
-
       // Update content height if it has changed
       if (lastContentHeight !== contentHeight) {
         lastContentHeight = contentHeight;
         heightContentChanged = true;
       }
-
       const top = (lastContentHeight - windowHeight + 4) * -1;
-      const scrollY = window.scrollY;
+      const scrollY = globalThis.scrollY;
       const scrollDirection = scrollY > lastScrollTop ? "down" : "up";
       const { top: externalTop } = externalContainer.getBoundingClientRect();
       const { top: contentTop } = content.getBoundingClientRect();
       const { bottomVisible, topVisible } = isElementInViewport(content);
       const distanceFromTop = externalTop - contentTop;
-
       // Constants for scroll conditions
       const isScrollingDownAndBottomVisible = scrollDirection === "down" &&
         bottomVisible && !topVisible;
@@ -167,17 +148,14 @@ function ProductInfo({
           lastSideVisible === "bottomVisible") ||
         (lastScrollDirection !== scrollDirection && topVisible &&
           lastSideVisible === "topVisible");
-
       // Constant for combined condition
       const shouldSetStickyWhenScrollingDown =
         isScrollingDownAndBottomVisible &&
         (lastScrollDirection !== "up" || lastSideVisible === "bottomVisible");
-
       // Update external container's paddingTop if content height changed
       if (heightContentChanged) {
         externalContainer.style.paddingTop = `${-distanceFromTop}px`;
       }
-
       // Reset the external container's paddingTop if top is visible and content height changed
       if (
         topVisible && externalContainer.style.paddingTop !== "0px" &&
@@ -185,7 +163,6 @@ function ProductInfo({
       ) {
         externalContainer.style.paddingTop = "0px";
       }
-
       // Case: Scrolling down and the bottom of the content is visible, but the top is not
       if (shouldSetStickyWhenScrollingDown || heightContentChanged) {
         setSticky(top);
@@ -208,20 +185,16 @@ function ProductInfo({
         lastScrollDirection = "up";
         lastSideVisible = "topVisible";
       }
-
       // Update the last scroll position
       lastScrollTop = Math.max(scrollY, 0);
     };
-
     // Add the scroll event listener to the window
     addEventListener("scroll", handleScroll);
-
     // Return a cleanup function to remove the event listener
     return () => {
       removeEventListener("scroll", handleScroll);
     };
   };
-
   return (
     <section class="w-full h-full" id={externalSectionId}>
       <div
@@ -320,16 +293,15 @@ function ProductInfo({
                   <div class="flex flex-col gap-2">
                     {product.isVariantOf?.hasVariant[0].additionalProperty &&
                       product?.isVariantOf?.hasVariant[0]?.additionalProperty
-                        .map(
-                          (ad) =>
-                            ad.propertyID == "TECNICALSPECIFICATION" &&
-                              !ad.description?.startsWith("CUSTOM_")
-                              ? (
-                                <p class="text-base font-normal">
-                                  {ad.description}:&ensp;{ad.value}
-                                </p>
-                              )
-                              : null,
+                        .map((ad) =>
+                          ad.propertyID == "TECNICALSPECIFICATION" &&
+                            !ad.description?.startsWith("CUSTOM_")
+                            ? (
+                              <p class="text-base font-normal">
+                                {ad.description}:&ensp;{ad.value}
+                              </p>
+                            )
+                            : null
                         )}
                   </div>
                 </ProductInfoCollapse>
@@ -338,15 +310,14 @@ function ProductInfo({
                   <div class="flex flex-col gap-2">
                     {product.isVariantOf?.hasVariant[0].additionalProperty &&
                       product?.isVariantOf?.hasVariant[0]?.additionalProperty
-                        .map(
-                          (ad) =>
-                            ad.propertyID == "KITITEM"
-                              ? (
-                                <p class="text-base font-normal">
-                                  {ad.value}&ensp;{ad.description}
-                                </p>
-                              )
-                              : null,
+                        .map((ad) =>
+                          ad.propertyID == "KITITEM"
+                            ? (
+                              <p class="text-base font-normal">
+                                {ad.value}&ensp;{ad.description}
+                              </p>
+                            )
+                            : null
                         )}
                   </div>
                 </ProductInfoCollapse>
@@ -395,7 +366,6 @@ function ProductInfo({
     </section>
   );
 }
-
 export const loader = (props: Props, _req: Request, ctx: FnContext) => {
   const device = ctx.device;
   return {
@@ -403,5 +373,4 @@ export const loader = (props: Props, _req: Request, ctx: FnContext) => {
     ...props,
   };
 };
-
 export default ProductInfo;

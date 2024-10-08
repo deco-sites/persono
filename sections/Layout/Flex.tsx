@@ -1,7 +1,6 @@
 import { clx } from "$store/sdk/clx.ts";
-import { context } from "deco/mod.ts";
 import { flex, VNode } from "../../constants.tsx";
-
+import { context } from "@deco/deco";
 interface Props {
   children?: VNode[] | null;
   layout?: {
@@ -37,12 +36,10 @@ interface Props {
     };
   };
 }
-
 function Flex({ layout, children }: Props) {
   const items = !context.isDeploy && !children?.length
     ? new Array(4).fill(0).map(() => <ItemPreview />)
     : children;
-
   return (
     <div
       class={clx(
@@ -62,7 +59,6 @@ function Flex({ layout, children }: Props) {
     </div>
   );
 }
-
 const ItemPreview = () => (
   <div class="card w-48 h-48 bg-base-100 shadow">
     <div class="card-body items-center justify-center text-base-300 text-sm">
@@ -70,5 +66,4 @@ const ItemPreview = () => (
     </div>
   </div>
 );
-
 export default Flex;

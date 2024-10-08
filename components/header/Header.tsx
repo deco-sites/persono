@@ -1,23 +1,19 @@
 import type { EditableProps as SearchbarProps } from "$store/components/search/Searchbar.tsx";
 import Drawers from "$store/islands/Header/Drawers.tsx";
-import { usePlatform } from "$store/sdk/usePlatform.tsx";
 import { SocialItem } from "deco-sites/persono/components/footer/Social.tsx";
 import {
   FastLink,
   SiteNavigationElement,
 } from "deco-sites/persono/components/header/Menu.tsx";
-import { SectionProps } from "deco/mod.ts";
 import Alert, { IAlert } from "./Alert.tsx";
 import Navbar from "./Navbar.tsx";
 import type { EditableProps as CartProps } from "deco-sites/persono/components/minicart/Cart.tsx";
 import { FnCustomContext } from "deco-sites/persono/packs/types.ts";
-
+import { type SectionProps } from "@deco/deco";
 export interface Props {
   alerts: IAlert[];
-
   /** @title Search Bar */
   searchbar?: Omit<SearchbarProps, "platform">;
-
   /**
    * @title Navigation items
    * @description Navigation items used both on mobile and desktop menus
@@ -31,24 +27,22 @@ export interface Props {
    * @description Links used on mobile bottom menu
    */
   socialLinks?: SocialItem[];
-
   /** @title Cart Settings */
   cart?: CartProps;
 }
-
-function Header({
-  alerts,
-  searchbar,
-  navItems,
-  fastLinks,
-  device,
-  imageBaseUrl,
-  cart,
-  socialLinks,
-}: SectionProps<typeof loader>) {
-  const platform = usePlatform();
+function Header(
+  {
+    alerts,
+    searchbar,
+    navItems,
+    fastLinks,
+    device,
+    imageBaseUrl,
+    cart,
+    socialLinks,
+  }: SectionProps<typeof loader>,
+) {
   const items = navItems ?? [];
-
   return (
     <>
       <header class="h-[120px]" data-header>
@@ -72,13 +66,11 @@ function Header({
     </>
   );
 }
-
 export const loader = (props: Props, _req: Request, ctx: FnCustomContext) => {
   const device = ctx.device;
   const imageBaseUrl = ctx.imageBaseUrl;
-  const freeShipping = ctx.config?.features?.freeShippingCampaigns[0]?
-    .minBagValue ?? 0;
-
+  const freeShipping =
+    ctx.config?.features?.freeShippingCampaigns[0]?.minBagValue ?? 0;
   return {
     ...props,
     cart: {
@@ -92,5 +84,4 @@ export const loader = (props: Props, _req: Request, ctx: FnCustomContext) => {
     imageBaseUrl,
   };
 };
-
 export default Header;

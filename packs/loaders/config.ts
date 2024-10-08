@@ -64,7 +64,8 @@ const loader = async (
 
     return selectedFieldsWithFreeShipping;
   } catch (error) {
-    throw new Error(error);
+    console.log(error);
+    return {};
   }
 };
 

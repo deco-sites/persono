@@ -38,7 +38,7 @@ export const Preview = ({ sizesGuide }: Props) => {
   return (
     <div class="h-full w-full grid place-items-center">
       {sizesGuide.map((c) => {
-        c.size.map((s) => <p>s.sizeName</p>);
+        c.size.map((_s) => <p>s.sizeName</p>);
       })}
     </div>
   );

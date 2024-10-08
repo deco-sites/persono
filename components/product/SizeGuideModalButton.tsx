@@ -1,7 +1,6 @@
 import { SizesGuideModal } from "deco-sites/persono/components/product/SizesGuideModal.tsx";
 import Drawer from "deco-sites/persono/components/ui/Drawer.tsx";
 import { useSignal } from "@preact/signals";
-import { useState } from "https://esm.sh/v128/preact@10.18.1/hooks/src/index.js";
 
 export interface Props {
   categorySizes: {

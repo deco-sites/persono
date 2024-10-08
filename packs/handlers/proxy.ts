@@ -1,10 +1,9 @@
 import { isFreshCtx } from "apps/website/handlers/fresh.ts";
-import { DecoSiteState } from "deco/mod.ts";
 import { Handler } from "std/http/mod.ts";
 import { proxySetCookie } from "apps/utils/cookie.ts";
 import { Script } from "apps/website/types.ts";
 import { Monitoring } from "deco/engine/core/resolver.ts";
-
+import { type DecoSiteState } from "@deco/deco";
 const HOP_BY_HOP = [
   "Keep-Alive",
   "Transfer-Encoding",
@@ -15,7 +14,6 @@ const HOP_BY_HOP = [
   "Proxy-Authorization",
   "Proxy-Authenticate",
 ];
-
 const noTrailingSlashes = (str: string) =>
   str.at(-1) === "/" ? str.slice(0, -1) : str;
 const sanitize = (str: string) => str.startsWith("/") ? str : `/${str}`;
@@ -26,7 +24,6 @@ const removeCFHeaders = (headers: Headers) => {
     }
   });
 };
-
 async function logClonedResponseBody(
   response: Response,
   monitoring: Monitoring | undefined,
@@ -34,16 +31,13 @@ async function logClonedResponseBody(
   if (!response.body) {
     return;
   }
-
   const clonedResponse = response.clone();
   const text = await clonedResponse.text();
-
   monitoring?.rootSpan?.setAttribute?.(
     "proxy.error",
     `${response.statusText}, body = ${text}`,
   );
 }
-
 /**
  * @title {{{key}}} - {{{value}}}
  */
@@ -57,7 +51,6 @@ export interface Header {
    */
   value: string;
 }
-
 export interface Props {
   /**
    * @description the proxy url.
@@ -69,7 +62,6 @@ export interface Props {
    * @example /api
    */
   basePath?: string;
-
   /**
    * @description Host that should be used when proxying the request
    */
@@ -84,26 +76,26 @@ export interface Props {
   includeScriptsToHead?: {
     includes?: Script[];
   };
-
   /**
    * @description follow redirects
    * @default 'manual'
    */
   redirect?: "manual" | "follow";
 }
-
 /**
  * @title Proxy
  * @description Proxies request to the target url.
  */
-export default function Proxy({
-  url: rawProxyUrl,
-  basePath,
-  host: hostToUse,
-  customHeaders = [],
-  includeScriptsToHead,
-  redirect = "manual",
-}: Props): Handler {
+export default function Proxy(
+  {
+    url: rawProxyUrl,
+    basePath,
+    host: hostToUse,
+    customHeaders = [],
+    includeScriptsToHead,
+    redirect = "manual",
+  }: Props,
+): Handler {
   return async (req, _ctx) => {
     const url = new URL(req.url);
     const proxyUrl = noTrailingSlashes(rawProxyUrl);
@@ -111,14 +103,9 @@ export default function Proxy({
     const path = basePath && basePath.length > 0
       ? url.pathname.replace(basePath, "")
       : url.pathname;
-
-    const to = new URL(
-      `${proxyUrl}${sanitize(path)}?${qs}`,
-    );
-
+    const to = new URL(`${proxyUrl}${sanitize(path)}?${qs}`);
     const headers = new Headers(req.headers);
     HOP_BY_HOP.forEach((h) => headers.delete(h));
-
     if (isFreshCtx<DecoSiteState>(_ctx)) {
       _ctx?.state?.monitoring?.logger?.log?.("proxy received headers", headers);
     }
@@ -126,23 +113,16 @@ export default function Proxy({
     if (isFreshCtx<DecoSiteState>(_ctx)) {
       _ctx?.state?.monitoring?.logger?.log?.("proxy sent headers", headers);
     }
-
     headers.set("origin", req.headers.get("origin") ?? url.origin);
     headers.set("host", hostToUse ?? to.host);
     headers.set("x-forwarded-host", url.host);
-    headers.set(
-      "Cookie",
-      req.headers.get("Cookie") ?? "",
-    );
-
+    headers.set("Cookie", req.headers.get("Cookie") ?? "");
     for (const { key, value } of customHeaders) {
       headers.set(key, value);
     }
-
     const monitoring = isFreshCtx<DecoSiteState>(_ctx)
       ? _ctx?.state?.monitoring
       : undefined;
-
     const fecthFunction = async () => {
       try {
         return await fetch(to, {
@@ -153,21 +133,15 @@ export default function Proxy({
         });
       } catch (err) {
         monitoring?.rootSpan?.setAttribute?.("proxy.exception", err.message);
-
         throw err;
       }
     };
-
     const response = await fecthFunction();
-
     if (response.status >= 299 || response.status < 200) {
       await logClonedResponseBody(response, monitoring);
     }
-
     const contentType = response.headers.get("Content-Type");
-
     let newBodyStream = null;
-
     if (
       contentType?.includes("text/html") &&
       includeScriptsToHead?.includes &&
@@ -177,14 +151,12 @@ export default function Proxy({
       const insertScriptsStream = new TransformStream({
         async transform(chunk, controller) {
           const chunkStr = new TextDecoder().decode(await chunk);
-
           // Find the position of <head> tag
           const headEndPos = chunkStr.indexOf("</head>");
           if (headEndPos !== -1) {
             // Split the chunk at </head> position
             const beforeHeadEnd = chunkStr.substring(0, headEndPos);
             const afterHeadEnd = chunkStr.substring(headEndPos);
-
             // Prepare scripts to insert
             let scriptsInsert = "";
             for (const script of (includeScriptsToHead?.includes ?? [])) {
@@ -192,7 +164,6 @@ export default function Proxy({
                 ? script.src
                 : script.src(req);
             }
-
             // Combine and encode the new chunk
             const newChunkStr = beforeHeadEnd + scriptsInsert + afterHeadEnd;
             controller.enqueue(new TextEncoder().encode(newChunkStr));
@@ -202,26 +173,19 @@ export default function Proxy({
           }
         },
       });
-
       // Modify the response body by piping through the transform stream
       if (response.body) {
         newBodyStream = response.body.pipeThrough(insertScriptsStream);
       }
     }
-
     // Change cookies domain
     const responseHeaders = new Headers(response.headers);
     responseHeaders.delete("set-cookie");
-
     proxySetCookie(response.headers, responseHeaders, url);
-
     if (response.status >= 300 && response.status < 400) { // redirect change location header
       const location = responseHeaders.get("location");
       if (location) {
-        responseHeaders.set(
-          "location",
-          location.replace(proxyUrl, url.origin),
-        );
+        responseHeaders.set("location", location.replace(proxyUrl, url.origin));
       }
     }
     return new Response(
